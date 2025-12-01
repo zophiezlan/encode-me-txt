@@ -414,6 +414,21 @@ export const encoderConfig = [
     encode: encoders.encodeTrafficSigns,
     reversible: false,
     tags: ['unique', 'signs', 'roads']
+  },
+
+  // 🔀 Shuffle & Mixed Encoding
+  {
+    id: 'shuffle',
+    name: 'Shuffle Encoding',
+    description: 'Each character encoded with a random encoder from selected options',
+    emoji: '🔀',
+    category: 'advanced',
+    encode: encoders.encodeShuffle,
+    decode: encoders.decodeShuffle,
+    reversible: true,
+    special: true,
+    hasSettings: true,
+    tags: ['advanced', 'shuffle', 'random', 'mixed']
   }
 ];
 

@@ -46,8 +46,13 @@ const EnhancedTextEncoder = () => {
   const [showComparison, setShowComparison] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const [showShuffleMode, setShowShuffleMode] = useState(false);
   const [chainSequence, setChainSequence] = useState([]);
   const [comparisonEncoders, setComparisonEncoders] = useState([]);
+  const [shuffleEncoders, setShuffleEncoders] = useState(() => {
+    const saved = localStorage.getItem('shuffle-encoders');
+    return saved ? JSON.parse(saved) : ['binary', 'morse', 'caesar', 'emoji', 'braille'];
+  });
   const [history, setHistory] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
 
@@ -139,6 +144,11 @@ const EnhancedTextEncoder = () => {
   useEffect(() => {
     localStorage.setItem('encoder-params', JSON.stringify(encoderParams));
   }, [encoderParams]);
+
+  // Save shuffle encoders
+  useEffect(() => {
+    localStorage.setItem('shuffle-encoders', JSON.stringify(shuffleEncoders));
+  }, [shuffleEncoders]);
 
   const updateEncoderParam = (encoderId, paramName, value) => {
     setEncoderParams(prev => ({
@@ -234,6 +244,17 @@ const EnhancedTextEncoder = () => {
     setChainSequence(chainSequence.filter(id => id !== encoderId));
   };
 
+  const toggleShuffleEncoder = (encoderId) => {
+    if (shuffleEncoders.includes(encoderId)) {
+      // Don't allow removing if it's the last one
+      if (shuffleEncoders.length > 1) {
+        setShuffleEncoders(shuffleEncoders.filter(id => id !== encoderId));
+      }
+    } else {
+      setShuffleEncoders([...shuffleEncoders, encoderId]);
+    }
+  };
+
   const toggleComparison = (encoderId) => {
     if (comparisonEncoders.includes(encoderId)) {
       setComparisonEncoders(comparisonEncoders.filter(id => id !== encoderId));
@@ -275,16 +296,24 @@ const EnhancedTextEncoder = () => {
       try {
         if (mode === 'decode') {
           if (encoder.reversible) {
-            results[encoder.id] = encoder.id === 'caesar'
-              ? encoder.decode(inputText, caesarShift)
-              : encoder.decode(inputText);
+            if (encoder.id === 'caesar') {
+              results[encoder.id] = encoder.decode(inputText, caesarShift);
+            } else if (encoder.id === 'shuffle') {
+              results[encoder.id] = encoder.decode(inputText);
+            } else {
+              results[encoder.id] = encoder.decode(inputText);
+            }
           } else {
             results[encoder.id] = '[Not reversible]';
           }
         } else {
-          results[encoder.id] = encoder.id === 'caesar'
-            ? encoder.encode(inputText, caesarShift)
-            : encoder.encode(inputText);
+          if (encoder.id === 'caesar') {
+            results[encoder.id] = encoder.encode(inputText, caesarShift);
+          } else if (encoder.id === 'shuffle') {
+            results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
+          } else {
+            results[encoder.id] = encoder.encode(inputText);
+          }
         }
       } catch (error) {
         results[encoder.id] = '[Error]';
@@ -292,7 +321,7 @@ const EnhancedTextEncoder = () => {
     });
 
     return results;
-  }, [inputText, mode, encoderParams, allEncoders]);
+  }, [inputText, mode, encoderParams, shuffleEncoders, allEncoders]);
 
   // Filter encoders (memoized)
   const filteredEncoders = useMemo(() => {
@@ -629,6 +658,18 @@ const EnhancedTextEncoder = () => {
           </button>
 
           <button
+            onClick={() => setShowShuffleMode(!showShuffleMode)}
+            className={`px-4 md:px-6 py-2 md:py-3 backdrop-blur-lg rounded-full border transition-all font-semibold text-sm md:text-base ${
+              showShuffleMode
+                ? `bg-gradient-to-r from-purple-500 to-pink-500 border-purple-400 text-white`
+                : `${theme.cardBg} ${theme.cardBorder}`
+            }`}
+            title="Select multiple encoders - each character will be randomly encoded with one of them"
+          >
+            🔀 Shuffle {shuffleEncoders.length > 0 && `(${shuffleEncoders.length})`}
+          </button>
+
+          <button
             onClick={() => setShowHistory(!showHistory)}
             className={`px-4 md:px-6 py-2 md:py-3 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm md:text-base`}
             title="View your past encodings (automatically saved)"
@@ -812,6 +853,52 @@ const EnhancedTextEncoder = () => {
                 })()}
               </>
             )}
+          </div>
+        )}
+
+        {/* Shuffle Mode Panel */}
+        {showShuffleMode && (
+          <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-6 mb-6 border border-purple-400/30`}>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                🔀 Shuffle Encoding
+                <span className="text-xs bg-purple-500/30 px-2 py-1 rounded-full">{shuffleEncoders.length} selected</span>
+              </h3>
+              <button onClick={() => setShowShuffleMode(false)} className="p-1 hover:bg-white/20 rounded">
+                <X size={20} />
+              </button>
+            </div>
+
+            <p className={`${theme.textSecondary} mb-4 text-sm`}>
+              Select multiple encoders below using the 🔀 button. Each character will be randomly encoded with one of your selected encoders, creating a unique mixed encoding!
+            </p>
+
+            {shuffleEncoders.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {shuffleEncoders.map((id) => {
+                  const encoder = allEncoders.find(e => e.id === id);
+                  if (!encoder) return null;
+                  return (
+                    <div key={id} className="flex items-center gap-2 bg-purple-500/20 px-3 py-2 rounded-lg border border-purple-400/30">
+                      <span>{encoder.emoji}</span>
+                      <span className="text-sm">{encoder.name}</span>
+                      <button
+                        onClick={() => toggleShuffleEncoder(id)}
+                        className="ml-2 text-red-400 hover:text-red-300"
+                        disabled={shuffleEncoders.length === 1}
+                        title={shuffleEncoders.length === 1 ? "You need at least one encoder" : "Remove from shuffle"}
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className={`text-xs ${theme.textSecondary} bg-purple-500/10 rounded-lg p-3 border border-purple-400/20`}>
+              💡 <strong>Tip:</strong> The Shuffle encoder will use your selected encoders. View the Shuffle Encoding card below to see the mixed result!
+            </div>
           </div>
         )}
 
@@ -1031,6 +1118,7 @@ const EnhancedTextEncoder = () => {
             const isFavorite = favorites.has(encoder.id);
             const isInChain = chainSequence.includes(encoder.id);
             const isInComparison = comparisonEncoders.includes(encoder.id);
+            const isInShuffle = shuffleEncoders.includes(encoder.id);
             const analysis = !isDisabled && result ? analyzeEncoding(encoder, result) : null;
 
             const categoryEmoji = categories[encoder.category]?.emoji || '📦';
@@ -1091,6 +1179,20 @@ const EnhancedTextEncoder = () => {
                         title={isInChain ? "Remove from chain" : "Add to chain"}
                       >
                         🔗
+                      </button>
+                    )}
+
+                    {showShuffleMode && !isDisabled && encoder.id !== 'shuffle' && (
+                      <button
+                        onClick={() => toggleShuffleEncoder(encoder.id)}
+                        className={`p-1.5 rounded-lg transition-all text-sm ${
+                          isInShuffle
+                            ? 'bg-purple-500/30 text-purple-300'
+                            : 'hover:bg-white/20 text-white/50'
+                        }`}
+                        title={isInShuffle ? "Remove from shuffle" : "Add to shuffle"}
+                      >
+                        🔀
                       </button>
                     )}
 
