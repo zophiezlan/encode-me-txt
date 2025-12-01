@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Copy, Check, Shuffle, Sparkles, Search, X, History,
   Share2, Palette, Keyboard, Info, ChevronDown, ChevronUp,
@@ -131,11 +131,16 @@ const EnhancedTextEncoder = () => {
     setFavorites(newFavorites);
   };
 
-  const copyToClipboard = async (text, id) => {
+  const copyToClipboard = async (text, id, encoderName = null, encoderId = null) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
+
+      // Save to history when user copies (not for special IDs like 'chain-final')
+      if (encoderName && encoderId && text && !text.includes('[')) {
+        saveToHistory(encoderId, encoderName, text);
+      }
     } catch (error) {
       console.error('Failed to copy:', error);
     }
@@ -148,13 +153,18 @@ const EnhancedTextEncoder = () => {
     }
   };
 
-  const handleShare = async (encoderId) => {
+  const handleShare = async (encoderId, encoderName, result) => {
     const url = ShareManager.createShareableLink(inputText, encoderId, mode);
     const shared = await ShareManager.shareNative(url);
     if (!shared) {
       await ShareManager.copyShareLink(url);
       setCopiedId(`share-${encoderId}`);
       setTimeout(() => setCopiedId(null), 2000);
+    }
+
+    // Save to history when user shares
+    if (result && !result.includes('[')) {
+      saveToHistory(encoderId, encoderName, result);
     }
   };
 
@@ -219,18 +229,50 @@ const EnhancedTextEncoder = () => {
     completeOnboarding();
   };
 
-  // Filter encoders
-  const filteredEncoders = encoderConfig.filter(encoder => {
-    const matchesSearch = searchQuery === '' ||
-      encoder.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      encoder.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      encoder.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+  // Memoize encoder results to avoid re-encoding on every render
+  const encoderResults = useMemo(() => {
+    if (!inputText) return {};
 
-    const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory;
-    const matchesFavorites = selectedCategory !== 'favorites' || favorites.has(encoder.id);
+    const results = {};
+    const caesarShift = encoderParams.caesar || 13;
 
-    return matchesSearch && matchesCategory && matchesFavorites;
-  });
+    encoderConfig.forEach(encoder => {
+      try {
+        if (mode === 'decode') {
+          if (encoder.reversible) {
+            results[encoder.id] = encoder.id === 'caesar'
+              ? encoder.decode(inputText, caesarShift)
+              : encoder.decode(inputText);
+          } else {
+            results[encoder.id] = '[Not reversible]';
+          }
+        } else {
+          results[encoder.id] = encoder.id === 'caesar'
+            ? encoder.encode(inputText, caesarShift)
+            : encoder.encode(inputText);
+        }
+      } catch (error) {
+        results[encoder.id] = '[Error]';
+      }
+    });
+
+    return results;
+  }, [inputText, mode, encoderParams]);
+
+  // Filter encoders (memoized)
+  const filteredEncoders = useMemo(() => {
+    return encoderConfig.filter(encoder => {
+      const matchesSearch = searchQuery === '' ||
+        encoder.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        encoder.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        encoder.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+
+      const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory;
+      const matchesFavorites = selectedCategory !== 'favorites' || favorites.has(encoder.id);
+
+      return matchesSearch && matchesCategory && matchesFavorites;
+    });
+  }, [searchQuery, selectedCategory, favorites]);
 
   const playMorseSound = async (morseCode) => {
     if (!window.AudioContext) return;
@@ -724,10 +766,8 @@ const EnhancedTextEncoder = () => {
                 const encoder = encoderConfig.find(e => e.id === id);
                 if (!encoder) return null;
 
-                const caesarShift = encoderParams.caesar || 13;
-                const result = mode === 'encode'
-                  ? (encoder.id === 'caesar' ? encoder.encode(inputText, caesarShift) : encoder.encode(inputText))
-                  : (encoder.reversible ? (encoder.id === 'caesar' ? encoder.decode(inputText, caesarShift) : encoder.decode(inputText)) : '[Not reversible]');
+                // Use memoized result
+                const result = encoderResults[id] || '';
 
                 return (
                   <div key={id} className="bg-white/10 rounded-lg p-4">
@@ -916,29 +956,8 @@ const EnhancedTextEncoder = () => {
             const canDecode = encoder.reversible;
             const caesarShift = encoderParams.caesar || 13;
 
-            let result = '';
-            if (inputText) {
-              if (isDecodeMode) {
-                if (canDecode) {
-                  result = encoder.id === 'caesar'
-                    ? encoder.decode(inputText, caesarShift)
-                    : encoder.decode(inputText);
-                } else {
-                  result = '[Not reversible]';
-                }
-              } else {
-                result = encoder.id === 'caesar'
-                  ? encoder.encode(inputText, caesarShift)
-                  : encoder.encode(inputText);
-
-                // Save to history for successful encodes
-                if (result && !result.includes('[')) {
-                  // Debounce history saving
-                  const timeout = setTimeout(() => saveToHistory(encoder.id, encoder.name, result), 1000);
-                  return () => clearTimeout(timeout);
-                }
-              }
-            }
+            // Get memoized result instead of computing on every render
+            const result = encoderResults[encoder.id] || '';
 
             const displayText = encoder.special && !isDecodeMode
               ? `[${result.length} invisible characters]`
@@ -1039,7 +1058,7 @@ const EnhancedTextEncoder = () => {
                     {!isDisabled && result && (
                       <>
                         <button
-                          onClick={() => handleShare(encoder.id)}
+                          onClick={() => handleShare(encoder.id, encoder.name, result)}
                           className="p-1.5 hover:bg-white/20 rounded-lg transition-all"
                           title="Share this encoding"
                         >
@@ -1051,7 +1070,7 @@ const EnhancedTextEncoder = () => {
                         </button>
 
                         <button
-                          onClick={() => copyToClipboard(result, encoder.id)}
+                          onClick={() => copyToClipboard(result, encoder.id, encoder.name, encoder.id)}
                           className="p-1.5 hover:bg-white/20 rounded-lg transition-all"
                           title="Copy to clipboard"
                         >
