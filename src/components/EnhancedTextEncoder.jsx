@@ -105,6 +105,31 @@ const EnhancedTextEncoder = () => {
     localStorage.setItem('encoder-params', JSON.stringify(encoderParams));
   }, [encoderParams]);
 
+  // Debounced history saving for encode mode
+  useEffect(() => {
+    if (mode === 'encode' && inputText) {
+      const timeout = setTimeout(() => {
+        // Save history for all valid encodings
+        encoderConfig.forEach(encoder => {
+          const caesarShift = encoderParams.caesar || 13;
+          try {
+            const result = encoder.id === 'caesar'
+              ? encoder.encode(inputText, caesarShift)
+              : encoder.encode(inputText);
+
+            if (result && !result.includes('[') && result.length > 0) {
+              saveToHistory(encoder.id, encoder.name, result);
+            }
+          } catch (error) {
+            // Silently skip encoders that fail
+          }
+        });
+      }, 2000); // Debounce for 2 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [inputText, mode, encoderParams]);
+
   const updateEncoderParam = (encoderId, paramName, value) => {
     setEncoderParams(prev => ({
       ...prev,
@@ -930,13 +955,6 @@ const EnhancedTextEncoder = () => {
                 result = encoder.id === 'caesar'
                   ? encoder.encode(inputText, caesarShift)
                   : encoder.encode(inputText);
-
-                // Save to history for successful encodes
-                if (result && !result.includes('[')) {
-                  // Debounce history saving
-                  const timeout = setTimeout(() => saveToHistory(encoder.id, encoder.name, result), 1000);
-                  return () => clearTimeout(timeout);
-                }
               }
             }
 
