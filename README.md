@@ -1,8 +1,8 @@
 <div align="center">
 
-# ✨ Creative Text Encoder
+# ✨ Creative Text Encoder v2.0
 
-**Transform your messages into 25+ creative encodings**
+**Transform your messages into 37+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,7 +19,19 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **25+ different encoding formats** - from classic Binary and Morse Code to fun Emoji encodings and QR codes. All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **37+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, and GPS Coordinates. All processing happens **100% in your browser** - your data never leaves your device.
+
+### 🌟 What Makes This Different?
+
+Unlike other text encoders, Creative Text Encoder v2.0 offers:
+- **12 unique encoders** not found in any other app (DNA, Playing Cards, GPS Coordinates, Zodiac, etc.)
+- **Functional chain encoding** - apply multiple encoders in sequence
+- **6 stunning themes** - personalize your experience
+- **Encoding strength analyzer** - see how secure your encoding is
+- **History system** - track and reuse your encodings
+- **Shareable links** - send encoded puzzles to friends
+- **Keyboard shortcuts** - power user features
+- **Comparison mode** - compare multiple encodings side-by-side
 
 Perfect for:
 - 🎓 **Learning** about cryptography and encoding systems
@@ -32,17 +44,26 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **25+ Encoding Methods** - Comprehensive collection from technical to artistic
+- **37+ Encoding Methods** - Comprehensive collection from technical to artistic
 - **Real-time Encoding/Decoding** - See results as you type
-- **Reversible Encodings** - 13 methods support full decode back to original
-- **Offline PWA Support** - Works without internet (except QR codes)
+- **Reversible Encodings** - 17 methods support full decode back to original
+- **6 Stunning Themes** - Dark, Light, Cyberpunk, Ocean, Sunset, Matrix
+- **Functional Chain Encoding** - Apply multiple encoders in sequence
+- **History System** - Automatic saving of your encoding history (up to 50 entries)
+- **Shareable Links** - Generate URLs with encoded messages
+- **Encoding Strength Analyzer** - Real-time complexity analysis with detailed breakdown
+- **Comparison Mode** - Compare up to 4 encodings side-by-side
+- **Advanced Search** - Find encoders by name, description, or tags
+- **Category Filtering** - Filter by category or favorites
+- **Keyboard Shortcuts** - 7 shortcuts for power users
 - **Copy to Clipboard** - One-click copy for easy sharing
 - **Favorites System** - Star your go-to encoders for quick access
 - **Export to JSON** - Batch export all encodings at once
 - **Audio Playback** - Hear Morse code with Web Audio API
 - **Adjustable Settings** - Caesar cipher shift slider (1-25)
 - **Responsive Design** - Beautiful UI on desktop, tablet, and mobile
-- **Dark/Purple Theme** - Easy on the eyes with gradient design
+- **Glassmorphism UI** - Modern, professional design
+- **Offline PWA Support** - Works without internet
 - **Zero Dependencies** - Lightweight and fast (only 3 production deps)
 
 ### 🔐 Privacy & Security
@@ -56,25 +77,25 @@ Perfect for:
 ## 🎨 Encoding Categories
 
 ### 🔐 Secret (1)
-- **Zero-Width Steganography** 👻 - Hide messages in invisible Unicode characters
+- **Zero-Width Steganography** 👻 - Hide messages in invisible Unicode characters (Reversible!)
 
 ### 📻 Classic (3)
-- **Morse Code** 📡 - Dit-dah communication with audio playback
-- **Braille Patterns** 🤚 - Touch-readable text encoding
+- **Morse Code** 📡 - Dit-dah communication with audio playback (Reversible!)
+- **Braille Patterns** 🤚 - Touch-readable text encoding (Reversible!)
 - **NATO Phonetic** 🎖️ - Alpha-Bravo-Charlie spelling
 
 ### 💾 Computer Science (3)
-- **Binary** 💻 - Classic 0s and 1s (8-bit)
-- **Hexadecimal** 🔢 - Base-16 number system
-- **Base64** 📦 - Standard encoding for data transfer
+- **Binary** 💻 - Classic 0s and 1s (8-bit) (Reversible!)
+- **Hexadecimal** 🔢 - Base-16 number system (Reversible!)
+- **Base64** 📦 - Standard encoding for data transfer (Reversible!)
 
 ### 🔑 Ciphers (3)
-- **Caesar Cipher** 🏛️ - Shift alphabet by N positions (adjustable)
-- **ROT13** 🔄 - Caesar cipher with 13-letter shift
-- **Reverse Text** ↩️ - Simply backwards
+- **Caesar Cipher** 🏛️ - Shift alphabet by N positions (adjustable) (Reversible!)
+- **ROT13** 🔄 - Caesar cipher with 13-letter shift (Reversible!)
+- **Reverse Text** ↩️ - Simply backwards (Reversible!)
 
 ### 🎉 Fun (5)
-- **Emoji Encoding** 😎 - Express text through emoji pairs
+- **Emoji Encoding** 😎 - Express text through emoji pairs (Reversible!)
 - **Bubble Text** ⭕ - Cute circled characters (ⓗⓔⓛⓛⓞ)
 - **Upside Down** 🙃 - Australian mode activated (oʃʃǝH)
 - **Leetspeak** 🤓 - H4ck3r 5p34k
@@ -87,12 +108,27 @@ Perfect for:
 - **Color Blocks** 🌈 - Rainbow data encoding (🟥🟧🟨🟩🟦)
 - **Ancient Runes** ⚔️ - Elder Futhark mysticism (ᚠᚢᚦᚨᚱᚲ)
 
-### 🚀 Advanced (5) **NEW!**
+### 🚀 Advanced (5)
 - **QR Code Generator** 📱 - Generate scannable QR codes
-- **URL Encoding** 🔗 - Web-safe URL encoding
-- **HTML Entities** 🌐 - HTML-safe character encoding
+- **URL Encoding** 🔗 - Web-safe URL encoding (Reversible!)
+- **HTML Entities** 🌐 - HTML-safe character encoding (Reversible!)
 - **Sound Wave** 🔊 - Visual sound wave representation (▁▂▃▄▅▆▇█)
 - **Hash Generator** 🔐 - Generate unique fingerprint from text
+
+### 🌟 Unique (12) **BRAND NEW!**
+These creative encoders are not found in any other encoding app:
+- **DNA Sequence** 🧬 - Encode as genetic base pairs (ATGC) (Reversible!)
+- **Playing Cards** 🃏 - Express text through card deck (Reversible!)
+- **Chemistry Elements** ⚗️ - Periodic table encoding
+- **GPS Coordinates** 🗺️ - Text as latitude/longitude (Reversible!)
+- **Zodiac Signs** ♈ - Astrological symbol encoding (Reversible!)
+- **Barcode** 📊 - Visual barcode-style bars
+- **Minecraft Blocks** ⛏️ - Gaming block emojis
+- **Recipe Cipher** 🍳 - Cooking ingredients encoding
+- **Clock Time** 🕐 - Encode as clock times
+- **Weather Symbols** ⛅ - Meteorological encoding
+- **Domino Tiles** 🁣 - Game piece patterns
+- **Traffic Signs** 🛑 - Road sign symbols
 
 ## 🚀 Quick Start
 
@@ -245,7 +281,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for testing guidelines.
 | [Vitest](https://vitest.dev/) | 3.0.5 | Testing framework |
 | [ESLint](https://eslint.org/) | 9.15.0 | Code linting |
 
-**Production Bundle:** ~50KB gzipped
+**Production Bundle:** ~62KB gzipped (includes all new features!)
 
 ## 🤝 Contributing
 
@@ -300,15 +336,35 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - 💡 [Request a Feature](https://github.com/zophiezlan/encode-me-txt/issues/new?labels=enhancement)
 - 💬 [Start a Discussion](https://github.com/zophiezlan/encode-me-txt/discussions)
 
+## ⌨️ Keyboard Shortcuts
+
+- `Ctrl+K` - Focus search
+- `Ctrl+Shift+E` - Toggle encode/decode mode
+- `Ctrl+Shift+C` - Toggle chain mode
+- `Ctrl+Shift+H` - Toggle history panel
+- `Ctrl+Shift+T` - Cycle through themes
+- `Ctrl+Shift+?` - Show keyboard shortcuts help
+- `Esc` - Close modals and panels
+
 ## 📈 Roadmap
 
-- [ ] Chain encoding (apply multiple encoders in sequence)
+- [x] Chain encoding (apply multiple encoders in sequence) ✅
+- [x] Share functionality ✅
+- [x] Light/dark theme toggle (+ 4 more themes!) ✅
+- [x] More encoding methods (12 unique new encoders!) ✅
+- [x] Encoding strength analyzer ✅
+- [x] History system ✅
+- [x] Keyboard shortcuts ✅
+- [x] Search and filter ✅
+- [x] Comparison mode ✅
+- [ ] Visual encoding animations
+- [ ] Interactive tutorials for each encoder
 - [ ] Custom encoder builder
 - [ ] Browser extension
-- [ ] Share functionality
-- [ ] Light/dark theme toggle
-- [ ] More encoding methods
+- [ ] Batch file processing
 - [ ] Mobile app (React Native)
+- [ ] Achievement/badge system
+- [ ] Daily encoding challenges
 
 ---
 
@@ -317,6 +373,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 **[⬆ Back to Top](#-creative-text-encoder)**
 
 Made with ❤️ by the Creative Text Encoder team
+
+**v2.0** - The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 

@@ -11,3 +11,4 @@ export * from './ciphers.js';
 export * from './fun.js';
 export * from './artistic.js';
 export * from './advanced.js';
+export * from './unique.js';

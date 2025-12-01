@@ -1,7 +1,7 @@
-import CreativeTextEncoder from './components/CreativeTextEncoder'
+import EnhancedTextEncoder from './components/EnhancedTextEncoder'
 
 function App() {
-  return <CreativeTextEncoder />
+  return <EnhancedTextEncoder />
 }
 
 export default App
