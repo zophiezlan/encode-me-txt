@@ -454,5 +454,6 @@ export const categories = {
   fun: { emoji: '🎉', name: 'Fun', description: 'Playful and creative encodings' },
   artistic: { emoji: '🎨', name: 'Artistic', description: 'Visual and aesthetic encodings' },
   advanced: { emoji: '🚀', name: 'Advanced', description: 'Advanced technical encodings' },
-  unique: { emoji: '🌟', name: 'Unique', description: 'One-of-a-kind creative encodings' }
+  unique: { emoji: '🌟', name: 'Unique', description: 'One-of-a-kind creative encodings' },
+  custom: { emoji: '🎨', name: 'Custom', description: 'User-created custom encoders' }
 };

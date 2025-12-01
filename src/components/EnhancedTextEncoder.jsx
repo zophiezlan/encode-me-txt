@@ -3,7 +3,7 @@ import {
   Copy, Check, Shuffle, Sparkles, Search, X, History,
   Share2, Palette, Keyboard, Info, ChevronDown, ChevronUp,
   Trash2, TrendingUp, Zap, Link2, Eye, Filter, HelpCircle,
-  BookOpen, Play, Lightbulb, ArrowRight, Star
+  BookOpen, Play, Lightbulb, ArrowRight, Star, Wand2, Film, Package, Gamepad2
 } from 'lucide-react';
 import { encoderConfig, categories } from '../utils/encoderConfig.js';
 import { themes, getTheme, saveTheme, loadTheme } from '../utils/themeSystem.js';
@@ -12,6 +12,13 @@ import { ChainEncoder } from '../utils/chainEncoder.js';
 import { EncodingAnalyzer } from '../utils/encodingAnalyzer.js';
 import { ShareManager } from '../utils/shareManager.js';
 import { KeyboardShortcuts } from '../utils/keyboardShortcuts.js';
+import { CustomEncoderManager } from '../utils/customEncoderManager.js';
+import { EncodingPresetsManager } from '../utils/encodingPresets.js';
+import { DailyPuzzleSystem } from '../utils/dailyPuzzles.js';
+import CustomEncoderBuilder from './CustomEncoderBuilder.jsx';
+import VisualEncodingFlowViewer from './VisualEncodingFlowViewer.jsx';
+import PresetsBrowser from './PresetsBrowser.jsx';
+import DailyPuzzle from './DailyPuzzle.jsx';
 
 const EnhancedTextEncoder = () => {
   // Core state
@@ -51,6 +58,15 @@ const EnhancedTextEncoder = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showTooltip, setShowTooltip] = useState('');
   const [hoveredFeature, setHoveredFeature] = useState(null);
+
+  // NEW: Next Evolution Features
+  const [showCustomBuilder, setShowCustomBuilder] = useState(false);
+  const [showVisualFlow, setShowVisualFlow] = useState(false);
+  const [showPresets, setShowPresets] = useState(false);
+  const [showDailyPuzzle, setShowDailyPuzzle] = useState(false);
+  const [visualFlowEncoder, setVisualFlowEncoder] = useState(null);
+  const [customEncoders, setCustomEncoders] = useState([]);
+  const [allEncoders, setAllEncoders] = useState(encoderConfig);
 
   const searchInputRef = useRef(null);
   const keyboardShortcuts = useRef(null);
@@ -94,6 +110,24 @@ const EnhancedTextEncoder = () => {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
+
+  // NEW: Load custom encoders and merge with built-in encoders
+  useEffect(() => {
+    const loadCustomEncoders = () => {
+      const customs = CustomEncoderManager.getEncoders();
+      setCustomEncoders(customs);
+
+      // Convert custom encoders to encoder config format
+      const customConfigs = customs.map(ce =>
+        CustomEncoderManager.toEncoderConfig(ce)
+      );
+
+      // Merge with built-in encoders
+      setAllEncoders([...encoderConfig, ...customConfigs]);
+    };
+
+    loadCustomEncoders();
+  }, [showCustomBuilder]); // Reload when custom builder is closed
 
   // Save favorites
   useEffect(() => {
@@ -236,7 +270,7 @@ const EnhancedTextEncoder = () => {
     const results = {};
     const caesarShift = encoderParams.caesar || 13;
 
-    encoderConfig.forEach(encoder => {
+    allEncoders.forEach(encoder => {
       try {
         if (mode === 'decode') {
           if (encoder.reversible) {
@@ -257,22 +291,22 @@ const EnhancedTextEncoder = () => {
     });
 
     return results;
-  }, [inputText, mode, encoderParams]);
+  }, [inputText, mode, encoderParams, allEncoders]);
 
   // Filter encoders (memoized)
   const filteredEncoders = useMemo(() => {
-    return encoderConfig.filter(encoder => {
+    return allEncoders.filter(encoder => {
       const matchesSearch = searchQuery === '' ||
         encoder.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         encoder.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         encoder.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory;
+      const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory || (encoder.custom && selectedCategory === 'custom');
       const matchesFavorites = selectedCategory !== 'favorites' || favorites.has(encoder.id);
 
       return matchesSearch && matchesCategory && matchesFavorites;
     });
-  }, [searchQuery, selectedCategory, favorites]);
+  }, [searchQuery, selectedCategory, favorites, allEncoders]);
 
   const playMorseSound = async (morseCode) => {
     if (!window.AudioContext) return;
@@ -620,6 +654,34 @@ const EnhancedTextEncoder = () => {
             title="View all keyboard shortcuts for power users"
           >
             <Keyboard size={18} />
+          </button>
+
+          {/* NEW: Next Evolution Features */}
+          <button
+            onClick={() => setShowCustomBuilder(true)}
+            className={`px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 backdrop-blur-lg rounded-full border border-purple-400 transition-all font-semibold text-sm md:text-base text-white`}
+            title="Create your own custom encoders"
+          >
+            <Wand2 size={18} className="inline mr-2" />
+            Custom
+          </button>
+
+          <button
+            onClick={() => setShowPresets(true)}
+            className={`px-4 md:px-6 py-2 md:py-3 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm md:text-base`}
+            title="Browse and load encoding presets"
+          >
+            <Package size={18} className="inline mr-2" />
+            Presets
+          </button>
+
+          <button
+            onClick={() => setShowDailyPuzzle(true)}
+            className={`px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 backdrop-blur-lg rounded-full border border-yellow-400 transition-all font-semibold text-sm md:text-base text-white`}
+            title="Daily encoding puzzle challenge"
+          >
+            <Gamepad2 size={18} className="inline mr-2" />
+            Puzzle
           </button>
         </div>
 
@@ -1093,6 +1155,18 @@ const EnhancedTextEncoder = () => {
                             <TrendingUp size={16} />
                           </button>
                         )}
+
+                        {/* NEW: Visual Flow Button */}
+                        <button
+                          onClick={() => {
+                            setVisualFlowEncoder(encoder);
+                            setShowVisualFlow(true);
+                          }}
+                          className="p-1.5 hover:bg-white/20 rounded-lg transition-all"
+                          title="Watch character-by-character transformation"
+                        >
+                          <Film size={16} />
+                        </button>
                       </>
                     )}
                   </div>
@@ -1181,6 +1255,53 @@ const EnhancedTextEncoder = () => {
             🔒 All processing happens in your browser • 100% private
           </p>
         </div>
+
+        {/* NEW: Next Evolution Feature Modals */}
+        {showCustomBuilder && (
+          <CustomEncoderBuilder
+            theme={theme}
+            onClose={() => setShowCustomBuilder(false)}
+            onSave={(encoder) => {
+              // Reload encoders
+              const customs = CustomEncoderManager.getEncoders();
+              setCustomEncoders(customs);
+            }}
+          />
+        )}
+
+        {showVisualFlow && visualFlowEncoder && (
+          <VisualEncodingFlowViewer
+            theme={theme}
+            inputText={inputText}
+            encoder={visualFlowEncoder}
+            caesarShift={encoderParams.caesar || 13}
+            onClose={() => {
+              setShowVisualFlow(false);
+              setVisualFlowEncoder(null);
+            }}
+          />
+        )}
+
+        {showPresets && (
+          <PresetsBrowser
+            theme={theme}
+            onClose={() => setShowPresets(false)}
+            onLoadPreset={(preset) => {
+              // Load the preset's encoder chain
+              setChainSequence(preset.encoderIds);
+              setEncoderParams({ ...encoderParams, ...preset.params });
+              setShowChainMode(true);
+              setShowPresets(false);
+            }}
+          />
+        )}
+
+        {showDailyPuzzle && (
+          <DailyPuzzle
+            theme={theme}
+            onClose={() => setShowDailyPuzzle(false)}
+          />
+        )}
       </div>
     </div>
   );
