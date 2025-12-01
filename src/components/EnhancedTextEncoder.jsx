@@ -48,6 +48,7 @@ const EnhancedTextEncoder = () => {
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showTooltip, setShowTooltip] = useState('');
   const [hoveredFeature, setHoveredFeature] = useState(null);
+  const [showCaesarControls, setShowCaesarControls] = useState(false);
 
   const searchInputRef = useRef(null);
   const keyboardShortcuts = useRef(null);
@@ -251,8 +252,8 @@ const EnhancedTextEncoder = () => {
       <div className="max-w-7xl mx-auto">
         {/* Welcome Modal - First Time Users */}
         {showWelcome && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn">
-            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 max-w-2xl w-full border-2 ${theme.cardBorder} shadow-2xl`}>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn overflow-y-auto">
+            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-6 md:p-8 max-w-2xl w-full border-2 ${theme.cardBorder} shadow-2xl my-4 max-h-[90vh] overflow-y-auto`}>
               <div className="text-center mb-6">
                 <div className="text-6xl mb-4 animate-bounce">✨</div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
@@ -344,8 +345,8 @@ const EnhancedTextEncoder = () => {
 
         {/* Interactive Guide Modal */}
         {showGuide && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 max-w-2xl w-full border-2 ${theme.cardBorder}`}>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 overflow-y-auto">
+            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-6 md:p-8 max-w-2xl w-full border-2 ${theme.cardBorder} my-4 max-h-[90vh] overflow-y-auto`}>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold flex items-center gap-2">
                   <BookOpen size={28} />
@@ -434,12 +435,12 @@ const EnhancedTextEncoder = () => {
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex-1"></div>
-            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 animate-pulse flex-1">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-start mb-4 gap-3">
+            <div className="hidden md:block flex-1"></div>
+            <h1 className="text-3xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 animate-pulse flex-1">
               ✨ Creative Text Encoder
             </h1>
-            <div className="flex-1 flex justify-end gap-2">
+            <div className="flex-1 flex justify-center md:justify-end gap-2">
               <button
                 onClick={() => setShowGuide(true)}
                 className={`px-4 py-2 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm flex items-center gap-2`}
@@ -455,7 +456,7 @@ const EnhancedTextEncoder = () => {
           </p>
 
           {/* Theme Switcher */}
-          <div className="flex justify-center gap-2 mb-4 flex-wrap">
+          <div className="flex justify-center gap-1.5 md:gap-2 mb-4 flex-wrap px-2">
             {Object.values(themes).map(t => (
               <button
                 key={t.id}
@@ -508,7 +509,7 @@ const EnhancedTextEncoder = () => {
         )}
 
         {/* Main Controls */}
-        <div className="flex flex-wrap justify-center gap-3 mb-6">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6">
           {/* Mode Toggle */}
           <div className={`${theme.cardBg} backdrop-blur-lg rounded-full p-1 border ${theme.cardBorder}`}>
             <button
@@ -602,34 +603,48 @@ const EnhancedTextEncoder = () => {
               : 'Paste encoded text here (e.g., morse code, binary, etc.)'}
           />
 
-          {/* Caesar Controls */}
-          <div className="mt-4 p-4 bg-white/10 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-semibold flex items-center gap-2">
-                🏛️ Caesar Cipher Shift: {caesarShift}
-              </label>
-              <span className="text-xs text-white/60" title="Caesar cipher shifts each letter by N positions in the alphabet">
-                <Info size={14} className="inline" /> Alphabet shift amount
+          {/* Caesar Controls - Collapsible */}
+          <div className="mt-4">
+            <button
+              onClick={() => setShowCaesarControls(!showCaesarControls)}
+              className="w-full p-3 bg-white/10 hover:bg-white/15 rounded-lg flex items-center justify-between transition-all"
+            >
+              <span className="text-sm font-semibold flex items-center gap-2">
+                🏛️ Caesar Cipher Settings
               </span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="25"
-              value={caesarShift}
-              onChange={(e) => setCaesarShift(parseInt(e.target.value))}
-              className="w-full"
-              title={`Shift letters by ${caesarShift} positions (e.g., A → ${String.fromCharCode(65 + caesarShift)})`}
-            />
-            <p className="text-xs text-white/50 mt-1">
-              Moves each letter {caesarShift} position{caesarShift > 1 ? 's' : ''} forward in the alphabet
-            </p>
+              {showCaesarControls ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </button>
+
+            {showCaesarControls && (
+              <div className="mt-2 p-4 bg-white/10 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-semibold flex items-center gap-2">
+                    Shift Amount: {caesarShift}
+                  </label>
+                  <span className="text-xs text-white/60" title="Caesar cipher shifts each letter by N positions in the alphabet">
+                    <Info size={14} className="inline" /> Alphabet shift
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="25"
+                  value={caesarShift}
+                  onChange={(e) => setCaesarShift(parseInt(e.target.value))}
+                  className="w-full"
+                  title={`Shift letters by ${caesarShift} positions (e.g., A → ${String.fromCharCode(65 + caesarShift)})`}
+                />
+                <p className="text-xs text-white/50 mt-1">
+                  Moves each letter {caesarShift} position{caesarShift > 1 ? 's' : ''} forward in the alphabet
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Search and Filter */}
-        <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-4 mb-6 border ${theme.cardBorder}`}>
-          <div className="flex flex-col md:flex-row gap-3">
+        <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-3 md:p-4 mb-6 border ${theme.cardBorder}`}>
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" size={20} />
               <input
@@ -928,40 +943,40 @@ const EnhancedTextEncoder = () => {
         )}
 
         {/* Results Section */}
-        <div className="mb-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-              <Sparkles size={24} />
+        <div className="mb-4 w-full">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-2">
+            <h2 className="text-lg md:text-2xl font-bold flex items-center gap-2">
+              <Sparkles size={20} className="md:w-6 md:h-6" />
               Step 2: Choose an Encoding
             </h2>
-            <div className={`text-sm ${theme.textSecondary}`}>
+            <div className={`text-xs md:text-sm ${theme.textSecondary}`}>
               {filteredEncoders.length} of {encoderConfig.length} encoders
             </div>
           </div>
-          <div className={`bg-white/10 rounded-xl p-4 mb-4`}>
-            <div className="flex flex-wrap gap-4 text-xs md:text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-green-300 font-bold text-lg">✓</span>
-                <span>= Reversible (can decode back)</span>
+          <div className={`bg-white/10 rounded-xl p-3 md:p-4 mb-4`}>
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 md:gap-4 text-xs md:text-sm">
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <span className="text-green-300 font-bold text-base md:text-lg">✓</span>
+                <span className="text-xs md:text-sm">Reversible</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-yellow-300 font-bold">⭐</span>
-                <span>= Click to favorite</span>
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <span className="text-yellow-300 font-bold text-base md:text-lg">⭐</span>
+                <span className="text-xs md:text-sm">Favorite</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Copy size={16} />
-                <span>= Copy result</span>
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <Copy size={14} className="md:w-4 md:h-4" />
+                <span className="text-xs md:text-sm">Copy</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Share2 size={16} />
-                <span>= Share</span>
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <Share2 size={14} className="md:w-4 md:h-4" />
+                <span className="text-xs md:text-sm">Share</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Encoders Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
           {filteredEncoders.map((encoder) => {
             const isDecodeMode = mode === 'decode';
             const canDecode = encoder.reversible;
@@ -1005,7 +1020,7 @@ const EnhancedTextEncoder = () => {
             return (
               <div
                 key={encoder.id}
-                className={`${theme.cardBg} backdrop-blur-lg rounded-xl p-5 border transition-all ${
+                className={`${theme.cardBg} backdrop-blur-lg rounded-xl p-4 md:p-5 border transition-all w-full ${
                   isDisabled
                     ? 'border-white/10 opacity-50'
                     : isFavorite
@@ -1017,12 +1032,12 @@ const EnhancedTextEncoder = () => {
                     : `${theme.cardBorder} ${theme.cardHover}`
                 }`}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-start gap-2 flex-1">
-                    <span className="text-2xl">{encoder.emoji}</span>
+                <div className="flex items-start justify-between mb-3 gap-2">
+                  <div className="flex items-start gap-2 flex-1 min-w-0">
+                    <span className="text-xl md:text-2xl flex-shrink-0">{encoder.emoji}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-base md:text-lg font-bold">{encoder.name}</h3>
+                        <h3 className="text-sm md:text-lg font-bold">{encoder.name}</h3>
                         <span className="text-xs opacity-70">{categoryEmoji}</span>
                         {encoder.reversible && (
                           <span className="text-xs bg-green-500/30 text-green-300 px-2 py-0.5 rounded-full border border-green-400/50">
@@ -1034,7 +1049,7 @@ const EnhancedTextEncoder = () => {
                     </div>
                   </div>
 
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 flex-shrink-0 flex-wrap">
                     <button
                       onClick={() => toggleFavorite(encoder.id)}
                       className={`p-1.5 rounded-lg transition-all ${
@@ -1130,7 +1145,7 @@ const EnhancedTextEncoder = () => {
                 </div>
 
                 <div className={`
-                  bg-black/30 rounded-lg p-3 font-mono text-xs break-all min-h-[50px] flex items-center
+                  bg-black/30 rounded-lg p-2 md:p-3 font-mono text-xs break-all min-h-[50px] flex items-center w-full overflow-x-auto
                   ${encoder.id === 'zalgo' ? 'overflow-hidden leading-relaxed' : ''}
                   ${encoder.special && !isDecodeMode ? 'bg-yellow-500/20 border border-yellow-400/50' : ''}
                   ${isDisabled ? 'justify-center' : ''}
