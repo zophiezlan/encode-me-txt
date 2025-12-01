@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Copy, Check, Shuffle, Sparkles, Search, X, History,
   Share2, Palette, Keyboard, Info, ChevronDown, ChevronUp,
-  Trash2, TrendingUp, Zap, Link2, Eye, Filter
+  Trash2, TrendingUp, Zap, Link2, Eye, Filter, HelpCircle,
+  BookOpen, Play, Lightbulb, ArrowRight, Star
 } from 'lucide-react';
 import { encoderConfig, categories } from '../utils/encoderConfig.js';
 import { themes, getTheme, saveTheme, loadTheme } from '../utils/themeSystem.js';
@@ -38,6 +39,15 @@ const EnhancedTextEncoder = () => {
   const [comparisonEncoders, setComparisonEncoders] = useState([]);
   const [history, setHistory] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
+
+  // Onboarding & Help states
+  const [showWelcome, setShowWelcome] = useState(() => {
+    return !localStorage.getItem('encoder-onboarded');
+  });
+  const [showGuide, setShowGuide] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+  const [showTooltip, setShowTooltip] = useState('');
+  const [hoveredFeature, setHoveredFeature] = useState(null);
 
   const searchInputRef = useRef(null);
   const keyboardShortcuts = useRef(null);
@@ -170,6 +180,28 @@ const EnhancedTextEncoder = () => {
     }
   };
 
+  // Onboarding functions
+  const completeOnboarding = () => {
+    localStorage.setItem('encoder-onboarded', 'true');
+    setShowWelcome(false);
+  };
+
+  const startQuickTour = () => {
+    setShowWelcome(false);
+    localStorage.setItem('encoder-onboarded', 'true');
+    setShowGuide(true);
+  };
+
+  const resetOnboarding = () => {
+    localStorage.removeItem('encoder-onboarded');
+    setShowWelcome(true);
+  };
+
+  const tryExample = (exampleText) => {
+    setInputText(exampleText);
+    completeOnboarding();
+  };
+
   // Filter encoders
   const filteredEncoders = encoderConfig.filter(encoder => {
     const matchesSearch = searchQuery === '' ||
@@ -217,13 +249,209 @@ const EnhancedTextEncoder = () => {
   return (
     <div className={`min-h-screen bg-gradient-to-br ${theme.gradient} ${theme.textPrimary} p-4 md:p-8 transition-all duration-500`}>
       <div className="max-w-7xl mx-auto">
+        {/* Welcome Modal - First Time Users */}
+        {showWelcome && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn">
+            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 max-w-2xl w-full border-2 ${theme.cardBorder} shadow-2xl`}>
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-4 animate-bounce">✨</div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400">
+                  Welcome to Creative Text Encoder!
+                </h2>
+                <p className={`text-lg ${theme.textSecondary}`}>
+                  Transform any text into 37+ creative encoding formats
+                </p>
+              </div>
+
+              <div className="space-y-4 mb-6">
+                <div className="bg-white/10 rounded-xl p-4 flex gap-3">
+                  <div className="text-3xl">🎯</div>
+                  <div>
+                    <h3 className="font-bold mb-1">Simple & Powerful</h3>
+                    <p className="text-sm text-white/70">Type any text and instantly see 37+ different encodings - from Binary and Morse Code to DNA sequences and Playing Cards!</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-xl p-4 flex gap-3">
+                  <div className="text-3xl">🔒</div>
+                  <div>
+                    <h3 className="font-bold mb-1">100% Private</h3>
+                    <p className="text-sm text-white/70">All encoding happens in your browser. Your text never leaves your device - no servers, no tracking, completely private.</p>
+                  </div>
+                </div>
+
+                <div className="bg-white/10 rounded-xl p-4 flex gap-3">
+                  <div className="text-3xl">✅</div>
+                  <div>
+                    <h3 className="font-bold mb-1">Many Are Reversible</h3>
+                    <p className="text-sm text-white/70">17 encodings can decode back to the original text. Look for the green checkmark (✓) to identify reversible encoders!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 mb-6">
+                <h3 className="font-bold mb-3 flex items-center gap-2">
+                  <Lightbulb size={20} className="text-yellow-300" />
+                  Quick Start Examples - Try One:
+                </h3>
+                <div className="grid gap-2">
+                  <button
+                    onClick={() => tryExample('Hello World!')}
+                    className="bg-white/10 hover:bg-white/20 p-3 rounded-lg text-left transition-all text-sm"
+                  >
+                    <span className="font-semibold">Hello World!</span>
+                    <span className="text-white/60 ml-2">Classic first message</span>
+                  </button>
+                  <button
+                    onClick={() => tryExample('Meet me at the secret location')}
+                    className="bg-white/10 hover:bg-white/20 p-3 rounded-lg text-left transition-all text-sm"
+                  >
+                    <span className="font-semibold">Meet me at the secret location</span>
+                    <span className="text-white/60 ml-2">Secret message</span>
+                  </button>
+                  <button
+                    onClick={() => tryExample('Happy Birthday! 🎉')}
+                    className="bg-white/10 hover:bg-white/20 p-3 rounded-lg text-left transition-all text-sm"
+                  >
+                    <span className="font-semibold">Happy Birthday! 🎉</span>
+                    <span className="text-white/60 ml-2">Celebration message</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={startQuickTour}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                >
+                  <Play size={20} />
+                  Take a Quick Tour
+                </button>
+                <button
+                  onClick={completeOnboarding}
+                  className="flex-1 bg-white/10 hover:bg-white/20 font-semibold py-4 rounded-xl transition-all"
+                >
+                  Skip - I'll Explore
+                </button>
+              </div>
+
+              <p className="text-center text-xs text-white/50 mt-4">
+                This message appears once. You can replay the tour anytime from the Help menu.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Interactive Guide Modal */}
+        {showGuide && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+            <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 max-w-2xl w-full border-2 ${theme.cardBorder}`}>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <BookOpen size={28} />
+                  How to Use This App
+                </h2>
+                <button onClick={() => setShowGuide(false)} className="p-2 hover:bg-white/20 rounded-lg">
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">Type Your Message</h3>
+                      <p className="text-white/70">Enter any text in the input box below. As you type, you'll see it instantly encoded in 37+ different formats!</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">Explore Different Encodings</h3>
+                      <p className="text-white/70 mb-2">Scroll through the cards below to see your text in different formats:</p>
+                      <ul className="text-sm text-white/70 space-y-1 ml-4">
+                        <li>• <strong>Green checkmark (✓)</strong> = Can be decoded back to original</li>
+                        <li>• <strong>Star icon (⭐)</strong> = Click to save as favorite</li>
+                        <li>• <strong>Copy button</strong> = Copy the encoded text</li>
+                        <li>• <strong>Share button</strong> = Share with others</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">Switch to Decode Mode</h3>
+                      <p className="text-white/70">Click the "🔓 Decode" button at the top to reverse any encoding. Paste encoded text and see the original message (works for 17 encoders with ✓ mark).</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-2">Advanced Features (Optional)</h3>
+                      <p className="text-white/70 mb-2">Power user features available:</p>
+                      <ul className="text-sm text-white/70 space-y-1 ml-4">
+                        <li>• <strong>🔗 Chain</strong> = Apply multiple encodings in sequence</li>
+                        <li>• <strong>👁️ Compare</strong> = View up to 4 encodings side-by-side</li>
+                        <li>• <strong>History</strong> = Track your past encodings</li>
+                        <li>• <strong>Search</strong> = Find specific encoders quickly</li>
+                        <li>• <strong>Themes</strong> = Choose from 6 beautiful color themes</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl p-4">
+                  <h3 className="font-bold mb-2 flex items-center gap-2">
+                    <Keyboard size={18} />
+                    Keyboard Shortcuts
+                  </h3>
+                  <div className="text-sm text-white/70 grid grid-cols-2 gap-2">
+                    <div><kbd className="bg-white/20 px-2 py-1 rounded text-xs">Ctrl+K</kbd> Focus search</div>
+                    <div><kbd className="bg-white/20 px-2 py-1 rounded text-xs">Ctrl+Shift+E</kbd> Toggle mode</div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setShowGuide(false)}
+                className="w-full mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 rounded-xl transition-all"
+              >
+                Got It - Let's Start!
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 animate-pulse">
-            ✨ Creative Text Encoder
-          </h1>
+          <div className="flex justify-between items-start mb-4">
+            <div className="flex-1"></div>
+            <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 animate-pulse flex-1">
+              ✨ Creative Text Encoder
+            </h1>
+            <div className="flex-1 flex justify-end gap-2">
+              <button
+                onClick={() => setShowGuide(true)}
+                className={`px-4 py-2 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm flex items-center gap-2`}
+                title="Help & Guide"
+              >
+                <HelpCircle size={18} />
+                <span className="hidden md:inline">Help</span>
+              </button>
+            </div>
+          </div>
           <p className={`text-lg md:text-xl ${theme.textSecondary} mb-4`}>
-            Transform your messages into 35+ creative encodings
+            Transform your messages into 37+ creative encodings - instantly see Binary, Morse Code, DNA, Emoji, and more!
           </p>
 
           {/* Theme Switcher */}
@@ -257,6 +485,28 @@ const EnhancedTextEncoder = () => {
           )}
         </div>
 
+        {/* Info Banner */}
+        {!showWelcome && (
+          <div className={`${theme.cardBg} backdrop-blur-lg rounded-xl p-4 mb-4 border ${theme.cardBorder}`}>
+            <div className="flex items-start gap-3">
+              <Lightbulb size={20} className="text-yellow-300 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm">
+                  {mode === 'encode' ? (
+                    <>
+                      <strong>Encode Mode:</strong> Type any text below to see it transformed into 37+ creative formats instantly. Click <strong className="text-green-300">Copy</strong> to use any encoding.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Decode Mode:</strong> Paste encoded text below to reveal the original message. Only works with encodings marked with a green checkmark <span className="text-green-300">(✓)</span>.
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Main Controls */}
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {/* Mode Toggle */}
@@ -268,6 +518,7 @@ const EnhancedTextEncoder = () => {
                   ? `bg-gradient-to-r ${theme.buttonPrimary} text-white`
                   : `${theme.textSecondary} hover:${theme.textPrimary}`
               }`}
+              title="Convert plain text into encoded formats"
             >
               ✏️ Encode
             </button>
@@ -278,6 +529,7 @@ const EnhancedTextEncoder = () => {
                   ? `bg-gradient-to-r ${theme.buttonSecondary} text-white`
                   : `${theme.textSecondary} hover:${theme.textPrimary}`
               }`}
+              title="Convert encoded text back to original (reversible encoders only)"
             >
               🔓 Decode
             </button>
@@ -291,7 +543,7 @@ const EnhancedTextEncoder = () => {
                 ? `bg-gradient-to-r from-green-500 to-emerald-500 border-green-400 text-white`
                 : `${theme.cardBg} ${theme.cardBorder}`
             }`}
-            title="Chain multiple encodings (Ctrl+Shift+C)"
+            title="Advanced: Apply multiple encodings in sequence (e.g., Binary → Base64 → Morse)"
           >
             🔗 Chain {chainSequence.length > 0 && `(${chainSequence.length})`}
           </button>
@@ -299,7 +551,7 @@ const EnhancedTextEncoder = () => {
           <button
             onClick={() => setShowHistory(!showHistory)}
             className={`px-4 md:px-6 py-2 md:py-3 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm md:text-base`}
-            title="View encoding history (Ctrl+Shift+H)"
+            title="View your past encodings (automatically saved)"
           >
             <History size={18} className="inline mr-2" />
             History
@@ -312,6 +564,7 @@ const EnhancedTextEncoder = () => {
                 ? `bg-gradient-to-r from-blue-500 to-cyan-500 border-blue-400 text-white`
                 : `${theme.cardBg} ${theme.cardBorder}`
             }`}
+            title="Compare up to 4 encodings side-by-side"
           >
             <Eye size={18} className="inline mr-2" />
             Compare {comparisonEncoders.length > 0 && `(${comparisonEncoders.length})`}
@@ -320,7 +573,7 @@ const EnhancedTextEncoder = () => {
           <button
             onClick={() => setShowShortcuts(true)}
             className={`px-4 md:px-6 py-2 md:py-3 ${theme.cardBg} hover:bg-white/20 backdrop-blur-lg rounded-full border ${theme.cardBorder} transition-all font-semibold text-sm md:text-base`}
-            title="Keyboard shortcuts (Ctrl+Shift+?)"
+            title="View all keyboard shortcuts for power users"
           >
             <Keyboard size={18} />
           </button>
@@ -328,22 +581,37 @@ const EnhancedTextEncoder = () => {
 
         {/* Input Section */}
         <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-4 md:p-8 mb-6 border ${theme.cardBorder}`}>
-          <label className="block text-base md:text-lg font-semibold mb-3 flex items-center gap-2">
-            <Sparkles size={20} />
-            {mode === 'encode' ? 'Enter your message:' : 'Enter encoded text:'}
-          </label>
+          <div className="flex items-center justify-between mb-3">
+            <label className="block text-base md:text-lg font-semibold flex items-center gap-2">
+              <Sparkles size={20} />
+              {mode === 'encode' ? 'Step 1: Enter Your Message' : 'Step 1: Paste Encoded Text'}
+            </label>
+            {!inputText && (
+              <span className="text-xs text-yellow-300 flex items-center gap-1">
+                <Lightbulb size={14} />
+                Try: "Hello World!"
+              </span>
+            )}
+          </div>
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            className={`w-full px-4 md:px-6 py-3 md:py-4 bg-white/20 border-2 border-white/30 rounded-xl ${theme.textPrimary} placeholder-white/50 text-base md:text-lg focus:outline-none focus:border-${theme.accent} transition-all min-h-[100px] md:min-h-[120px] resize-y`}
-            placeholder={mode === 'encode' ? 'Type your secret message here...' : 'Paste encoded text here...'}
+            className={`w-full px-4 md:px-6 py-3 md:py-4 bg-white/20 border-2 border-white/30 rounded-xl ${theme.textPrimary} placeholder-white/50 text-base md:text-lg focus:outline-none focus:border-purple-400 transition-all min-h-[100px] md:min-h-[120px] resize-y`}
+            placeholder={mode === 'encode'
+              ? 'Type anything here... Try "Hello World!" or "Meet me at midnight"'
+              : 'Paste encoded text here (e.g., morse code, binary, etc.)'}
           />
 
           {/* Caesar Controls */}
           <div className="mt-4 p-4 bg-white/10 rounded-lg">
-            <label className="text-sm font-semibold mb-2 block">
-              🏛️ Caesar Cipher Shift: {caesarShift}
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-semibold flex items-center gap-2">
+                🏛️ Caesar Cipher Shift: {caesarShift}
+              </label>
+              <span className="text-xs text-white/60" title="Caesar cipher shifts each letter by N positions in the alphabet">
+                <Info size={14} className="inline" /> Alphabet shift amount
+              </span>
+            </div>
             <input
               type="range"
               min="1"
@@ -351,7 +619,11 @@ const EnhancedTextEncoder = () => {
               value={caesarShift}
               onChange={(e) => setCaesarShift(parseInt(e.target.value))}
               className="w-full"
+              title={`Shift letters by ${caesarShift} positions (e.g., A → ${String.fromCharCode(65 + caesarShift)})`}
             />
+            <p className="text-xs text-white/50 mt-1">
+              Moves each letter {caesarShift} position{caesarShift > 1 ? 's' : ''} forward in the alphabet
+            </p>
           </div>
         </div>
 
@@ -657,8 +929,34 @@ const EnhancedTextEncoder = () => {
 
         {/* Results Section */}
         <div className="mb-4">
-          <div className={`text-sm ${theme.textSecondary} mb-2`}>
-            Showing {filteredEncoders.length} of {encoderConfig.length} encoders
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+              <Sparkles size={24} />
+              Step 2: Choose an Encoding
+            </h2>
+            <div className={`text-sm ${theme.textSecondary}`}>
+              {filteredEncoders.length} of {encoderConfig.length} encoders
+            </div>
+          </div>
+          <div className={`bg-white/10 rounded-xl p-4 mb-4`}>
+            <div className="flex flex-wrap gap-4 text-xs md:text-sm">
+              <div className="flex items-center gap-2">
+                <span className="text-green-300 font-bold text-lg">✓</span>
+                <span>= Reversible (can decode back)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-yellow-300 font-bold">⭐</span>
+                <span>= Click to favorite</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Copy size={16} />
+                <span>= Copy result</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Share2 size={16} />
+                <span>= Share</span>
+              </div>
+            </div>
           </div>
         </div>
 
