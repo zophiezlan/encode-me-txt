@@ -19,6 +19,7 @@ import CustomEncoderBuilder from './CustomEncoderBuilder.jsx';
 import VisualEncodingFlowViewer from './VisualEncodingFlowViewer.jsx';
 import PresetsBrowser from './PresetsBrowser.jsx';
 import DailyPuzzle from './DailyPuzzle.jsx';
+import ParticlesBackground from './ParticlesBackground.jsx';
 
 const EnhancedTextEncoder = () => {
   // Core state
@@ -341,7 +342,8 @@ const EnhancedTextEncoder = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br ${theme.gradient} ${theme.textPrimary} p-4 md:p-8 transition-all duration-500`}>
-      <div className="max-w-7xl mx-auto">
+      <ParticlesBackground />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Welcome Modal - First Time Users */}
         {showWelcome && (
           <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fadeIn overflow-y-auto">
@@ -576,7 +578,7 @@ const EnhancedTextEncoder = () => {
 
         {/* Info Banner - Simplified */}
         {!showWelcome && (
-          <div className={`${theme.cardBg} backdrop-blur-lg rounded-xl p-3 mb-4 border ${theme.cardBorder}`}>
+          <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-xl p-3 mb-4 shadow-lg">
             <p className="text-xs md:text-sm text-center">
               {mode === 'encode'
                 ? '✨ Type text to see 37+ instant encodings'
@@ -686,14 +688,14 @@ const EnhancedTextEncoder = () => {
         </div>
 
         {/* Input Section */}
-        <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-4 md:p-6 mb-6 border ${theme.cardBorder}`}>
+        <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-4 md:p-6 mb-6 shadow-2xl">
           <label className="block text-sm md:text-base font-semibold mb-3">
             {mode === 'encode' ? '📝 Your Message' : '🔍 Encoded Text'}
           </label>
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            className={`w-full px-4 md:px-6 py-3 md:py-4 bg-white/20 border-2 border-white/30 rounded-xl ${theme.textPrimary} placeholder-white/50 text-base md:text-lg focus:outline-none focus:border-purple-400 transition-all min-h-[100px] md:min-h-[120px] resize-y`}
+            className={`w-full px-4 md:px-6 py-3 md:py-4 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-xl ${theme.textPrimary} placeholder-white/50 text-base md:text-lg focus:outline-none focus:border-purple-400/60 focus:bg-white/15 transition-all min-h-[100px] md:min-h-[120px] resize-y`}
             placeholder={mode === 'encode'
               ? 'Type anything here... Try "Hello World!" or "Meet me at midnight"'
               : 'Paste encoded text here (e.g., morse code, binary, etc.)'}
@@ -701,7 +703,7 @@ const EnhancedTextEncoder = () => {
         </div>
 
         {/* Search and Filter */}
-        <div className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-3 md:p-4 mb-6 border ${theme.cardBorder}`}>
+        <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-2xl p-3 md:p-4 mb-6 shadow-2xl">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" size={20} />
@@ -711,7 +713,7 @@ const EnhancedTextEncoder = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search encoders... (Ctrl+K)"
-                className={`w-full pl-10 pr-10 py-3 bg-white/20 border-2 border-white/30 rounded-xl ${theme.textPrimary} placeholder-white/50 focus:outline-none focus:border-${theme.accent} transition-all`}
+                className={`w-full pl-10 pr-10 py-3 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-xl ${theme.textPrimary} placeholder-white/50 focus:outline-none focus:border-purple-400/60 focus:bg-white/15 transition-all`}
               />
               {searchQuery && (
                 <button
@@ -726,7 +728,7 @@ const EnhancedTextEncoder = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className={`px-4 py-3 bg-white/20 border-2 border-white/30 rounded-xl ${theme.textPrimary} focus:outline-none focus:border-${theme.accent}`}
+              className={`px-4 py-3 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-xl ${theme.textPrimary} focus:outline-none focus:border-purple-400/60 transition-all`}
             >
               <option value="all">All Categories</option>
               <option value="favorites">⭐ Favorites</option>
@@ -1036,16 +1038,16 @@ const EnhancedTextEncoder = () => {
             return (
               <div
                 key={encoder.id}
-                className={`${theme.cardBg} backdrop-blur-lg rounded-xl p-4 md:p-5 border transition-all w-full ${
+                className={`backdrop-blur-xl bg-white/5 rounded-2xl p-4 md:p-5 border transition-all w-full shadow-2xl hover:shadow-purple-500/10 hover:bg-white/10 ${
                   isDisabled
                     ? 'border-white/10 opacity-50'
                     : isFavorite
-                    ? 'border-yellow-400/50 shadow-lg shadow-yellow-500/20'
+                    ? 'border-yellow-400/40 shadow-lg shadow-yellow-500/20 bg-yellow-500/5'
                     : isInChain
-                    ? 'border-green-400/50 shadow-lg shadow-green-500/20'
+                    ? 'border-green-400/40 shadow-lg shadow-green-500/20 bg-green-500/5'
                     : isInComparison
-                    ? 'border-blue-400/50 shadow-lg shadow-blue-500/20'
-                    : `${theme.cardBorder} ${theme.cardHover}`
+                    ? 'border-blue-400/40 shadow-lg shadow-blue-500/20 bg-blue-500/5'
+                    : 'border-white/20 hover:border-purple-400/30'
                 }`}
               >
                 <div className="flex items-start justify-between mb-3 gap-2">

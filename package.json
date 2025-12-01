@@ -11,10 +11,18 @@
     "test:watch": "vitest",
     "lint": "eslint ."
   },
-  "keywords": ["text-encoder", "cryptography", "unicode", "react"],
+  "keywords": [
+    "text-encoder",
+    "cryptography",
+    "unicode",
+    "react"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@tsparticles/engine": "^3.9.1",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
