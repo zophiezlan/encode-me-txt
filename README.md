@@ -19,12 +19,17 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **37+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, and GPS Coordinates. All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **38+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, and the new Shuffle Encoding. All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
 Unlike other text encoders, Creative Text Encoder v2.0 offers:
 - **12 unique encoders** not found in any other app (DNA, Playing Cards, GPS Coordinates, Zodiac, etc.)
+- **Shuffle encoding** - mix multiple encoders randomly for each character
+- **Custom encoder builder** - create your own encoding schemes
+- **Visual flow viewer** - watch character transformations in real-time
+- **Preset system** - save and load your favorite encoder combinations
+- **Daily puzzles** - interactive encoding challenges
 - **Functional chain encoding** - apply multiple encoders in sequence
 - **6 stunning themes** - personalize your experience
 - **Encoding strength analyzer** - see how secure your encoding is
@@ -32,6 +37,7 @@ Unlike other text encoders, Creative Text Encoder v2.0 offers:
 - **Shareable links** - send encoded puzzles to friends
 - **Keyboard shortcuts** - power user features
 - **Comparison mode** - compare multiple encodings side-by-side
+- **Animated particle background** - beautiful glassmorphic UI
 
 Perfect for:
 - 🎓 **Learning** about cryptography and encoding systems
@@ -44,9 +50,14 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **37+ Encoding Methods** - Comprehensive collection from technical to artistic
+- **38+ Encoding Methods** - Comprehensive collection from technical to artistic
 - **Real-time Encoding/Decoding** - See results as you type
-- **Reversible Encodings** - 17 methods support full decode back to original
+- **Reversible Encodings** - 18 methods support full decode back to original
+- **Shuffle Encoding** - Mix multiple encoders randomly per character
+- **Custom Encoder Builder** - Create and save your own encoding schemes
+- **Visual Encoding Flow** - Watch character-by-character transformations animate
+- **Preset System** - Save and load encoder combinations and configurations
+- **Daily Puzzles** - Interactive encoding challenges with hints
 - **6 Stunning Themes** - Dark, Light, Cyberpunk, Ocean, Sunset, Matrix
 - **Functional Chain Encoding** - Apply multiple encoders in sequence
 - **History System** - Automatic saving of your encoding history (up to 50 entries)
@@ -62,7 +73,7 @@ Perfect for:
 - **Audio Playback** - Hear Morse code with Web Audio API
 - **Adjustable Settings** - Caesar cipher shift slider (1-25)
 - **Responsive Design** - Beautiful UI on desktop, tablet, and mobile
-- **Glassmorphism UI** - Modern, professional design
+- **Glassmorphism UI** - Modern, professional design with animated particles
 - **Offline PWA Support** - Works without internet
 - **Zero Dependencies** - Lightweight and fast (only 3 production deps)
 
@@ -108,7 +119,8 @@ Perfect for:
 - **Color Blocks** 🌈 - Rainbow data encoding (🟥🟧🟨🟩🟦)
 - **Ancient Runes** ⚔️ - Elder Futhark mysticism (ᚠᚢᚦᚨᚱᚲ)
 
-### 🚀 Advanced (5)
+### 🚀 Advanced (6)
+- **Shuffle Encoding** 🔀 - Each character encoded with a random encoder from selected options (Reversible!)
 - **QR Code Generator** 📱 - Generate scannable QR codes
 - **URL Encoding** 🔗 - Web-safe URL encoding (Reversible!)
 - **HTML Entities** 🌐 - HTML-safe character encoding (Reversible!)
@@ -185,7 +197,12 @@ encode-me-txt/
 │   └── sw.js           # Service worker
 ├── src/
 │   ├── components/      # React components
-│   │   └── CreativeTextEncoder.jsx
+│   │   ├── EnhancedTextEncoder.jsx
+│   │   ├── CustomEncoderBuilder.jsx
+│   │   ├── VisualEncodingFlowViewer.jsx
+│   │   ├── PresetsBrowser.jsx
+│   │   ├── DailyPuzzle.jsx
+│   │   └── ParticlesBackground.jsx
 │   ├── utils/
 │   │   ├── encoders/   # Modular encoder functions
 │   │   │   ├── steganography.js
@@ -195,9 +212,19 @@ encode-me-txt/
 │   │   │   ├── fun.js
 │   │   │   ├── artistic.js
 │   │   │   ├── advanced.js
+│   │   │   ├── unique.js
+│   │   │   ├── shuffle.js
 │   │   │   └── index.js
-│   │   ├── encoderConfig.js  # Encoder metadata
-│   │   └── audioPlayer.js    # Morse code audio
+│   │   ├── encoderConfig.js        # Encoder metadata
+│   │   ├── themeSystem.js          # Theme management
+│   │   ├── historyManager.js       # History persistence
+│   │   ├── chainEncoder.js         # Chain encoding
+│   │   ├── encodingAnalyzer.js     # Strength analysis
+│   │   ├── shareManager.js         # URL sharing
+│   │   ├── keyboardShortcuts.js    # Keyboard controls
+│   │   ├── customEncoderManager.js # Custom encoders
+│   │   ├── encodingPresets.js      # Preset management
+│   │   └── dailyPuzzles.js         # Daily challenges
 │   ├── __tests__/       # Test files
 │   └── main.jsx
 ├── vercel.json         # Vercel deployment config
@@ -357,14 +384,19 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [x] Keyboard shortcuts ✅
 - [x] Search and filter ✅
 - [x] Comparison mode ✅
-- [ ] Visual encoding animations
+- [x] Visual encoding animations ✅
+- [x] Custom encoder builder ✅
+- [x] Daily encoding challenges ✅
+- [x] Shuffle encoding (mix multiple encoders) ✅
+- [x] Preset system (save/load configurations) ✅
+- [x] Glassmorphic UI with particle effects ✅
 - [ ] Interactive tutorials for each encoder
-- [ ] Custom encoder builder
 - [ ] Browser extension
 - [ ] Batch file processing
 - [ ] Mobile app (React Native)
 - [ ] Achievement/badge system
-- [ ] Daily encoding challenges
+- [ ] API integration for external services
+- [ ] Collaborative encoding (real-time sharing)
 
 ---
 
