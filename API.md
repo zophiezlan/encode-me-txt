@@ -315,6 +315,50 @@ encodeRunes('Hi');
 
 ### 🚀 Advanced Encoders
 
+#### Shuffle Encoding
+
+Encodes each character using a randomly selected encoder from your chosen options.
+
+```javascript
+import { encodeShuffle, decodeShuffle } from './utils/encoders/shuffle.js';
+
+// Encode with default encoders (binary, morse, caesar, emoji, braille)
+const result = encodeShuffle('Hi');
+console.log(result);
+// Returns:
+// 🔀 SHUFFLE ENCODED 🔀
+// 01001000|•••• •|...
+//
+// 📊 Encoding Map:
+// [0] 'H' → '01001000' (Binary)
+// [1] 'i' → '•••• •' (Morse Code)
+
+// Encode with specific encoders
+const customResult = encodeShuffle('Hello', ['binary', 'hex', 'base64']);
+// Each character randomly encoded with binary, hex, or base64
+
+// Decode
+const decoded = decodeShuffle(result);
+console.log(decoded); // 'Hi'
+```
+
+**Parameters:**
+- `text` (string) - Text to encode
+- `selectedEncoderIds` (array) - Array of encoder IDs to use (default: ['binary', 'morse', 'caesar', 'emoji', 'braille'])
+
+**Returns:**
+- Formatted string with:
+  - Encoded text (characters separated by `|`)
+  - Encoding map showing which encoder was used for each character
+  - Character position tracking
+
+**Features:**
+- Fully reversible with encoding map
+- Random selection per character
+- Supports any combination of encoders
+- Detailed visualization of encoding choices
+- Minimum 1 encoder required
+
 #### QR Code Generator
 
 ```javascript
@@ -395,7 +439,7 @@ console.log(morse.name); // 'Morse Code'
 
 // Get only reversible encoders
 const reversible = getReversibleEncoders();
-console.log(reversible.length); // 13
+console.log(reversible.length); // 18
 
 // Get category metadata
 console.log(categories.fun);

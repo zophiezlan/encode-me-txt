@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.1.0] - 2025-12-01
+
+### 🔀 Shuffle Encoding & Next-Gen Features
+
+#### New Features
+
+##### 🔀 Shuffle Encoding (v2.1.0)
+- **Shuffle Encoding Mode** - Select multiple encoders and have each character randomly encoded with one of them
+- Interactive encoder selection panel with visual feedback
+- Encoding map showing which encoder was used for each character
+- Fully reversible with detailed decoding information
+- Persistent selection stored in localStorage
+- Purple/pink themed UI elements
+- Prevents circular dependencies (shuffle encoder cannot be selected for shuffle)
+
+##### 🎨 Visual Enhancements (v2.1.0)
+- **Animated Particle Background** - Beautiful tsParticles integration with glassmorphic UI
+- Smooth transitions and modern visual effects
+- Performance-optimized rendering
+
+##### 🛠️ Next Evolution Features (v2.1.0)
+- **Custom Encoder Builder** - Create and save your own encoding schemes with custom character mappings
+- **Visual Encoding Flow** - Watch character-by-character transformations animate in real-time
+- **Preset System** - Save and load encoder combinations and configurations
+- **Daily Puzzles** - Interactive encoding challenges with hints and solutions
+
+##### 🚀 Performance & UX Improvements (v2.1.0)
+- Optimized encoding performance with better state management
+- Fixed infinite re-encoding loop
+- Improved history saving reliability
+- Enhanced mobile experience with better modal handling
+- Cleaner UX with encoder parameters moved to cards
+
+---
+
 ## [2.0.0] - 2025-12-01
 
 ### 🎉 Major Redesign - Market-Differentiating Features
