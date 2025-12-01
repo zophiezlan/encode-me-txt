@@ -288,6 +288,132 @@ export const encoderConfig = [
     encode: encoders.encodeHash,
     reversible: false,
     tags: ['advanced', 'hash', 'fingerprint']
+  },
+
+  // 🌟 Unique & Creative (NEW!)
+  {
+    id: 'dna',
+    name: 'DNA Sequence',
+    description: 'Encode as genetic base pairs (ATGC)',
+    emoji: '🧬',
+    category: 'unique',
+    encode: encoders.encodeDNA,
+    decode: encoders.decodeDNA,
+    reversible: true,
+    tags: ['unique', 'biology', 'science']
+  },
+  {
+    id: 'playing-cards',
+    name: 'Playing Cards',
+    description: 'Express text through card deck',
+    emoji: '🃏',
+    category: 'unique',
+    encode: encoders.encodePlayingCards,
+    decode: encoders.decodePlayingCards,
+    reversible: true,
+    tags: ['unique', 'cards', 'games']
+  },
+  {
+    id: 'chemistry',
+    name: 'Chemistry Elements',
+    description: 'Periodic table encoding',
+    emoji: '⚗️',
+    category: 'unique',
+    encode: encoders.encodeChemistry,
+    reversible: false,
+    tags: ['unique', 'chemistry', 'science']
+  },
+  {
+    id: 'coordinates',
+    name: 'GPS Coordinates',
+    description: 'Text as latitude/longitude',
+    emoji: '🗺️',
+    category: 'unique',
+    encode: encoders.encodeCoordinates,
+    decode: encoders.decodeCoordinates,
+    reversible: true,
+    tags: ['unique', 'geography', 'location']
+  },
+  {
+    id: 'zodiac',
+    name: 'Zodiac Signs',
+    description: 'Astrological symbol encoding',
+    emoji: '♈',
+    category: 'unique',
+    encode: encoders.encodeZodiac,
+    decode: encoders.decodeZodiac,
+    reversible: true,
+    tags: ['unique', 'astrology', 'mystical']
+  },
+  {
+    id: 'barcode',
+    name: 'Barcode',
+    description: 'Visual barcode-style bars',
+    emoji: '📊',
+    category: 'unique',
+    encode: encoders.encodeBarcode,
+    reversible: false,
+    tags: ['unique', 'visual', 'retail']
+  },
+  {
+    id: 'minecraft',
+    name: 'Minecraft Blocks',
+    description: 'Gaming block emojis',
+    emoji: '⛏️',
+    category: 'unique',
+    encode: encoders.encodeMinecraft,
+    reversible: false,
+    tags: ['unique', 'gaming', 'minecraft']
+  },
+  {
+    id: 'recipe',
+    name: 'Recipe Cipher',
+    description: 'Cooking ingredients encoding',
+    emoji: '🍳',
+    category: 'unique',
+    encode: encoders.encodeRecipe,
+    reversible: false,
+    tags: ['unique', 'cooking', 'food']
+  },
+  {
+    id: 'clock',
+    name: 'Clock Time',
+    description: 'Encode as clock times',
+    emoji: '🕐',
+    category: 'unique',
+    encode: encoders.encodeClockTime,
+    reversible: false,
+    tags: ['unique', 'time', 'clock']
+  },
+  {
+    id: 'weather',
+    name: 'Weather Symbols',
+    description: 'Meteorological encoding',
+    emoji: '⛅',
+    category: 'unique',
+    encode: encoders.encodeWeather,
+    reversible: false,
+    tags: ['unique', 'weather', 'nature']
+  },
+  {
+    id: 'domino',
+    name: 'Domino Tiles',
+    description: 'Game piece patterns',
+    emoji: '🁣',
+    category: 'unique',
+    encode: encoders.encodeDomino,
+    reversible: false,
+    tags: ['unique', 'games', 'tiles']
+  },
+  {
+    id: 'traffic',
+    name: 'Traffic Signs',
+    description: 'Road sign symbols',
+    emoji: '🛑',
+    category: 'unique',
+    encode: encoders.encodeTrafficSigns,
+    reversible: false,
+    tags: ['unique', 'signs', 'roads']
   }
 ];
 
@@ -327,5 +453,6 @@ export const categories = {
   cipher: { emoji: '🔑', name: 'Ciphers', description: 'Cryptographic substitution ciphers' },
   fun: { emoji: '🎉', name: 'Fun', description: 'Playful and creative encodings' },
   artistic: { emoji: '🎨', name: 'Artistic', description: 'Visual and aesthetic encodings' },
-  advanced: { emoji: '🚀', name: 'Advanced', description: 'Advanced technical encodings' }
+  advanced: { emoji: '🚀', name: 'Advanced', description: 'Advanced technical encodings' },
+  unique: { emoji: '🌟', name: 'Unique', description: 'One-of-a-kind creative encodings' }
 };
