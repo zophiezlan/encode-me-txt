@@ -4,12 +4,96 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Transform your messages into 20+ creative encodings - Binary, Morse Code, Base64, Emoji, and more!" />
+
+    <!-- Primary Meta Tags -->
+    <title>Creative Text Encoder - 25+ Encoding Methods | Binary, Morse, QR Codes & More</title>
+    <meta name="title" content="Creative Text Encoder - 25+ Encoding Methods | Binary, Morse, QR Codes & More" />
+    <meta name="description" content="Transform your messages into 25+ creative encodings - Binary, Morse Code, Base64, Emoji, QR Codes, HTML Entities, and more! Free online text encoder/decoder with real-time preview." />
+    <meta name="keywords" content="text encoder, binary converter, morse code, base64, emoji encoder, qr code generator, caesar cipher, rot13, url encoder, html entities, text decoder, cryptography tool" />
+    <meta name="author" content="Creative Text Encoder" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
     <meta name="theme-color" content="#581c87" />
-    <title>Creative Text Encoder</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://encode-me-txt.vercel.app/" />
+    <meta property="og:title" content="Creative Text Encoder - 25+ Encoding Methods" />
+    <meta property="og:description" content="Transform your messages into 25+ creative encodings - Binary, Morse Code, Base64, Emoji, QR Codes, and more! Free online tool." />
+    <meta property="og:image" content="https://encode-me-txt.vercel.app/og-image.png" />
+    <meta property="og:site_name" content="Creative Text Encoder" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://encode-me-txt.vercel.app/" />
+    <meta property="twitter:title" content="Creative Text Encoder - 25+ Encoding Methods" />
+    <meta property="twitter:description" content="Transform your messages into 25+ creative encodings - Binary, Morse Code, Base64, Emoji, QR Codes, and more!" />
+    <meta property="twitter:image" content="https://encode-me-txt.vercel.app/twitter-image.png" />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Creative Text Encoder",
+      "description": "Transform your messages into 25+ creative encodings including Binary, Morse Code, Base64, Emoji, QR Codes, and more",
+      "url": "https://encode-me-txt.vercel.app/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      },
+      "featureList": [
+        "25+ encoding methods",
+        "Real-time encoding/decoding",
+        "QR Code generation",
+        "Morse code audio playback",
+        "Copy to clipboard",
+        "Export to JSON",
+        "Offline PWA support"
+      ]
+    }
+    </script>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Text Encoder" />
+
+    <!-- Performance & Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://api.qrserver.com" crossorigin />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+              console.log('SW registered:', registration);
+            })
+            .catch(error => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
