@@ -40,7 +40,12 @@ const decodeHex = (text) => {
 // Base64 encoding
 const encodeBase64 = (text) => {
   try {
-    return btoa(unescape(encodeURIComponent(text)))
+    // Modern approach for UTF-8 to Base64
+    const encoder = new TextEncoder()
+    const data = encoder.encode(text)
+    let binary = ''
+    data.forEach(byte => binary += String.fromCharCode(byte))
+    return btoa(binary)
   } catch {
     return '[Encode failed]'
   }
@@ -48,7 +53,14 @@ const encodeBase64 = (text) => {
 
 const decodeBase64 = (text) => {
   try {
-    return decodeURIComponent(escape(atob(text)))
+    // Modern approach for Base64 to UTF-8
+    const binary = atob(text)
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i)
+    }
+    const decoder = new TextDecoder()
+    return decoder.decode(bytes)
   } catch {
     return '[Decode failed]'
   }
