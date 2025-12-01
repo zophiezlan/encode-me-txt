@@ -1,0 +1,45 @@
+{
+  "name": "Creative Text Encoder",
+  "short_name": "Encoder",
+  "description": "Transform your messages into 25+ creative encodings - Binary, Morse Code, Base64, Emoji, QR Codes, and more!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#581c87",
+  "theme_color": "#581c87",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity", "education"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Encode Text",
+      "short_name": "Encode",
+      "description": "Start encoding text",
+      "url": "/?mode=encode",
+      "icons": []
+    },
+    {
+      "name": "Decode Text",
+      "short_name": "Decode",
+      "description": "Start decoding text",
+      "url": "/?mode=decode",
+      "icons": []
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
