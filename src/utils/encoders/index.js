@@ -21,3 +21,11 @@ export * from './visual.js';
 export * from './retro.js';
 export * from './ancient.js';
 export * from './aesthetic.js';
+
+// Additional encoder modules (v3.0)
+export * from './patterns.js';
+export * from './forensics.js';
+export * from './scientific.js';
+export * from './modern.js';
+export * from './nature.js';
+export * from './games.js';

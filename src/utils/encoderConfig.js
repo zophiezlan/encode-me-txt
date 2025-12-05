@@ -1312,6 +1312,1361 @@ export const encoderConfig = [
     decode: encoders.decodeBifid,
     reversible: true,
     tags: ['cipher', 'bifid', 'polybius']
+  },
+
+  // 📊 Pattern-Based Encoders (NEW v3.0!)
+  {
+    id: 'fibonacci',
+    name: 'Fibonacci Encoding',
+    description: 'Maps characters to Fibonacci sequence',
+    emoji: '🌀',
+    category: 'patterns',
+    encode: encoders.encodeFibonacci,
+    decode: encoders.decodeFibonacci,
+    reversible: true,
+    tags: ['patterns', 'mathematical', 'fibonacci']
+  },
+  {
+    id: 'prime',
+    name: 'Prime Number Encoding',
+    description: 'Uses prime numbers for positions',
+    emoji: '🔢',
+    category: 'patterns',
+    encode: encoders.encodePrime,
+    decode: encoders.decodePrime,
+    reversible: true,
+    tags: ['patterns', 'mathematical', 'prime']
+  },
+  {
+    id: 'golden-ratio',
+    name: 'Golden Ratio Encoding',
+    description: 'Phi-based mathematical encoding',
+    emoji: 'φ',
+    category: 'patterns',
+    encode: encoders.encodeGoldenRatio,
+    decode: encoders.decodeGoldenRatio,
+    reversible: true,
+    tags: ['patterns', 'mathematical', 'golden']
+  },
+  {
+    id: 'triangle',
+    name: 'Triangle Number Encoding',
+    description: 'Uses triangular number sequence',
+    emoji: '△',
+    category: 'patterns',
+    encode: encoders.encodeTriangle,
+    reversible: false,
+    tags: ['patterns', 'mathematical', 'sequence']
+  },
+  {
+    id: 'square-number',
+    name: 'Square Number Encoding',
+    description: 'Perfect square encoding',
+    emoji: '□',
+    category: 'patterns',
+    encode: encoders.encodeSquareNumber,
+    reversible: false,
+    tags: ['patterns', 'mathematical', 'square']
+  },
+  {
+    id: 'hexagram-pattern',
+    name: 'Hexagram Pattern',
+    description: 'I-Ching style patterns',
+    emoji: '☯',
+    category: 'patterns',
+    encode: encoders.encodeHexagramPattern,
+    reversible: false,
+    tags: ['patterns', 'iching', 'mystical']
+  },
+  {
+    id: 'binary-tree',
+    name: 'Binary Tree Path',
+    description: 'Left/right tree traversal',
+    emoji: '🌳',
+    category: 'patterns',
+    encode: encoders.encodeBinaryTree,
+    decode: encoders.decodeBinaryTree,
+    reversible: true,
+    tags: ['patterns', 'tree', 'path']
+  },
+  {
+    id: 'matrix-coord',
+    name: 'Matrix Coordinates',
+    description: 'Row/column coordinate encoding',
+    emoji: '📐',
+    category: 'patterns',
+    encode: encoders.encodeMatrixCoord,
+    decode: encoders.decodeMatrixCoord,
+    reversible: true,
+    tags: ['patterns', 'matrix', 'coordinates']
+  },
+  {
+    id: 'spiral',
+    name: 'Spiral Pattern',
+    description: 'Spiral rotation encoding',
+    emoji: '🌀',
+    category: 'patterns',
+    encode: encoders.encodeSpiral,
+    reversible: false,
+    tags: ['patterns', 'spiral', 'geometric']
+  },
+  {
+    id: 'wave-pattern',
+    name: 'Wave Pattern',
+    description: 'Sinusoidal wave encoding',
+    emoji: '〰️',
+    category: 'patterns',
+    encode: encoders.encodeWavePattern,
+    reversible: false,
+    tags: ['patterns', 'wave', 'sinusoidal']
+  },
+  {
+    id: 'fractal',
+    name: 'Fractal Pattern',
+    description: 'Self-similar fractal encoding',
+    emoji: '❄️',
+    category: 'patterns',
+    encode: encoders.encodeFractal,
+    reversible: false,
+    tags: ['patterns', 'fractal', 'geometric']
+  },
+  {
+    id: 'pascal',
+    name: 'Pascal Triangle',
+    description: "Pascal's triangle encoding",
+    emoji: '▲',
+    category: 'patterns',
+    encode: encoders.encodePascal,
+    reversible: false,
+    tags: ['patterns', 'pascal', 'mathematical']
+  },
+  {
+    id: 'rule30',
+    name: 'Rule 30 Automaton',
+    description: 'Cellular automaton encoding',
+    emoji: '🤖',
+    category: 'patterns',
+    encode: encoders.encodeRule30,
+    reversible: false,
+    tags: ['patterns', 'automaton', 'cellular']
+  },
+  {
+    id: 'checksum',
+    name: 'Checksum Encoding',
+    description: 'Hex with checksum verification',
+    emoji: '✓',
+    category: 'patterns',
+    encode: encoders.encodeChecksum,
+    reversible: false,
+    tags: ['patterns', 'checksum', 'verification']
+  },
+  {
+    id: 'crc',
+    name: 'CRC Pattern',
+    description: 'CRC-like error checking',
+    emoji: '∑',
+    category: 'patterns',
+    encode: encoders.encodeCRC,
+    reversible: false,
+    tags: ['patterns', 'crc', 'error-checking']
+  },
+  {
+    id: 'hamming',
+    name: 'Hamming Code (7,4)',
+    description: 'Error-correcting Hamming code',
+    emoji: 'H',
+    category: 'patterns',
+    encode: encoders.encodeHamming,
+    reversible: false,
+    tags: ['patterns', 'hamming', 'error-correction']
+  },
+  {
+    id: 'gray-code',
+    name: 'Gray Code',
+    description: 'Single-bit change encoding',
+    emoji: '◐',
+    category: 'patterns',
+    encode: encoders.encodeGrayCode,
+    decode: encoders.decodeGrayCode,
+    reversible: true,
+    tags: ['patterns', 'gray', 'binary']
+  },
+  {
+    id: 'manchester',
+    name: 'Manchester Encoding',
+    description: 'Clock + data signal encoding',
+    emoji: '↕️',
+    category: 'patterns',
+    encode: encoders.encodeManchester,
+    decode: encoders.decodeManchester,
+    reversible: true,
+    tags: ['patterns', 'manchester', 'signal']
+  },
+
+  // 🔍 Forensics & Security Encoders (NEW v3.0!)
+  {
+    id: 'timestamp',
+    name: 'Unix Timestamp',
+    description: 'Encode as Unix timestamps',
+    emoji: '⏰',
+    category: 'forensics',
+    encode: encoders.encodeTimestamp,
+    decode: encoders.decodeTimestamp,
+    reversible: true,
+    tags: ['forensics', 'timestamp', 'time']
+  },
+  {
+    id: 'mac-address',
+    name: 'MAC Address Format',
+    description: 'Network MAC address style',
+    emoji: '🔌',
+    category: 'forensics',
+    encode: encoders.encodeMACAddress,
+    reversible: false,
+    tags: ['forensics', 'network', 'mac']
+  },
+  {
+    id: 'ip-address',
+    name: 'IP Address Format',
+    description: 'IPv4 address encoding',
+    emoji: '🌐',
+    category: 'forensics',
+    encode: encoders.encodeIPAddress,
+    reversible: false,
+    tags: ['forensics', 'network', 'ip']
+  },
+  {
+    id: 'uuid',
+    name: 'UUID Style',
+    description: 'Universally unique identifier',
+    emoji: '🆔',
+    category: 'forensics',
+    encode: encoders.encodeUUID,
+    reversible: false,
+    tags: ['forensics', 'uuid', 'identifier']
+  },
+  {
+    id: 'visual-hash',
+    name: 'Visual Hash',
+    description: 'Graphical hash pattern',
+    emoji: '#️⃣',
+    category: 'forensics',
+    encode: encoders.encodeVisualHash,
+    reversible: false,
+    tags: ['forensics', 'hash', 'visual']
+  },
+  {
+    id: 'magic-bytes',
+    name: 'Magic Bytes',
+    description: 'File signature headers',
+    emoji: '✨',
+    category: 'forensics',
+    encode: encoders.encodeMagicBytes,
+    reversible: false,
+    tags: ['forensics', 'magic', 'file-header']
+  },
+  {
+    id: 'registry',
+    name: 'Registry Path',
+    description: 'Windows registry format',
+    emoji: '📁',
+    category: 'forensics',
+    encode: encoders.encodeRegistryPath,
+    reversible: false,
+    tags: ['forensics', 'registry', 'windows']
+  },
+  {
+    id: 'hex-dump',
+    name: 'Hex Dump',
+    description: 'Forensic hex dump format',
+    emoji: '🔬',
+    category: 'forensics',
+    encode: encoders.encodeHexDump,
+    reversible: false,
+    tags: ['forensics', 'hexdump', 'analysis']
+  },
+  {
+    id: 'base58',
+    name: 'Base58 (Bitcoin)',
+    description: 'Bitcoin-style Base58',
+    emoji: '₿',
+    category: 'forensics',
+    encode: encoders.encodeBase58,
+    decode: encoders.decodeBase58,
+    reversible: true,
+    tags: ['forensics', 'base58', 'bitcoin']
+  },
+  {
+    id: 'homoglyph',
+    name: 'Homoglyph Steganography',
+    description: 'Similar-looking characters',
+    emoji: '👀',
+    category: 'forensics',
+    encode: encoders.encodeHomoglyph,
+    decode: encoders.decodeHomoglyph,
+    reversible: true,
+    tags: ['forensics', 'steganography', 'homoglyph']
+  },
+  {
+    id: 'unicode-tag',
+    name: 'Unicode Tag Steganography',
+    description: 'Invisible Unicode tags',
+    emoji: '🏷️',
+    category: 'forensics',
+    encode: encoders.encodeUnicodeTag,
+    decode: encoders.decodeUnicodeTag,
+    reversible: true,
+    tags: ['forensics', 'steganography', 'invisible']
+  },
+  {
+    id: 'variation-selector',
+    name: 'Variation Selector',
+    description: 'Unicode variation steganography',
+    emoji: '🌟',
+    category: 'forensics',
+    encode: encoders.encodeVariationSelector,
+    reversible: false,
+    tags: ['forensics', 'steganography', 'unicode']
+  },
+  {
+    id: 'metadata',
+    name: 'Metadata Format',
+    description: 'EXIF-like metadata tags',
+    emoji: '📋',
+    category: 'forensics',
+    encode: encoders.encodeMetadata,
+    reversible: false,
+    tags: ['forensics', 'metadata', 'exif']
+  },
+  {
+    id: 'null-byte',
+    name: 'Null Byte Pattern',
+    description: 'Null byte injection style',
+    emoji: '∅',
+    category: 'forensics',
+    encode: encoders.encodeNullByte,
+    decode: encoders.decodeNullByte,
+    reversible: true,
+    tags: ['forensics', 'null', 'security']
+  },
+  {
+    id: 'certificate',
+    name: 'Certificate Format',
+    description: 'PEM certificate style',
+    emoji: '🔏',
+    category: 'forensics',
+    encode: encoders.encodeCertificate,
+    reversible: false,
+    tags: ['forensics', 'certificate', 'ssl']
+  },
+  {
+    id: 'dns-txt',
+    name: 'DNS TXT Record',
+    description: 'DNS record format',
+    emoji: '📡',
+    category: 'forensics',
+    encode: encoders.encodeDNSTXT,
+    reversible: false,
+    tags: ['forensics', 'dns', 'record']
+  },
+  {
+    id: 'jwt-style',
+    name: 'JWT Style',
+    description: 'JSON Web Token format',
+    emoji: '🎫',
+    category: 'forensics',
+    encode: encoders.encodeJWTStyle,
+    decode: encoders.decodeJWTStyle,
+    reversible: true,
+    tags: ['forensics', 'jwt', 'token']
+  },
+  {
+    id: 'http-header',
+    name: 'HTTP Headers',
+    description: 'HTTP header format',
+    emoji: '📨',
+    category: 'forensics',
+    encode: encoders.encodeHTTPHeader,
+    reversible: false,
+    tags: ['forensics', 'http', 'headers']
+  },
+  {
+    id: 'sql-escape',
+    name: 'SQL CHAR Encoding',
+    description: 'SQL character encoding',
+    emoji: '💾',
+    category: 'forensics',
+    encode: encoders.encodeSQLEscape,
+    reversible: false,
+    tags: ['forensics', 'sql', 'database']
+  },
+  {
+    id: 'regex-pattern',
+    name: 'Regex Escape',
+    description: 'Regular expression encoding',
+    emoji: '🔍',
+    category: 'forensics',
+    encode: encoders.encodeRegexPattern,
+    decode: encoders.decodeRegexPattern,
+    reversible: true,
+    tags: ['forensics', 'regex', 'pattern']
+  },
+  {
+    id: 'assembly',
+    name: 'Assembly MOV',
+    description: 'x86 assembly style',
+    emoji: '⚙️',
+    category: 'forensics',
+    encode: encoders.encodeAssembly,
+    reversible: false,
+    tags: ['forensics', 'assembly', 'low-level']
+  },
+
+  // 🔬 Scientific Encoders (NEW v3.0!)
+  {
+    id: 'scientific-notation',
+    name: 'Scientific Notation',
+    description: 'Mantissa × 10^exponent',
+    emoji: '🔬',
+    category: 'scientific',
+    encode: encoders.encodeScientific,
+    decode: encoders.decodeScientific,
+    reversible: true,
+    tags: ['scientific', 'notation', 'math']
+  },
+  {
+    id: 'physics-constants',
+    name: 'Physics Constants',
+    description: 'Physical constant encoding',
+    emoji: '⚛️',
+    category: 'scientific',
+    encode: encoders.encodePhysicsConstants,
+    reversible: false,
+    tags: ['scientific', 'physics', 'constants']
+  },
+  {
+    id: 'chemical-formula',
+    name: 'Chemical Formula',
+    description: 'Chemical compound notation',
+    emoji: '⚗️',
+    category: 'scientific',
+    encode: encoders.encodeChemicalFormula,
+    reversible: false,
+    tags: ['scientific', 'chemistry', 'formula']
+  },
+  {
+    id: 'molecular',
+    name: 'Molecular Structure',
+    description: 'Molecular bond notation',
+    emoji: '🧪',
+    category: 'scientific',
+    encode: encoders.encodeMolecular,
+    reversible: false,
+    tags: ['scientific', 'molecular', 'bonds']
+  },
+  {
+    id: 'electron-config',
+    name: 'Electron Configuration',
+    description: 'Atomic orbital notation',
+    emoji: '⚡',
+    category: 'scientific',
+    encode: encoders.encodeElectronConfig,
+    reversible: false,
+    tags: ['scientific', 'electron', 'orbital']
+  },
+  {
+    id: 'quantum-state',
+    name: 'Quantum State',
+    description: 'Qubit state notation',
+    emoji: '🔮',
+    category: 'scientific',
+    encode: encoders.encodeQuantumState,
+    reversible: false,
+    tags: ['scientific', 'quantum', 'physics']
+  },
+  {
+    id: 'calculus',
+    name: 'Calculus Notation',
+    description: 'Mathematical operators',
+    emoji: '∫',
+    category: 'scientific',
+    encode: encoders.encodeCalculus,
+    reversible: false,
+    tags: ['scientific', 'calculus', 'math']
+  },
+  {
+    id: 'matrix-notation',
+    name: 'Matrix Notation',
+    description: '2x2 matrix format',
+    emoji: '⎡⎤',
+    category: 'scientific',
+    encode: encoders.encodeMatrix,
+    reversible: false,
+    tags: ['scientific', 'matrix', 'linear-algebra']
+  },
+  {
+    id: 'vector-notation',
+    name: 'Vector Notation',
+    description: '3D vector format',
+    emoji: '→',
+    category: 'scientific',
+    encode: encoders.encodeVector,
+    decode: encoders.decodeVector,
+    reversible: true,
+    tags: ['scientific', 'vector', 'math']
+  },
+  {
+    id: 'complex-number',
+    name: 'Complex Numbers',
+    description: 'Real + imaginary format',
+    emoji: 'i',
+    category: 'scientific',
+    encode: encoders.encodeComplex,
+    decode: encoders.decodeComplex,
+    reversible: true,
+    tags: ['scientific', 'complex', 'imaginary']
+  },
+  {
+    id: 'polar-coord',
+    name: 'Polar Coordinates',
+    description: 'Radius + angle format',
+    emoji: '🎯',
+    category: 'scientific',
+    encode: encoders.encodePolar,
+    reversible: false,
+    tags: ['scientific', 'polar', 'coordinates']
+  },
+  {
+    id: 'periodic-table',
+    name: 'Periodic Table Names',
+    description: 'Full element names',
+    emoji: '⚛️',
+    category: 'scientific',
+    encode: encoders.encodePeriodicTable,
+    reversible: false,
+    tags: ['scientific', 'periodic', 'elements']
+  },
+  {
+    id: 'si-units',
+    name: 'SI Units',
+    description: 'Metric unit encoding',
+    emoji: '📏',
+    category: 'scientific',
+    encode: encoders.encodeSIUnits,
+    reversible: false,
+    tags: ['scientific', 'units', 'metric']
+  },
+  {
+    id: 'astronomical',
+    name: 'Astronomical Coords',
+    description: 'RA/DEC coordinates',
+    emoji: '🌌',
+    category: 'scientific',
+    encode: encoders.encodeAstronomical,
+    reversible: false,
+    tags: ['scientific', 'astronomy', 'coordinates']
+  },
+  {
+    id: 'wave-function',
+    name: 'Wave Function',
+    description: 'Amplitude/frequency notation',
+    emoji: '〜',
+    category: 'scientific',
+    encode: encoders.encodeWaveFunction,
+    reversible: false,
+    tags: ['scientific', 'wave', 'physics']
+  },
+  {
+    id: 'statistics',
+    name: 'Statistical Notation',
+    description: 'Statistical symbols',
+    emoji: 'σ',
+    category: 'scientific',
+    encode: encoders.encodeStatistics,
+    reversible: false,
+    tags: ['scientific', 'statistics', 'math']
+  },
+  {
+    id: 'thermodynamic',
+    name: 'Thermodynamic',
+    description: 'Thermodynamic variables',
+    emoji: '🌡️',
+    category: 'scientific',
+    encode: encoders.encodeThermodynamic,
+    reversible: false,
+    tags: ['scientific', 'thermodynamics', 'physics']
+  },
+  {
+    id: 'logic-gates',
+    name: 'Logic Gates',
+    description: 'Boolean logic encoding',
+    emoji: '🔲',
+    category: 'scientific',
+    encode: encoders.encodeLogicGates,
+    reversible: false,
+    tags: ['scientific', 'logic', 'boolean']
+  },
+  {
+    id: 'tensor',
+    name: 'Tensor Notation',
+    description: 'Tensor index notation',
+    emoji: '⊗',
+    category: 'scientific',
+    encode: encoders.encodeTensor,
+    reversible: false,
+    tags: ['scientific', 'tensor', 'math']
+  },
+  {
+    id: 'set-theory',
+    name: 'Set Theory',
+    description: 'Set notation encoding',
+    emoji: '∈',
+    category: 'scientific',
+    encode: encoders.encodeSetTheory,
+    reversible: false,
+    tags: ['scientific', 'set', 'math']
+  },
+  {
+    id: 'geometry-notation',
+    name: 'Geometry Notation',
+    description: 'Geometric symbols',
+    emoji: '📐',
+    category: 'scientific',
+    encode: encoders.encodeGeometry,
+    reversible: false,
+    tags: ['scientific', 'geometry', 'shapes']
+  },
+  {
+    id: 'number-theory',
+    name: 'Number Theory',
+    description: 'Divisor notation',
+    emoji: '÷',
+    category: 'scientific',
+    encode: encoders.encodeNumberTheory,
+    reversible: false,
+    tags: ['scientific', 'number-theory', 'divisors']
+  },
+
+  // 📱 Modern Tech Encoders (NEW v3.0!)
+  {
+    id: 'code128',
+    name: 'Code128 Barcode',
+    description: 'Barcode pattern encoding',
+    emoji: '▐',
+    category: 'modern',
+    encode: encoders.encodeCode128,
+    reversible: false,
+    tags: ['modern', 'barcode', 'visual']
+  },
+  {
+    id: 'datamatrix',
+    name: 'DataMatrix',
+    description: '2D barcode pattern',
+    emoji: '⬛',
+    category: 'modern',
+    encode: encoders.encodeDataMatrix,
+    reversible: false,
+    tags: ['modern', 'datamatrix', '2d-barcode']
+  },
+  {
+    id: 'pdf417',
+    name: 'PDF417 Pattern',
+    description: 'PDF417 barcode style',
+    emoji: '📊',
+    category: 'modern',
+    encode: encoders.encodePDF417,
+    reversible: false,
+    tags: ['modern', 'pdf417', 'barcode']
+  },
+  {
+    id: 'hashtag',
+    name: 'Hashtag Encoding',
+    description: 'Social media hashtags',
+    emoji: '#️⃣',
+    category: 'modern',
+    encode: encoders.encodeHashtag,
+    reversible: false,
+    tags: ['modern', 'hashtag', 'social']
+  },
+  {
+    id: 'emoji-reaction',
+    name: 'Emoji Reactions',
+    description: 'Social media reactions',
+    emoji: '👍',
+    category: 'modern',
+    encode: encoders.encodeEmojiReaction,
+    reversible: false,
+    tags: ['modern', 'emoji', 'reactions']
+  },
+  {
+    id: 'mention',
+    name: '@Mention Format',
+    description: 'Social media mentions',
+    emoji: '@',
+    category: 'modern',
+    encode: encoders.encodeMention,
+    reversible: false,
+    tags: ['modern', 'mention', 'social']
+  },
+  {
+    id: 'short-url',
+    name: 'Short URL Style',
+    description: 'URL shortener format',
+    emoji: '🔗',
+    category: 'modern',
+    encode: encoders.encodeShortURL,
+    reversible: false,
+    tags: ['modern', 'url', 'shortener']
+  },
+  {
+    id: 'git-commit',
+    name: 'Git Commit Hash',
+    description: 'Git-style commit IDs',
+    emoji: '📝',
+    category: 'modern',
+    encode: encoders.encodeGitCommit,
+    decode: encoders.decodeGitCommit,
+    reversible: true,
+    tags: ['modern', 'git', 'commit']
+  },
+  {
+    id: 'json-path',
+    name: 'JSON Path',
+    description: 'JSON path notation',
+    emoji: '{}',
+    category: 'modern',
+    encode: encoders.encodeJSONPath,
+    reversible: false,
+    tags: ['modern', 'json', 'path']
+  },
+  {
+    id: 'css-color',
+    name: 'CSS Color',
+    description: 'Hex color codes',
+    emoji: '🎨',
+    category: 'modern',
+    encode: encoders.encodeCSSColor,
+    decode: encoders.decodeCSSColor,
+    reversible: true,
+    tags: ['modern', 'css', 'color']
+  },
+  {
+    id: 'pixel-coord',
+    name: 'Pixel Coordinates',
+    description: 'Screen pixel positions',
+    emoji: '📺',
+    category: 'modern',
+    encode: encoders.encodePixelCoord,
+    reversible: false,
+    tags: ['modern', 'pixel', 'coordinates']
+  },
+  {
+    id: 'api-endpoint',
+    name: 'API Endpoint',
+    description: 'REST API format',
+    emoji: '🔌',
+    category: 'modern',
+    encode: encoders.encodeAPIEndpoint,
+    reversible: false,
+    tags: ['modern', 'api', 'rest']
+  },
+  {
+    id: 'cron',
+    name: 'Cron Expression',
+    description: 'Cron schedule format',
+    emoji: '⏰',
+    category: 'modern',
+    encode: encoders.encodeCron,
+    reversible: false,
+    tags: ['modern', 'cron', 'schedule']
+  },
+  {
+    id: 'version',
+    name: 'SemVer Version',
+    description: 'Semantic versioning',
+    emoji: 'v',
+    category: 'modern',
+    encode: encoders.encodeVersion,
+    decode: encoders.decodeVersion,
+    reversible: true,
+    tags: ['modern', 'version', 'semver']
+  },
+  {
+    id: 'log-level',
+    name: 'Log Level Format',
+    description: 'Application log style',
+    emoji: '📋',
+    category: 'modern',
+    encode: encoders.encodeLogLevel,
+    reversible: false,
+    tags: ['modern', 'log', 'debug']
+  },
+  {
+    id: 'env-var',
+    name: 'Environment Variables',
+    description: 'ENV var format',
+    emoji: '🔧',
+    category: 'modern',
+    encode: encoders.encodeEnvVar,
+    reversible: false,
+    tags: ['modern', 'env', 'config']
+  },
+  {
+    id: 'docker-tag',
+    name: 'Docker Tags',
+    description: 'Container image tags',
+    emoji: '🐳',
+    category: 'modern',
+    encode: encoders.encodeDockerTag,
+    reversible: false,
+    tags: ['modern', 'docker', 'container']
+  },
+  {
+    id: 'k8s-label',
+    name: 'Kubernetes Labels',
+    description: 'K8s label format',
+    emoji: '☸️',
+    category: 'modern',
+    encode: encoders.encodeK8sLabel,
+    reversible: false,
+    tags: ['modern', 'kubernetes', 'labels']
+  },
+  {
+    id: 'wifi-signal',
+    name: 'WiFi Signal',
+    description: 'Signal strength pattern',
+    emoji: '📶',
+    category: 'modern',
+    encode: encoders.encodeWiFiSignal,
+    reversible: false,
+    tags: ['modern', 'wifi', 'signal']
+  },
+  {
+    id: 'battery',
+    name: 'Battery Level',
+    description: 'Battery indicator',
+    emoji: '🔋',
+    category: 'modern',
+    encode: encoders.encodeBattery,
+    reversible: false,
+    tags: ['modern', 'battery', 'indicator']
+  },
+  {
+    id: 'progress-bar',
+    name: 'Progress Bar',
+    description: 'Loading bar pattern',
+    emoji: '▓',
+    category: 'modern',
+    encode: encoders.encodeProgressBar,
+    reversible: false,
+    tags: ['modern', 'progress', 'loading']
+  },
+  {
+    id: 'notification-badge',
+    name: 'Notification Badge',
+    description: 'App notification style',
+    emoji: '🔔',
+    category: 'modern',
+    encode: encoders.encodeNotificationBadge,
+    reversible: false,
+    tags: ['modern', 'notification', 'badge']
+  },
+  {
+    id: 'status-indicator',
+    name: 'Status Indicator',
+    description: 'Online/offline status',
+    emoji: '🟢',
+    category: 'modern',
+    encode: encoders.encodeStatus,
+    reversible: false,
+    tags: ['modern', 'status', 'online']
+  },
+  {
+    id: 'file-size',
+    name: 'File Size',
+    description: 'Byte size format',
+    emoji: '📁',
+    category: 'modern',
+    encode: encoders.encodeFileSize,
+    reversible: false,
+    tags: ['modern', 'file', 'size']
+  },
+  {
+    id: 'rating',
+    name: 'Star Rating',
+    description: '5-star rating format',
+    emoji: '⭐',
+    category: 'modern',
+    encode: encoders.encodeRating,
+    reversible: false,
+    tags: ['modern', 'rating', 'stars']
+  },
+  {
+    id: 'checkbox',
+    name: 'Checkbox Todo',
+    description: 'Task checkbox format',
+    emoji: '☑️',
+    category: 'modern',
+    encode: encoders.encodeCheckbox,
+    reversible: false,
+    tags: ['modern', 'checkbox', 'todo']
+  },
+
+  // 🌿 Nature & Biology Encoders (NEW v3.0!)
+  {
+    id: 'rna',
+    name: 'RNA Sequence',
+    description: 'AUGC base encoding',
+    emoji: '🧬',
+    category: 'nature',
+    encode: encoders.encodeRNA,
+    decode: encoders.decodeRNA,
+    reversible: true,
+    tags: ['nature', 'rna', 'biology']
+  },
+  {
+    id: 'amino-acid',
+    name: 'Amino Acid Sequence',
+    description: 'Protein sequence encoding',
+    emoji: '🥩',
+    category: 'nature',
+    encode: encoders.encodeAminoAcid,
+    reversible: false,
+    tags: ['nature', 'protein', 'biology']
+  },
+  {
+    id: 'codon',
+    name: 'Codon Triplets',
+    description: 'Genetic codon encoding',
+    emoji: '🧪',
+    category: 'nature',
+    encode: encoders.encodeCodon,
+    reversible: false,
+    tags: ['nature', 'codon', 'genetics']
+  },
+  {
+    id: 'plant-taxonomy',
+    name: 'Plant Taxonomy',
+    description: 'Botanical species names',
+    emoji: '🌱',
+    category: 'nature',
+    encode: encoders.encodePlantTaxonomy,
+    reversible: false,
+    tags: ['nature', 'plant', 'taxonomy']
+  },
+  {
+    id: 'animal-taxonomy',
+    name: 'Animal Taxonomy',
+    description: 'Zoological species names',
+    emoji: '🦁',
+    category: 'nature',
+    encode: encoders.encodeAnimalTaxonomy,
+    reversible: false,
+    tags: ['nature', 'animal', 'taxonomy']
+  },
+  {
+    id: 'constellation',
+    name: 'Constellation',
+    description: 'Star constellation encoding',
+    emoji: '⭐',
+    category: 'nature',
+    encode: encoders.encodeConstellation,
+    reversible: false,
+    tags: ['nature', 'constellation', 'astronomy']
+  },
+  {
+    id: 'mineral',
+    name: 'Mineral Encoding',
+    description: 'Geological mineral names',
+    emoji: '💎',
+    category: 'nature',
+    encode: encoders.encodeMineral,
+    reversible: false,
+    tags: ['nature', 'mineral', 'geology']
+  },
+  {
+    id: 'geological-era',
+    name: 'Geological Era',
+    description: 'Earth history periods',
+    emoji: '🌍',
+    category: 'nature',
+    encode: encoders.encodeGeologicalEra,
+    reversible: false,
+    tags: ['nature', 'geology', 'era']
+  },
+  {
+    id: 'flower',
+    name: 'Flower Encoding',
+    description: 'Botanical flower names',
+    emoji: '🌸',
+    category: 'nature',
+    encode: encoders.encodeFlower,
+    reversible: false,
+    tags: ['nature', 'flower', 'botanical']
+  },
+  {
+    id: 'butterfly-wing',
+    name: 'Butterfly Wing',
+    description: 'Wing pattern encoding',
+    emoji: '🦋',
+    category: 'nature',
+    encode: encoders.encodeButterflyWing,
+    reversible: false,
+    tags: ['nature', 'butterfly', 'pattern']
+  },
+  {
+    id: 'seashell',
+    name: 'Seashell Pattern',
+    description: 'Shell type encoding',
+    emoji: '🐚',
+    category: 'nature',
+    encode: encoders.encodeSeashell,
+    reversible: false,
+    tags: ['nature', 'seashell', 'marine']
+  },
+  {
+    id: 'cloud-type',
+    name: 'Cloud Type',
+    description: 'Meteorological clouds',
+    emoji: '☁️',
+    category: 'nature',
+    encode: encoders.encodeCloudType,
+    reversible: false,
+    tags: ['nature', 'cloud', 'weather']
+  },
+  {
+    id: 'terrain',
+    name: 'Terrain Features',
+    description: 'Geographic features',
+    emoji: '🏔️',
+    category: 'nature',
+    encode: encoders.encodeTerrain,
+    reversible: false,
+    tags: ['nature', 'terrain', 'geography']
+  },
+  {
+    id: 'ecosystem',
+    name: 'Ecosystem',
+    description: 'Biome encoding',
+    emoji: '🌲',
+    category: 'nature',
+    encode: encoders.encodeEcosystem,
+    reversible: false,
+    tags: ['nature', 'ecosystem', 'biome']
+  },
+  {
+    id: 'bird-call',
+    name: 'Bird Call',
+    description: 'Avian vocalization',
+    emoji: '🐦',
+    category: 'nature',
+    encode: encoders.encodeBirdCall,
+    reversible: false,
+    tags: ['nature', 'bird', 'sound']
+  },
+  {
+    id: 'paw-print',
+    name: 'Paw Print',
+    description: 'Animal track pattern',
+    emoji: '🐾',
+    category: 'nature',
+    encode: encoders.encodePawPrint,
+    reversible: false,
+    tags: ['nature', 'paw', 'animal']
+  },
+  {
+    id: 'leaf-pattern',
+    name: 'Leaf Pattern',
+    description: 'Botanical leaf encoding',
+    emoji: '🍃',
+    category: 'nature',
+    encode: encoders.encodeLeafPattern,
+    reversible: false,
+    tags: ['nature', 'leaf', 'botanical']
+  },
+  {
+    id: 'crystal-structure',
+    name: 'Crystal Structure',
+    description: 'Crystallographic encoding',
+    emoji: '💎',
+    category: 'nature',
+    encode: encoders.encodeCrystalStructure,
+    reversible: false,
+    tags: ['nature', 'crystal', 'mineralogy']
+  },
+  {
+    id: 'ocean-depth',
+    name: 'Ocean Depth Zones',
+    description: 'Pelagic zone encoding',
+    emoji: '🌊',
+    category: 'nature',
+    encode: encoders.encodeOceanDepth,
+    reversible: false,
+    tags: ['nature', 'ocean', 'marine']
+  },
+  {
+    id: 'insect',
+    name: 'Insect Encoding',
+    description: 'Entomological encoding',
+    emoji: '🐜',
+    category: 'nature',
+    encode: encoders.encodeInsect,
+    reversible: false,
+    tags: ['nature', 'insect', 'entomology']
+  },
+  {
+    id: 'volcano',
+    name: 'Volcano Activity',
+    description: 'Volcanic activity encoding',
+    emoji: '🌋',
+    category: 'nature',
+    encode: encoders.encodeVolcano,
+    reversible: false,
+    tags: ['nature', 'volcano', 'geology']
+  },
+  {
+    id: 'cell-organelle',
+    name: 'Cell Organelle',
+    description: 'Cellular structure encoding',
+    emoji: '🔬',
+    category: 'nature',
+    encode: encoders.encodeCellOrganelle,
+    reversible: false,
+    tags: ['nature', 'cell', 'biology']
+  },
+
+  // 🎮 Game & Entertainment Encoders (NEW v3.0!)
+  {
+    id: 'tetris',
+    name: 'Tetris Blocks',
+    description: 'Tetromino encoding',
+    emoji: '🟦',
+    category: 'games',
+    encode: encoders.encodeTetris,
+    reversible: false,
+    tags: ['games', 'tetris', 'puzzle']
+  },
+  {
+    id: 'poker-hand',
+    name: 'Poker Hand',
+    description: 'Playing card hands',
+    emoji: '♠️',
+    category: 'games',
+    encode: encoders.encodePokerHand,
+    decode: encoders.decodePokerHand,
+    reversible: true,
+    tags: ['games', 'poker', 'cards']
+  },
+  {
+    id: 'rpg-stats',
+    name: 'RPG Stats',
+    description: 'Character attributes',
+    emoji: '⚔️',
+    category: 'games',
+    encode: encoders.encodeRPGStats,
+    reversible: false,
+    tags: ['games', 'rpg', 'stats']
+  },
+  {
+    id: 'level-xp',
+    name: 'Level/XP',
+    description: 'Experience points',
+    emoji: '📊',
+    category: 'games',
+    encode: encoders.encodeLevelXP,
+    reversible: false,
+    tags: ['games', 'level', 'xp']
+  },
+  {
+    id: 'achievement-badge',
+    name: 'Achievement Badge',
+    description: 'Gaming achievements',
+    emoji: '🏆',
+    category: 'games',
+    encode: encoders.encodeAchievement,
+    reversible: false,
+    tags: ['games', 'achievement', 'badge']
+  },
+  {
+    id: 'health-bar',
+    name: 'Health Bar',
+    description: 'HP bar visualization',
+    emoji: '❤️',
+    category: 'games',
+    encode: encoders.encodeHealthBar,
+    reversible: false,
+    tags: ['games', 'health', 'hp']
+  },
+  {
+    id: 'slot-machine',
+    name: 'Slot Machine',
+    description: 'Casino slot symbols',
+    emoji: '🎰',
+    category: 'games',
+    encode: encoders.encodeSlotMachine,
+    reversible: false,
+    tags: ['games', 'slot', 'casino']
+  },
+  {
+    id: 'crossword',
+    name: 'Crossword Clue',
+    description: 'Crossword puzzle format',
+    emoji: '📝',
+    category: 'games',
+    encode: encoders.encodeCrossword,
+    reversible: false,
+    tags: ['games', 'crossword', 'puzzle']
+  },
+  {
+    id: 'sudoku',
+    name: 'Sudoku Grid',
+    description: 'Number puzzle grid',
+    emoji: '🔢',
+    category: 'games',
+    encode: encoders.encodeSudoku,
+    reversible: false,
+    tags: ['games', 'sudoku', 'puzzle']
+  },
+  {
+    id: 'pacman',
+    name: 'Pacman Pattern',
+    description: 'Arcade game symbols',
+    emoji: 'ᗧ',
+    category: 'games',
+    encode: encoders.encodePacman,
+    reversible: false,
+    tags: ['games', 'pacman', 'arcade']
+  },
+  {
+    id: 'mario-block',
+    name: 'Mario Blocks',
+    description: 'Platform game blocks',
+    emoji: '❓',
+    category: 'games',
+    encode: encoders.encodeMarioBlock,
+    reversible: false,
+    tags: ['games', 'mario', 'platform']
+  },
+  {
+    id: 'rubiks-cube',
+    name: "Rubik's Cube Moves",
+    description: 'Cube notation',
+    emoji: '🟩',
+    category: 'games',
+    encode: encoders.encodeRubiksCube,
+    decode: encoders.decodeRubiksCube,
+    reversible: true,
+    tags: ['games', 'rubiks', 'puzzle']
+  },
+  {
+    id: 'dungeon-map',
+    name: 'Dungeon Map',
+    description: 'Roguelike map symbols',
+    emoji: '🗺️',
+    category: 'games',
+    encode: encoders.encodeDungeonMap,
+    reversible: false,
+    tags: ['games', 'dungeon', 'rpg']
+  },
+  {
+    id: 'pokemon-type',
+    name: 'Pokemon Types',
+    description: 'Element type encoding',
+    emoji: '🔥',
+    category: 'games',
+    encode: encoders.encodePokemonType,
+    reversible: false,
+    tags: ['games', 'pokemon', 'type']
+  },
+  {
+    id: 'trading-card',
+    name: 'Trading Card',
+    description: 'CCG card format',
+    emoji: '🃏',
+    category: 'games',
+    encode: encoders.encodeTradingCard,
+    reversible: false,
+    tags: ['games', 'card', 'trading']
+  },
+  {
+    id: 'scoreboard',
+    name: 'Scoreboard',
+    description: 'Game score display',
+    emoji: '🏅',
+    category: 'games',
+    encode: encoders.encodeScoreboard,
+    reversible: false,
+    tags: ['games', 'score', 'rank']
+  },
+  {
+    id: 'controller-input',
+    name: 'Controller Input',
+    description: 'Button press sequence',
+    emoji: '🎮',
+    category: 'games',
+    encode: encoders.encodeControllerInput,
+    reversible: false,
+    tags: ['games', 'controller', 'input']
+  },
+  {
+    id: 'inventory',
+    name: 'Inventory Slot',
+    description: 'Game item inventory',
+    emoji: '🎒',
+    category: 'games',
+    encode: encoders.encodeInventory,
+    reversible: false,
+    tags: ['games', 'inventory', 'items']
+  },
+  {
+    id: 'quest-log',
+    name: 'Quest Log',
+    description: 'Quest tracker format',
+    emoji: '📜',
+    category: 'games',
+    encode: encoders.encodeQuestLog,
+    reversible: false,
+    tags: ['games', 'quest', 'rpg']
+  },
+  {
+    id: 'skill-tree',
+    name: 'Skill Tree',
+    description: 'Ability progression',
+    emoji: '🌟',
+    category: 'games',
+    encode: encoders.encodeSkillTree,
+    reversible: false,
+    tags: ['games', 'skill', 'rpg']
+  },
+  {
+    id: 'mini-map',
+    name: 'Mini Map',
+    description: 'Miniature map grid',
+    emoji: '🗺️',
+    category: 'games',
+    encode: encoders.encodeMiniMap,
+    reversible: false,
+    tags: ['games', 'map', 'navigation']
+  },
+  {
+    id: 'combo-move',
+    name: 'Combo Move',
+    description: 'Fighting game combo',
+    emoji: '💥',
+    category: 'games',
+    encode: encoders.encodeComboMove,
+    reversible: false,
+    tags: ['games', 'combo', 'fighting']
+  },
+  {
+    id: 'leaderboard',
+    name: 'Leaderboard',
+    description: 'High score rankings',
+    emoji: '🥇',
+    category: 'games',
+    encode: encoders.encodeLeaderboard,
+    reversible: false,
+    tags: ['games', 'leaderboard', 'rank']
   }
 ];
 
@@ -1359,5 +2714,11 @@ export const categories = {
   visual: { emoji: '👁️', name: 'Visual', description: 'Visual and geometric encodings' },
   retro: { emoji: '📟', name: 'Retro', description: 'Vintage and retro encodings' },
   ancient: { emoji: '🏛️', name: 'Ancient', description: 'Ancient scripts and writing systems' },
-  aesthetic: { emoji: '✨', name: 'Aesthetic', description: 'Stylized text encodings' }
+  aesthetic: { emoji: '✨', name: 'Aesthetic', description: 'Stylized text encodings' },
+  patterns: { emoji: '📊', name: 'Patterns', description: 'Mathematical and pattern-based encodings' },
+  forensics: { emoji: '🔍', name: 'Forensics', description: 'Digital forensics and security encodings' },
+  scientific: { emoji: '🔬', name: 'Scientific', description: 'Science and math notation encodings' },
+  modern: { emoji: '📱', name: 'Modern Tech', description: 'Modern technology and social media encodings' },
+  nature: { emoji: '🌿', name: 'Nature', description: 'Nature, biology, and ecological encodings' },
+  games: { emoji: '🎮', name: 'Games', description: 'Gaming and entertainment encodings' }
 };

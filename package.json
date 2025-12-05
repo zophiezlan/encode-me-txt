@@ -1,7 +1,7 @@
 {
   "name": "encode-me-txt",
-  "version": "1.0.0",
-  "description": "Transform your messages into 20+ creative encodings",
+  "version": "3.0.0",
+  "description": "Transform your messages into 250+ creative encodings",
   "type": "module",
   "scripts": {
     "dev": "vite",
