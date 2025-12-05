@@ -4813,3 +4813,42 @@ export const categories = {
   nature: { emoji: '🌿', name: 'Nature', description: 'Nature, biology, and ecological encodings' },
   games: { emoji: '🎮', name: 'Games', description: 'Gaming and entertainment encodings' }
 };
+
+// Re-export deduplication utilities for convenience
+export {
+  encoderRelationships,
+  getPreferredEncoder,
+  isSuperseded,
+  isAlias,
+  isRedundant,
+  getEncoderRelationship,
+  getRedundantEncoderIds,
+  getSupersededEncoderIds,
+  getAliasEncoderIds,
+  deduplicateEncoders,
+  getDeduplicationSummary,
+  groupByPreferredEncoder
+} from './encoderDeduplication.js';
+
+import { deduplicateEncoders as dedupEncoders } from './encoderDeduplication.js';
+
+/**
+ * Get deduplicated encoder configuration
+ * Removes encoders that are superseded by Pro versions or are aliases of other encoders
+ * @param {Object} options - Deduplication options
+ * @param {boolean} options.removeSuperseded - Remove encoders superseded by Pro versions (default: true)
+ * @param {boolean} options.removeAliases - Remove alias encoders (default: true)
+ * @returns {Array} - Deduplicated encoder array
+ */
+export const getDeduplicatedEncoders = (options = {}) => {
+  return dedupEncoders(encoderConfig, options);
+};
+
+/**
+ * Get encoders with redundancy markers
+ * Returns all encoders with isRedundant, redundantType, and preferredEncoder properties added
+ * @returns {Array} - Encoder array with redundancy markers
+ */
+export const getEncodersWithRedundancyMarkers = () => {
+  return dedupEncoders(encoderConfig, { markRedundant: true });
+};
