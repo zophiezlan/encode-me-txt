@@ -4665,11 +4665,48 @@ export {
   groupByPreferredEncoder
 } from './encoderDeduplication.js';
 
+// Re-export advanced search utilities
+export {
+  searchEncoders,
+  getAllTags,
+  getAllCategories,
+  getEncoderStats,
+  findSimilarEncoders,
+  groupEncodersBy,
+  getFilterPreset,
+  filterPresets,
+  defaultSearchOptions
+} from './encoderSearch.js';
+
 import { deduplicateEncoders as dedupEncoders } from './encoderDeduplication.js';
 
 /**
  * Get deduplicated encoder configuration
- * Removes encoders that are superseded by Pro versions or are aliases of other encoders
+ * Removes encoders that are superseded by Pro versions or are aliases of other encoders.
+ * 
+ * IMPORTANT: Redundant encoders defined in encoderRelationships are completely
+ * excluded from the system. Only Pro/extended versions are included.
+ * 
+ * Excluded encoders (superseded by Pro versions):
+ * - leetspeak → leetspeak-pro
+ * - uwu → uwu-pro
+ * - spongebob → spongebob-pro
+ * - emojipasta → emojipasta-pro
+ * - binary → binary-pro
+ * - morse → morse-pro
+ * - tap-code → tap-code-pro
+ * - polybius → polybius-pro
+ * - nato → nato-extended
+ * - navy-flags → maritime-flags-pro
+ * 
+ * Excluded encoders (aliases of existing encoders):
+ * - vaporwave → fullwidth
+ * - medieval → math-fraktur
+ * - zodiac-signs → zodiac
+ * - chess-pieces → chess
+ * - weather-symbols → weather
+ * - music-notes → musical
+ * 
  * @param {Object} options - Deduplication options
  * @param {boolean} options.removeSuperseded - Remove encoders superseded by Pro versions (default: true)
  * @param {boolean} options.removeAliases - Remove alias encoders (default: true)

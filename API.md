@@ -10,6 +10,7 @@ All encoder functions follow consistent patterns for ease of use and testing.
 - [Encoder Categories](#encoder-categories)
 - [Configuration API](#configuration-api)
 - [Encoder Deduplication API](#encoder-deduplication-api)
+- [Advanced Search API](#advanced-search-api)
 - [Audio Player API](#audio-player-api)
 - [Usage Examples](#usage-examples)
 
@@ -587,6 +588,201 @@ The following encoders have better alternatives:
 | `chess-pieces` | `chess` | Both encode using chess piece symbols |
 | `weather-symbols` | `weather` | Both encode using weather symbols |
 | `music-notes` | `musical` | Both encode using musical notation |
+
+## Advanced Search API
+
+The advanced search API provides comprehensive filtering and searching capabilities for encoders.
+
+```javascript
+import {
+  // Main search function
+  searchEncoders,
+  
+  // Utility functions
+  getAllTags,
+  getAllCategories,
+  getEncoderStats,
+  findSimilarEncoders,
+  groupEncodersBy,
+  
+  // Filter presets
+  getFilterPreset,
+  filterPresets,
+  defaultSearchOptions
+} from './utils/encoderConfig.js';
+```
+
+### Search Encoders
+
+Search and filter encoders with advanced options:
+
+```javascript
+// Basic text search
+const results = searchEncoders(encoderConfig, {
+  query: 'morse code'
+});
+// Searches name, description, id, category, and tags
+
+// Filter by category
+const cipherEncoders = searchEncoders(encoderConfig, {
+  categories: ['cipher', 'secret']
+});
+
+// Filter by tags (AND logic - must have all)
+const reversibleCiphers = searchEncoders(encoderConfig, {
+  tags: ['cipher', 'reversible']
+});
+
+// Filter by any tag (OR logic - must have at least one)
+const funOrCreative = searchEncoders(encoderConfig, {
+  anyTags: ['fun', 'creative', 'emoji']
+});
+
+// Exclude by tags
+const withoutAncient = searchEncoders(encoderConfig, {
+  excludeTags: ['ancient', 'historical']
+});
+
+// Filter by reversibility
+const reversibleOnly = searchEncoders(encoderConfig, {
+  reversible: true
+});
+
+// Filter by settings
+const withSettings = searchEncoders(encoderConfig, {
+  hasSettings: true
+});
+
+// Filter special encoders
+const specialEncoders = searchEncoders(encoderConfig, {
+  special: true
+});
+
+// Sort results
+const sortedByName = searchEncoders(encoderConfig, {
+  sortBy: 'name',
+  sortOrder: 'asc'
+});
+
+// Combine multiple filters
+const advanced = searchEncoders(encoderConfig, {
+  query: 'cipher',
+  categories: ['cipher'],
+  tags: ['cryptography'],
+  reversible: true,
+  hasSettings: true,
+  sortBy: 'name',
+  sortOrder: 'asc'
+});
+```
+
+#### Search Options
+
+```typescript
+interface SearchOptions {
+  query?: string;           // Text search query
+  categories?: string[];    // Filter by categories
+  tags?: string[];          // Must have ALL these tags
+  anyTags?: string[];       // Must have AT LEAST ONE of these tags
+  excludeTags?: string[];   // Exclude encoders with these tags
+  reversible?: boolean;     // Filter by reversibility (null = any)
+  hasSettings?: boolean;    // Filter by settings availability
+  special?: boolean;        // Filter special encoders
+  sortBy?: string;          // 'default', 'name', 'category', 'id'
+  sortOrder?: string;       // 'asc' or 'desc'
+}
+```
+
+### Get All Tags
+
+```javascript
+const tags = getAllTags(encoderConfig);
+// Returns: ['ancient', 'cipher', 'computer', 'creative', 'emoji', ...]
+// Sorted alphabetically
+```
+
+### Get All Categories
+
+```javascript
+const categories = getAllCategories(encoderConfig);
+// Returns: ['advanced', 'aesthetic', 'ancient', 'artistic', 'cipher', ...]
+```
+
+### Get Encoder Statistics
+
+```javascript
+const stats = getEncoderStats(encoderConfig);
+console.log(stats);
+// {
+//   total: 425,
+//   reversible: 150,
+//   nonReversible: 275,
+//   withSettings: 45,
+//   special: 5,
+//   byCategory: {
+//     cipher: 20,
+//     fun: 35,
+//     ...
+//   },
+//   tagCounts: {
+//     cipher: 20,
+//     emoji: 15,
+//     ...
+//   }
+// }
+```
+
+### Find Similar Encoders
+
+Find encoders similar to a given encoder based on tags and category:
+
+```javascript
+const morse = getEncoderById('morse-pro');
+const similar = findSimilarEncoders(morse, encoderConfig, 5);
+// Returns up to 5 encoders with shared tags/category
+// Excludes the reference encoder
+```
+
+### Group Encoders
+
+```javascript
+// Group by category
+const byCategory = groupEncodersBy(encoderConfig, 'category');
+// { cipher: [...], fun: [...], ... }
+
+// Group by reversibility
+const byReversible = groupEncodersBy(encoderConfig, 'reversible');
+// { 'true': [...], 'false': [...] }
+```
+
+### Filter Presets
+
+Quick filter presets for common use cases:
+
+```javascript
+// Available presets
+console.log(filterPresets);
+// [
+//   { id: 'all', name: 'All Encoders', emoji: '📋' },
+//   { id: 'reversible', name: 'Reversible Only', emoji: '🔄' },
+//   { id: 'non-reversible', name: 'One-Way Only', emoji: '➡️' },
+//   { id: 'with-settings', name: 'With Settings', emoji: '⚙️' },
+//   { id: 'special', name: 'Special', emoji: '✨' },
+//   { id: 'ciphers', name: 'Ciphers', emoji: '🔐' },
+//   { id: 'fun', name: 'Fun & Creative', emoji: '🎉' },
+//   { id: 'classic', name: 'Classic Codes', emoji: '📻' },
+//   { id: 'computer', name: 'Computer Science', emoji: '💻' },
+//   { id: 'artistic', name: 'Artistic', emoji: '🎨' },
+//   { id: 'linguistic', name: 'Languages', emoji: '🌍' },
+// ]
+
+// Get preset options
+const preset = getFilterPreset('reversible');
+// { ...defaultSearchOptions, reversible: true }
+
+// Apply preset
+const reversibleEncoders = searchEncoders(encoderConfig, preset);
+```
 
 ## Audio Player API
 

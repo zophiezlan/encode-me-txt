@@ -2,9 +2,17 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Copy, Check, Search, X, History,
   Share2, Keyboard, Trash2, TrendingUp, Zap, Eye, HelpCircle,
-  BookOpen, Wand2, Film, Package, Gamepad2, Filter, SortAsc, Tag
+  BookOpen, Wand2, Film, Package, Gamepad2, Filter, SortAsc, Tag, Settings, RotateCcw
 } from 'lucide-react';
-import { encoderConfig, categories } from '../utils/encoderConfig.js';
+import { 
+  encoderConfig, 
+  categories, 
+  searchEncoders, 
+  getAllTags, 
+  getEncoderStats,
+  filterPresets,
+  getFilterPreset
+} from '../utils/encoderConfig.js';
 import { themes, getTheme, saveTheme, loadTheme } from '../utils/themeSystem.js';
 import { HistoryManager } from '../utils/historyManager.js';
 import { ChainEncoder } from '../utils/chainEncoder.js';
@@ -17,6 +25,10 @@ import VisualEncodingFlowViewer from './VisualEncodingFlowViewer.jsx';
 import PresetsBrowser from './PresetsBrowser.jsx';
 import DailyPuzzle from './DailyPuzzle.jsx';
 import ParticlesBackground from './ParticlesBackground.jsx';
+
+// Configuration constants
+const MAX_DISPLAYED_TAGS = 50;
+const DEFAULT_SHUFFLE_ENCODERS = ['binary-pro', 'morse-pro', 'caesar', 'emoji', 'braille'];
 
 const EnhancedTextEncoder = () => {
   // Core state
@@ -69,8 +81,12 @@ const EnhancedTextEncoder = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [filterReversible, setFilterReversible] = useState('all'); // 'all', 'reversible', 'non-reversible'
   const [selectedTags, setSelectedTags] = useState([]);
+  const [excludedTags, setExcludedTags] = useState([]);
+  const [filterHasSettings, setFilterHasSettings] = useState('all'); // 'all', 'with-settings', 'without-settings'
   const [sortBy, setSortBy] = useState('default'); // 'default', 'name', 'category'
+  const [sortOrder, setSortOrder] = useState('asc'); // 'asc', 'desc'
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [activeFilterPreset, setActiveFilterPreset] = useState('all');
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('encoder-favorites');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -87,7 +103,14 @@ const EnhancedTextEncoder = () => {
   const [comparisonEncoders, setComparisonEncoders] = useState([]);
   const [shuffleEncoders, setShuffleEncoders] = useState(() => {
     const saved = localStorage.getItem('shuffle-encoders');
-    return saved ? JSON.parse(saved) : ['binary', 'morse', 'caesar', 'emoji', 'braille'];
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Validate saved encoders exist in config
+      const validIds = new Set(encoderConfig.map(e => e.id));
+      const validSaved = parsed.filter(id => validIds.has(id));
+      return validSaved.length > 0 ? validSaved : DEFAULT_SHUFFLE_ENCODERS;
+    }
+    return DEFAULT_SHUFFLE_ENCODERS;
   });
   const [history, setHistory] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
@@ -570,47 +593,79 @@ const EnhancedTextEncoder = () => {
     return results;
   }, [inputText, mode, encoderParams, shuffleEncoders, allEncoders]);
 
-  // Get all unique tags from encoders
+  // Get all unique tags from encoders using utility
   const allTags = useMemo(() => {
-    const tags = new Set();
-    allEncoders.forEach(encoder => {
-      encoder.tags?.forEach(tag => tags.add(tag));
-    });
-    return Array.from(tags).sort();
+    return getAllTags(allEncoders);
   }, [allEncoders]);
 
-  // Filter encoders (memoized)
+  // Get encoder statistics
+  const encoderStats = useMemo(() => {
+    return getEncoderStats(allEncoders);
+  }, [allEncoders]);
+
+  // Filter encoders using advanced search (memoized)
   const filteredEncoders = useMemo(() => {
-    let filtered = allEncoders.filter(encoder => {
-      const matchesSearch = searchQuery === '' ||
-        encoder.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        encoder.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        encoder.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory || (encoder.custom && selectedCategory === 'custom');
-      const matchesFavorites = selectedCategory !== 'favorites' || favorites.has(encoder.id);
-      
-      // Advanced filter: reversibility
-      const matchesReversible = filterReversible === 'all' || 
-        (filterReversible === 'reversible' && encoder.reversible) ||
-        (filterReversible === 'non-reversible' && !encoder.reversible);
-      
-      // Advanced filter: selected tags
-      const matchesTags = selectedTags.length === 0 || 
-        selectedTags.every(tag => encoder.tags?.includes(tag));
-
-      return matchesSearch && matchesCategory && matchesFavorites && matchesReversible && matchesTags;
-    });
-    
-    // Sort results
-    if (sortBy === 'name') {
-      filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'category') {
-      filtered = [...filtered].sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+    // Handle favorites separately since it's a UI concern
+    if (selectedCategory === 'favorites') {
+      let filtered = allEncoders.filter(encoder => favorites.has(encoder.id));
+      if (sortBy !== 'default') {
+        const sortOrderMultiplier = sortOrder === 'desc' ? -1 : 1;
+        filtered = [...filtered].sort((a, b) => {
+          if (sortBy === 'name') return sortOrderMultiplier * a.name.localeCompare(b.name);
+          if (sortBy === 'category') return sortOrderMultiplier * (a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+          return 0;
+        });
+      }
+      return filtered;
     }
+
+    // Use advanced search for all other filtering
+    const searchOptions = {
+      query: searchQuery,
+      categories: selectedCategory === 'all' ? [] : [selectedCategory],
+      tags: selectedTags,
+      excludeTags: excludedTags,
+      reversible: filterReversible === 'all' ? null : filterReversible === 'reversible',
+      hasSettings: filterHasSettings === 'all' ? null : filterHasSettings === 'with-settings',
+      sortBy: sortBy,
+      sortOrder: sortOrder
+    };
     
-    return filtered;
-  }, [searchQuery, selectedCategory, favorites, allEncoders, filterReversible, selectedTags, sortBy]);
+    return searchEncoders(allEncoders, searchOptions);
+  }, [searchQuery, selectedCategory, favorites, allEncoders, filterReversible, filterHasSettings, selectedTags, excludedTags, sortBy, sortOrder]);
+
+  // Apply filter preset
+  const applyFilterPreset = useCallback((presetId) => {
+    const preset = getFilterPreset(presetId);
+    setSearchQuery(preset.query || '');
+    setSelectedCategory(preset.categories?.length > 0 ? preset.categories[0] : 'all');
+    setSelectedTags(preset.tags || []);
+    setExcludedTags(preset.excludeTags || []);
+    setFilterReversible(
+      preset.reversible === true ? 'reversible' : 
+      preset.reversible === false ? 'non-reversible' : 'all'
+    );
+    setFilterHasSettings(
+      preset.hasSettings === true ? 'with-settings' : 
+      preset.hasSettings === false ? 'without-settings' : 'all'
+    );
+    setSortBy(preset.sortBy || 'default');
+    setSortOrder(preset.sortOrder || 'asc');
+    setActiveFilterPreset(presetId);
+  }, []);
+
+  // Reset all filters
+  const resetFilters = useCallback(() => {
+    setSearchQuery('');
+    setSelectedCategory('all');
+    setSelectedTags([]);
+    setExcludedTags([]);
+    setFilterReversible('all');
+    setFilterHasSettings('all');
+    setSortBy('default');
+    setSortOrder('asc');
+    setActiveFilterPreset('all');
+  }, []);
 
   const playMorseSound = async (morseCode) => {
     if (!window.AudioContext) return;
@@ -1057,7 +1112,7 @@ const EnhancedTextEncoder = () => {
             <button
               onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
               className={`px-4 py-3 bg-white/10 backdrop-blur-md border-2 rounded-xl flex items-center gap-2 transition-all ${
-                showAdvancedFilters || filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default'
+                showAdvancedFilters || filterReversible !== 'all' || filterHasSettings !== 'all' || selectedTags.length > 0 || excludedTags.length > 0 || sortBy !== 'default'
                   ? 'border-purple-400/60 bg-purple-500/20'
                   : 'border-white/20 hover:border-purple-400/40'
               }`}
@@ -1065,9 +1120,9 @@ const EnhancedTextEncoder = () => {
             >
               <Filter size={18} />
               <span className="hidden sm:inline">Filters</span>
-              {(filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default') && (
+              {(filterReversible !== 'all' || filterHasSettings !== 'all' || selectedTags.length > 0 || excludedTags.length > 0 || sortBy !== 'default') && (
                 <span className="bg-purple-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                  {(filterReversible !== 'all' ? 1 : 0) + selectedTags.length + (sortBy !== 'default' ? 1 : 0)}
+                  {(filterReversible !== 'all' ? 1 : 0) + (filterHasSettings !== 'all' ? 1 : 0) + selectedTags.length + excludedTags.length + (sortBy !== 'default' ? 1 : 0)}
                 </span>
               )}
             </button>
@@ -1076,6 +1131,28 @@ const EnhancedTextEncoder = () => {
           {/* Advanced Filters Panel */}
           {showAdvancedFilters && (
             <div className="mt-4 pt-4 border-t border-white/20 space-y-4">
+              {/* Quick Filter Presets */}
+              <div>
+                <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                  ⚡ Quick Filters
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {filterPresets.map(preset => (
+                    <button
+                      key={preset.id}
+                      onClick={() => applyFilterPreset(preset.id)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        activeFilterPreset === preset.id
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-white/10 hover:bg-white/20'
+                      }`}
+                    >
+                      {preset.emoji} {preset.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="flex flex-wrap gap-4">
                 {/* Reversibility Filter */}
                 <div className="flex-1 min-w-[200px]">
@@ -1087,9 +1164,25 @@ const EnhancedTextEncoder = () => {
                     onChange={(e) => setFilterReversible(e.target.value)}
                     className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
                   >
+                    <option value="all">All Encoders ({encoderStats.total})</option>
+                    <option value="reversible">✓ Reversible Only ({encoderStats.reversible})</option>
+                    <option value="non-reversible">✗ Non-Reversible Only ({encoderStats.nonReversible})</option>
+                  </select>
+                </div>
+                
+                {/* Settings Filter */}
+                <div className="flex-1 min-w-[200px]">
+                  <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                    <Settings size={14} /> Settings
+                  </label>
+                  <select
+                    value={filterHasSettings}
+                    onChange={(e) => setFilterHasSettings(e.target.value)}
+                    className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
+                  >
                     <option value="all">All Encoders</option>
-                    <option value="reversible">✓ Reversible Only</option>
-                    <option value="non-reversible">✗ Non-Reversible Only</option>
+                    <option value="with-settings">⚙️ With Settings ({encoderStats.withSettings})</option>
+                    <option value="without-settings">📦 Without Settings</option>
                   </select>
                 </div>
                 
@@ -1098,45 +1191,96 @@ const EnhancedTextEncoder = () => {
                   <label className="text-sm font-medium mb-2 block flex items-center gap-2">
                     <SortAsc size={14} /> Sort By
                   </label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
-                  >
-                    <option value="default">Default Order</option>
-                    <option value="name">Alphabetical (A-Z)</option>
-                    <option value="category">By Category</option>
-                  </select>
+                  <div className="flex gap-2">
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className={`flex-1 px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
+                    >
+                      <option value="default">Default Order</option>
+                      <option value="name">Alphabetical</option>
+                      <option value="category">By Category</option>
+                    </select>
+                    {sortBy !== 'default' && (
+                      <button
+                        onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                        className="px-3 py-2 bg-white/10 border border-white/20 rounded-lg hover:bg-white/20"
+                        title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+                      >
+                        {sortOrder === 'asc' ? '↑' : '↓'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
               
-              {/* Tag Filter */}
+              {/* Tag Filter (Include) */}
               <div>
                 <label className="text-sm font-medium mb-2 block flex items-center gap-2">
-                  <Tag size={14} /> Filter by Tags
+                  <Tag size={14} /> Include Tags (must have all)
                   {selectedTags.length > 0 && (
                     <button
                       onClick={() => setSelectedTags([])}
                       className="text-xs text-purple-400 hover:text-purple-300 ml-2"
                     >
-                      Clear all
+                      Clear
                     </button>
                   )}
                 </label>
-                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 bg-white/5 rounded-lg">
-                  {allTags.map(tag => (
+                <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto p-2 bg-white/5 rounded-lg">
+                  {allTags.slice(0, MAX_DISPLAYED_TAGS).map(tag => (
                     <button
-                      key={tag}
+                      key={`include-${tag}`}
                       onClick={() => {
                         if (selectedTags.includes(tag)) {
                           setSelectedTags(selectedTags.filter(t => t !== tag));
                         } else {
                           setSelectedTags([...selectedTags, tag]);
+                          // Remove from excluded if present
+                          setExcludedTags(excludedTags.filter(t => t !== tag));
                         }
                       }}
                       className={`px-2 py-1 rounded-full text-xs transition-all ${
                         selectedTags.includes(tag)
-                          ? 'bg-purple-500 text-white'
+                          ? 'bg-green-500 text-white'
+                          : 'bg-white/10 hover:bg-white/20'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tag Filter (Exclude) */}
+              <div>
+                <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                  <X size={14} /> Exclude Tags
+                  {excludedTags.length > 0 && (
+                    <button
+                      onClick={() => setExcludedTags([])}
+                      className="text-xs text-red-400 hover:text-red-300 ml-2"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </label>
+                <div className="flex flex-wrap gap-2 max-h-24 overflow-y-auto p-2 bg-white/5 rounded-lg">
+                  {allTags.slice(0, MAX_DISPLAYED_TAGS).map(tag => (
+                    <button
+                      key={`exclude-${tag}`}
+                      onClick={() => {
+                        if (excludedTags.includes(tag)) {
+                          setExcludedTags(excludedTags.filter(t => t !== tag));
+                        } else {
+                          setExcludedTags([...excludedTags, tag]);
+                          // Remove from included if present
+                          setSelectedTags(selectedTags.filter(t => t !== tag));
+                        }
+                      }}
+                      className={`px-2 py-1 rounded-full text-xs transition-all ${
+                        excludedTags.includes(tag)
+                          ? 'bg-red-500 text-white'
                           : 'bg-white/10 hover:bg-white/20'
                       }`}
                     >
@@ -1146,18 +1290,24 @@ const EnhancedTextEncoder = () => {
                 </div>
               </div>
               
-              {/* Reset Filters Button */}
-              {(filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default') && (
-                <button
-                  onClick={() => {
-                    setFilterReversible('all');
-                    setSelectedTags([]);
-                    setSortBy('default');
-                  }}
-                  className="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1"
-                >
-                  <X size={14} /> Reset all filters
-                </button>
+              {/* Active Filters Summary & Reset */}
+              {(filterReversible !== 'all' || filterHasSettings !== 'all' || selectedTags.length > 0 || excludedTags.length > 0 || sortBy !== 'default') && (
+                <div className="flex items-center justify-between p-3 bg-purple-500/10 rounded-lg border border-purple-400/30">
+                  <div className="text-sm">
+                    <span className="font-medium">Active filters:</span>
+                    {filterReversible !== 'all' && <span className="ml-2 px-2 py-0.5 bg-purple-500/30 rounded text-xs">{filterReversible}</span>}
+                    {filterHasSettings !== 'all' && <span className="ml-2 px-2 py-0.5 bg-purple-500/30 rounded text-xs">{filterHasSettings}</span>}
+                    {selectedTags.length > 0 && <span className="ml-2 px-2 py-0.5 bg-green-500/30 rounded text-xs">+{selectedTags.length} tags</span>}
+                    {excludedTags.length > 0 && <span className="ml-2 px-2 py-0.5 bg-red-500/30 rounded text-xs">-{excludedTags.length} tags</span>}
+                    {sortBy !== 'default' && <span className="ml-2 px-2 py-0.5 bg-blue-500/30 rounded text-xs">sorted</span>}
+                  </div>
+                  <button
+                    onClick={resetFilters}
+                    className="flex items-center gap-1 px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all"
+                  >
+                    <RotateCcw size={14} /> Reset all
+                  </button>
+                </div>
               )}
             </div>
           )}
