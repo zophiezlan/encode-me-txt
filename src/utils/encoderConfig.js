@@ -799,6 +799,519 @@ export const encoderConfig = [
     special: true,
     hasSettings: true,
     tags: ['advanced', 'shuffle', 'random', 'mixed']
+  },
+
+  // 🌍 Linguistic Encoders
+  {
+    id: 'greek',
+    name: 'Greek Alphabet',
+    description: 'Transliterate to Greek letters',
+    emoji: 'Ω',
+    category: 'linguistic',
+    encode: encoders.encodeGreek,
+    decode: encoders.decodeGreek,
+    reversible: true,
+    tags: ['linguistic', 'greek', 'alphabet']
+  },
+  {
+    id: 'cyrillic',
+    name: 'Cyrillic Script',
+    description: 'Transliterate to Cyrillic letters',
+    emoji: 'Д',
+    category: 'linguistic',
+    encode: encoders.encodeCyrillic,
+    decode: encoders.decodeCyrillic,
+    reversible: true,
+    tags: ['linguistic', 'cyrillic', 'russian']
+  },
+  {
+    id: 'hebrew',
+    name: 'Hebrew Alephbet',
+    description: 'Transliterate to Hebrew letters',
+    emoji: 'א',
+    category: 'linguistic',
+    encode: encoders.encodeHebrew,
+    decode: encoders.decodeHebrew,
+    reversible: true,
+    tags: ['linguistic', 'hebrew', 'ancient']
+  },
+  {
+    id: 'korean',
+    name: 'Korean Hangul',
+    description: 'Map to Korean syllables',
+    emoji: '한',
+    category: 'linguistic',
+    encode: encoders.encodeKorean,
+    decode: encoders.decodeKorean,
+    reversible: true,
+    tags: ['linguistic', 'korean', 'hangul']
+  },
+  {
+    id: 'phonetic-ipa',
+    name: 'IPA Transcription',
+    description: 'International Phonetic Alphabet',
+    emoji: '🗣️',
+    category: 'linguistic',
+    encode: encoders.encodeIPA,
+    reversible: false,
+    tags: ['linguistic', 'phonetic', 'pronunciation']
+  },
+
+  // 🧙 Fantasy Encoders
+  {
+    id: 'aurebesh',
+    name: 'Aurebesh',
+    description: 'Star Wars galaxy script',
+    emoji: '⭐',
+    category: 'fantasy',
+    encode: encoders.encodeAurebesh,
+    decode: encoders.decodeAurebesh,
+    reversible: true,
+    tags: ['fantasy', 'starwars', 'scifi']
+  },
+  {
+    id: 'gallifreyan',
+    name: 'Circular Gallifreyan',
+    description: 'Doctor Who Time Lord script',
+    emoji: '🌀',
+    category: 'fantasy',
+    encode: encoders.encodeGallifreyan,
+    decode: encoders.decodeGallifreyan,
+    reversible: true,
+    tags: ['fantasy', 'doctorwho', 'scifi']
+  },
+  {
+    id: 'elvish',
+    name: 'Elvish/Tengwar',
+    description: 'Lord of the Rings script',
+    emoji: '💍',
+    category: 'fantasy',
+    encode: encoders.encodeElvish,
+    decode: encoders.decodeElvish,
+    reversible: true,
+    tags: ['fantasy', 'lotr', 'tolkien']
+  },
+  {
+    id: 'klingon',
+    name: 'Klingon pIqaD',
+    description: 'Star Trek Klingon script',
+    emoji: '🖖',
+    category: 'fantasy',
+    encode: encoders.encodeKlingon,
+    decode: encoders.decodeKlingon,
+    reversible: true,
+    tags: ['fantasy', 'startrek', 'scifi']
+  },
+
+  // 👁️ Visual Encoders
+  {
+    id: 'sign-language',
+    name: 'ASL Fingerspelling',
+    description: 'American Sign Language hand signs',
+    emoji: '🤟',
+    category: 'visual',
+    encode: encoders.encodeASL,
+    reversible: false,
+    tags: ['visual', 'asl', 'accessibility']
+  },
+  {
+    id: 'seven-segment',
+    name: '7-Segment Display',
+    description: 'Digital display encoding',
+    emoji: '🧮',
+    category: 'visual',
+    encode: encoders.encodeSevenSegment,
+    reversible: false,
+    tags: ['visual', 'digital', 'display']
+  },
+  {
+    id: 'dancing-men',
+    name: 'Dancing Men Cipher',
+    description: "Sherlock Holmes' Dancing Men",
+    emoji: '🕺',
+    category: 'visual',
+    encode: encoders.encodeDancingMen,
+    decode: encoders.decodeDancingMen,
+    reversible: true,
+    tags: ['visual', 'cipher', 'sherlock']
+  },
+  {
+    id: 'pigpen',
+    name: 'Pigpen Cipher',
+    description: 'Geometric substitution cipher',
+    emoji: '🔳',
+    category: 'visual',
+    encode: encoders.encodePigpen,
+    decode: encoders.decodePigpen,
+    reversible: true,
+    tags: ['visual', 'cipher', 'geometric']
+  },
+
+  // 📟 Retro Encoders
+  {
+    id: 'phone-keypad',
+    name: 'Phone Keypad (T9)',
+    description: 'Old mobile phone multi-tap',
+    emoji: '📱',
+    category: 'retro',
+    encode: encoders.encodePhoneKeypad,
+    decode: encoders.decodePhoneKeypad,
+    reversible: true,
+    tags: ['retro', 'phone', 't9']
+  },
+  {
+    id: 'pager',
+    name: 'Pager Code',
+    description: 'Classic pager numeric codes',
+    emoji: '📟',
+    category: 'retro',
+    encode: encoders.encodePagerCode,
+    reversible: false,
+    tags: ['retro', 'pager', 'numeric']
+  },
+  {
+    id: 'punch-card',
+    name: 'IBM Punch Card',
+    description: 'Vintage punch card patterns',
+    emoji: '🎫',
+    category: 'retro',
+    encode: encoders.encodePunchCard,
+    reversible: false,
+    tags: ['retro', 'punchcard', 'ibm']
+  },
+  {
+    id: 'baudot',
+    name: 'Baudot Code',
+    description: '5-bit teleprinter code',
+    emoji: '📟',
+    category: 'retro',
+    encode: encoders.encodeBaudot,
+    decode: encoders.decodeBaudot,
+    reversible: true,
+    tags: ['retro', 'teleprinter', 'telegraph']
+  },
+  {
+    id: 'resistor',
+    name: 'Resistor Color Code',
+    description: 'Electronics color bands',
+    emoji: '⚡',
+    category: 'retro',
+    encode: encoders.encodeResistor,
+    reversible: false,
+    tags: ['retro', 'electronics', 'engineering']
+  },
+
+  // 🏛️ Ancient Script Encoders
+  {
+    id: 'ogham',
+    name: 'Ogham Script',
+    description: 'Celtic tree alphabet',
+    emoji: '🎋',
+    category: 'ancient',
+    encode: encoders.encodeOgham,
+    decode: encoders.decodeOgham,
+    reversible: true,
+    tags: ['ancient', 'celtic', 'irish']
+  },
+  {
+    id: 'hieroglyphs',
+    name: 'Egyptian Hieroglyphs',
+    description: 'Ancient Egyptian writing',
+    emoji: '🦅',
+    category: 'ancient',
+    encode: encoders.encodeHieroglyphs,
+    decode: encoders.decodeHieroglyphs,
+    reversible: true,
+    tags: ['ancient', 'egyptian', 'hieroglyphs']
+  },
+  {
+    id: 'cuneiform',
+    name: 'Sumerian Cuneiform',
+    description: 'Ancient Mesopotamian script',
+    emoji: '🧱',
+    category: 'ancient',
+    encode: encoders.encodeCuneiform,
+    decode: encoders.decodeCuneiform,
+    reversible: true,
+    tags: ['ancient', 'sumerian', 'mesopotamia']
+  },
+  {
+    id: 'mayan',
+    name: 'Mayan Numerals',
+    description: 'Ancient Mayan number system',
+    emoji: '🗿',
+    category: 'ancient',
+    encode: encoders.encodeMayan,
+    decode: encoders.decodeMayan,
+    reversible: true,
+    tags: ['ancient', 'mayan', 'numbers']
+  },
+
+  // ✨ Aesthetic Encoders
+  {
+    id: 'fullwidth',
+    name: 'Ｆｕｌｌｗｉｄｔｈ Ｔｅｘｔ',
+    description: 'Wide aesthetic characters',
+    emoji: '↔️',
+    category: 'aesthetic',
+    encode: encoders.encodeFullwidth,
+    decode: encoders.decodeFullwidth,
+    reversible: true,
+    tags: ['aesthetic', 'wide', 'vaporwave']
+  },
+  {
+    id: 'squared',
+    name: '🅂🅀🅄🄰🅁🄴🄳 🅃🄴🅇🅃',
+    description: 'Squared Unicode letters',
+    emoji: '🔲',
+    category: 'aesthetic',
+    encode: encoders.encodeSquared,
+    decode: encoders.decodeSquared,
+    reversible: true,
+    tags: ['aesthetic', 'squared', 'unicode']
+  },
+  {
+    id: 'parenthesized',
+    name: '⒫⒜⒭⒠⒩⒯⒣⒠⒮⒤⒵⒠⒟',
+    description: 'Parenthesized letters',
+    emoji: '⒜',
+    category: 'aesthetic',
+    encode: encoders.encodeParenthesized,
+    decode: encoders.decodeParenthesized,
+    reversible: true,
+    tags: ['aesthetic', 'parenthesized', 'unicode']
+  },
+  {
+    id: 'double-struck',
+    name: '𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜',
+    description: 'Mathematical blackboard bold',
+    emoji: '🎯',
+    category: 'aesthetic',
+    encode: encoders.encodeDoubleStruck,
+    decode: encoders.decodeDoubleStruck,
+    reversible: true,
+    tags: ['aesthetic', 'doublestruck', 'math']
+  },
+  {
+    id: 'cursive',
+    name: '𝒞𝓊𝓇𝓈𝒾𝓋𝑒 𝒮𝒸𝓇𝒾𝓅𝓉',
+    description: 'Elegant cursive script',
+    emoji: '✒️',
+    category: 'aesthetic',
+    encode: encoders.encodeCursive,
+    decode: encoders.decodeCursive,
+    reversible: true,
+    tags: ['aesthetic', 'cursive', 'script']
+  },
+  {
+    id: 'mirror',
+    name: 'Mirror Text',
+    description: 'Horizontally mirrored text',
+    emoji: '🪞',
+    category: 'aesthetic',
+    encode: encoders.encodeMirror,
+    reversible: false,
+    tags: ['aesthetic', 'mirror', 'reversed']
+  },
+
+  // 🎮 Additional Fun Encoders
+  {
+    id: 'redacted',
+    name: 'R██ac██d T██t',
+    description: 'Randomly redacted text',
+    emoji: '⬛',
+    category: 'fun',
+    encode: encoders.encodeRedacted,
+    reversible: false,
+    tags: ['fun', 'redacted', 'secret']
+  },
+  {
+    id: 'keyboard-shift',
+    name: 'Keyboard Shift',
+    description: 'Shift keys right on keyboard',
+    emoji: '⌨️',
+    category: 'fun',
+    encode: encoders.encodeKeyboardShift,
+    decode: encoders.decodeKeyboardShift,
+    reversible: true,
+    tags: ['fun', 'keyboard', 'shift']
+  },
+  {
+    id: 'emojipasta',
+    name: 'Emojipasta 🍝',
+    description: 'Add random emojis everywhere',
+    emoji: '😫',
+    category: 'fun',
+    encode: encoders.encodeEmojipasta,
+    reversible: false,
+    tags: ['fun', 'emoji', 'meme']
+  },
+  {
+    id: 'tally',
+    name: 'Tally Marks',
+    description: 'Counting tally marks',
+    emoji: '𝍡',
+    category: 'fun',
+    encode: encoders.encodeTally,
+    reversible: false,
+    tags: ['fun', 'tally', 'counting']
+  },
+  {
+    id: 'whitespace',
+    name: 'Whitespace Stego',
+    description: 'Hide data in spaces and tabs',
+    emoji: '🌫️',
+    category: 'secret',
+    encode: encoders.encodeWhitespace,
+    decode: encoders.decodeWhitespace,
+    reversible: true,
+    tags: ['secret', 'steganography', 'invisible']
+  },
+  {
+    id: 'acrostic',
+    name: 'Acrostic Generator',
+    description: 'First letters spell message',
+    emoji: '📝',
+    category: 'fun',
+    encode: encoders.encodeAcrostic,
+    reversible: false,
+    tags: ['fun', 'acrostic', 'poem']
+  },
+
+  // 💻 Additional Computer Encoders
+  {
+    id: 'base32',
+    name: 'Base32',
+    description: 'RFC 4648 encoding',
+    emoji: '📋',
+    category: 'computer',
+    encode: encoders.encodeBase32,
+    decode: encoders.decodeBase32,
+    reversible: true,
+    tags: ['computer', 'base32', 'encoding']
+  },
+  {
+    id: 'octal',
+    name: 'Octal (Base-8)',
+    description: 'Octal number representation',
+    emoji: '8️⃣',
+    category: 'computer',
+    encode: encoders.encodeOctal,
+    decode: encoders.decodeOctal,
+    reversible: true,
+    tags: ['computer', 'octal', 'base8']
+  },
+  {
+    id: 'ascii85',
+    name: 'ASCII85 (Base85)',
+    description: 'Adobe-style Base85 encoding',
+    emoji: '📄',
+    category: 'computer',
+    encode: encoders.encodeAscii85,
+    decode: encoders.decodeAscii85,
+    reversible: true,
+    tags: ['computer', 'ascii85', 'base85']
+  },
+  {
+    id: 'quoted-printable',
+    name: 'Quoted-Printable',
+    description: 'Email-safe encoding',
+    emoji: '📧',
+    category: 'computer',
+    encode: encoders.encodeQuotedPrintable,
+    decode: encoders.decodeQuotedPrintable,
+    reversible: true,
+    tags: ['computer', 'email', 'encoding']
+  },
+  {
+    id: 'a1z26',
+    name: 'A1Z26 (1=A, 2=B)',
+    description: 'Letter to number substitution',
+    emoji: '🔢',
+    category: 'computer',
+    encode: encoders.encodeA1Z26,
+    decode: encoders.decodeA1Z26,
+    reversible: true,
+    tags: ['computer', 'simple', 'numbers']
+  },
+  {
+    id: 'brainfuck',
+    name: 'Brainfuck Code',
+    description: 'Esoteric programming language',
+    emoji: '🤯',
+    category: 'computer',
+    encode: encoders.encodeBrainfuck,
+    decode: encoders.decodeBrainfuck,
+    reversible: true,
+    tags: ['computer', 'esoteric', 'programming']
+  },
+
+  // 🔐 Additional Cipher Encoders
+  {
+    id: 'playfair',
+    name: 'Playfair Cipher',
+    description: 'Keyword-based digraph cipher',
+    emoji: '🎭',
+    category: 'cipher',
+    encode: encoders.encodePlayfair,
+    decode: encoders.decodePlayfair,
+    reversible: true,
+    tags: ['cipher', 'playfair', 'digraph']
+  },
+  {
+    id: 'columnar',
+    name: 'Columnar Transposition',
+    description: 'Column-based rearrangement',
+    emoji: '📊',
+    category: 'cipher',
+    encode: encoders.encodeColumnar,
+    decode: encoders.decodeColumnar,
+    reversible: true,
+    tags: ['cipher', 'transposition', 'columnar']
+  },
+  {
+    id: 'scytale',
+    name: 'Scytale Cipher',
+    description: 'Ancient Spartan cylinder cipher',
+    emoji: '📜',
+    category: 'cipher',
+    encode: encoders.encodeScytale,
+    decode: encoders.decodeScytale,
+    reversible: true,
+    tags: ['cipher', 'ancient', 'spartan']
+  },
+  {
+    id: 'autokey',
+    name: 'Autokey Cipher',
+    description: 'Self-keying Vigenère variant',
+    emoji: '🗝️',
+    category: 'cipher',
+    encode: encoders.encodeAutokey,
+    decode: encoders.decodeAutokey,
+    reversible: true,
+    tags: ['cipher', 'autokey', 'vigenere']
+  },
+  {
+    id: 'hill',
+    name: 'Hill Cipher',
+    description: 'Matrix-based encryption',
+    emoji: '📐',
+    category: 'cipher',
+    encode: encoders.encodeHill,
+    decode: encoders.decodeHill,
+    reversible: true,
+    tags: ['cipher', 'hill', 'matrix']
+  },
+  {
+    id: 'bifid',
+    name: 'Bifid Cipher',
+    description: 'Polybius-based fractionation',
+    emoji: '🔺',
+    category: 'cipher',
+    encode: encoders.encodeBifid,
+    decode: encoders.decodeBifid,
+    reversible: true,
+    tags: ['cipher', 'bifid', 'polybius']
   }
 ];
 
@@ -840,5 +1353,11 @@ export const categories = {
   artistic: { emoji: '🎨', name: 'Artistic', description: 'Visual and aesthetic encodings' },
   advanced: { emoji: '🚀', name: 'Advanced', description: 'Advanced technical encodings' },
   unique: { emoji: '🌟', name: 'Unique', description: 'One-of-a-kind creative encodings' },
-  custom: { emoji: '🎨', name: 'Custom', description: 'User-created custom encoders' }
+  custom: { emoji: '🎨', name: 'Custom', description: 'User-created custom encoders' },
+  linguistic: { emoji: '🌍', name: 'Linguistic', description: 'Language and alphabet encodings' },
+  fantasy: { emoji: '🧙', name: 'Fantasy', description: 'Fictional and fantasy scripts' },
+  visual: { emoji: '👁️', name: 'Visual', description: 'Visual and geometric encodings' },
+  retro: { emoji: '📟', name: 'Retro', description: 'Vintage and retro encodings' },
+  ancient: { emoji: '🏛️', name: 'Ancient', description: 'Ancient scripts and writing systems' },
+  aesthetic: { emoji: '✨', name: 'Aesthetic', description: 'Stylized text encodings' }
 };

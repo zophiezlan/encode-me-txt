@@ -370,3 +370,176 @@ describe('ROT47 Cipher', () => {
     expect(decoded).toBe(original)
   })
 })
+
+// New encoder tests
+import {
+  encodeGreek,
+  decodeGreek,
+  encodeCyrillic,
+  decodeCyrillic
+} from '../utils/encoders/linguistic.js'
+
+import {
+  encodePlayfair,
+  decodePlayfair,
+  encodeColumnar,
+  decodeColumnar,
+  encodePigpen,
+  decodePigpen
+} from '../utils/encoders/ciphers.js'
+
+import {
+  encodeBase32,
+  decodeBase32,
+  encodeOctal,
+  decodeOctal,
+  encodeA1Z26,
+  decodeA1Z26
+} from '../utils/encoders/computer.js'
+
+import {
+  encodeFullwidth,
+  decodeFullwidth
+} from '../utils/encoders/aesthetic.js'
+
+import {
+  encodePhoneKeypad,
+  decodePhoneKeypad,
+  encodeBaudot,
+  decodeBaudot
+} from '../utils/encoders/retro.js'
+
+// Tests for new encoders
+describe('Greek Alphabet Encoding', () => {
+  it('encodes Latin to Greek letters', () => {
+    expect(encodeGreek('abc')).toBe('αβψ')
+  })
+
+  it('is reversible', () => {
+    const original = 'hello'
+    const encoded = encodeGreek(original)
+    const decoded = decodeGreek(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Cyrillic Script Encoding', () => {
+  it('encodes Latin to Cyrillic letters', () => {
+    expect(encodeCyrillic('abc')).toBe('абц')
+  })
+
+  it('is reversible', () => {
+    const original = 'hello'
+    const encoded = encodeCyrillic(original)
+    const decoded = decodeCyrillic(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Playfair Cipher', () => {
+  it('encodes digraphs using grid', () => {
+    const encoded = encodePlayfair('HELLO')
+    expect(encoded.length).toBeGreaterThan(0)
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLO'
+    const encoded = encodePlayfair(original)
+    const decoded = decodePlayfair(encoded)
+    expect(decoded).toBe('HELXLO') // X added for double L
+  })
+})
+
+describe('Columnar Transposition Cipher', () => {
+  it('rearranges text by columns', () => {
+    const encoded = encodeColumnar('HELLOWORLD', 'KEY')
+    expect(encoded).not.toBe('HELLOWORLD')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLOWORLDX'
+    const encoded = encodeColumnar(original, 'KEY')
+    const decoded = decodeColumnar(encoded, 'KEY')
+    expect(decoded.substring(0, original.length)).toBe(original)
+  })
+})
+
+describe('Base32 Encoding', () => {
+  it('encodes text to Base32', () => {
+    expect(encodeBase32('Hi')).toBe('JBUQ====')
+  })
+
+  it('is reversible', () => {
+    const original = 'Hello'
+    const encoded = encodeBase32(original)
+    const decoded = decodeBase32(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Octal Encoding', () => {
+  it('encodes text to octal numbers', () => {
+    expect(encodeOctal('A')).toBe('101')
+  })
+
+  it('is reversible', () => {
+    const original = 'ABC'
+    const encoded = encodeOctal(original)
+    const decoded = decodeOctal(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('A1Z26 Encoding', () => {
+  it('encodes letters to numbers', () => {
+    expect(encodeA1Z26('abc')).toBe('1-2-3')
+  })
+
+  it('is reversible', () => {
+    const original = 'hello'
+    const encoded = encodeA1Z26(original)
+    const decoded = decodeA1Z26(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Fullwidth Text Encoding', () => {
+  it('converts ASCII to fullwidth', () => {
+    expect(encodeFullwidth('Hi')).toBe('Ｈｉ')
+  })
+
+  it('is reversible', () => {
+    const original = 'Hello'
+    const encoded = encodeFullwidth(original)
+    const decoded = decodeFullwidth(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Phone Keypad Encoding', () => {
+  it('encodes to T9 multi-tap format', () => {
+    expect(encodePhoneKeypad('abc')).toBe('2-22-222')
+  })
+
+  it('is reversible', () => {
+    const original = 'hello'
+    const encoded = encodePhoneKeypad(original)
+    const decoded = decodePhoneKeypad(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Baudot Code Encoding', () => {
+  it('encodes to 5-bit patterns', () => {
+    const encoded = encodeBaudot('abc')
+    expect(encoded).toContain('●')
+    expect(encoded).toContain('○')
+  })
+
+  it('is reversible', () => {
+    const original = 'hello'
+    const encoded = encodeBaudot(original)
+    const decoded = decodeBaudot(encoded)
+    expect(decoded).toBe(original)
+  })
+})
