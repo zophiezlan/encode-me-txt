@@ -325,12 +325,14 @@ export const encodeUnderline = (text) => {
 /**
  * Redacted text encoding - randomly redacts characters
  * @param {string} text - The text to encode
+ * @param {number} percentage - Percentage of characters to redact (0-100, default 40)
  * @returns {string} - Redacted text
  */
-export const encodeRedacted = (text) => {
+export const encodeRedacted = (text, percentage = 40) => {
+  const threshold = Math.max(0, Math.min(100, percentage)) / 100;
   return text.split('').map(char => {
     if (char === ' ') return ' ';
-    return Math.random() < 0.4 ? '█' : char;
+    return Math.random() < threshold ? '█' : char;
   }).join('');
 };
 

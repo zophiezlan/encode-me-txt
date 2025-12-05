@@ -149,6 +149,7 @@ export const encoderConfig = [
     encode: encoders.encodeVigenere,
     decode: encoders.decodeVigenere,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'cryptography', 'polyalphabetic']
   },
   {
@@ -160,6 +161,7 @@ export const encoderConfig = [
     encode: encoders.encodeRailFence,
     decode: encoders.decodeRailFence,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'transposition', 'zigzag']
   },
   {
@@ -193,6 +195,7 @@ export const encoderConfig = [
     encode: encoders.encodeAffine,
     decode: encoders.decodeAffine,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'mathematical', 'substitution']
   },
   {
@@ -237,6 +240,7 @@ export const encoderConfig = [
     encode: encoders.encodeBeaufort,
     decode: encoders.decodeBeaufort,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'polyalphabetic', 'symmetric']
   },
 
@@ -432,6 +436,7 @@ export const encoderConfig = [
     category: 'artistic',
     encode: encoders.encodeZalgo,
     reversible: false,
+    hasSettings: true,
     tags: ['artistic', 'horror', 'chaos']
   },
   {
@@ -1123,6 +1128,7 @@ export const encoderConfig = [
     category: 'fun',
     encode: encoders.encodeRedacted,
     reversible: false,
+    hasSettings: true,
     tags: ['fun', 'redacted', 'secret']
   },
   {
@@ -1256,6 +1262,7 @@ export const encoderConfig = [
     encode: encoders.encodePlayfair,
     decode: encoders.decodePlayfair,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'playfair', 'digraph']
   },
   {
@@ -1267,6 +1274,7 @@ export const encoderConfig = [
     encode: encoders.encodeColumnar,
     decode: encoders.decodeColumnar,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'transposition', 'columnar']
   },
   {
@@ -1278,6 +1286,7 @@ export const encoderConfig = [
     encode: encoders.encodeScytale,
     decode: encoders.decodeScytale,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'ancient', 'spartan']
   },
   {
@@ -1289,6 +1298,7 @@ export const encoderConfig = [
     encode: encoders.encodeAutokey,
     decode: encoders.decodeAutokey,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'autokey', 'vigenere']
   },
   {

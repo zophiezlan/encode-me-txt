@@ -25,7 +25,19 @@ const EnhancedTextEncoder = () => {
   const [copiedId, setCopiedId] = useState(null);
   const [encoderParams, setEncoderParams] = useState(() => {
     const saved = localStorage.getItem('encoder-params');
-    return saved ? JSON.parse(saved) : { caesar: 13 };
+    return saved ? JSON.parse(saved) : { 
+      caesar: 13,
+      vigenere: 'SECRET',
+      'rail-fence': 3,
+      affine: { a: 5, b: 8 },
+      scytale: 4,
+      columnar: 'SECRET',
+      autokey: 'KEY',
+      beaufort: 'SECRET',
+      playfair: 'KEYWORD',
+      zalgo: 5,
+      redacted: 40
+    };
   });
 
   // UI state
@@ -277,28 +289,99 @@ const EnhancedTextEncoder = () => {
 
     const results = {};
     const caesarShift = encoderParams.caesar || 13;
+    const vigenereKey = encoderParams.vigenere || 'SECRET';
+    const railFenceRails = encoderParams['rail-fence'] || 3;
+    const affineA = encoderParams.affine?.a || 5;
+    const affineB = encoderParams.affine?.b || 8;
+    const scytaleDiameter = encoderParams.scytale || 4;
+    const columnarKey = encoderParams.columnar || 'SECRET';
+    const autokeyKey = encoderParams.autokey || 'KEY';
+    const beaufortKey = encoderParams.beaufort || 'SECRET';
+    const playfairKey = encoderParams.playfair || 'KEYWORD';
+    const zalgoIntensity = encoderParams.zalgo || 5;
+    const redactedPercent = encoderParams.redacted || 40;
 
     allEncoders.forEach(encoder => {
       try {
         if (mode === 'decode') {
           if (encoder.reversible) {
-            if (encoder.id === 'caesar') {
-              results[encoder.id] = encoder.decode(inputText, caesarShift);
-            } else if (encoder.id === 'shuffle') {
-              results[encoder.id] = encoder.decode(inputText);
-            } else {
-              results[encoder.id] = encoder.decode(inputText);
+            switch (encoder.id) {
+              case 'caesar':
+                results[encoder.id] = encoder.decode(inputText, caesarShift);
+                break;
+              case 'vigenere':
+                results[encoder.id] = encoder.decode(inputText, vigenereKey);
+                break;
+              case 'rail-fence':
+                results[encoder.id] = encoder.decode(inputText, railFenceRails);
+                break;
+              case 'affine':
+                results[encoder.id] = encoder.decode(inputText, affineA, affineB);
+                break;
+              case 'scytale':
+                results[encoder.id] = encoder.decode(inputText, scytaleDiameter);
+                break;
+              case 'columnar':
+                results[encoder.id] = encoder.decode(inputText, columnarKey);
+                break;
+              case 'autokey':
+                results[encoder.id] = encoder.decode(inputText, autokeyKey);
+                break;
+              case 'beaufort':
+                results[encoder.id] = encoder.decode(inputText, beaufortKey);
+                break;
+              case 'playfair':
+                results[encoder.id] = encoder.decode(inputText, playfairKey);
+                break;
+              case 'shuffle':
+                results[encoder.id] = encoder.decode(inputText);
+                break;
+              default:
+                results[encoder.id] = encoder.decode(inputText);
             }
           } else {
             results[encoder.id] = '[Not reversible]';
           }
         } else {
-          if (encoder.id === 'caesar') {
-            results[encoder.id] = encoder.encode(inputText, caesarShift);
-          } else if (encoder.id === 'shuffle') {
-            results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
-          } else {
-            results[encoder.id] = encoder.encode(inputText);
+          switch (encoder.id) {
+            case 'caesar':
+              results[encoder.id] = encoder.encode(inputText, caesarShift);
+              break;
+            case 'vigenere':
+              results[encoder.id] = encoder.encode(inputText, vigenereKey);
+              break;
+            case 'rail-fence':
+              results[encoder.id] = encoder.encode(inputText, railFenceRails);
+              break;
+            case 'affine':
+              results[encoder.id] = encoder.encode(inputText, affineA, affineB);
+              break;
+            case 'scytale':
+              results[encoder.id] = encoder.encode(inputText, scytaleDiameter);
+              break;
+            case 'columnar':
+              results[encoder.id] = encoder.encode(inputText, columnarKey);
+              break;
+            case 'autokey':
+              results[encoder.id] = encoder.encode(inputText, autokeyKey);
+              break;
+            case 'beaufort':
+              results[encoder.id] = encoder.encode(inputText, beaufortKey);
+              break;
+            case 'playfair':
+              results[encoder.id] = encoder.encode(inputText, playfairKey);
+              break;
+            case 'zalgo':
+              results[encoder.id] = encoder.encode(inputText, zalgoIntensity);
+              break;
+            case 'redacted':
+              results[encoder.id] = encoder.encode(inputText, redactedPercent);
+              break;
+            case 'shuffle':
+              results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
+              break;
+            default:
+              results[encoder.id] = encoder.encode(inputText);
           }
         }
       } catch {
@@ -1304,20 +1387,249 @@ const EnhancedTextEncoder = () => {
                   <div className="mt-3 p-3 bg-white/10 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <label className="text-xs font-semibold">
-                        Shift: {caesarShift}
+                        Shift: {encoderParams.caesar || 13}
                       </label>
-                      <span className="text-xs text-white/60">ROT-{caesarShift}</span>
+                      <span className="text-xs text-white/60">ROT-{encoderParams.caesar || 13}</span>
                     </div>
                     <input
                       type="range"
                       min="1"
                       max="25"
-                      value={caesarShift}
+                      value={encoderParams.caesar || 13}
                       onChange={(e) => updateEncoderParam('caesar', 'shift', parseInt(e.target.value))}
                       className="w-full h-2"
                     />
                     <p className="text-xs text-white/50 mt-1">
-                      {caesarShift === 13 ? 'ROT13 (classic)' : `Shift ${caesarShift} positions`}
+                      {(encoderParams.caesar || 13) === 13 ? 'ROT13 (classic)' : `Shift ${encoderParams.caesar || 13} positions`}
+                    </p>
+                  </div>
+                )}
+
+                {/* Vigenère Cipher Controls */}
+                {encoder.id === 'vigenere' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.vigenere || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.vigenere || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('vigenere', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Letters only. Key repeats for longer messages.
+                    </p>
+                  </div>
+                )}
+
+                {/* Rail Fence Cipher Controls */}
+                {encoder.id === 'rail-fence' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Rails: {encoderParams['rail-fence'] || 3}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="10"
+                      value={encoderParams['rail-fence'] || 3}
+                      onChange={(e) => updateEncoderParam('rail-fence', 'rails', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Text zigzags across {encoderParams['rail-fence'] || 3} rows
+                    </p>
+                  </div>
+                )}
+
+                {/* Affine Cipher Controls */}
+                {encoder.id === 'affine' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          a: {encoderParams.affine?.a || 5}
+                        </label>
+                        <input
+                          type="range"
+                          min="1"
+                          max="25"
+                          step="2"
+                          value={encoderParams.affine?.a || 5}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            // a must be coprime with 26 (odd and not 13)
+                            const validA = val === 13 ? 15 : val;
+                            updateEncoderParam('affine', 'a', { ...encoderParams.affine, a: validA });
+                          }}
+                          className="w-full h-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          b: {encoderParams.affine?.b || 8}
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="25"
+                          value={encoderParams.affine?.b || 8}
+                          onChange={(e) => updateEncoderParam('affine', 'b', { ...encoderParams.affine, b: parseInt(e.target.value) })}
+                          className="w-full h-2"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/50">
+                      E(x) = ({encoderParams.affine?.a || 5}x + {encoderParams.affine?.b || 8}) mod 26
+                    </p>
+                  </div>
+                )}
+
+                {/* Scytale Cipher Controls */}
+                {encoder.id === 'scytale' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Diameter: {encoderParams.scytale || 4}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="10"
+                      value={encoderParams.scytale || 4}
+                      onChange={(e) => updateEncoderParam('scytale', 'diameter', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Cylinder wraps text in {encoderParams.scytale || 4} columns
+                    </p>
+                  </div>
+                )}
+
+                {/* Columnar Transposition Controls */}
+                {encoder.id === 'columnar' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.columnar || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.columnar || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('columnar', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams.columnar || 'SECRET').length} columns
+                    </p>
+                  </div>
+                )}
+
+                {/* Autokey Cipher Controls */}
+                {encoder.id === 'autokey' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Primer Key: {encoderParams.autokey || 'KEY'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.autokey || 'KEY'}
+                      onChange={(e) => updateEncoderParam('autokey', 'key', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEY')}
+                      placeholder="Enter primer key"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Key extends with plaintext
+                    </p>
+                  </div>
+                )}
+
+                {/* Beaufort Cipher Controls */}
+                {encoder.id === 'beaufort' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.beaufort || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.beaufort || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('beaufort', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Symmetric variant of Vigenère
+                    </p>
+                  </div>
+                )}
+
+                {/* Playfair Cipher Controls */}
+                {encoder.id === 'playfair' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.playfair || 'KEYWORD'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.playfair || 'KEYWORD'}
+                      onChange={(e) => updateEncoderParam('playfair', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEYWORD')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      5x5 grid cipher (I/J combined)
+                    </p>
+                  </div>
+                )}
+
+                {/* Zalgo Controls */}
+                {encoder.id === 'zalgo' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Intensity: {encoderParams.zalgo || 5}
+                      </label>
+                      <span className="text-xs text-white/60">
+                        {(encoderParams.zalgo || 5) <= 3 ? 'Mild' : (encoderParams.zalgo || 5) <= 6 ? 'Medium' : 'Chaos'}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={encoderParams.zalgo || 5}
+                      onChange={(e) => updateEncoderParam('zalgo', 'intensity', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Controls how many combining marks are added
+                    </p>
+                  </div>
+                )}
+
+                {/* Redacted Controls */}
+                {encoder.id === 'redacted' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Redaction: {encoderParams.redacted || 40}%
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="90"
+                      value={encoderParams.redacted || 40}
+                      onChange={(e) => updateEncoderParam('redacted', 'percentage', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams.redacted || 40) < 30 ? 'Lightly classified' : (encoderParams.redacted || 40) < 60 ? 'Partially classified' : 'Heavily classified'}
                     </p>
                   </div>
                 )}
