@@ -412,3 +412,333 @@ export const encodeBeaufort = (text, keyword = 'SECRET') => {
  * Beaufort decoder (same as encoder)
  */
 export const decodeBeaufort = encodeBeaufort;
+
+/**
+ * Playfair Cipher - Digraph substitution using 5x5 grid
+ * @param {string} text - The text to encode
+ * @param {string} key - The keyword for the cipher
+ * @returns {string} - Encoded text
+ */
+export const encodePlayfair = (text, key = 'KEYWORD') => {
+  // Create 5x5 grid (I/J combined)
+  const alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+  const keyClean = key.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  let grid = '';
+  const used = new Set();
+  
+  for (const char of keyClean + alphabet) {
+    if (!used.has(char)) {
+      used.add(char);
+      grid += char;
+    }
+  }
+  
+  // Prepare text
+  let prepared = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  // Handle double letters by inserting X
+  let pairs = [];
+  let i = 0;
+  while (i < prepared.length) {
+    let a = prepared[i];
+    let b = prepared[i + 1] || 'X';
+    if (a === b) { 
+      b = 'X'; 
+      pairs.push([a, b]);
+      i++; // Only advance by 1 when inserting X
+    } else {
+      pairs.push([a, b]);
+      i += 2; // Advance by 2 for normal pairs
+    }
+  }
+  
+  const getPos = (c) => [Math.floor(grid.indexOf(c) / 5), grid.indexOf(c) % 5];
+  
+  return pairs.map(([a, b]) => {
+    const [r1, c1] = getPos(a);
+    const [r2, c2] = getPos(b);
+    
+    if (r1 === r2) {
+      return grid[r1 * 5 + (c1 + 1) % 5] + grid[r2 * 5 + (c2 + 1) % 5];
+    } else if (c1 === c2) {
+      return grid[((r1 + 1) % 5) * 5 + c1] + grid[((r2 + 1) % 5) * 5 + c2];
+    } else {
+      return grid[r1 * 5 + c2] + grid[r2 * 5 + c1];
+    }
+  }).join('');
+};
+
+/**
+ * Playfair decoder
+ */
+export const decodePlayfair = (text, key = 'KEYWORD') => {
+  const alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+  const keyClean = key.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  let grid = '';
+  const used = new Set();
+  
+  for (const char of keyClean + alphabet) {
+    if (!used.has(char)) {
+      used.add(char);
+      grid += char;
+    }
+  }
+  
+  let prepared = text.toUpperCase().replace(/[^A-Z]/g, '');
+  let pairs = [];
+  for (let i = 0; i < prepared.length; i += 2) {
+    pairs.push([prepared[i], prepared[i + 1] || 'X']);
+  }
+  
+  const getPos = (c) => [Math.floor(grid.indexOf(c) / 5), grid.indexOf(c) % 5];
+  
+  return pairs.map(([a, b]) => {
+    const [r1, c1] = getPos(a);
+    const [r2, c2] = getPos(b);
+    
+    if (r1 === r2) {
+      return grid[r1 * 5 + (c1 + 4) % 5] + grid[r2 * 5 + (c2 + 4) % 5];
+    } else if (c1 === c2) {
+      return grid[((r1 + 4) % 5) * 5 + c1] + grid[((r2 + 4) % 5) * 5 + c2];
+    } else {
+      return grid[r1 * 5 + c2] + grid[r2 * 5 + c1];
+    }
+  }).join('');
+};
+
+/**
+ * Columnar Transposition Cipher
+ * @param {string} text - The text to encode
+ * @param {string} key - The keyword for column order
+ * @returns {string} - Encoded text
+ */
+export const encodeColumnar = (text, key = 'SECRET') => {
+  const keyClean = key.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  const numCols = keyClean.length;
+  const prepared = text.replace(/\s/g, '').toUpperCase();
+  
+  // Pad to fill grid
+  const rows = Math.ceil(prepared.length / numCols);
+  const padded = prepared.padEnd(rows * numCols, 'X');
+  
+  // Get column order (alphabetical order of key letters)
+  const order = [...keyClean].map((c, i) => ({ c, i }))
+    .sort((a, b) => a.c.localeCompare(b.c))
+    .map(x => x.i);
+  
+  // Read columns in order
+  let result = '';
+  for (const col of order) {
+    for (let row = 0; row < rows; row++) {
+      result += padded[row * numCols + col];
+    }
+  }
+  
+  return result;
+};
+
+/**
+ * Columnar decoder
+ */
+export const decodeColumnar = (text, key = 'SECRET') => {
+  const keyClean = key.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  const numCols = keyClean.length;
+  const rows = Math.ceil(text.length / numCols);
+  
+  const order = [...keyClean].map((c, i) => ({ c, i }))
+    .sort((a, b) => a.c.localeCompare(b.c))
+    .map(x => x.i);
+  
+  // Fill columns
+  const columns = Array(numCols).fill('');
+  let pos = 0;
+  for (const col of order) {
+    for (let row = 0; row < rows && pos < text.length; row++) {
+      columns[col] += text[pos++];
+    }
+  }
+  
+  // Read rows
+  let result = '';
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < numCols; col++) {
+      if (columns[col][row]) result += columns[col][row];
+    }
+  }
+  
+  return result;
+};
+
+/**
+ * Scytale Cipher - Ancient Spartan cylinder cipher
+ * @param {string} text - The text to encode
+ * @param {number} diameter - Cylinder diameter
+ * @returns {string} - Encoded text
+ */
+export const encodeScytale = (text, diameter = 4) => {
+  const prepared = text.replace(/\s/g, '').toUpperCase();
+  const d = Math.max(2, Math.min(diameter, 10));
+  const cols = Math.ceil(prepared.length / d);
+  const padded = prepared.padEnd(cols * d, 'X');
+  
+  let result = '';
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < d; r++) {
+      result += padded[r * cols + c];
+    }
+  }
+  
+  return result;
+};
+
+/**
+ * Scytale decoder
+ */
+export const decodeScytale = (text, diameter = 4) => {
+  const d = Math.max(2, Math.min(diameter, 10));
+  const cols = Math.ceil(text.length / d);
+  
+  let result = '';
+  for (let r = 0; r < cols; r++) {
+    for (let c = 0; c < d; c++) {
+      const idx = c * cols + r;
+      if (idx < text.length) result += text[idx];
+    }
+  }
+  
+  return result;
+};
+
+/**
+ * Autokey Cipher - Vigenère variant where plaintext is part of key
+ * @param {string} text - The text to encode
+ * @param {string} key - The primer key
+ * @returns {string} - Encoded text
+ */
+export const encodeAutokey = (text, key = 'KEY') => {
+  const keyClean = key.toUpperCase().replace(/[^A-Z]/g, '') || 'KEY';
+  const fullKey = keyClean + text.toUpperCase().replace(/[^A-Z]/g, '');
+  let keyIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const charPos = char.toUpperCase().charCodeAt(0) - 65;
+    const keyPos = fullKey.charCodeAt(keyIndex) - 65;
+    keyIndex++;
+    return String.fromCharCode(((charPos + keyPos) % 26) + start);
+  });
+};
+
+/**
+ * Autokey decoder
+ */
+export const decodeAutokey = (text, key = 'KEY') => {
+  const keyClean = key.toUpperCase().replace(/[^A-Z]/g, '') || 'KEY';
+  let fullKey = keyClean;
+  let result = '';
+  let keyIndex = 0;
+  
+  for (const char of text) {
+    if (/[a-zA-Z]/.test(char)) {
+      const isUpper = char <= 'Z';
+      const start = isUpper ? 65 : 97;
+      const charPos = char.toUpperCase().charCodeAt(0) - 65;
+      const keyPos = fullKey.charCodeAt(keyIndex) - 65;
+      const decoded = ((charPos - keyPos + 26) % 26);
+      const decodedChar = String.fromCharCode(decoded + start);
+      result += decodedChar;
+      fullKey += decodedChar.toUpperCase();
+      keyIndex++;
+    } else {
+      result += char;
+    }
+  }
+  
+  return result;
+};
+
+/**
+ * Hill Cipher (simplified 2x2 matrix)
+ * @param {string} text - The text to encode
+ * @returns {string} - Encoded text
+ */
+export const encodeHill = (text) => {
+  // Using matrix [[3, 3], [2, 5]] which has inverse mod 26
+  const prepared = text.toUpperCase().replace(/[^A-Z]/g, '');
+  const padded = prepared.length % 2 ? prepared + 'X' : prepared;
+  
+  let result = '';
+  for (let i = 0; i < padded.length; i += 2) {
+    const a = padded.charCodeAt(i) - 65;
+    const b = padded.charCodeAt(i + 1) - 65;
+    result += String.fromCharCode(((3 * a + 3 * b) % 26) + 65);
+    result += String.fromCharCode(((2 * a + 5 * b) % 26) + 65);
+  }
+  
+  return result;
+};
+
+/**
+ * Hill decoder
+ */
+export const decodeHill = (text) => {
+  // Inverse matrix of [[3, 3], [2, 5]] mod 26 is [[15, 17], [20, 9]]
+  const prepared = text.toUpperCase().replace(/[^A-Z]/g, '');
+  
+  let result = '';
+  for (let i = 0; i < prepared.length; i += 2) {
+    const a = prepared.charCodeAt(i) - 65;
+    const b = (prepared.charCodeAt(i + 1) || 88) - 65; // X if missing
+    result += String.fromCharCode((((15 * a + 17 * b) % 26) + 26) % 26 + 65);
+    result += String.fromCharCode((((20 * a + 9 * b) % 26) + 26) % 26 + 65);
+  }
+  
+  return result;
+};
+
+/**
+ * Bifid Cipher - Combines Polybius square with fractionation
+ * @param {string} text - The text to encode
+ * @returns {string} - Encoded text
+ */
+export const encodeBifid = (text) => {
+  const grid = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'; // I=J
+  const prepared = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  
+  const rows = [], cols = [];
+  for (const char of prepared) {
+    const idx = grid.indexOf(char);
+    rows.push(Math.floor(idx / 5));
+    cols.push(idx % 5);
+  }
+  
+  const combined = [...rows, ...cols];
+  let result = '';
+  for (let i = 0; i < combined.length; i += 2) {
+    result += grid[combined[i] * 5 + combined[i + 1]];
+  }
+  
+  return result;
+};
+
+/**
+ * Bifid decoder
+ */
+export const decodeBifid = (text) => {
+  const grid = 'ABCDEFGHIKLMNOPQRSTUVWXYZ';
+  const prepared = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
+  
+  const coords = [];
+  for (const char of prepared) {
+    const idx = grid.indexOf(char);
+    coords.push(Math.floor(idx / 5), idx % 5);
+  }
+  
+  const half = coords.length / 2;
+  let result = '';
+  for (let i = 0; i < half; i++) {
+    result += grid[coords[i] * 5 + coords[i + half]];
+  }
+  
+  return result;
+};

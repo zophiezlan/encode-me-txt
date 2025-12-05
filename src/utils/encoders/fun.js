@@ -321,3 +321,124 @@ export const encodeStrikethrough = (text) => {
 export const encodeUnderline = (text) => {
   return text.split('').map(char => char + '\u0332').join('');
 };
+
+/**
+ * Redacted text encoding - randomly redacts characters
+ * @param {string} text - The text to encode
+ * @returns {string} - Redacted text
+ */
+export const encodeRedacted = (text) => {
+  return text.split('').map(char => {
+    if (char === ' ') return ' ';
+    return Math.random() < 0.4 ? '█' : char;
+  }).join('');
+};
+
+/**
+ * Keyboard shift encoding - shifts keys right on QWERTY keyboard
+ * @param {string} text - The text to encode
+ * @returns {string} - Shifted text
+ */
+export const encodeKeyboardShift = (text) => {
+  const shiftMap = {
+    'a': 's', 'b': 'n', 'c': 'v', 'd': 'f', 'e': 'r', 'f': 'g', 'g': 'h',
+    'h': 'j', 'i': 'o', 'j': 'k', 'k': 'l', 'l': ';', 'm': ',', 'n': 'm',
+    'o': 'p', 'p': '[', 'q': 'w', 'r': 't', 's': 'd', 't': 'y', 'u': 'i',
+    'v': 'b', 'w': 'e', 'x': 'c', 'y': 'u', 'z': 'x'
+  };
+  return text.toLowerCase().split('').map(char => shiftMap[char] || char).join('');
+};
+
+/**
+ * Decodes keyboard shift back to normal
+ */
+export const decodeKeyboardShift = (text) => {
+  const reverseMap = {
+    's': 'a', 'n': 'b', 'v': 'c', 'f': 'd', 'r': 'e', 'g': 'f', 'h': 'g',
+    'j': 'h', 'o': 'i', 'k': 'j', 'l': 'k', ';': 'l', ',': 'm', 'm': 'n',
+    'p': 'o', '[': 'p', 'w': 'q', 't': 'r', 'd': 's', 'y': 't', 'i': 'u',
+    'b': 'v', 'e': 'w', 'c': 'x', 'u': 'y', 'x': 'z'
+  };
+  return text.toLowerCase().split('').map(char => reverseMap[char] || char).join('');
+};
+
+/**
+ * Emojipasta encoding - adds random emojis between words
+ * @param {string} text - The text to encode
+ * @returns {string} - Emojipasta text
+ */
+export const encodeEmojipasta = (text) => {
+  const emojis = ['😂', '🔥', '💯', '👀', '😭', '💀', '🤣', '😍', '🥺', '✨', '💕', '🙏', '😤', '👏', '💪'];
+  return text.split(' ').map(word => {
+    const numEmojis = Math.floor(Math.random() * 3) + 1;
+    const randomEmojis = Array(numEmojis).fill(0).map(() => 
+      emojis[Math.floor(Math.random() * emojis.length)]
+    ).join('');
+    return word + ' ' + randomEmojis;
+  }).join(' ');
+};
+
+/**
+ * Tally marks encoding - represents letters as tally marks
+ * @param {string} text - The text to encode
+ * @returns {string} - Tally marks representation
+ */
+export const encodeTally = (text) => {
+  return text.toLowerCase().split('').map(char => {
+    if (/[a-z]/.test(char)) {
+      const num = char.charCodeAt(0) - 96;
+      const fives = Math.floor(num / 5);
+      const ones = num % 5;
+      return '卌'.repeat(fives) + '|'.repeat(ones);
+    }
+    if (char === ' ') return '  ';
+    return char;
+  }).join(' ');
+};
+
+/**
+ * Whitespace steganography - encodes text as spaces and tabs
+ * @param {string} text - The text to encode
+ * @returns {string} - Whitespace encoded text
+ */
+export const encodeWhitespace = (text) => {
+  return text.split('').map(char => {
+    const binary = char.charCodeAt(0).toString(2).padStart(8, '0');
+    return binary.replace(/0/g, ' ').replace(/1/g, '\t');
+  }).join('');
+};
+
+/**
+ * Decodes whitespace steganography
+ */
+export const decodeWhitespace = (text) => {
+  try {
+    const binary = text.replace(/ /g, '0').replace(/\t/g, '1');
+    let result = '';
+    for (let i = 0; i < binary.length; i += 8) {
+      result += String.fromCharCode(parseInt(binary.slice(i, i + 8), 2));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+/**
+ * Acrostic generator - creates an acrostic poem from text
+ * @param {string} text - The text to encode
+ * @returns {string} - Acrostic poem
+ */
+export const encodeAcrostic = (text) => {
+  const words = {
+    'a': 'Amazing', 'b': 'Brilliant', 'c': 'Creative', 'd': 'Daring', 'e': 'Elegant',
+    'f': 'Fantastic', 'g': 'Graceful', 'h': 'Heroic', 'i': 'Incredible', 'j': 'Joyful',
+    'k': 'Kind', 'l': 'Lovely', 'm': 'Magical', 'n': 'Noble', 'o': 'Outstanding',
+    'p': 'Perfect', 'q': 'Quick', 'r': 'Radiant', 's': 'Stunning', 't': 'Terrific',
+    'u': 'Unique', 'v': 'Vibrant', 'w': 'Wonderful', 'x': 'Xtraordinary', 'y': 'Youthful',
+    'z': 'Zealous'
+  };
+  return text.toLowerCase().split('').filter(c => /[a-z]/.test(c)).map(char => 
+    words[char] || char.toUpperCase()
+  ).join('\n');
+};

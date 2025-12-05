@@ -369,7 +369,7 @@ const EnhancedTextEncoder = () => {
                   Creative Text Encoder
                 </h2>
                 <p className={`text-sm ${theme.textSecondary}`}>
-                  Transform text into 37+ encoding formats
+                  Transform text into 120+ encoding formats
                 </p>
               </div>
 
@@ -378,7 +378,7 @@ const EnhancedTextEncoder = () => {
                   <div className="text-2xl">🎯</div>
                   <div>
                     <h3 className="font-semibold text-sm">Instant Encoding</h3>
-                    <p className="text-xs text-white/70">See 37+ formats instantly - Binary, Morse, DNA, Emoji & more</p>
+                    <p className="text-xs text-white/70">See 120+ formats instantly - Binary, Morse, DNA, Emoji & more</p>
                   </div>
                 </div>
 
@@ -394,7 +394,7 @@ const EnhancedTextEncoder = () => {
                   <div className="text-2xl">✓</div>
                   <div>
                     <h3 className="font-semibold text-sm">Reversible</h3>
-                    <p className="text-xs text-white/70">17 encodings can decode back to original (look for ✓ mark)</p>
+                    <p className="text-xs text-white/70">50+ encodings can decode back to original (look for ✓ mark)</p>
                   </div>
                 </div>
               </div>
@@ -463,7 +463,7 @@ const EnhancedTextEncoder = () => {
                     <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
                     <div>
                       <h3 className="font-bold text-lg mb-2">Type Your Message</h3>
-                      <p className="text-white/70">Enter any text in the input box below. As you type, you'll see it instantly encoded in 37+ different formats!</p>
+                      <p className="text-white/70">Enter any text in the input box below. As you type, you'll see it instantly encoded in 120+ different formats!</p>
                     </div>
                   </div>
                 </div>
@@ -552,7 +552,7 @@ const EnhancedTextEncoder = () => {
             </div>
           </div>
           <p className={`text-lg md:text-xl ${theme.textSecondary} mb-4`}>
-            Transform your messages into 37+ creative encodings - instantly see Binary, Morse Code, DNA, Emoji, and more!
+            Transform your messages into 120+ creative encodings - instantly see Binary, Morse Code, DNA, Emoji, and more!
           </p>
 
           {/* Theme Switcher */}
@@ -596,7 +596,7 @@ const EnhancedTextEncoder = () => {
           <div className="backdrop-blur-xl bg-white/5 border border-white/20 rounded-xl p-3 mb-4 shadow-lg">
             <p className="text-xs md:text-sm text-center">
               {mode === 'encode'
-                ? '✨ Type text to see 37+ instant encodings'
+                ? '✨ Type text to see 120+ instant encodings'
                 : '🔓 Paste encoded text to decode (works with ✓ marked encoders)'}
             </p>
           </div>
