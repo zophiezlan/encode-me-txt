@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { X, Plus, Trash2, Save, Check, Sparkles, Upload } from 'lucide-react';
 import { CustomEncoderManager } from '../utils/customEncoderManager.js';
 
 const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {

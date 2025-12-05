@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { X, SkipBack, SkipForward, Play, Pause, Eye, BarChart3 } from 'lucide-react';
 import { VisualEncodingFlow } from '../utils/visualEncodingFlow.js';
 
 const VisualEncodingFlowViewer = ({ theme, inputText, encoder, caesarShift, onClose }) => {
