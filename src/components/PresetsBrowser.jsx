@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Search, Star, Play, Trash2, Download, Upload, Sparkles, TrendingUp } from 'lucide-react';
+import { useState } from 'react';
+import { X, Search, Star, Play, Trash2, Upload, Sparkles } from 'lucide-react';
 import { EncodingPresetsManager } from '../utils/encodingPresets.js';
 
 const PresetsBrowser = ({ theme, onClose, onLoadPreset }) => {

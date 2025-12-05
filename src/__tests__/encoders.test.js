@@ -259,3 +259,85 @@ describe('Reverse Text encoding', () => {
     expect(decoded).toBe(original)
   })
 })
+
+// Atbash encoding
+const encodeAtbash = (text) => {
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const position = char.charCodeAt(0) - start;
+    const reversedPosition = 25 - position;
+    return String.fromCharCode(reversedPosition + start);
+  });
+}
+
+describe('Atbash Cipher encoding', () => {
+  it('encodes text with reversed alphabet', () => {
+    expect(encodeAtbash('ABC')).toBe('ZYX')
+    expect(encodeAtbash('Hello')).toBe('Svool')
+  })
+
+  it('is its own inverse', () => {
+    const original = 'Hello World!'
+    const encoded = encodeAtbash(original)
+    const decoded = encodeAtbash(encoded)
+    expect(decoded).toBe(original)
+  })
+
+  it('preserves non-alphabetic characters', () => {
+    expect(encodeAtbash('123')).toBe('123')
+    expect(encodeAtbash('!@#')).toBe('!@#')
+  })
+})
+
+// Vigenère encoding
+const encodeVigenere = (text, keyword = 'SECRET') => {
+  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  let keyIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
+    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
+    const newPosition = (charPosition + keyPosition) % 26;
+    keyIndex++;
+    return String.fromCharCode(newPosition + start);
+  });
+}
+
+const decodeVigenere = (text, keyword = 'SECRET') => {
+  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  let keyIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
+    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
+    const newPosition = (charPosition - keyPosition + 26) % 26;
+    keyIndex++;
+    return String.fromCharCode(newPosition + start);
+  });
+}
+
+describe('Vigenère Cipher encoding', () => {
+  it('encodes text with keyword', () => {
+    // Using keyword 'SECRET': S=18, E=4, C=2, R=17, E=4, T=19
+    // 'A' + 18 = 'S', 'B' + 4 = 'F', 'C' + 2 = 'E'
+    expect(encodeVigenere('ABC', 'SEC')).toBe('SFE')
+  })
+
+  it('is reversible with known keyword', () => {
+    const original = 'Hello World!'
+    const keyword = 'SECRET'
+    const encoded = encodeVigenere(original, keyword)
+    const decoded = decodeVigenere(encoded, keyword)
+    expect(decoded).toBe(original)
+  })
+
+  it('preserves non-alphabetic characters', () => {
+    expect(encodeVigenere('123')).toBe('123')
+    expect(encodeVigenere('!@#')).toBe('!@#')
+  })
+})

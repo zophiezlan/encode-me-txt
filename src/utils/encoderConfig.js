@@ -129,6 +129,28 @@ export const encoderConfig = [
     reversible: true,
     tags: ['cipher', 'simple', 'mirror']
   },
+  {
+    id: 'atbash',
+    name: 'Atbash Cipher',
+    description: 'Hebrew cipher - reverse alphabet (A=Z)',
+    emoji: '🔀',
+    category: 'cipher',
+    encode: encoders.encodeAtbash,
+    decode: encoders.decodeAtbash,
+    reversible: true,
+    tags: ['cipher', 'cryptography', 'hebrew', 'ancient']
+  },
+  {
+    id: 'vigenere',
+    name: 'Vigenère Cipher',
+    description: 'Keyword-based polyalphabetic cipher',
+    emoji: '🔐',
+    category: 'cipher',
+    encode: encoders.encodeVigenere,
+    decode: encoders.decodeVigenere,
+    reversible: true,
+    tags: ['cipher', 'cryptography', 'polyalphabetic']
+  },
 
   // 🎉 Fun & Emoji
   {
@@ -233,6 +255,16 @@ export const encoderConfig = [
     encode: encoders.encodeRunes,
     reversible: false,
     tags: ['artistic', 'ancient', 'mystical']
+  },
+  {
+    id: 'ascii-art',
+    name: 'ASCII Art Banner',
+    description: 'Retro text art style',
+    emoji: '🎨',
+    category: 'artistic',
+    encode: encoders.encodeAsciiArt,
+    reversible: false,
+    tags: ['artistic', 'retro', 'banner', 'ascii']
   },
 
   // 🚀 Advanced (NEW!)

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Lightbulb, Check, Trophy, TrendingUp, Award, Flame, Star } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Lightbulb, Check, Trophy, TrendingUp, Award, Flame } from 'lucide-react';
 import { DailyPuzzleSystem } from '../utils/dailyPuzzles.js';
 
 const DailyPuzzle = ({ theme, onClose }) => {
@@ -43,16 +43,6 @@ const DailyPuzzle = ({ theme, onClose }) => {
       setAchievements(DailyPuzzleSystem.getAllAchievements());
     } else {
       alert('❌ Not quite right. Try again!');
-    }
-  };
-
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case 'easy': return 'text-green-400';
-      case 'medium': return 'text-yellow-400';
-      case 'hard': return 'text-orange-400';
-      case 'expert': return 'text-red-400';
-      default: return 'text-white';
     }
   };
 

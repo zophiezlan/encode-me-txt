@@ -1,6 +1,6 @@
 /**
  * Artistic Encoders
- * Creative visual encodings using blocks, music, zalgo, colors, and runes
+ * Creative visual encodings using blocks, music, zalgo, colors, runes, and ASCII art
  */
 
 // Character sets for artistic encodings
@@ -19,6 +19,51 @@ const COMBINING_MARKS = [
   '\u0310', '\u0311', '\u0312', '\u0313', '\u0314', '\u0315', '\u0316', '\u0317',
   '\u0318', '\u0319', '\u031A', '\u031B', '\u031C', '\u031D', '\u031E', '\u031F'
 ];
+
+// ASCII art letters (simplified 3-line format)
+const ASCII_LETTERS = {
+  'A': [' █ ', '█▀█', '▀ ▀'],
+  'B': ['██▄', '█▀█', '██▀'],
+  'C': ['▄██', '█  ', '▀██'],
+  'D': ['██▄', '█ █', '██▀'],
+  'E': ['███', '█▄ ', '███'],
+  'F': ['███', '█▄ ', '█  '],
+  'G': ['▄██', '█▄█', '▀██'],
+  'H': ['█ █', '███', '█ █'],
+  'I': ['███', ' █ ', '███'],
+  'J': ['███', '  █', '▀█▀'],
+  'K': ['█▄█', '██ ', '█ █'],
+  'L': ['█  ', '█  ', '███'],
+  'M': ['█▄█', '█▀█', '█ █'],
+  'N': ['█▄█', '█▀█', '█ █'],
+  'O': ['▄█▄', '█ █', '▀█▀'],
+  'P': ['██▄', '█▀▀', '█  '],
+  'Q': ['▄█▄', '█ █', '▀██'],
+  'R': ['██▄', '█▀█', '█ █'],
+  'S': ['▄██', ' █ ', '██▀'],
+  'T': ['███', ' █ ', ' █ '],
+  'U': ['█ █', '█ █', '▀█▀'],
+  'V': ['█ █', '█ █', ' ▀ '],
+  'W': ['█ █', '█▄█', '▀▀▀'],
+  'X': ['█ █', ' █ ', '█ █'],
+  'Y': ['█ █', ' █ ', ' █ '],
+  'Z': ['███', ' █ ', '███'],
+  '0': ['▄█▄', '█ █', '▀█▀'],
+  '1': [' █ ', ' █ ', ' █ '],
+  '2': ['▀█▄', ' █ ', '██▀'],
+  '3': ['▀█▄', ' █▄', '▀█▀'],
+  '4': ['█ █', '▀█▀', '  █'],
+  '5': ['██▄', '▀█ ', '██▀'],
+  '6': ['▄█▄', '██ ', '▀█▀'],
+  '7': ['███', '  █', '  █'],
+  '8': ['▄█▄', '▄█▄', '▀█▀'],
+  '9': ['▄█▄', '▀██', '▀█▀'],
+  ' ': ['   ', '   ', '   '],
+  '!': [' █ ', ' █ ', ' ▀ '],
+  '?': ['▀█▄', ' █ ', ' ▀ '],
+  '.': ['   ', '   ', ' ▀ '],
+  ',': ['   ', '   ', ' ▄ ']
+};
 
 /**
  * Encodes text to block art using geometric patterns
@@ -78,4 +123,23 @@ export const encodeRunes = (text) => {
   return text.split('').map(char =>
     RUNES[char.charCodeAt(0) % RUNES.length]
   ).join('');
+};
+
+/**
+ * Encodes text to ASCII art banner (3 lines)
+ * @param {string} text - The text to encode
+ * @returns {string} - ASCII art representation
+ */
+export const encodeAsciiArt = (text) => {
+  const upperText = text.toUpperCase();
+  const lines = ['', '', ''];
+  
+  for (const char of upperText) {
+    const artChar = ASCII_LETTERS[char] || ASCII_LETTERS[' '];
+    lines[0] += artChar[0] + ' ';
+    lines[1] += artChar[1] + ' ';
+    lines[2] += artChar[2] + ' ';
+  }
+  
+  return lines.join('\n');
 };

@@ -22,7 +22,7 @@ export class VisualEncodingFlow {
         } else {
           encoded = encoder.encode(char);
         }
-      } catch (error) {
+      } catch {
         encoded = char;
       }
 

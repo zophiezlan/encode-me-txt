@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
-  Copy, Check, Shuffle, Sparkles, Search, X, History,
-  Share2, Palette, Keyboard, Info, ChevronDown, ChevronUp,
-  Trash2, TrendingUp, Zap, Link2, Eye, Filter, HelpCircle,
-  BookOpen, Play, Lightbulb, ArrowRight, Star, Wand2, Film, Package, Gamepad2
+  Copy, Check, Search, X, History,
+  Share2, Keyboard, Trash2, TrendingUp, Zap, Eye, HelpCircle,
+  BookOpen, Wand2, Film, Package, Gamepad2
 } from 'lucide-react';
 import { encoderConfig, categories } from '../utils/encoderConfig.js';
 import { themes, getTheme, saveTheme, loadTheme } from '../utils/themeSystem.js';
@@ -13,8 +12,6 @@ import { EncodingAnalyzer } from '../utils/encodingAnalyzer.js';
 import { ShareManager } from '../utils/shareManager.js';
 import { KeyboardShortcuts } from '../utils/keyboardShortcuts.js';
 import { CustomEncoderManager } from '../utils/customEncoderManager.js';
-import { EncodingPresetsManager } from '../utils/encodingPresets.js';
-import { DailyPuzzleSystem } from '../utils/dailyPuzzles.js';
 import CustomEncoderBuilder from './CustomEncoderBuilder.jsx';
 import VisualEncodingFlowViewer from './VisualEncodingFlowViewer.jsx';
 import PresetsBrowser from './PresetsBrowser.jsx';
@@ -61,9 +58,6 @@ const EnhancedTextEncoder = () => {
     return !localStorage.getItem('encoder-onboarded');
   });
   const [showGuide, setShowGuide] = useState(false);
-  const [tutorialStep, setTutorialStep] = useState(0);
-  const [showTooltip, setShowTooltip] = useState('');
-  const [hoveredFeature, setHoveredFeature] = useState(null);
 
   // NEW: Next Evolution Features
   const [showCustomBuilder, setShowCustomBuilder] = useState(false);
@@ -71,12 +65,23 @@ const EnhancedTextEncoder = () => {
   const [showPresets, setShowPresets] = useState(false);
   const [showDailyPuzzle, setShowDailyPuzzle] = useState(false);
   const [visualFlowEncoder, setVisualFlowEncoder] = useState(null);
-  const [customEncoders, setCustomEncoders] = useState([]);
   const [allEncoders, setAllEncoders] = useState(encoderConfig);
 
   const searchInputRef = useRef(null);
   const keyboardShortcuts = useRef(null);
   const theme = getTheme(currentTheme);
+
+  // Memoized theme cycler for keyboard shortcuts
+  const cycleTheme = useCallback(() => {
+    const themeIds = Object.keys(themes);
+    setCurrentTheme(prev => {
+      const currentIndex = themeIds.indexOf(prev);
+      const nextIndex = (currentIndex + 1) % themeIds.length;
+      const nextTheme = themeIds[nextIndex];
+      saveTheme(nextTheme);
+      return nextTheme;
+    });
+  }, []);
 
   // Initialize keyboard shortcuts
   useEffect(() => {
@@ -99,7 +104,7 @@ const EnhancedTextEncoder = () => {
     ks.start();
 
     return () => ks.stop();
-  }, []);
+  }, [cycleTheme]);
 
   // Load history
   useEffect(() => {
@@ -119,20 +124,15 @@ const EnhancedTextEncoder = () => {
 
   // NEW: Load custom encoders and merge with built-in encoders
   useEffect(() => {
-    const loadCustomEncoders = () => {
-      const customs = CustomEncoderManager.getEncoders();
-      setCustomEncoders(customs);
+    const customs = CustomEncoderManager.getEncoders();
 
-      // Convert custom encoders to encoder config format
-      const customConfigs = customs.map(ce =>
-        CustomEncoderManager.toEncoderConfig(ce)
-      );
+    // Convert custom encoders to encoder config format
+    const customConfigs = customs.map(ce =>
+      CustomEncoderManager.toEncoderConfig(ce)
+    );
 
-      // Merge with built-in encoders
-      setAllEncoders([...encoderConfig, ...customConfigs]);
-    };
-
-    loadCustomEncoders();
+    // Merge with built-in encoders
+    setAllEncoders([...encoderConfig, ...customConfigs]);
   }, [showCustomBuilder]); // Reload when custom builder is closed
 
   // Save favorites
@@ -150,20 +150,11 @@ const EnhancedTextEncoder = () => {
     localStorage.setItem('shuffle-encoders', JSON.stringify(shuffleEncoders));
   }, [shuffleEncoders]);
 
-  const updateEncoderParam = (encoderId, paramName, value) => {
+  const updateEncoderParam = (_encoderId, _paramName, value) => {
     setEncoderParams(prev => ({
       ...prev,
-      [encoderId]: value
+      caesar: value
     }));
-  };
-
-  const cycleTheme = () => {
-    const themeIds = Object.keys(themes);
-    const currentIndex = themeIds.indexOf(currentTheme);
-    const nextIndex = (currentIndex + 1) % themeIds.length;
-    const nextTheme = themeIds[nextIndex];
-    setCurrentTheme(nextTheme);
-    saveTheme(nextTheme);
   };
 
   const toggleFavorite = (id) => {
@@ -275,11 +266,6 @@ const EnhancedTextEncoder = () => {
     setShowGuide(true);
   };
 
-  const resetOnboarding = () => {
-    localStorage.removeItem('encoder-onboarded');
-    setShowWelcome(true);
-  };
-
   const tryExample = (exampleText) => {
     setInputText(exampleText);
     completeOnboarding();
@@ -315,7 +301,7 @@ const EnhancedTextEncoder = () => {
             results[encoder.id] = encoder.encode(inputText);
           }
         }
-      } catch (error) {
+      } catch {
         results[encoder.id] = '[Error]';
       }
     });
@@ -950,6 +936,24 @@ const EnhancedTextEncoder = () => {
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-bold"><History size={24} className="inline mr-2" />Encoding History</h3>
               <div className="flex gap-2">
+                {history.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => HistoryManager.downloadHistory('json')}
+                      className="px-3 py-1 bg-blue-500/30 hover:bg-blue-500/50 rounded-lg text-sm"
+                      title="Export as JSON"
+                    >
+                      📥 JSON
+                    </button>
+                    <button
+                      onClick={() => HistoryManager.downloadHistory('csv')}
+                      className="px-3 py-1 bg-green-500/30 hover:bg-green-500/50 rounded-lg text-sm"
+                      title="Export as CSV"
+                    >
+                      📊 CSV
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={() => {
                     HistoryManager.clearHistory();
@@ -1365,10 +1369,8 @@ const EnhancedTextEncoder = () => {
           <CustomEncoderBuilder
             theme={theme}
             onClose={() => setShowCustomBuilder(false)}
-            onSave={(encoder) => {
-              // Reload encoders
-              const customs = CustomEncoderManager.getEncoders();
-              setCustomEncoders(customs);
+            onSave={() => {
+              // Reload custom encoders - handled by useEffect watching showCustomBuilder
             }}
           />
         )}

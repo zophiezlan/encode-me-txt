@@ -1,6 +1,6 @@
 /**
  * Cipher Encoders
- * Caesar, ROT13, and other substitution ciphers
+ * Caesar, ROT13, Atbash, Vigenère, and other substitution ciphers
  */
 
 /**
@@ -57,3 +57,66 @@ export const encodeReverse = (text) => {
  * Reverse decoder (same as encoder since reversing is symmetric)
  */
 export const decodeReverse = encodeReverse;
+
+/**
+ * Atbash Cipher - Reverses the alphabet (A=Z, B=Y, C=X, etc.)
+ * This is a symmetric cipher, so encoding and decoding are the same
+ * @param {string} text - The text to encode
+ * @returns {string} - Encoded text
+ */
+export const encodeAtbash = (text) => {
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const position = char.charCodeAt(0) - start;
+    const reversedPosition = 25 - position;
+    return String.fromCharCode(reversedPosition + start);
+  });
+};
+
+/**
+ * Atbash decoder (same as encoder since it's symmetric)
+ */
+export const decodeAtbash = encodeAtbash;
+
+/**
+ * Vigenère Cipher - Uses a keyword to shift each letter
+ * @param {string} text - The text to encode
+ * @param {string} keyword - The keyword for the cipher (default: 'SECRET')
+ * @returns {string} - Encoded text
+ */
+export const encodeVigenere = (text, keyword = 'SECRET') => {
+  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  let keyIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
+    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
+    const newPosition = (charPosition + keyPosition) % 26;
+    keyIndex++;
+    return String.fromCharCode(newPosition + start);
+  });
+};
+
+/**
+ * Vigenère decoder
+ * @param {string} text - The text to decode
+ * @param {string} keyword - The keyword used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeVigenere = (text, keyword = 'SECRET') => {
+  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
+  let keyIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const isUpper = char <= 'Z';
+    const start = isUpper ? 65 : 97;
+    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
+    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
+    const newPosition = (charPosition - keyPosition + 26) % 26;
+    keyIndex++;
+    return String.fromCharCode(newPosition + start);
+  });
+};
