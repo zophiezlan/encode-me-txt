@@ -9,6 +9,7 @@ All encoder functions follow consistent patterns for ease of use and testing.
 - [Function Signatures](#function-signatures)
 - [Encoder Categories](#encoder-categories)
 - [Configuration API](#configuration-api)
+- [Encoder Deduplication API](#encoder-deduplication-api)
 - [Audio Player API](#audio-player-api)
 - [Usage Examples](#usage-examples)
 
@@ -464,6 +465,128 @@ interface Encoder {
   tags: string[];          // Searchable tags
 }
 ```
+
+### Encoder Deduplication API
+
+The encoder deduplication utility helps manage duplicate/related encoders, prioritizing "Pro" versions and identifying aliases.
+
+```javascript
+import {
+  // Main functions
+  getDeduplicatedEncoders,
+  getEncodersWithRedundancyMarkers,
+  getDeduplicationSummary,
+  
+  // Utility functions
+  getPreferredEncoder,
+  isSuperseded,
+  isAlias,
+  isRedundant,
+  getEncoderRelationship,
+  
+  // Get lists of redundant encoders
+  getRedundantEncoderIds,
+  getSupersededEncoderIds,
+  getAliasEncoderIds,
+  
+  // Advanced
+  deduplicateEncoders,
+  groupByPreferredEncoder,
+  encoderRelationships
+} from './utils/encoderConfig.js';
+```
+
+#### Get Deduplicated Encoders
+
+```javascript
+// Get encoder list with redundant encoders removed
+// Prioritizes Pro versions and canonical implementations
+const deduplicated = getDeduplicatedEncoders();
+console.log(deduplicated.length); // Fewer than encoderConfig.length
+
+// Custom options
+const customDedup = getDeduplicatedEncoders({
+  removeSuperseded: true,  // Remove encoders superseded by Pro versions (default: true)
+  removeAliases: true      // Remove alias encoders (default: true)
+});
+```
+
+#### Get Deduplication Summary
+
+```javascript
+const summary = getDeduplicationSummary(encoderConfig);
+console.log(summary);
+// {
+//   total: 350,           // Total encoders
+//   unique: 334,          // Non-redundant encoders
+//   superseded: 10,       // Encoders superseded by Pro versions
+//   aliases: 6,           // Alias encoders
+//   deduplicatedCount: 334,
+//   supersededEncoders: [...],  // Details about superseded encoders
+//   aliasEncoders: [...]        // Details about alias encoders
+// }
+```
+
+#### Check Encoder Relationships
+
+```javascript
+// Check if encoder has a better alternative
+isSuperseded('leetspeak');     // true - has leetspeak-pro
+isAlias('vaporwave');          // true - alias of fullwidth
+isRedundant('binary');         // true - has binary-pro
+
+// Get preferred encoder ID
+getPreferredEncoder('leetspeak');   // 'leetspeak-pro'
+getPreferredEncoder('vaporwave');   // 'fullwidth'
+getPreferredEncoder('base64');      // 'base64' (unchanged)
+
+// Get relationship details
+const rel = getEncoderRelationship('leetspeak');
+// { supersededBy: 'leetspeak-pro', reason: 'Pro version offers intensity control settings' }
+```
+
+#### Mark Redundant Encoders
+
+```javascript
+// Get all encoders with redundancy markers
+const marked = getEncodersWithRedundancyMarkers();
+marked.forEach(encoder => {
+  if (encoder.isRedundant) {
+    console.log(`${encoder.id} is redundant:`);
+    console.log(`  Type: ${encoder.redundantType}`);  // 'superseded' or 'alias'
+    console.log(`  Preferred: ${encoder.preferredEncoder}`);
+    console.log(`  Reason: ${encoder.redundantReason}`);
+  }
+});
+```
+
+#### Encoder Relationships
+
+The following encoders have better alternatives:
+
+**Superseded by Pro versions:**
+| Original | Pro Version | Reason |
+|----------|-------------|--------|
+| `leetspeak` | `leetspeak-pro` | Intensity control settings |
+| `uwu` | `uwu-pro` | Customizable intensity |
+| `spongebob` | `spongebob-pro` | Randomness control |
+| `emojipasta` | `emojipasta-pro` | Density control |
+| `binary` | `binary-pro` | Customizable bit grouping |
+| `morse` | `morse-pro` | Customizable delimiter styles |
+| `tap-code` | `tap-code-pro` | Symbol options |
+| `polybius` | `polybius-pro` | 5x5 or 6x6 grid option |
+| `nato` | `nato-extended` | NATO/Police/Western Union phonetics |
+| `navy-flags` | `maritime-flags-pro` | International maritime flags |
+
+**Aliases (functionally equivalent):**
+| Alias | Canonical | Reason |
+|-------|-----------|--------|
+| `vaporwave` | `fullwidth` | Both produce full-width aesthetic characters |
+| `medieval` | `math-fraktur` | Both produce Gothic/Fraktur text |
+| `zodiac-signs` | `zodiac` | Both encode using zodiac symbols |
+| `chess-pieces` | `chess` | Both encode using chess piece symbols |
+| `weather-symbols` | `weather` | Both encode using weather symbols |
+| `music-notes` | `musical` | Both encode using musical notation |
 
 ## Audio Player API
 

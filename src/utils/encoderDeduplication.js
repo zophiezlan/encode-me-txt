@@ -172,7 +172,7 @@ export const getAliasEncoderIds = () => {
  * Removes encoders that are superseded by Pro versions or are aliases
  * @param {Array} encoders - Array of encoder config objects
  * @param {Object} options - Deduplication options
- * @param {boolean} options.removeSuperseeded - Remove encoders superseded by Pro versions (default: true)
+ * @param {boolean} options.removeSuperseded - Remove encoders superseded by Pro versions (default: true)
  * @param {boolean} options.removeAliases - Remove alias encoders (default: true)
  * @param {boolean} options.markRedundant - Instead of removing, mark redundant encoders (default: false)
  * @returns {Array} - Deduplicated or marked encoder array
