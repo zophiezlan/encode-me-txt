@@ -3,7 +3,15 @@ import {
   encodeAtbash, 
   decodeAtbash, 
   encodeVigenere, 
-  decodeVigenere 
+  decodeVigenere,
+  encodeRailFence,
+  decodeRailFence,
+  encodeBacon,
+  decodeBacon,
+  encodePolybius,
+  decodePolybius,
+  encodeROT47,
+  decodeROT47
 } from '../utils/encoders/ciphers.js'
 
 // Re-implement the encoding functions for testing purposes
@@ -303,5 +311,62 @@ describe('Vigenère Cipher encoding', () => {
   it('preserves non-alphabetic characters', () => {
     expect(encodeVigenere('123')).toBe('123')
     expect(encodeVigenere('!@#')).toBe('!@#')
+  })
+})
+
+// New cipher tests
+describe('Rail Fence Cipher', () => {
+  it('encodes text with zigzag pattern', () => {
+    expect(encodeRailFence('HELLO', 3)).toBe('HOELL')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLOWORLD'
+    const encoded = encodeRailFence(original, 3)
+    const decoded = decodeRailFence(encoded, 3)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe("Bacon's Cipher", () => {
+  it('encodes letters as A/B patterns', () => {
+    expect(encodeBacon('A')).toBe('AAAAA')
+    expect(encodeBacon('B')).toBe('AAAAB')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLO'
+    const encoded = encodeBacon(original)
+    const decoded = decodeBacon(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Polybius Square', () => {
+  it('encodes letters as coordinate pairs', () => {
+    expect(encodePolybius('A')).toBe('11')
+    expect(encodePolybius('Z')).toBe('55')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLO'
+    const encoded = encodePolybius(original)
+    const decoded = decodePolybius(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('ROT47 Cipher', () => {
+  it('rotates printable ASCII characters', () => {
+    const original = 'Hello World!'
+    const encoded = encodeROT47(original)
+    expect(encoded).not.toBe(original)
+  })
+
+  it('is its own inverse (symmetric)', () => {
+    const original = 'Hello World!'
+    const encoded = encodeROT47(original)
+    const decoded = decodeROT47(encoded)
+    expect(decoded).toBe(original)
   })
 })

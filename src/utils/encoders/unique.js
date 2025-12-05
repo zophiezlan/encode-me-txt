@@ -334,3 +334,261 @@ export const encodeTrafficSigns = (text) => {
   }
   return result;
 };
+
+/**
+ * Binary Tree/Leaf Encoding
+ * Encode text as tree symbols
+ */
+export const encodeTreePattern = (text) => {
+  const trees = ['🌲', '🌳', '🌴', '🎄', '🌵', '🎋', '🍀', '🌿', '🍃', '🍂', '🍁', '🌱'];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += trees[code % trees.length];
+  }
+  return result;
+};
+
+/**
+ * Moon Phases Encoding
+ * Encode text using moon phase emojis
+ */
+export const encodeMoonPhase = (text) => {
+  const moons = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += moons[code % moons.length];
+  }
+  return result;
+};
+
+/**
+ * Animal Encoding
+ * Encode text using animal emojis
+ */
+export const encodeAnimal = (text) => {
+  const animals = [
+    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼',
+    '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔',
+    '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺',
+    '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += animals[code % animals.length];
+  }
+  return result;
+};
+
+/**
+ * Food/Fruit Encoding
+ * Encode text using food emojis
+ */
+export const encodeFood = (text) => {
+  const food = [
+    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓',
+    '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
+    '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑',
+    '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += food[code % food.length];
+  }
+  return result;
+};
+
+/**
+ * Sports Encoding
+ * Encode text using sports emojis
+ */
+export const encodeSports = (text) => {
+  const sports = [
+    '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉',
+    '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍',
+    '🏏', '🪃', '🥅', '⛳', '🪁', '🛷', '⛸️', '🥌',
+    '🎿', '⛷️', '🏂', '🤺', '🏋️', '🤼', '🤸', '⛹️'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += sports[code % sports.length];
+  }
+  return result;
+};
+
+/**
+ * Musical Instrument Encoding
+ * Encode text using instrument emojis
+ */
+export const encodeInstruments = (text) => {
+  const instruments = [
+    '🎹', '🎸', '🎺', '🎷', '🪗', '🎻', '🪕', '🎤',
+    '🎧', '🥁', '🪘', '📯', '🔔', '🎼', '🎵', '🎶'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += instruments[code % instruments.length];
+  }
+  return result;
+};
+
+/**
+ * Planet/Space Encoding
+ * Encode text using space emojis
+ */
+export const encodeSpace = (text) => {
+  const space = [
+    '🌍', '🌎', '🌏', '🌐', '🪐', '⭐', '🌟', '💫',
+    '✨', '☄️', '🌙', '🌛', '🌜', '🌝', '🌞', '🚀',
+    '🛸', '🌌', '🔭', '🌠', '👽', '🛰️', '☀️', '💥'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += space[code % space.length];
+  }
+  return result;
+};
+
+/**
+ * Ocean/Sea Encoding
+ * Encode text using ocean emojis
+ */
+export const encodeOcean = (text) => {
+  const ocean = [
+    '🌊', '🐚', '🦀', '🦞', '🦐', '🦑', '🐙', '🦪',
+    '🐠', '🐟', '🐡', '🦈', '🐬', '🐳', '🐋', '🐢',
+    '🏝️', '⛵', '🚢', '⚓', '🪸', '🧜', '🏄', '🤿'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += ocean[code % ocean.length];
+  }
+  return result;
+};
+
+/**
+ * Roman Numeral Encoding
+ * Encode character codes as Roman numerals
+ */
+export const encodeRomanNumeral = (text) => {
+  const toRoman = (num) => {
+    const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+    const numerals = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
+    let result = '';
+    for (let i = 0; i < values.length; i++) {
+      while (num >= values[i]) {
+        result += numerals[i];
+        num -= values[i];
+      }
+    }
+    return result;
+  };
+  
+  return text.split('').map(char => {
+    if (char === ' ') return ' ';
+    return toRoman(char.charCodeAt(0));
+  }).join('-');
+};
+
+/**
+ * Number Words Encoding
+ * Encode text as spelled-out numbers
+ */
+export const encodeNumberWords = (text) => {
+  const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  
+  return text.split('').map(char => {
+    if (char === ' ') return ' ';
+    const code = char.charCodeAt(0);
+    return code.toString().split('').map(d => words[parseInt(d)]).join('-');
+  }).join(' ');
+};
+
+/**
+ * Hexagram (I Ching) Encoding
+ * Encode text using I Ching hexagram symbols
+ */
+export const encodeHexagram = (text) => {
+  const hexagrams = [
+    '䷀', '䷁', '䷂', '䷃', '䷄', '䷅', '䷆', '䷇', '䷈', '䷉',
+    '䷊', '䷋', '䷌', '䷍', '䷎', '䷏', '䷐', '䷑', '䷒', '䷓',
+    '䷔', '䷕', '䷖', '䷗', '䷘', '䷙', '䷚', '䷛', '䷜', '䷝',
+    '䷞', '䷟', '䷠', '䷡', '䷢', '䷣', '䷤', '䷥', '䷦', '䷧',
+    '䷨', '䷩', '䷪', '䷫', '䷬', '䷭', '䷮', '䷯', '䷰', '䷱',
+    '䷲', '䷳', '䷴', '䷵', '䷶', '䷷', '䷸', '䷹', '䷺', '䷻',
+    '䷼', '䷽', '䷾', '䷿'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += hexagrams[code % hexagrams.length];
+  }
+  return result;
+};
+
+/**
+ * Chess Piece Encoding
+ * Encode text using chess piece symbols
+ */
+export const encodeChess = (text) => {
+  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += pieces[code % pieces.length];
+  }
+  return result;
+};
+
+/**
+ * Dice Encoding
+ * Encode text using dice faces
+ */
+export const encodeDice = (text) => {
+  const dice = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    // Use two dice for each character (for more combinations)
+    result += dice[Math.floor(code / 6) % 6] + dice[code % 6] + ' ';
+  }
+  return result.trim();
+};
+
+/**
+ * Mahjong Tile Encoding
+ * Encode text using Mahjong tiles
+ */
+export const encodeMahjong = (text) => {
+  const tiles = [
+    '🀀', '🀁', '🀂', '🀃', '🀄', '🀅', '🀆', '🀇',
+    '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏',
+    '🀐', '🀑', '🀒', '🀓', '🀔', '🀕', '🀖', '🀗',
+    '🀘', '🀙', '🀚', '🀛', '🀜', '🀝', '🀞', '🀟'
+  ];
+  
+  let result = '';
+  for (let char of text) {
+    const code = char.charCodeAt(0);
+    result += tiles[code % tiles.length];
+  }
+  return result;
+};
