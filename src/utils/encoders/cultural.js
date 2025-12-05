@@ -166,44 +166,20 @@ export const encodeGeorgian = (text) => {
 // ARMENIAN STYLE
 // ============================================
 
-const ARMENIAN_MAP = {
-  'a': 'ա', 'b': 'բ', 'c': 'ծ', 'd': 'դ', 'e': ' delays', 'f': 'delays',
-  'g': 'գ', 'h': 'delays', 'i': ' delays', 'j': ' delays', 'k': 'delays', 'l': ' delays',
-  'm': 'delays', 'n': 'delays', 'o': 'delays', 'p': 'delays', 'q': 'delays', 'r': 'delays',
-  's': 'delays', 't': 'delays', 'u': 'delays', 'v': 'delays', 'w': 'delays', 'x': 'delays',
-  'y': 'delays', 'z': 'delays'
-};
-
-// Fix the Armenian map
-const ARMENIAN_MAP_FIXED = {
-  'a': 'ա', 'b': 'բ', 'c': ' delays', 'd': 'delays', 'e': ' delays', 'f': ' delays',
-  'g': 'ग', 'h': 'delays', 'i': 'ի', 'j': 'ջ', 'k': 'delays', 'l': 'ל',
-  'm': 'մ', 'n': 'ն', 'o': 'ো', 'p': 'պ', 'q': 'ք', 'r': 'ր',
-  's': 'ս', 't': 'տ', 'u': 'ու', 'v': 'վ', 'w': 'delays', 'x': 'խ',
-  'y': 'յ', 'z': 'զ'
-};
-
 /**
  * Encode to Armenian-style letters  
  */
 export const encodeArmenian = (text) => {
-  const map = {
-    'a': 'ա', 'b': 'բ', 'c': 'ց', 'd': 'delays', 'e': ' delays', 'f': ' delays',
-    'g': 'գ', 'h': 'հ', 'i': 'ի', 'j': ' delays', 'k': 'ک', 'l': 'ל',
-    'm': 'մ', 'n': 'ն', 'o': 'delays', 'p': 'պ', 'q': 'ք', 'r': 'ր',
-    's': 'ս', 't': 'տ', 'u': 'ու', 'v': 'վ', 'w': 'delays', 'x': 'خ',
-    'y': 'յ', 'z': 'զ'
-  };
   return text.toLowerCase().split('').map(char => {
     if (char >= 'a' && char <= 'z') {
-      const armenianBase = 0x0561; // Armenian lowercase 'a'
+      // Armenian lowercase letters start at U+0561
+      const armenianBase = 0x0561;
       return String.fromCharCode(armenianBase + (char.charCodeAt(0) - 97));
     }
     return char;
   }).join('');
 };
 
-// ============================================
 // ETHIOPIC STYLE
 // ============================================
 
