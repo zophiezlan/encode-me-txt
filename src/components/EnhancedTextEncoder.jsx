@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Copy, Check, Search, X, History,
   Share2, Keyboard, Trash2, TrendingUp, Zap, Eye, HelpCircle,
-  BookOpen, Wand2, Film, Package, Gamepad2
+  BookOpen, Wand2, Film, Package, Gamepad2, Filter, SortAsc, Tag
 } from 'lucide-react';
 import { encoderConfig, categories } from '../utils/encoderConfig.js';
 import { themes, getTheme, saveTheme, loadTheme } from '../utils/themeSystem.js';
@@ -67,6 +67,10 @@ const EnhancedTextEncoder = () => {
   const [currentTheme, setCurrentTheme] = useState(loadTheme());
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [filterReversible, setFilterReversible] = useState('all'); // 'all', 'reversible', 'non-reversible'
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [sortBy, setSortBy] = useState('default'); // 'default', 'name', 'category'
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [favorites, setFavorites] = useState(() => {
     const saved = localStorage.getItem('encoder-favorites');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -566,9 +570,18 @@ const EnhancedTextEncoder = () => {
     return results;
   }, [inputText, mode, encoderParams, shuffleEncoders, allEncoders]);
 
+  // Get all unique tags from encoders
+  const allTags = useMemo(() => {
+    const tags = new Set();
+    allEncoders.forEach(encoder => {
+      encoder.tags?.forEach(tag => tags.add(tag));
+    });
+    return Array.from(tags).sort();
+  }, [allEncoders]);
+
   // Filter encoders (memoized)
   const filteredEncoders = useMemo(() => {
-    return allEncoders.filter(encoder => {
+    let filtered = allEncoders.filter(encoder => {
       const matchesSearch = searchQuery === '' ||
         encoder.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         encoder.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -576,10 +589,28 @@ const EnhancedTextEncoder = () => {
 
       const matchesCategory = selectedCategory === 'all' || encoder.category === selectedCategory || (encoder.custom && selectedCategory === 'custom');
       const matchesFavorites = selectedCategory !== 'favorites' || favorites.has(encoder.id);
+      
+      // Advanced filter: reversibility
+      const matchesReversible = filterReversible === 'all' || 
+        (filterReversible === 'reversible' && encoder.reversible) ||
+        (filterReversible === 'non-reversible' && !encoder.reversible);
+      
+      // Advanced filter: selected tags
+      const matchesTags = selectedTags.length === 0 || 
+        selectedTags.every(tag => encoder.tags?.includes(tag));
 
-      return matchesSearch && matchesCategory && matchesFavorites;
+      return matchesSearch && matchesCategory && matchesFavorites && matchesReversible && matchesTags;
     });
-  }, [searchQuery, selectedCategory, favorites, allEncoders]);
+    
+    // Sort results
+    if (sortBy === 'name') {
+      filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === 'category') {
+      filtered = [...filtered].sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+    }
+    
+    return filtered;
+  }, [searchQuery, selectedCategory, favorites, allEncoders, filterReversible, selectedTags, sortBy]);
 
   const playMorseSound = async (morseCode) => {
     if (!window.AudioContext) return;
@@ -1022,7 +1053,114 @@ const EnhancedTextEncoder = () => {
                 </option>
               ))}
             </select>
+            
+            <button
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className={`px-4 py-3 bg-white/10 backdrop-blur-md border-2 rounded-xl flex items-center gap-2 transition-all ${
+                showAdvancedFilters || filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default'
+                  ? 'border-purple-400/60 bg-purple-500/20'
+                  : 'border-white/20 hover:border-purple-400/40'
+              }`}
+              title="Advanced Filters"
+            >
+              <Filter size={18} />
+              <span className="hidden sm:inline">Filters</span>
+              {(filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default') && (
+                <span className="bg-purple-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                  {(filterReversible !== 'all' ? 1 : 0) + selectedTags.length + (sortBy !== 'default' ? 1 : 0)}
+                </span>
+              )}
+            </button>
           </div>
+          
+          {/* Advanced Filters Panel */}
+          {showAdvancedFilters && (
+            <div className="mt-4 pt-4 border-t border-white/20 space-y-4">
+              <div className="flex flex-wrap gap-4">
+                {/* Reversibility Filter */}
+                <div className="flex-1 min-w-[200px]">
+                  <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                    <Zap size={14} /> Reversibility
+                  </label>
+                  <select
+                    value={filterReversible}
+                    onChange={(e) => setFilterReversible(e.target.value)}
+                    className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
+                  >
+                    <option value="all">All Encoders</option>
+                    <option value="reversible">✓ Reversible Only</option>
+                    <option value="non-reversible">✗ Non-Reversible Only</option>
+                  </select>
+                </div>
+                
+                {/* Sort Options */}
+                <div className="flex-1 min-w-[200px]">
+                  <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                    <SortAsc size={14} /> Sort By
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className={`w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg ${theme.textPrimary} focus:outline-none focus:border-purple-400/60`}
+                  >
+                    <option value="default">Default Order</option>
+                    <option value="name">Alphabetical (A-Z)</option>
+                    <option value="category">By Category</option>
+                  </select>
+                </div>
+              </div>
+              
+              {/* Tag Filter */}
+              <div>
+                <label className="text-sm font-medium mb-2 block flex items-center gap-2">
+                  <Tag size={14} /> Filter by Tags
+                  {selectedTags.length > 0 && (
+                    <button
+                      onClick={() => setSelectedTags([])}
+                      className="text-xs text-purple-400 hover:text-purple-300 ml-2"
+                    >
+                      Clear all
+                    </button>
+                  )}
+                </label>
+                <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-2 bg-white/5 rounded-lg">
+                  {allTags.map(tag => (
+                    <button
+                      key={tag}
+                      onClick={() => {
+                        if (selectedTags.includes(tag)) {
+                          setSelectedTags(selectedTags.filter(t => t !== tag));
+                        } else {
+                          setSelectedTags([...selectedTags, tag]);
+                        }
+                      }}
+                      className={`px-2 py-1 rounded-full text-xs transition-all ${
+                        selectedTags.includes(tag)
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-white/10 hover:bg-white/20'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Reset Filters Button */}
+              {(filterReversible !== 'all' || selectedTags.length > 0 || sortBy !== 'default') && (
+                <button
+                  onClick={() => {
+                    setFilterReversible('all');
+                    setSelectedTags([]);
+                    setSortBy('default');
+                  }}
+                  className="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                >
+                  <X size={14} /> Reset all filters
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Chain Mode Panel */}

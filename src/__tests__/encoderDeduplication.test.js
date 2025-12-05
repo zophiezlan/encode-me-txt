@@ -247,49 +247,34 @@ describe('Encoder Deduplication', () => {
       });
     });
 
-    it('should have regular encoders that are marked as superseded', () => {
-      const supersededIds = ['leetspeak', 'uwu', 'spongebob', 'binary', 'morse'];
-      supersededIds.forEach(id => {
-        expect(isSuperseded(id)).toBe(true);
-        expect(encoderConfig.find(e => e.id === id)).toBeDefined();
+    it('should have removed redundant encoders from encoderConfig', () => {
+      // Verify that redundant encoders are no longer in the config
+      const redundantIds = getRedundantEncoderIds();
+      redundantIds.forEach(id => {
+        expect(encoderConfig.find(e => e.id === id)).toBeUndefined();
       });
     });
 
-    it('should produce a deduplicated list with fewer encoders', () => {
-      const dedup = getDeduplicatedEncoders();
-      expect(dedup.length).toBeLessThan(encoderConfig.length);
-      expect(dedup.length).toBe(encoderConfig.length - getRedundantEncoderIds().length);
+    it('should have encoderRelationships still define redundancy for reference', () => {
+      // The relationships are still defined for documentation/reference purposes
+      expect(isSuperseded('leetspeak')).toBe(true);
+      expect(isSuperseded('binary')).toBe(true);
+      expect(isAlias('vaporwave')).toBe(true);
     });
 
-    it('should not include superseded encoders in deduplicated list', () => {
+    it('should return same list from getDeduplicatedEncoders since redundant already removed', () => {
       const dedup = getDeduplicatedEncoders();
-      const supersededIds = getSupersededEncoderIds();
-      supersededIds.forEach(id => {
-        expect(dedup.find(e => e.id === id)).toBeUndefined();
-      });
+      // Since redundant encoders are already removed, dedup list should equal original
+      expect(dedup.length).toBe(encoderConfig.length);
     });
 
-    it('should not include alias encoders in deduplicated list', () => {
-      const dedup = getDeduplicatedEncoders();
-      const aliasIds = getAliasEncoderIds();
-      aliasIds.forEach(id => {
-        expect(dedup.find(e => e.id === id)).toBeUndefined();
-      });
-    });
-
-    it('should mark redundant encoders correctly with getEncodersWithRedundancyMarkers', () => {
+    it('should return markers with no redundant encoders since they were removed', () => {
       const marked = getEncodersWithRedundancyMarkers();
       expect(marked.length).toBe(encoderConfig.length);
       
+      // No encoders should be marked as redundant since they've been removed
       const redundant = marked.filter(e => e.isRedundant);
-      expect(redundant.length).toBe(getRedundantEncoderIds().length);
-      
-      redundant.forEach(encoder => {
-        expect(encoder.isRedundant).toBe(true);
-        expect(encoder.redundantReason).toBeDefined();
-        expect(encoder.preferredEncoder).toBeDefined();
-        expect(['superseded', 'alias']).toContain(encoder.redundantType);
-      });
+      expect(redundant.length).toBe(0);
     });
   });
 });

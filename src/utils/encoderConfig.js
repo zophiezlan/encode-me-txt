@@ -26,18 +26,6 @@ export const encoderConfig = [
 
   // 📻 Classic Codes
   {
-    id: 'morse',
-    name: 'Morse Code',
-    description: 'Classic dit-dah communication',
-    emoji: '📡',
-    category: 'classic',
-    encode: encoders.encodeMorse,
-    decode: encoders.decodeMorse,
-    reversible: true,
-    hasSound: true,
-    tags: ['classic', 'audio', 'telegraph']
-  },
-  {
     id: 'braille',
     name: 'Braille Patterns',
     description: 'Touch-readable text encoding',
@@ -48,29 +36,8 @@ export const encoderConfig = [
     reversible: true,
     tags: ['classic', 'accessibility', 'tactile']
   },
-  {
-    id: 'nato',
-    name: 'NATO Phonetic',
-    description: 'Alpha-Bravo-Charlie spelling',
-    emoji: '🎖️',
-    category: 'classic',
-    encode: encoders.encodeNATO,
-    reversible: false,
-    tags: ['classic', 'military', 'phonetic']
-  },
 
   // 💾 Computer Science
-  {
-    id: 'binary',
-    name: 'Binary',
-    description: 'Classic 0s and 1s',
-    emoji: '💻',
-    category: 'computer',
-    encode: encoders.encodeBinary,
-    decode: encoders.decodeBinary,
-    reversible: true,
-    tags: ['computer', 'binary', 'programming']
-  },
   {
     id: 'hex',
     name: 'Hexadecimal',
@@ -176,17 +143,6 @@ export const encoderConfig = [
     tags: ['cipher', 'binary', 'steganography']
   },
   {
-    id: 'polybius',
-    name: 'Polybius Square',
-    description: 'Ancient Greek grid cipher',
-    emoji: '🏛️',
-    category: 'cipher',
-    encode: encoders.encodePolybius,
-    decode: encoders.decodePolybius,
-    reversible: true,
-    tags: ['cipher', 'grid', 'ancient', 'greek']
-  },
-  {
     id: 'affine',
     name: 'Affine Cipher',
     description: 'Mathematical substitution cipher',
@@ -208,17 +164,6 @@ export const encoderConfig = [
     decode: encoders.decodeROT47,
     reversible: true,
     tags: ['cipher', 'rotation', 'ascii']
-  },
-  {
-    id: 'tap-code',
-    name: 'Tap Code',
-    description: 'Prison/POW knock cipher',
-    emoji: '👊',
-    category: 'cipher',
-    encode: encoders.encodeTapCode,
-    decode: encoders.decodeTapCode,
-    reversible: true,
-    tags: ['cipher', 'tap', 'prison', 'historical']
   },
   {
     id: 'substitution',
@@ -277,16 +222,6 @@ export const encoderConfig = [
     tags: ['fun', 'flip', 'creative']
   },
   {
-    id: 'leetspeak',
-    name: 'Leetspeak',
-    description: 'H4ck3r 5p34k',
-    emoji: '🤓',
-    category: 'fun',
-    encode: encoders.encodeLeetspeak,
-    reversible: false,
-    tags: ['fun', 'hacker', 'internet']
-  },
-  {
     id: 'pig-latin',
     name: 'Pig Latin',
     description: 'Ixnay on the ormalfay',
@@ -317,36 +252,6 @@ export const encoderConfig = [
     tags: ['fun', 'flags', 'maritime']
   },
   {
-    id: 'navy-flags',
-    name: 'Navy Signal Flags',
-    description: 'Nautical flag encoding',
-    emoji: '⚓',
-    category: 'fun',
-    encode: encoders.encodeNavyFlags,
-    reversible: false,
-    tags: ['fun', 'navy', 'maritime']
-  },
-  {
-    id: 'spongebob',
-    name: 'SpOnGeBoB MoCk',
-    description: 'aLtErNaTiNg CaSe TeXt',
-    emoji: '🧽',
-    category: 'fun',
-    encode: encoders.encodeSpongebob,
-    reversible: false,
-    tags: ['fun', 'meme', 'sarcasm']
-  },
-  {
-    id: 'uwu',
-    name: 'UwU Speak',
-    description: 'Cutesy internet speak OwO',
-    emoji: '🥺',
-    category: 'fun',
-    encode: encoders.encodeUwU,
-    reversible: false,
-    tags: ['fun', 'cute', 'internet']
-  },
-  {
     id: 'morse-emoji',
     name: 'Morse Emoji',
     description: 'Morse code with visual dots',
@@ -357,16 +262,6 @@ export const encoderConfig = [
     tags: ['fun', 'morse', 'visual']
   },
   {
-    id: 'vaporwave',
-    name: 'Ｖａｐｏｒｗａｖｅ',
-    description: 'Ａｅｓｔｈｅｔｉｃ full-width',
-    emoji: '🌴',
-    category: 'fun',
-    encode: encoders.encodeVaporwave,
-    reversible: false,
-    tags: ['fun', 'aesthetic', 'retro']
-  },
-  {
     id: 'tiny',
     name: 'ᵀⁱⁿʸ ᵀᵉˣᵗ',
     description: 'Superscript tiny text',
@@ -375,16 +270,6 @@ export const encoderConfig = [
     encode: encoders.encodeTinyText,
     reversible: false,
     tags: ['fun', 'tiny', 'superscript']
-  },
-  {
-    id: 'medieval',
-    name: 'Medieval 𝔊𝔬𝔱𝔥𝔦𝔠',
-    description: 'Blackletter Fraktur font',
-    emoji: '⚔️',
-    category: 'fun',
-    encode: encoders.encodeMedieval,
-    reversible: false,
-    tags: ['fun', 'gothic', 'medieval']
   },
   {
     id: 'strikethrough',
@@ -1141,16 +1026,6 @@ export const encoderConfig = [
     decode: encoders.decodeKeyboardShift,
     reversible: true,
     tags: ['fun', 'keyboard', 'shift']
-  },
-  {
-    id: 'emojipasta',
-    name: 'Emojipasta 🍝',
-    description: 'Add random emojis everywhere',
-    emoji: '😫',
-    category: 'fun',
-    encode: encoders.encodeEmojipasta,
-    reversible: false,
-    tags: ['fun', 'emoji', 'meme']
   },
   {
     id: 'tally',
@@ -4536,16 +4411,6 @@ export const encoderConfig = [
     tags: ['unique', 'currency', 'money']
   },
   {
-    id: 'chess-pieces',
-    name: 'Chess Pieces',
-    description: '♔♕♖♗♘♙ chess encoding',
-    emoji: '♟️',
-    category: 'unique',
-    encode: encoders.encodeChessPieces,
-    reversible: false,
-    tags: ['unique', 'chess', 'pieces']
-  },
-  {
     id: 'card-suits',
     name: 'Card Suits',
     description: '♠♣♥♦ card suits',
@@ -4554,36 +4419,6 @@ export const encoderConfig = [
     encode: encoders.encodeCardSuits,
     reversible: false,
     tags: ['unique', 'cards', 'suits']
-  },
-  {
-    id: 'music-notes',
-    name: 'Music Notes',
-    description: '♩♪♫♬ musical notes',
-    emoji: '🎵',
-    category: 'unique',
-    encode: encoders.encodeMusicNotes,
-    reversible: false,
-    tags: ['unique', 'music', 'notes']
-  },
-  {
-    id: 'weather-symbols',
-    name: 'Weather Symbols',
-    description: '☀☁☂☃ weather icons',
-    emoji: '🌦️',
-    category: 'unique',
-    encode: encoders.encodeWeatherSymbols,
-    reversible: false,
-    tags: ['unique', 'weather', 'symbols']
-  },
-  {
-    id: 'zodiac-signs',
-    name: 'Zodiac Signs',
-    description: '♈♉♊♋ zodiac encoding',
-    emoji: '♌',
-    category: 'unique',
-    encode: encoders.encodeZodiacSigns,
-    reversible: false,
-    tags: ['unique', 'zodiac', 'astrology']
   },
   {
     id: 'planet-symbols',
