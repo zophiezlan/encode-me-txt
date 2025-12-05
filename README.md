@@ -1,8 +1,8 @@
 <div align="center">
 
-# ✨ Creative Text Encoder v2.0
+# ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 120+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 250+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,12 +19,12 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **120+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **250+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
-Unlike other text encoders, Creative Text Encoder v2.0 offers:
-- **83 NEW encoders** not found in any other app (Hieroglyphs, Cuneiform, Elvish, Aurebesh, and more!)
+Unlike other text encoders, Creative Text Encoder v3.0 offers:
+- **215+ NEW encoders** not found in any other app (Hieroglyphs, Cuneiform, Elvish, Aurebesh, Fibonacci, Quantum States, and more!)
 - **Shuffle encoding** - mix multiple encoders randomly for each character
 - **Custom encoder builder** - create your own encoding schemes
 - **Visual flow viewer** - watch character transformations in real-time
@@ -50,9 +50,9 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **120+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic
+- **250+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic
 - **Real-time Encoding/Decoding** - See results as you type
-- **Reversible Encodings** - 50+ methods support full decode back to original
+- **75+ Reversible Encodings** - Methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
 - **Custom Encoder Builder** - Create and save your own encoding schemes
 - **Visual Encoding Flow** - Watch character-by-character transformations animate
@@ -217,6 +217,90 @@ These creative encoders are not found in any other encoding app:
 - **𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜** 🎯 - Mathematical blackboard bold (Reversible!)
 - **𝒞𝓊𝓇𝓈𝒾𝓋𝑒 𝒮𝒸𝓇𝒾𝓅𝓉** ✒️ - Elegant cursive script (Reversible!)
 - **Mirror Text** 🪞 - Horizontally mirrored text
+
+### 📊 Patterns (18) **NEW v3.0!**
+Mathematical and pattern-based encodings:
+- **Fibonacci Encoding** 🌀 - Fibonacci sequence mapping (Reversible!)
+- **Prime Number Encoding** 🔢 - Prime number positions (Reversible!)
+- **Golden Ratio Encoding** φ - Phi-based encoding (Reversible!)
+- **Triangle Numbers** △ - Triangular number sequence
+- **Pascal Triangle** ▲ - Pascal's triangle encoding
+- **Binary Tree Path** 🌳 - Tree traversal encoding (Reversible!)
+- **Gray Code** ◐ - Single-bit change encoding (Reversible!)
+- **Manchester Encoding** ↕️ - Clock + data signals (Reversible!)
+- **Hamming Code (7,4)** H - Error-correcting code
+- **Rule 30 Automaton** 🤖 - Cellular automaton
+- And more...
+
+### 🔍 Forensics (21) **NEW v3.0!**
+Digital forensics and security encodings:
+- **Unix Timestamp** ⏰ - Time-based encoding (Reversible!)
+- **MAC Address Format** 🔌 - Network address style
+- **IP Address Format** 🌐 - IPv4 encoding
+- **UUID Style** 🆔 - Unique identifier format
+- **Hex Dump** 🔬 - Forensic hex analysis
+- **Base58 (Bitcoin)** ₿ - Cryptocurrency encoding (Reversible!)
+- **Homoglyph Steganography** 👀 - Look-alike characters (Reversible!)
+- **Unicode Tag Steganography** 🏷️ - Invisible tags (Reversible!)
+- **JWT Style** 🎫 - Token format (Reversible!)
+- **Regex Pattern** 🔍 - Regular expression (Reversible!)
+- And more...
+
+### 🔬 Scientific (22) **NEW v3.0!**
+Science and mathematics notation:
+- **Scientific Notation** 🔬 - Mantissa × 10^exp (Reversible!)
+- **Physics Constants** ⚛️ - Physical constant values
+- **Chemical Formula** ⚗️ - Compound notation
+- **Electron Configuration** ⚡ - Orbital notation
+- **Quantum State** 🔮 - Qubit state notation
+- **Vector Notation** → - 3D vectors (Reversible!)
+- **Complex Numbers** i - Real + imaginary (Reversible!)
+- **Matrix Notation** ⎡⎤ - 2x2 matrix format
+- **Calculus Notation** ∫ - Mathematical operators
+- **Tensor Notation** ⊗ - Tensor indices
+- And more...
+
+### 📱 Modern Tech (26) **NEW v3.0!**
+Modern technology and social media:
+- **Code128 Barcode** ▐ - Barcode pattern
+- **DataMatrix** ⬛ - 2D barcode style
+- **Hashtag Encoding** #️⃣ - Social media hashtags
+- **Git Commit Hash** 📝 - Commit-style IDs (Reversible!)
+- **CSS Color** 🎨 - Hex color codes (Reversible!)
+- **SemVer Version** v - Semantic versioning (Reversible!)
+- **Docker Tags** 🐳 - Container image tags
+- **Kubernetes Labels** ☸️ - K8s label format
+- **Progress Bar** ▓ - Loading bar pattern
+- **Star Rating** ⭐ - 5-star format
+- And more...
+
+### 🌿 Nature (22) **NEW v3.0!**
+Nature, biology, and ecology:
+- **RNA Sequence** 🧬 - AUGC base encoding (Reversible!)
+- **Amino Acid Sequence** 🥩 - Protein encoding
+- **Codon Triplets** 🧪 - Genetic codons
+- **Plant Taxonomy** 🌱 - Botanical names
+- **Animal Taxonomy** 🦁 - Zoological names
+- **Constellation** ⭐ - Star patterns
+- **Mineral Encoding** 💎 - Geological minerals
+- **Cloud Type** ☁️ - Meteorological clouds
+- **Ocean Depth Zones** 🌊 - Pelagic zones
+- **Cell Organelle** 🔬 - Cellular structures
+- And more...
+
+### 🎮 Games (23) **NEW v3.0!**
+Gaming and entertainment:
+- **Tetris Blocks** 🟦 - Tetromino encoding
+- **Poker Hand** ♠️ - Playing card hands (Reversible!)
+- **RPG Stats** ⚔️ - Character attributes
+- **Rubik's Cube Moves** 🟩 - Cube notation (Reversible!)
+- **Pokemon Types** 🔥 - Element type encoding
+- **Health Bar** ❤️ - HP visualization
+- **Dungeon Map** 🗺️ - Roguelike symbols
+- **Trading Card** 🃏 - CCG card format
+- **Skill Tree** 🌟 - Ability progression
+- **Combo Move** 💥 - Fighting game combos
+- And more...
 
 ## 🚀 Quick Start
 
@@ -479,6 +563,12 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [x] Shuffle encoding (mix multiple encoders) ✅
 - [x] Preset system (save/load configurations) ✅
 - [x] Glassmorphic UI with particle effects ✅
+- [x] Mathematical pattern encoders (Fibonacci, Prime, Golden Ratio, etc.) ✅ **NEW v3.0!**
+- [x] Forensic & security encoders (Timestamps, MAC, IP, UUID, Base58, etc.) ✅ **NEW v3.0!**
+- [x] Scientific notation encoders (Physics, Chemistry, Math symbols) ✅ **NEW v3.0!**
+- [x] Modern tech encoders (Barcodes, Git, Docker, K8s, Social media) ✅ **NEW v3.0!**
+- [x] Nature & biology encoders (RNA, Amino acids, Taxonomy, etc.) ✅ **NEW v3.0!**
+- [x] Game & entertainment encoders (Tetris, Pokemon, RPG, etc.) ✅ **NEW v3.0!**
 - [ ] Interactive tutorials for each encoder
 - [ ] Browser extension
 - [ ] Batch file processing
@@ -486,6 +576,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [ ] Achievement/badge system
 - [ ] API integration for external services
 - [ ] Collaborative encoding (real-time sharing)
+- [ ] Reach 1000+ encoders! 🎯
 
 ---
 
@@ -495,7 +586,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 Made with ❤️ by the Creative Text Encoder team
 
-**v2.0** - The most feature-rich text encoder on the web!
+**v3.0** - Now with 250+ encoders! The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 
