@@ -1,41 +1,50 @@
 /**
  * Tests for Novel Encoders
- * 30 completely original encoders
+ * 30 completely original encoders - now organized into nature.js, scientific.js, and artistic.js
  */
 
 import { describe, it, expect } from 'vitest';
+// Nature encoders (from nature.js)
 import {
   encodeOrigamiCrease, decodeOrigamiCrease,
   encodeConstellationMap, decodeConstellationMap,
   encodeTectonicPlate, decodeTectonicPlate,
   encodeMyceliumNetwork, decodeMyceliumNetwork,
   encodeBioluminescence, decodeBioluminescence,
-  encodeFluidDynamics, decodeFluidDynamics,
-  encodeCrystallography, decodeCrystallography,
   encodeAuroraBorealis, decodeAuroraBorealis,
   encodeWaggleDance, decodeWaggleDance,
-  encodeSonarPing, decodeSonarPing,
-  encodeKilnFiring, decodeKilnFiring,
-  encodeSeismograph, decodeSeismograph,
   encodeGlacierStratigraphy, decodeGlacierStratigraphy,
   encodeWindRose, decodeWindRose,
   encodeDendrochronology, decodeDendrochronology,
-  encodeMagneticField, decodeMagneticField,
   encodeCoralReef, decodeCoralReef,
+  encodeBirdMigration, decodeBirdMigration,
+  encodeErosionPattern, decodeErosionPattern,
+  encodeAuroraAustralis, decodeAuroraAustralis,
+  encodeSnowflakeCrystal, decodeSnowflakeCrystal,
+  encodeBonsaiGrowth, decodeBonsaiGrowth,
+} from '../utils/encoders/nature.js';
+
+// Scientific encoders (from scientific.js)
+import {
+  encodeFluidDynamics, decodeFluidDynamics,
+  encodeCrystallography, decodeCrystallography,
+  encodeSeismograph, decodeSeismograph,
+  encodeMagneticField, decodeMagneticField,
   encodeSupernovaRemnant, decodeSupernovaRemnant,
   encodeCircadianRhythm, decodeCircadianRhythm,
   encodeHolographicInterference, decodeHolographicInterference,
-  encodeBirdMigration, decodeBirdMigration,
-  encodeTessellation, decodeTessellation,
-  encodeErosionPattern, decodeErosionPattern,
   encodeFermentation, decodeFermentation,
-  encodeAuroraAustralis, decodeAuroraAustralis,
-  encodeStainedGlass, decodeStainedGlass,
-  encodeSnowflakeCrystal, decodeSnowflakeCrystal,
   encodeNeurotransmitter, decodeNeurotransmitter,
   encodeMantleConvection, decodeMantleConvection,
-  encodeBonsaiGrowth, decodeBonsaiGrowth,
-} from '../utils/encoders/novel.js';
+} from '../utils/encoders/scientific.js';
+
+// Artistic encoders (from artistic.js)
+import {
+  encodeSonarPing, decodeSonarPing,
+  encodeKilnFiring, decodeKilnFiring,
+  encodeStainedGlass, decodeStainedGlass,
+  encodeTessellation, decodeTessellation,
+} from '../utils/encoders/artistic.js';
 
 describe('Novel Encoders', () => {
   const testText = 'Hello';

@@ -4593,6 +4593,448 @@ export const encoderConfig = [
     encode: encoders.encodeAlternatingDecorations,
     reversible: false,
     tags: ['aesthetic', 'alternating', 'decorations']
+  },
+
+  // ========================================
+  // 🌿 NOVEL NATURE ENCODERS (v3.5)
+  // ========================================
+
+  {
+    id: 'origami-crease',
+    name: 'Origami Crease Pattern',
+    description: 'Mountain/valley fold patterns',
+    emoji: '📄',
+    category: 'nature',
+    encode: encoders.encodeOrigamiCrease,
+    decode: encoders.decodeOrigamiCrease,
+    reversible: true,
+    tags: ['nature', 'origami', 'patterns', 'art']
+  },
+  {
+    id: 'constellation-map',
+    name: 'Constellation Map',
+    description: 'Star positions and magnitudes',
+    emoji: '⭐',
+    category: 'nature',
+    encode: encoders.encodeConstellationMap,
+    decode: encoders.decodeConstellationMap,
+    reversible: true,
+    tags: ['nature', 'astronomy', 'stars', 'celestial']
+  },
+  {
+    id: 'tectonic-plate',
+    name: 'Tectonic Plate Movement',
+    description: 'Plate boundary dynamics',
+    emoji: '🌍',
+    category: 'nature',
+    encode: encoders.encodeTectonicPlate,
+    decode: encoders.decodeTectonicPlate,
+    reversible: true,
+    tags: ['nature', 'geology', 'tectonics', 'earth']
+  },
+  {
+    id: 'mycelium-network',
+    name: 'Mycelium Network',
+    description: 'Fungal connection patterns',
+    emoji: '🍄',
+    category: 'nature',
+    encode: encoders.encodeMyceliumNetwork,
+    decode: encoders.decodeMyceliumNetwork,
+    reversible: true,
+    tags: ['nature', 'biology', 'fungi', 'network']
+  },
+  {
+    id: 'bioluminescence',
+    name: 'Bioluminescence',
+    description: 'Light wavelength patterns',
+    emoji: '💫',
+    category: 'nature',
+    encode: encoders.encodeBioluminescence,
+    decode: encoders.decodeBioluminescence,
+    reversible: true,
+    tags: ['nature', 'biology', 'light', 'ocean']
+  },
+  {
+    id: 'aurora-borealis',
+    name: 'Aurora Borealis',
+    description: 'Northern lights patterns',
+    emoji: '🌌',
+    category: 'nature',
+    encode: encoders.encodeAuroraBorealis,
+    decode: encoders.decodeAuroraBorealis,
+    reversible: true,
+    tags: ['nature', 'aurora', 'atmospheric', 'polar']
+  },
+  {
+    id: 'waggle-dance',
+    name: 'Bee Waggle Dance',
+    description: 'Honeybee communication',
+    emoji: '🐝',
+    category: 'nature',
+    encode: encoders.encodeWaggleDance,
+    decode: encoders.decodeWaggleDance,
+    reversible: true,
+    tags: ['nature', 'biology', 'bees', 'communication']
+  },
+  {
+    id: 'glacier-stratigraphy',
+    name: 'Glacier Stratigraphy',
+    description: 'Ice core layer patterns',
+    emoji: '🧊',
+    category: 'nature',
+    encode: encoders.encodeGlacierStratigraphy,
+    decode: encoders.decodeGlacierStratigraphy,
+    reversible: true,
+    tags: ['nature', 'geology', 'ice', 'climate']
+  },
+  {
+    id: 'wind-rose',
+    name: 'Wind Rose Pattern',
+    description: 'Wind direction patterns',
+    emoji: '🌬️',
+    category: 'nature',
+    encode: encoders.encodeWindRose,
+    decode: encoders.decodeWindRose,
+    reversible: true,
+    tags: ['nature', 'weather', 'wind', 'meteorology']
+  },
+  {
+    id: 'dendrochronology',
+    name: 'Dendrochronology',
+    description: 'Tree ring patterns',
+    emoji: '🌳',
+    category: 'nature',
+    encode: encoders.encodeDendrochronology,
+    decode: encoders.decodeDendrochronology,
+    reversible: true,
+    tags: ['nature', 'trees', 'dating', 'ecology']
+  },
+  {
+    id: 'coral-reef',
+    name: 'Coral Reef Pattern',
+    description: 'Coral polyp patterns',
+    emoji: '🪸',
+    category: 'nature',
+    encode: encoders.encodeCoralReef,
+    decode: encoders.decodeCoralReef,
+    reversible: true,
+    tags: ['nature', 'marine', 'coral', 'ecosystem']
+  },
+  {
+    id: 'bird-migration',
+    name: 'Bird Migration',
+    description: 'Migration flight patterns',
+    emoji: '🦅',
+    category: 'nature',
+    encode: encoders.encodeBirdMigration,
+    decode: encoders.decodeBirdMigration,
+    reversible: true,
+    tags: ['nature', 'birds', 'migration', 'ecology']
+  },
+  {
+    id: 'erosion-pattern',
+    name: 'Erosion Pattern',
+    description: 'Geological erosion types',
+    emoji: '🏜️',
+    category: 'nature',
+    encode: encoders.encodeErosionPattern,
+    decode: encoders.decodeErosionPattern,
+    reversible: true,
+    tags: ['nature', 'geology', 'erosion', 'landscape']
+  },
+  {
+    id: 'aurora-australis',
+    name: 'Aurora Australis',
+    description: 'Southern lights patterns',
+    emoji: '✨',
+    category: 'nature',
+    encode: encoders.encodeAuroraAustralis,
+    decode: encoders.decodeAuroraAustralis,
+    reversible: true,
+    tags: ['nature', 'aurora', 'atmospheric', 'southern']
+  },
+  {
+    id: 'snowflake-crystal',
+    name: 'Snowflake Crystal',
+    description: 'Ice crystal structures',
+    emoji: '❄️',
+    category: 'nature',
+    encode: encoders.encodeSnowflakeCrystal,
+    decode: encoders.decodeSnowflakeCrystal,
+    reversible: true,
+    tags: ['nature', 'crystal', 'snow', 'winter']
+  },
+  {
+    id: 'bonsai-growth',
+    name: 'Bonsai Growth',
+    description: 'Bonsai styling patterns',
+    emoji: '🌲',
+    category: 'nature',
+    encode: encoders.encodeBonsaiGrowth,
+    decode: encoders.decodeBonsaiGrowth,
+    reversible: true,
+    tags: ['nature', 'bonsai', 'art', 'cultivation']
+  },
+
+  // ========================================
+  // 🔬 NOVEL SCIENTIFIC ENCODERS (v3.5)
+  // ========================================
+
+  {
+    id: 'fluid-dynamics',
+    name: 'Fluid Dynamics',
+    description: 'Flow regime patterns',
+    emoji: '🌊',
+    category: 'scientific',
+    encode: encoders.encodeFluidDynamics,
+    decode: encoders.decodeFluidDynamics,
+    reversible: true,
+    tags: ['scientific', 'physics', 'fluids', 'dynamics']
+  },
+  {
+    id: 'crystallography-lattice',
+    name: 'Crystallography Lattice',
+    description: 'Crystal lattice structures',
+    emoji: '💎',
+    category: 'scientific',
+    encode: encoders.encodeCrystallography,
+    decode: encoders.decodeCrystallography,
+    reversible: true,
+    tags: ['scientific', 'crystal', 'lattice', 'chemistry']
+  },
+  {
+    id: 'seismograph',
+    name: 'Seismograph Wave',
+    description: 'Seismic wave patterns',
+    emoji: '📉',
+    category: 'scientific',
+    encode: encoders.encodeSeismograph,
+    decode: encoders.decodeSeismograph,
+    reversible: true,
+    tags: ['scientific', 'geology', 'earthquake', 'waves']
+  },
+  {
+    id: 'magnetic-field',
+    name: 'Magnetic Field Lines',
+    description: 'Magnetic field patterns',
+    emoji: '🧲',
+    category: 'scientific',
+    encode: encoders.encodeMagneticField,
+    decode: encoders.decodeMagneticField,
+    reversible: true,
+    tags: ['scientific', 'physics', 'magnetic', 'electromagnetism']
+  },
+  {
+    id: 'supernova-remnant',
+    name: 'Supernova Remnant',
+    description: 'Stellar explosion patterns',
+    emoji: '💥',
+    category: 'scientific',
+    encode: encoders.encodeSupernovaRemnant,
+    decode: encoders.decodeSupernovaRemnant,
+    reversible: true,
+    tags: ['scientific', 'astronomy', 'supernova', 'stellar']
+  },
+  {
+    id: 'circadian-rhythm',
+    name: 'Circadian Rhythm',
+    description: 'Biological clock patterns',
+    emoji: '🌅',
+    category: 'scientific',
+    encode: encoders.encodeCircadianRhythm,
+    decode: encoders.decodeCircadianRhythm,
+    reversible: true,
+    tags: ['scientific', 'biology', 'circadian', 'hormones']
+  },
+  {
+    id: 'holographic-interference',
+    name: 'Holographic Interference',
+    description: 'Laser interference patterns',
+    emoji: '🌈',
+    category: 'scientific',
+    encode: encoders.encodeHolographicInterference,
+    decode: encoders.decodeHolographicInterference,
+    reversible: true,
+    tags: ['scientific', 'physics', 'holography', 'optics']
+  },
+  {
+    id: 'fermentation',
+    name: 'Fermentation Process',
+    description: 'Microbial fermentation',
+    emoji: '🧫',
+    category: 'scientific',
+    encode: encoders.encodeFermentation,
+    decode: encoders.decodeFermentation,
+    reversible: true,
+    tags: ['scientific', 'biology', 'fermentation', 'microbiology']
+  },
+  {
+    id: 'neurotransmitter',
+    name: 'Neurotransmitter Pattern',
+    description: 'Neural signaling patterns',
+    emoji: '🧠',
+    category: 'scientific',
+    encode: encoders.encodeNeurotransmitter,
+    decode: encoders.decodeNeurotransmitter,
+    reversible: true,
+    tags: ['scientific', 'neuroscience', 'brain', 'chemistry']
+  },
+  {
+    id: 'mantle-convection',
+    name: 'Mantle Convection',
+    description: 'Earth mantle flow patterns',
+    emoji: '🌋',
+    category: 'scientific',
+    encode: encoders.encodeMantleConvection,
+    decode: encoders.decodeMantleConvection,
+    reversible: true,
+    tags: ['scientific', 'geology', 'mantle', 'geophysics']
+  },
+
+  // ========================================
+  // 🧬 PARAMETERIZED SCIENTIFIC ENCODERS (v3.5)
+  // ========================================
+
+  {
+    id: 'genetic-algorithm',
+    name: 'Genetic Algorithm',
+    description: 'Chromosome/gene representation with fitness scores',
+    emoji: '🧬',
+    category: 'scientific',
+    encode: encoders.encodeGeneticAlgorithm,
+    decode: encoders.decodeGeneticAlgorithm,
+    reversible: true,
+    hasSettings: true,
+    tags: ['scientific', 'genetics', 'algorithm', 'evolution']
+  },
+  {
+    id: 'cellular-automata',
+    name: 'Cellular Automata',
+    description: 'Rule-based binary evolution patterns (Rule 110)',
+    emoji: '🦠',
+    category: 'scientific',
+    encode: encoders.encodeCellularAutomata,
+    decode: encoders.decodeCellularAutomata,
+    reversible: true,
+    hasSettings: true,
+    tags: ['scientific', 'automata', 'patterns', 'computation']
+  },
+  {
+    id: 'fractal-dimension',
+    name: 'Fractal Dimension',
+    description: 'Recursive self-similar nested patterns',
+    emoji: '🔄',
+    category: 'scientific',
+    encode: encoders.encodeFractalDimension,
+    decode: encoders.decodeFractalDimension,
+    reversible: true,
+    hasSettings: true,
+    tags: ['scientific', 'fractal', 'recursive', 'mathematics']
+  },
+  {
+    id: 'topological',
+    name: 'Topological (Knot Theory)',
+    description: 'Knot crossings and twists notation',
+    emoji: '🔗',
+    category: 'scientific',
+    encode: encoders.encodeTopological,
+    decode: encoders.decodeTopological,
+    reversible: true,
+    tags: ['scientific', 'topology', 'knots', 'mathematics']
+  },
+  {
+    id: 'synaesthetic',
+    name: 'Synaesthetic',
+    description: 'Multi-sensory color/sound/taste mapping',
+    emoji: '🎨',
+    category: 'scientific',
+    encode: encoders.encodeSynaesthetic,
+    decode: encoders.decodeSynaesthetic,
+    reversible: true,
+    tags: ['scientific', 'synaesthesia', 'sensory', 'perception']
+  },
+  {
+    id: 'metabolic-pathway',
+    name: 'Metabolic Pathway',
+    description: 'Biochemistry enzyme/cofactor notation',
+    emoji: '⚗️',
+    category: 'scientific',
+    encode: encoders.encodeMetabolicPathway,
+    decode: encoders.decodeMetabolicPathway,
+    reversible: true,
+    tags: ['scientific', 'biochemistry', 'metabolism', 'enzymes']
+  },
+  {
+    id: 'spike-train',
+    name: 'Neural Spike Train',
+    description: 'Neuroscience spike timing patterns',
+    emoji: '⚡',
+    category: 'scientific',
+    encode: encoders.encodeSpikeTrain,
+    decode: encoders.decodeSpikeTrain,
+    reversible: true,
+    hasSettings: true,
+    tags: ['scientific', 'neuroscience', 'spikes', 'neural']
+  },
+  {
+    id: 'phoneme-system',
+    name: 'Custom Phoneme System',
+    description: 'Fictional IPA-inspired transcription',
+    emoji: '🗣️',
+    category: 'linguistic',
+    encode: encoders.encodePhonemeSystem,
+    decode: encoders.decodePhonemeSystem,
+    reversible: true,
+    tags: ['linguistic', 'phoneme', 'ipa', 'transcription']
+  },
+
+  // ========================================
+  // 🎨 NOVEL ARTISTIC ENCODERS (v3.5)
+  // ========================================
+
+  {
+    id: 'sonar-ping',
+    name: 'Sonar Ping',
+    description: 'Underwater sonar patterns',
+    emoji: '🔊',
+    category: 'artistic',
+    encode: encoders.encodeSonarPing,
+    decode: encoders.decodeSonarPing,
+    reversible: true,
+    tags: ['artistic', 'sonar', 'underwater', 'acoustic']
+  },
+  {
+    id: 'kiln-firing',
+    name: 'Pottery Kiln Firing',
+    description: 'Ceramic firing schedules',
+    emoji: '🏺',
+    category: 'artistic',
+    encode: encoders.encodeKilnFiring,
+    decode: encoders.decodeKilnFiring,
+    reversible: true,
+    tags: ['artistic', 'pottery', 'ceramics', 'craft']
+  },
+  {
+    id: 'stained-glass',
+    name: 'Stained Glass',
+    description: 'Glass panel patterns',
+    emoji: '🪟',
+    category: 'artistic',
+    encode: encoders.encodeStainedGlass,
+    decode: encoders.decodeStainedGlass,
+    reversible: true,
+    tags: ['artistic', 'glass', 'windows', 'medieval']
+  },
+  {
+    id: 'tessellation',
+    name: 'Tessellation Pattern',
+    description: 'Tiling patterns and symmetry',
+    emoji: '⬡',
+    category: 'artistic',
+    encode: encoders.encodeTessellation,
+    decode: encoders.decodeTessellation,
+    reversible: true,
+    tags: ['artistic', 'tessellation', 'geometric', 'patterns']
   }
 ];
 
