@@ -531,6 +531,7 @@ export const decodeMyceliumNetwork = (text) => {
  */
 export const encodeBioluminescence = (text) => {
   const glows = ['💫', '✨', '🌟', '⭐', '🔆', '💡', '🌠', '☀️'];
+  // Wavelengths in nanometers (nm) - typical bioluminescence range
   const wavelengths = [460, 480, 500, 520, 540, 560, 580, 600];
   
   return text.split('').map(char => {
