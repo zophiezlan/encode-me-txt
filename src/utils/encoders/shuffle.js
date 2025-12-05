@@ -63,7 +63,7 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
       // Add encoded character with delimiter
       encodedParts.push(encodedChar);
 
-    } catch (error) {
+    } catch {
       // If encoding fails, keep original character
       encodedParts.push(char);
       encodingMap.push({
@@ -129,7 +129,7 @@ export const decodeShuffle = (encodedText) => {
 
     return originalChars.join('');
 
-  } catch (error) {
+  } catch {
     return 'Error: Failed to decode shuffle-encoded text';
   }
 };

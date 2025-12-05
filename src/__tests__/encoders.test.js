@@ -1,4 +1,18 @@
 import { describe, it, expect } from 'vitest'
+import { 
+  encodeAtbash, 
+  decodeAtbash, 
+  encodeVigenere, 
+  decodeVigenere,
+  encodeRailFence,
+  decodeRailFence,
+  encodeBacon,
+  decodeBacon,
+  encodePolybius,
+  decodePolybius,
+  encodeROT47,
+  decodeROT47
+} from '../utils/encoders/ciphers.js'
 
 // Re-implement the encoding functions for testing purposes
 // These are extracted from the component to test their logic
@@ -256,6 +270,103 @@ describe('Reverse Text encoding', () => {
     const original = 'Hello World!'
     const encoded = encodeReverse(original)
     const decoded = encodeReverse(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Atbash Cipher encoding', () => {
+  it('encodes text with reversed alphabet', () => {
+    expect(encodeAtbash('ABC')).toBe('ZYX')
+    expect(encodeAtbash('Hello')).toBe('Svool')
+  })
+
+  it('is its own inverse', () => {
+    const original = 'Hello World!'
+    const encoded = encodeAtbash(original)
+    const decoded = decodeAtbash(encoded)
+    expect(decoded).toBe(original)
+  })
+
+  it('preserves non-alphabetic characters', () => {
+    expect(encodeAtbash('123')).toBe('123')
+    expect(encodeAtbash('!@#')).toBe('!@#')
+  })
+})
+
+describe('Vigenère Cipher encoding', () => {
+  it('encodes text with keyword', () => {
+    // Using keyword 'SECRET': S=18, E=4, C=2, R=17, E=4, T=19
+    // 'A' + 18 = 'S', 'B' + 4 = 'F', 'C' + 2 = 'E'
+    expect(encodeVigenere('ABC', 'SEC')).toBe('SFE')
+  })
+
+  it('is reversible with known keyword', () => {
+    const original = 'Hello World!'
+    const keyword = 'SECRET'
+    const encoded = encodeVigenere(original, keyword)
+    const decoded = decodeVigenere(encoded, keyword)
+    expect(decoded).toBe(original)
+  })
+
+  it('preserves non-alphabetic characters', () => {
+    expect(encodeVigenere('123')).toBe('123')
+    expect(encodeVigenere('!@#')).toBe('!@#')
+  })
+})
+
+// New cipher tests
+describe('Rail Fence Cipher', () => {
+  it('encodes text with zigzag pattern', () => {
+    expect(encodeRailFence('HELLO', 3)).toBe('HOELL')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLOWORLD'
+    const encoded = encodeRailFence(original, 3)
+    const decoded = decodeRailFence(encoded, 3)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe("Bacon's Cipher", () => {
+  it('encodes letters as A/B patterns', () => {
+    expect(encodeBacon('A')).toBe('AAAAA')
+    expect(encodeBacon('B')).toBe('AAAAB')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLO'
+    const encoded = encodeBacon(original)
+    const decoded = decodeBacon(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('Polybius Square', () => {
+  it('encodes letters as coordinate pairs', () => {
+    expect(encodePolybius('A')).toBe('11')
+    expect(encodePolybius('Z')).toBe('55')
+  })
+
+  it('is reversible', () => {
+    const original = 'HELLO'
+    const encoded = encodePolybius(original)
+    const decoded = decodePolybius(encoded)
+    expect(decoded).toBe(original)
+  })
+})
+
+describe('ROT47 Cipher', () => {
+  it('rotates printable ASCII characters', () => {
+    const original = 'Hello World!'
+    const encoded = encodeROT47(original)
+    expect(encoded).not.toBe(original)
+  })
+
+  it('is its own inverse (symmetric)', () => {
+    const original = 'Hello World!'
+    const encoded = encodeROT47(original)
+    const decoded = decodeROT47(encoded)
     expect(decoded).toBe(original)
   })
 })

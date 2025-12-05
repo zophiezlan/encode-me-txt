@@ -121,3 +121,203 @@ export const encodePigLatin = (text) => {
     }
   }).join(' ');
 };
+
+/**
+ * Wingdings-style encoding using Unicode symbols
+ * @param {string} text - The text to encode
+ * @returns {string} - Symbol representation
+ */
+export const encodeWingdings = (text) => {
+  const wingdingsMap = {
+    'A': '✌', 'B': '👍', 'C': '👎', 'D': '☜', 'E': '☞', 'F': '☝', 'G': '☟',
+    'H': '✋', 'I': '☺', 'J': '😐', 'K': '☹', 'L': '💣', 'M': '☠', 'N': '⚐',
+    'O': '✈', 'P': '☀', 'Q': '❄', 'R': '✝', 'S': '✡', 'T': '☪', 'U': '☯',
+    'V': '♈', 'W': '♉', 'X': '♊', 'Y': '♋', 'Z': '♌',
+    'a': '♍', 'b': '♎', 'c': '♏', 'd': '♐', 'e': '♑', 'f': '♒', 'g': '♓',
+    'h': '⛎', 'i': '🔯', 'j': '🕎', 'k': '☸', 'l': '⚛', 'm': '✴',
+    'n': '✳', 'o': '❇', 'p': '✦', 'q': '✧', 'r': '★', 's': '☆', 't': '✪',
+    'u': '✫', 'v': '✬', 'w': '✭', 'x': '✮', 'y': '✯', 'z': '✰',
+    '0': '🔟', '1': '①', '2': '②', '3': '③', '4': '④',
+    '5': '⑤', '6': '⑥', '7': '⑦', '8': '⑧', '9': '⑨',
+    ' ': ' ', '.': '●', ',': '◆', '!': '⚡', '?': '❓'
+  };
+  
+  return text.split('').map(char => wingdingsMap[char] || char).join('');
+};
+
+/**
+ * Semaphore Flag encoding - Maritime flag signals
+ * @param {string} text - The text to encode
+ * @returns {string} - Semaphore positions
+ */
+export const encodeSemaphore = (text) => {
+  const semaphoreMap = {
+    'A': '🚩↙', 'B': '🚩←', 'C': '🚩↖', 'D': '🚩↑', 'E': '🚩↗',
+    'F': '🚩→', 'G': '🚩↘', 'H': '↙←', 'I': '↙↖', 'J': '→↑',
+    'K': '↙↑', 'L': '↙↗', 'M': '↙→', 'N': '↙↘', 'O': '←↖',
+    'P': '←↑', 'Q': '←↗', 'R': '←→', 'S': '←↘', 'T': '↖↑',
+    'U': '↖↗', 'V': '↑↘', 'W': '↗→', 'X': '↗↘', 'Y': '↖→',
+    'Z': '↘→', ' ': ' | '
+  };
+  
+  return text.toUpperCase().split('').map(char => semaphoreMap[char] || char).join(' ');
+};
+
+/**
+ * Navy Signal Flags encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Signal flag representation
+ */
+export const encodeNavyFlags = (text) => {
+  const flagMap = {
+    'A': '🔵⚪', 'B': '🔴🔴', 'C': '🔵⚪🔴⚪🔵', 'D': '🟡🔵', 'E': '🔴🔵',
+    'F': '⚪🔴◆', 'G': '🟡🔵🟡🔵🟡🔵', 'H': '⚪🔴⚪🔴', 'I': '🟡●', 'J': '🔵⚪🔵',
+    'K': '🟡🔵', 'L': '🟡⬛🟡⬛', 'M': '🔵⚪🔵⚪', 'N': '🔵⚪🔵⚪', 'O': '🔴🟡',
+    'P': '🔵⬜', 'Q': '🟡', 'R': '🔴🟡🔴', 'S': '⚪🔵', 'T': '🔴⚪🔴',
+    'U': '🔴⚪', 'V': '⚪🔴⚪🔴', 'W': '🔵⚪🔴', 'X': '⚪🔵⚪', 'Y': '🟡🔴',
+    'Z': '🔴🟡🔵🟡', ' ': ' '
+  };
+  
+  return text.toUpperCase().split('').map(char => flagMap[char] || char).join(' ');
+};
+
+/**
+ * SpOnGeBoB MoCkInG text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Alternating case text
+ */
+export const encodeSpongebob = (text) => {
+  let upper = false;
+  return text.split('').map(char => {
+    if (/[a-zA-Z]/.test(char)) {
+      upper = !upper;
+      return upper ? char.toUpperCase() : char.toLowerCase();
+    }
+    return char;
+  }).join('');
+};
+
+/**
+ * UwU-ify text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - UwU-ified text
+ */
+export const encodeUwU = (text) => {
+  let result = text
+    .replace(/[rl]/g, 'w')
+    .replace(/[RL]/g, 'W')
+    .replace(/n([aeiou])/g, 'ny$1')
+    .replace(/N([aeiou])/g, 'Ny$1')
+    .replace(/N([AEIOU])/g, 'NY$1')
+    .replace(/ove/g, 'uv')
+    .replace(/!+/g, '! OwO ')
+    .replace(/\?+/g, '? UwU ');
+  
+  // Add occasional faces
+  const faces = ['UwU', 'OwO', '>w<', '^w^', 'uwu'];
+  if (Math.random() > 0.5) {
+    result += ' ' + faces[Math.floor(Math.random() * faces.length)];
+  }
+  
+  return result;
+};
+
+/**
+ * Morse with emojis encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Morse with visual dots and dashes
+ */
+export const encodeMorseEmoji = (text) => {
+  const morseMap = {
+    'A': '⚫➖', 'B': '➖⚫⚫⚫', 'C': '➖⚫➖⚫', 'D': '➖⚫⚫',
+    'E': '⚫', 'F': '⚫⚫➖⚫', 'G': '➖➖⚫', 'H': '⚫⚫⚫⚫',
+    'I': '⚫⚫', 'J': '⚫➖➖➖', 'K': '➖⚫➖', 'L': '⚫➖⚫⚫',
+    'M': '➖➖', 'N': '➖⚫', 'O': '➖➖➖', 'P': '⚫➖➖⚫',
+    'Q': '➖➖⚫➖', 'R': '⚫➖⚫', 'S': '⚫⚫⚫', 'T': '➖',
+    'U': '⚫⚫➖', 'V': '⚫⚫⚫➖', 'W': '⚫➖➖', 'X': '➖⚫⚫➖',
+    'Y': '➖⚫➖➖', 'Z': '➖➖⚫⚫',
+    '0': '➖➖➖➖➖', '1': '⚫➖➖➖➖', '2': '⚫⚫➖➖➖',
+    '3': '⚫⚫⚫➖➖', '4': '⚫⚫⚫⚫➖', '5': '⚫⚫⚫⚫⚫',
+    '6': '➖⚫⚫⚫⚫', '7': '➖➖⚫⚫⚫', '8': '➖➖➖⚫⚫',
+    '9': '➖➖➖➖⚫', ' ': '   '
+  };
+  
+  return text.toUpperCase().split('').map(char => morseMap[char] || char).join(' ');
+};
+
+/**
+ * Vaporwave aesthetic text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Full-width text
+ */
+export const encodeVaporwave = (text) => {
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    // Convert ASCII to full-width
+    if (code >= 33 && code <= 126) {
+      return String.fromCharCode(code + 65248);
+    }
+    if (code === 32) return '　'; // Full-width space
+    return char;
+  }).join('');
+};
+
+/**
+ * Tiny/Superscript text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Tiny text
+ */
+export const encodeTinyText = (text) => {
+  const tinyMap = {
+    'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ', 'd': 'ᵈ', 'e': 'ᵉ', 'f': 'ᶠ', 'g': 'ᵍ',
+    'h': 'ʰ', 'i': 'ⁱ', 'j': 'ʲ', 'k': 'ᵏ', 'l': 'ˡ', 'm': 'ᵐ', 'n': 'ⁿ',
+    'o': 'ᵒ', 'p': 'ᵖ', 'q': 'q', 'r': 'ʳ', 's': 'ˢ', 't': 'ᵗ', 'u': 'ᵘ',
+    'v': 'ᵛ', 'w': 'ʷ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ',
+    'A': 'ᴬ', 'B': 'ᴮ', 'C': 'ᶜ', 'D': 'ᴰ', 'E': 'ᴱ', 'F': 'ᶠ', 'G': 'ᴳ',
+    'H': 'ᴴ', 'I': 'ᴵ', 'J': 'ᴶ', 'K': 'ᴷ', 'L': 'ᴸ', 'M': 'ᴹ', 'N': 'ᴺ',
+    'O': 'ᴼ', 'P': 'ᴾ', 'Q': 'Q', 'R': 'ᴿ', 'S': 'ˢ', 'T': 'ᵀ', 'U': 'ᵁ',
+    'V': 'ⱽ', 'W': 'ᵂ', 'X': 'ˣ', 'Y': 'ʸ', 'Z': 'ᶻ',
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+  };
+  
+  return text.split('').map(char => tinyMap[char] || char).join('');
+};
+
+/**
+ * Medieval/Blackletter style encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Medieval style text
+ */
+export const encodeMedieval = (text) => {
+  const medievalMap = {
+    'A': '𝔄', 'B': '𝔅', 'C': 'ℭ', 'D': '𝔇', 'E': '𝔈', 'F': '𝔉', 'G': '𝔊',
+    'H': 'ℌ', 'I': 'ℑ', 'J': '𝔍', 'K': '𝔎', 'L': '𝔏', 'M': '𝔐', 'N': '𝔑',
+    'O': '𝔒', 'P': '𝔓', 'Q': '𝔔', 'R': 'ℜ', 'S': '𝔖', 'T': '𝔗', 'U': '𝔘',
+    'V': '𝔙', 'W': '𝔚', 'X': '𝔛', 'Y': '𝔜', 'Z': 'ℨ',
+    'a': '𝔞', 'b': '𝔟', 'c': '𝔠', 'd': '𝔡', 'e': '𝔢', 'f': '𝔣', 'g': '𝔤',
+    'h': '𝔥', 'i': '𝔦', 'j': '𝔧', 'k': '𝔨', 'l': '𝔩', 'm': '𝔪', 'n': '𝔫',
+    'o': '𝔬', 'p': '𝔭', 'q': '𝔮', 'r': '𝔯', 's': '𝔰', 't': '𝔱', 'u': '𝔲',
+    'v': '𝔳', 'w': '𝔴', 'x': '𝔵', 'y': '𝔶', 'z': '𝔷'
+  };
+  
+  return text.split('').map(char => medievalMap[char] || char).join('');
+};
+
+/**
+ * Strikethrough text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Strikethrough text
+ */
+export const encodeStrikethrough = (text) => {
+  return text.split('').map(char => char + '\u0336').join('');
+};
+
+/**
+ * Underline text encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Underlined text
+ */
+export const encodeUnderline = (text) => {
+  return text.split('').map(char => char + '\u0332').join('');
+};

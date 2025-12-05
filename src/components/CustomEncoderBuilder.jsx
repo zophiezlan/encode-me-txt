@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Plus, Save, Download, Upload, Trash2, Check, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Plus, Save, Upload, Trash2, Check, Sparkles } from 'lucide-react';
 import { CustomEncoderManager } from '../utils/customEncoderManager.js';
 
 const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
@@ -116,7 +116,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
   };
 
   // Check for import on mount
-  React.useEffect(() => {
+  useEffect(() => {
     importFromUrl();
   }, []);
 

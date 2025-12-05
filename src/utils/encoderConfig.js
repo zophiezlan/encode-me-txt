@@ -129,6 +129,116 @@ export const encoderConfig = [
     reversible: true,
     tags: ['cipher', 'simple', 'mirror']
   },
+  {
+    id: 'atbash',
+    name: 'Atbash Cipher',
+    description: 'Hebrew cipher - reverse alphabet (A=Z)',
+    emoji: '🔀',
+    category: 'cipher',
+    encode: encoders.encodeAtbash,
+    decode: encoders.decodeAtbash,
+    reversible: true,
+    tags: ['cipher', 'cryptography', 'hebrew', 'ancient']
+  },
+  {
+    id: 'vigenere',
+    name: 'Vigenère Cipher',
+    description: 'Keyword-based polyalphabetic cipher',
+    emoji: '🔐',
+    category: 'cipher',
+    encode: encoders.encodeVigenere,
+    decode: encoders.decodeVigenere,
+    reversible: true,
+    tags: ['cipher', 'cryptography', 'polyalphabetic']
+  },
+  {
+    id: 'rail-fence',
+    name: 'Rail Fence Cipher',
+    description: 'Zigzag transposition cipher',
+    emoji: '🚃',
+    category: 'cipher',
+    encode: encoders.encodeRailFence,
+    decode: encoders.decodeRailFence,
+    reversible: true,
+    tags: ['cipher', 'transposition', 'zigzag']
+  },
+  {
+    id: 'bacon',
+    name: "Bacon's Cipher",
+    description: 'Binary cipher using A and B',
+    emoji: '🥓',
+    category: 'cipher',
+    encode: encoders.encodeBacon,
+    decode: encoders.decodeBacon,
+    reversible: true,
+    tags: ['cipher', 'binary', 'steganography']
+  },
+  {
+    id: 'polybius',
+    name: 'Polybius Square',
+    description: 'Ancient Greek grid cipher',
+    emoji: '🏛️',
+    category: 'cipher',
+    encode: encoders.encodePolybius,
+    decode: encoders.decodePolybius,
+    reversible: true,
+    tags: ['cipher', 'grid', 'ancient', 'greek']
+  },
+  {
+    id: 'affine',
+    name: 'Affine Cipher',
+    description: 'Mathematical substitution cipher',
+    emoji: '📐',
+    category: 'cipher',
+    encode: encoders.encodeAffine,
+    decode: encoders.decodeAffine,
+    reversible: true,
+    tags: ['cipher', 'mathematical', 'substitution']
+  },
+  {
+    id: 'rot47',
+    name: 'ROT47',
+    description: 'Extended ASCII rotation cipher',
+    emoji: '🔄',
+    category: 'cipher',
+    encode: encoders.encodeROT47,
+    decode: encoders.decodeROT47,
+    reversible: true,
+    tags: ['cipher', 'rotation', 'ascii']
+  },
+  {
+    id: 'tap-code',
+    name: 'Tap Code',
+    description: 'Prison/POW knock cipher',
+    emoji: '👊',
+    category: 'cipher',
+    encode: encoders.encodeTapCode,
+    decode: encoders.decodeTapCode,
+    reversible: true,
+    tags: ['cipher', 'tap', 'prison', 'historical']
+  },
+  {
+    id: 'substitution',
+    name: 'QWERTY Substitution',
+    description: 'QWERTY keyboard cipher',
+    emoji: '⌨️',
+    category: 'cipher',
+    encode: encoders.encodeSubstitution,
+    decode: encoders.decodeSubstitution,
+    reversible: true,
+    tags: ['cipher', 'keyboard', 'substitution']
+  },
+  {
+    id: 'beaufort',
+    name: 'Beaufort Cipher',
+    description: 'Symmetric Vigenère variant',
+    emoji: '⚓',
+    category: 'cipher',
+    encode: encoders.encodeBeaufort,
+    decode: encoders.decodeBeaufort,
+    reversible: true,
+    tags: ['cipher', 'polyalphabetic', 'symmetric']
+  },
 
   // 🎉 Fun & Emoji
   {
@@ -182,6 +292,116 @@ export const encoderConfig = [
     reversible: false,
     tags: ['fun', 'language', 'playground']
   },
+  {
+    id: 'wingdings',
+    name: 'Wingdings',
+    description: 'Symbol font encoding',
+    emoji: '✡',
+    category: 'fun',
+    encode: encoders.encodeWingdings,
+    reversible: false,
+    tags: ['fun', 'symbols', 'font']
+  },
+  {
+    id: 'semaphore',
+    name: 'Semaphore Flags',
+    description: 'Maritime flag signals',
+    emoji: '🚩',
+    category: 'fun',
+    encode: encoders.encodeSemaphore,
+    reversible: false,
+    tags: ['fun', 'flags', 'maritime']
+  },
+  {
+    id: 'navy-flags',
+    name: 'Navy Signal Flags',
+    description: 'Nautical flag encoding',
+    emoji: '⚓',
+    category: 'fun',
+    encode: encoders.encodeNavyFlags,
+    reversible: false,
+    tags: ['fun', 'navy', 'maritime']
+  },
+  {
+    id: 'spongebob',
+    name: 'SpOnGeBoB MoCk',
+    description: 'aLtErNaTiNg CaSe TeXt',
+    emoji: '🧽',
+    category: 'fun',
+    encode: encoders.encodeSpongebob,
+    reversible: false,
+    tags: ['fun', 'meme', 'sarcasm']
+  },
+  {
+    id: 'uwu',
+    name: 'UwU Speak',
+    description: 'Cutesy internet speak OwO',
+    emoji: '🥺',
+    category: 'fun',
+    encode: encoders.encodeUwU,
+    reversible: false,
+    tags: ['fun', 'cute', 'internet']
+  },
+  {
+    id: 'morse-emoji',
+    name: 'Morse Emoji',
+    description: 'Morse code with visual dots',
+    emoji: '⚫',
+    category: 'fun',
+    encode: encoders.encodeMorseEmoji,
+    reversible: false,
+    tags: ['fun', 'morse', 'visual']
+  },
+  {
+    id: 'vaporwave',
+    name: 'Ｖａｐｏｒｗａｖｅ',
+    description: 'Ａｅｓｔｈｅｔｉｃ full-width',
+    emoji: '🌴',
+    category: 'fun',
+    encode: encoders.encodeVaporwave,
+    reversible: false,
+    tags: ['fun', 'aesthetic', 'retro']
+  },
+  {
+    id: 'tiny',
+    name: 'ᵀⁱⁿʸ ᵀᵉˣᵗ',
+    description: 'Superscript tiny text',
+    emoji: '🔬',
+    category: 'fun',
+    encode: encoders.encodeTinyText,
+    reversible: false,
+    tags: ['fun', 'tiny', 'superscript']
+  },
+  {
+    id: 'medieval',
+    name: 'Medieval 𝔊𝔬𝔱𝔥𝔦𝔠',
+    description: 'Blackletter Fraktur font',
+    emoji: '⚔️',
+    category: 'fun',
+    encode: encoders.encodeMedieval,
+    reversible: false,
+    tags: ['fun', 'gothic', 'medieval']
+  },
+  {
+    id: 'strikethrough',
+    name: 'S̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶',
+    description: 'Crossed out text',
+    emoji: '✖️',
+    category: 'fun',
+    encode: encoders.encodeStrikethrough,
+    reversible: false,
+    tags: ['fun', 'strikethrough', 'text-effect']
+  },
+  {
+    id: 'underline',
+    name: 'U̲n̲d̲e̲r̲l̲i̲n̲e̲',
+    description: 'Underlined text',
+    emoji: '📏',
+    category: 'fun',
+    encode: encoders.encodeUnderline,
+    reversible: false,
+    tags: ['fun', 'underline', 'text-effect']
+  },
 
   // 🎨 Artistic
   {
@@ -233,6 +453,16 @@ export const encoderConfig = [
     encode: encoders.encodeRunes,
     reversible: false,
     tags: ['artistic', 'ancient', 'mystical']
+  },
+  {
+    id: 'ascii-art',
+    name: 'ASCII Art Banner',
+    description: 'Retro text art style',
+    emoji: '🎨',
+    category: 'artistic',
+    encode: encoders.encodeAsciiArt,
+    reversible: false,
+    tags: ['artistic', 'retro', 'banner', 'ascii']
   },
 
   // 🚀 Advanced (NEW!)
@@ -414,6 +644,146 @@ export const encoderConfig = [
     encode: encoders.encodeTrafficSigns,
     reversible: false,
     tags: ['unique', 'signs', 'roads']
+  },
+  {
+    id: 'tree-pattern',
+    name: 'Tree Pattern',
+    description: 'Nature and tree symbols',
+    emoji: '🌲',
+    category: 'unique',
+    encode: encoders.encodeTreePattern,
+    reversible: false,
+    tags: ['unique', 'nature', 'trees']
+  },
+  {
+    id: 'moon-phase',
+    name: 'Moon Phases',
+    description: 'Lunar cycle encoding',
+    emoji: '🌙',
+    category: 'unique',
+    encode: encoders.encodeMoonPhase,
+    reversible: false,
+    tags: ['unique', 'moon', 'celestial']
+  },
+  {
+    id: 'animal',
+    name: 'Animal Encoding',
+    description: 'Cute animal emojis',
+    emoji: '🐶',
+    category: 'unique',
+    encode: encoders.encodeAnimal,
+    reversible: false,
+    tags: ['unique', 'animals', 'cute']
+  },
+  {
+    id: 'food',
+    name: 'Food Encoding',
+    description: 'Delicious food emojis',
+    emoji: '🍎',
+    category: 'unique',
+    encode: encoders.encodeFood,
+    reversible: false,
+    tags: ['unique', 'food', 'fruit']
+  },
+  {
+    id: 'sports',
+    name: 'Sports Encoding',
+    description: 'Athletic sports emojis',
+    emoji: '⚽',
+    category: 'unique',
+    encode: encoders.encodeSports,
+    reversible: false,
+    tags: ['unique', 'sports', 'games']
+  },
+  {
+    id: 'instruments',
+    name: 'Musical Instruments',
+    description: 'Instrument emojis',
+    emoji: '🎸',
+    category: 'unique',
+    encode: encoders.encodeInstruments,
+    reversible: false,
+    tags: ['unique', 'music', 'instruments']
+  },
+  {
+    id: 'space',
+    name: 'Space Encoding',
+    description: 'Cosmic space emojis',
+    emoji: '🚀',
+    category: 'unique',
+    encode: encoders.encodeSpace,
+    reversible: false,
+    tags: ['unique', 'space', 'cosmic']
+  },
+  {
+    id: 'ocean',
+    name: 'Ocean Encoding',
+    description: 'Marine sea life emojis',
+    emoji: '🌊',
+    category: 'unique',
+    encode: encoders.encodeOcean,
+    reversible: false,
+    tags: ['unique', 'ocean', 'sea']
+  },
+  {
+    id: 'roman',
+    name: 'Roman Numerals',
+    description: 'Ancient Roman numbers',
+    emoji: '🏛️',
+    category: 'unique',
+    encode: encoders.encodeRomanNumeral,
+    reversible: false,
+    tags: ['unique', 'roman', 'numbers', 'ancient']
+  },
+  {
+    id: 'number-words',
+    name: 'Number Words',
+    description: 'Spelled-out number encoding',
+    emoji: '🔢',
+    category: 'unique',
+    encode: encoders.encodeNumberWords,
+    reversible: false,
+    tags: ['unique', 'words', 'numbers']
+  },
+  {
+    id: 'hexagram',
+    name: 'I Ching Hexagrams',
+    description: 'Ancient Chinese divination',
+    emoji: '☯',
+    category: 'unique',
+    encode: encoders.encodeHexagram,
+    reversible: false,
+    tags: ['unique', 'chinese', 'mystical']
+  },
+  {
+    id: 'chess',
+    name: 'Chess Pieces',
+    description: 'Chess piece encoding',
+    emoji: '♔',
+    category: 'unique',
+    encode: encoders.encodeChess,
+    reversible: false,
+    tags: ['unique', 'chess', 'games']
+  },
+  {
+    id: 'dice',
+    name: 'Dice Encoding',
+    description: 'Roll the dice symbols',
+    emoji: '🎲',
+    category: 'unique',
+    encode: encoders.encodeDice,
+    reversible: false,
+    tags: ['unique', 'dice', 'games']
+  },
+  {
+    id: 'mahjong',
+    name: 'Mahjong Tiles',
+    description: 'Chinese tile game symbols',
+    emoji: '🀄',
+    category: 'unique',
+    encode: encoders.encodeMahjong,
+    reversible: false,
+    tags: ['unique', 'mahjong', 'chinese', 'games']
   },
 
   // 🔀 Shuffle & Mixed Encoding

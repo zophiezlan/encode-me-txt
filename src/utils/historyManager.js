@@ -62,4 +62,83 @@ export class HistoryManager {
       .slice(0, limit)
       .map(([id]) => id);
   }
+
+  /**
+   * Export history as JSON
+   * @returns {string} - JSON string of the history
+   */
+  static exportAsJSON() {
+    const history = this.getHistory();
+    return JSON.stringify(history, null, 2);
+  }
+
+  /**
+   * Export history as CSV
+   * @returns {string} - CSV string of the history
+   */
+  static exportAsCSV() {
+    const history = this.getHistory();
+    if (history.length === 0) return '';
+
+    const headers = ['Date', 'Time', 'Encoder', 'Mode', 'Input', 'Result'];
+    const rows = history.map(entry => {
+      const date = new Date(entry.timestamp);
+      return [
+        date.toLocaleDateString(),
+        date.toLocaleTimeString(),
+        entry.encoderName,
+        entry.mode,
+        `"${(entry.inputText || '').replace(/"/g, '""')}"`,
+        `"${(entry.result || '').replace(/"/g, '""')}"`
+      ].join(',');
+    });
+
+    return [headers.join(','), ...rows].join('\n');
+  }
+
+  /**
+   * Download history as a file
+   * @param {string} format - 'json' or 'csv'
+   */
+  static downloadHistory(format = 'json') {
+    const content = format === 'csv' ? this.exportAsCSV() : this.exportAsJSON();
+    const mimeType = format === 'csv' ? 'text/csv' : 'application/json';
+    const filename = `encoding-history-${new Date().toISOString().split('T')[0]}.${format}`;
+
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Get usage statistics
+   * @returns {Object} - Statistics about encoding history
+   */
+  static getStats() {
+    const history = this.getHistory();
+    const encoderCounts = {};
+    const modeCounts = { encode: 0, decode: 0 };
+
+    history.forEach(entry => {
+      encoderCounts[entry.encoderName] = (encoderCounts[entry.encoderName] || 0) + 1;
+      modeCounts[entry.mode] = (modeCounts[entry.mode] || 0) + 1;
+    });
+
+    const sortedEncoders = Object.entries(encoderCounts)
+      .sort((a, b) => b[1] - a[1]);
+
+    return {
+      totalEncodings: history.length,
+      encodeCount: modeCounts.encode,
+      decodeCount: modeCounts.decode,
+      topEncoders: sortedEncoders.slice(0, 5),
+      uniqueEncoders: sortedEncoders.length
+    };
+  }
 }
