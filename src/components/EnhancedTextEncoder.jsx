@@ -150,10 +150,10 @@ const EnhancedTextEncoder = () => {
     localStorage.setItem('shuffle-encoders', JSON.stringify(shuffleEncoders));
   }, [shuffleEncoders]);
 
-  const updateEncoderParam = (_encoderId, _paramName, value) => {
+  const updateEncoderParam = (encoderId, _paramName, value) => {
     setEncoderParams(prev => ({
       ...prev,
-      caesar: value
+      [encoderId]: value
     }));
   };
 

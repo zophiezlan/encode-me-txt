@@ -1,4 +1,10 @@
 import { describe, it, expect } from 'vitest'
+import { 
+  encodeAtbash, 
+  decodeAtbash, 
+  encodeVigenere, 
+  decodeVigenere 
+} from '../utils/encoders/ciphers.js'
 
 // Re-implement the encoding functions for testing purposes
 // These are extracted from the component to test their logic
@@ -260,17 +266,6 @@ describe('Reverse Text encoding', () => {
   })
 })
 
-// Atbash encoding
-const encodeAtbash = (text) => {
-  return text.replace(/[a-zA-Z]/g, (char) => {
-    const isUpper = char <= 'Z';
-    const start = isUpper ? 65 : 97;
-    const position = char.charCodeAt(0) - start;
-    const reversedPosition = 25 - position;
-    return String.fromCharCode(reversedPosition + start);
-  });
-}
-
 describe('Atbash Cipher encoding', () => {
   it('encodes text with reversed alphabet', () => {
     expect(encodeAtbash('ABC')).toBe('ZYX')
@@ -280,7 +275,7 @@ describe('Atbash Cipher encoding', () => {
   it('is its own inverse', () => {
     const original = 'Hello World!'
     const encoded = encodeAtbash(original)
-    const decoded = encodeAtbash(encoded)
+    const decoded = decodeAtbash(encoded)
     expect(decoded).toBe(original)
   })
 
@@ -289,37 +284,6 @@ describe('Atbash Cipher encoding', () => {
     expect(encodeAtbash('!@#')).toBe('!@#')
   })
 })
-
-// Vigenère encoding
-const encodeVigenere = (text, keyword = 'SECRET') => {
-  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
-  let keyIndex = 0;
-  
-  return text.replace(/[a-zA-Z]/g, (char) => {
-    const isUpper = char <= 'Z';
-    const start = isUpper ? 65 : 97;
-    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
-    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
-    const newPosition = (charPosition + keyPosition) % 26;
-    keyIndex++;
-    return String.fromCharCode(newPosition + start);
-  });
-}
-
-const decodeVigenere = (text, keyword = 'SECRET') => {
-  const key = keyword.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET';
-  let keyIndex = 0;
-  
-  return text.replace(/[a-zA-Z]/g, (char) => {
-    const isUpper = char <= 'Z';
-    const start = isUpper ? 65 : 97;
-    const charPosition = char.toUpperCase().charCodeAt(0) - 65;
-    const keyPosition = key.charCodeAt(keyIndex % key.length) - 65;
-    const newPosition = (charPosition - keyPosition + 26) % 26;
-    keyIndex++;
-    return String.fromCharCode(newPosition + start);
-  });
-}
 
 describe('Vigenère Cipher encoding', () => {
   it('encodes text with keyword', () => {
