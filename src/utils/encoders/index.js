@@ -3,6 +3,9 @@
  * Centralized export for all encoder functions
  */
 
+// Shared utilities for encoder modules
+export * from './shared.js';
+
 // Import all encoder modules
 export * from './steganography.js';
 export * from './classic.js';
