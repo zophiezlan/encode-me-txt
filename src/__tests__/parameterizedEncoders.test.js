@@ -22,6 +22,22 @@ import {
   encodeEmojipastaParam,
   encodeGronsfeld,
   decodeGronsfeld,
+  // New parameterized encoders
+  encodeAlternatingCaseParam,
+  encodeCustomBase,
+  decodeCustomBase,
+  encodeMultiCaesar,
+  decodeMultiCaesar,
+  encodeScrambler,
+  encodePhoneticParam,
+  decodePhoneticParam,
+  encodeNumericBase,
+  decodeNumericBase,
+  encodeWordTransform,
+  encodeDelimited,
+  decodeDelimited,
+  encodeRepeat,
+  encodeVowelConsonant,
 } from '../utils/encoders/parameterized.js';
 
 import { encodeZalgo } from '../utils/encoders/artistic.js';
@@ -309,6 +325,171 @@ describe('Parameterized Encoders', () => {
       const encoded = encodeGronsfeld('HELLO', '12345');
       const decoded = decodeGronsfeld(encoded, '12345');
       expect(decoded).toBe('HELLO');
+    });
+  });
+
+  // ============================================
+  // NEW PARAMETERIZED ENCODER TESTS
+  // ============================================
+  
+  describe('encodeAlternatingCaseParam', () => {
+    it('alternates case by character', () => {
+      const result = encodeAlternatingCaseParam('hello', 'char');
+      expect(result.toLowerCase()).toBe('hello');
+      expect(result).not.toBe('hello');
+    });
+
+    it('alternates case by word', () => {
+      const result = encodeAlternatingCaseParam('hello world test', 'word');
+      expect(result).toBe('HELLO world TEST');
+    });
+  });
+
+  describe('encodeCustomBase / decodeCustomBase', () => {
+    it('encodes with binary alphabet', () => {
+      const result = encodeCustomBase('A', '01');
+      expect(result).toContain('0');
+      expect(result).toContain('1');
+    });
+
+    it('is reversible', () => {
+      const original = 'Hi';
+      const encoded = encodeCustomBase(original, 'ABC');
+      const decoded = decodeCustomBase(encoded, 'ABC');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeMultiCaesar / decodeMultiCaesar', () => {
+    it('applies rotating shifts', () => {
+      const result = encodeMultiCaesar('ABC', [1, 2, 3]);
+      expect(result).toBe('BDF'); // A+1=B, B+2=D, C+3=F
+    });
+
+    it('is reversible', () => {
+      const original = 'HELLO';
+      const shifts = [3, 7, 13];
+      const encoded = encodeMultiCaesar(original, shifts);
+      const decoded = decodeMultiCaesar(encoded, shifts);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeScrambler', () => {
+    it('preserves first and last chars in middle mode', () => {
+      const result = encodeScrambler('testing', 'middle');
+      expect(result[0]).toBe('t');
+      expect(result[result.length - 1]).toBe('g');
+    });
+
+    it('preserves short words', () => {
+      expect(encodeScrambler('the', 'middle')).toBe('the');
+    });
+  });
+
+  describe('encodePhoneticParam / decodePhoneticParam', () => {
+    it('encodes with NATO alphabet', () => {
+      const result = encodePhoneticParam('AB', 'nato');
+      expect(result).toContain('Alpha');
+      expect(result).toContain('Bravo');
+    });
+
+    it('encodes with police alphabet', () => {
+      const result = encodePhoneticParam('AB', 'police');
+      expect(result).toContain('Adam');
+      expect(result).toContain('Boy');
+    });
+
+    it('is reversible', () => {
+      const original = 'HELLO';
+      const encoded = encodePhoneticParam(original, 'nato');
+      const decoded = decodePhoneticParam(encoded, 'nato');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeNumericBase / decodeNumericBase', () => {
+    it('encodes with decimal base', () => {
+      const result = encodeNumericBase('A', 10, '-');
+      expect(result).toBe('65'); // ASCII code of 'A'
+    });
+
+    it('encodes with hex base', () => {
+      const result = encodeNumericBase('A', 16, '-');
+      expect(result).toBe('41'); // Hex ASCII code
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeNumericBase(original, 16, '.');
+      const decoded = decodeNumericBase(encoded, 16, '.');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeWordTransform', () => {
+    it('reverses each word', () => {
+      const result = encodeWordTransform('hello world', 'reverse');
+      expect(result).toBe('olleh dlrow');
+    });
+
+    it('sorts letters in each word', () => {
+      const result = encodeWordTransform('bad', 'sort');
+      expect(result).toBe('abd');
+    });
+
+    it('doubles each character', () => {
+      const result = encodeWordTransform('hi', 'double');
+      expect(result).toBe('hhii');
+    });
+  });
+
+  describe('encodeDelimited / decodeDelimited', () => {
+    it('adds delimiters between characters', () => {
+      const result = encodeDelimited('hi', '-', 'char');
+      expect(result).toBe('h-i');
+    });
+
+    it('adds delimiters between words', () => {
+      const result = encodeDelimited('hello world', '_', 'word');
+      expect(result).toBe('hello_world');
+    });
+
+    it('is reversible', () => {
+      const original = 'test';
+      const encoded = encodeDelimited(original, '.', 'char');
+      const decoded = decodeDelimited(encoded, '.', 'char');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeRepeat', () => {
+    it('repeats characters with fixed count', () => {
+      const result = encodeRepeat('hi', 'fixed', 3);
+      expect(result).toBe('hhhiii');
+    });
+
+    it('varies repeat by position', () => {
+      const result = encodeRepeat('abc', 'position');
+      // Position 0: 1 repeat, Position 1: 2 repeats, Position 2: 3 repeats
+      expect(result).toBe('abbccc');
+    });
+  });
+
+  describe('encodeVowelConsonant', () => {
+    it('uppercases vowels', () => {
+      const result = encodeVowelConsonant('hello', 'vowels', 'upper');
+      expect(result).toBe('hEllO');
+    });
+
+    it('removes consonants', () => {
+      const result = encodeVowelConsonant('hello', 'consonants', 'remove');
+      expect(result).toBe('eo');
+    });
+
+    it('replaces vowels', () => {
+      const result = encodeVowelConsonant('hello', 'vowels', 'replace', '*');
+      expect(result).toBe('h*ll*');
     });
   });
 });

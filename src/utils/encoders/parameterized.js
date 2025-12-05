@@ -1206,3 +1206,474 @@ export const decodeHomophonic = (text, complexity = 3) => {
     return '[Decode failed]';
   }
 };
+
+// ============================================
+// ALTERNATING CASE WITH PATTERNS
+// ============================================
+
+/**
+ * Alternating case with configurable patterns
+ * @param {string} text - The text to encode
+ * @param {string} pattern - Pattern type: 'char', 'word', 'sentence', 'random'
+ * @returns {string} - Alternating case text
+ */
+export const encodeAlternatingCaseParam = (text, pattern = 'char') => {
+  switch (pattern) {
+    case 'word': {
+      // Alternate case by word
+      return text.split(' ').map((word, idx) => 
+        idx % 2 === 0 ? word.toUpperCase() : word.toLowerCase()
+      ).join(' ');
+    }
+    case 'sentence': {
+      // Alternate case by sentence
+      return text.split(/([.!?]+\s*)/).map((part, idx) => 
+        idx % 4 === 0 ? part.toUpperCase() : part.toLowerCase()
+      ).join('');
+    }
+    case 'random': {
+      // Random case for each character (seeded for consistency)
+      return text.split('').map((char, idx) => {
+        const seed = (idx * 31337) % 100;
+        return seed > 50 ? char.toUpperCase() : char.toLowerCase();
+      }).join('');
+    }
+    case 'char':
+    default: {
+      // Classic character-by-character alternation
+      let upper = false;
+      return text.split('').map(char => {
+        if (/[a-zA-Z]/.test(char)) {
+          upper = !upper;
+          return upper ? char.toUpperCase() : char.toLowerCase();
+        }
+        return char;
+      }).join('');
+    }
+  }
+};
+
+// ============================================
+// BASE ENCODING WITH CUSTOM ALPHABET
+// ============================================
+
+/**
+ * Base encoding with custom alphabet
+ * @param {string} text - The text to encode
+ * @param {string} alphabet - Custom alphabet string (min 2 chars)
+ * @returns {string} - Encoded text using custom base
+ */
+export const encodeCustomBase = (text, alphabet = '01') => {
+  if (alphabet.length < 2) alphabet = '01';
+  const base = alphabet.length;
+  
+  return text.split('').map(char => {
+    let num = char.charCodeAt(0);
+    const digits = [];
+    do {
+      digits.unshift(alphabet[num % base]);
+      num = Math.floor(num / base);
+    } while (num > 0);
+    return digits.join('');
+  }).join(' ');
+};
+
+/**
+ * Decode custom base encoding
+ * @param {string} text - The encoded text
+ * @param {string} alphabet - Custom alphabet used
+ * @returns {string} - Decoded text
+ */
+export const decodeCustomBase = (text, alphabet = '01') => {
+  if (alphabet.length < 2) alphabet = '01';
+  const base = alphabet.length;
+  
+  try {
+    return text.split(' ').map(encoded => {
+      let num = 0;
+      for (const char of encoded) {
+        const idx = alphabet.indexOf(char);
+        if (idx === -1) return encoded;
+        num = num * base + idx;
+      }
+      return String.fromCharCode(num);
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// CAESAR WITH MULTIPLE SHIFTS
+// ============================================
+
+/**
+ * Caesar cipher with multiple rotating shifts
+ * @param {string} text - The text to encode
+ * @param {number[]} shifts - Array of shift values to cycle through
+ * @returns {string} - Encoded text
+ */
+export const encodeMultiCaesar = (text, shifts = [3, 7, 13]) => {
+  if (!shifts || shifts.length === 0) shifts = [3, 7, 13];
+  let shiftIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const shift = shifts[shiftIndex % shifts.length];
+    shiftIndex++;
+    const start = char <= 'Z' ? 65 : 97;
+    return String.fromCharCode(((char.charCodeAt(0) - start + shift) % 26) + start);
+  });
+};
+
+/**
+ * Decode multi-shift Caesar cipher
+ * @param {string} text - The encoded text
+ * @param {number[]} shifts - Array of shift values used
+ * @returns {string} - Decoded text
+ */
+export const decodeMultiCaesar = (text, shifts = [3, 7, 13]) => {
+  if (!shifts || shifts.length === 0) shifts = [3, 7, 13];
+  const reverseShifts = shifts.map(s => (26 - (s % 26)) % 26);
+  return encodeMultiCaesar(text, reverseShifts);
+};
+
+// ============================================
+// TEXT SCRAMBLER WITH WORD PRESERVATION
+// ============================================
+
+/**
+ * Text scrambler that preserves word readability
+ * @param {string} text - The text to scramble
+ * @param {string} mode - 'middle' (keep first/last), 'ends' (keep middle), 'all' (full scramble)
+ * @returns {string} - Scrambled text
+ */
+export const encodeScrambler = (text, mode = 'middle') => {
+  const scramble = (arr) => {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      // Deterministic shuffle based on position
+      const j = (i * 7 + arr.length * 13) % (i + 1);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  return text.split(' ').map(word => {
+    if (word.length <= 3) return word;
+    const chars = word.split('');
+    
+    switch (mode) {
+      case 'ends':
+        // Keep first and last 2 chars, scramble middle
+        if (chars.length <= 4) return word;
+        return chars[0] + chars[1] + scramble(chars.slice(2, -2)).join('') + chars.slice(-2).join('');
+      
+      case 'all':
+        // Full scramble
+        return scramble(chars).join('');
+      
+      case 'middle':
+      default:
+        // Keep first and last char (Cambridge style)
+        if (chars.length <= 2) return word;
+        return chars[0] + scramble(chars.slice(1, -1)).join('') + chars[chars.length - 1];
+    }
+  }).join(' ');
+};
+
+// ============================================
+// PHONETIC SUBSTITUTION WITH STYLES
+// ============================================
+
+const PHONETIC_STYLES = {
+  nato: {
+    'A': 'Alpha', 'B': 'Bravo', 'C': 'Charlie', 'D': 'Delta', 'E': 'Echo',
+    'F': 'Foxtrot', 'G': 'Golf', 'H': 'Hotel', 'I': 'India', 'J': 'Juliet',
+    'K': 'Kilo', 'L': 'Lima', 'M': 'Mike', 'N': 'November', 'O': 'Oscar',
+    'P': 'Papa', 'Q': 'Quebec', 'R': 'Romeo', 'S': 'Sierra', 'T': 'Tango',
+    'U': 'Uniform', 'V': 'Victor', 'W': 'Whiskey', 'X': 'X-ray', 'Y': 'Yankee',
+    'Z': 'Zulu', ' ': '[space]'
+  },
+  police: {
+    'A': 'Adam', 'B': 'Boy', 'C': 'Charles', 'D': 'David', 'E': 'Edward',
+    'F': 'Frank', 'G': 'George', 'H': 'Henry', 'I': 'Ida', 'J': 'John',
+    'K': 'King', 'L': 'Lincoln', 'M': 'Mary', 'N': 'Nora', 'O': 'Ocean',
+    'P': 'Paul', 'Q': 'Queen', 'R': 'Robert', 'S': 'Sam', 'T': 'Tom',
+    'U': 'Union', 'V': 'Victor', 'W': 'William', 'X': 'X-ray', 'Y': 'Young',
+    'Z': 'Zebra', ' ': '[space]'
+  },
+  german: {
+    'A': 'Anton', 'B': 'Berta', 'C': 'Cäsar', 'D': 'Dora', 'E': 'Emil',
+    'F': 'Friedrich', 'G': 'Gustav', 'H': 'Heinrich', 'I': 'Ida', 'J': 'Julius',
+    'K': 'Kaufmann', 'L': 'Ludwig', 'M': 'Martha', 'N': 'Nordpol', 'O': 'Otto',
+    'P': 'Paula', 'Q': 'Quelle', 'R': 'Richard', 'S': 'Samuel', 'T': 'Theodor',
+    'U': 'Ulrich', 'V': 'Viktor', 'W': 'Wilhelm', 'X': 'Xanthippe', 'Y': 'Ypsilon',
+    'Z': 'Zacharias', ' ': '[Pause]'
+  }
+};
+
+/**
+ * Phonetic alphabet encoding with style selection
+ * @param {string} text - The text to encode
+ * @param {string} style - 'nato', 'police', or 'german'
+ * @returns {string} - Phonetic representation
+ */
+export const encodePhoneticParam = (text, style = 'nato') => {
+  const alphabet = PHONETIC_STYLES[style] || PHONETIC_STYLES.nato;
+  return text.toUpperCase().split('').map(char => 
+    alphabet[char] || char
+  ).join(' ');
+};
+
+/**
+ * Decode phonetic alphabet
+ * @param {string} text - The phonetic text
+ * @param {string} style - Style used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodePhoneticParam = (text, style = 'nato') => {
+  const alphabet = PHONETIC_STYLES[style] || PHONETIC_STYLES.nato;
+  const reverse = Object.fromEntries(
+    Object.entries(alphabet).map(([k, v]) => [v.toLowerCase(), k])
+  );
+  
+  try {
+    return text.split(' ').map(word => {
+      const key = word.toLowerCase();
+      return reverse[key] || word;
+    }).join('').replace(/\[space\]/gi, ' ').replace(/\[pause\]/gi, ' ');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// NUMERIC SUBSTITUTION WITH BASES
+// ============================================
+
+/**
+ * Convert text to numeric values with configurable base
+ * @param {string} text - The text to convert
+ * @param {number} base - Output number base (2-36)
+ * @param {string} separator - Character to separate numbers
+ * @returns {string} - Numeric representation
+ */
+export const encodeNumericBase = (text, base = 10, separator = '-') => {
+  const clampedBase = Math.max(2, Math.min(36, base));
+  return text.split('').map(char => 
+    char.charCodeAt(0).toString(clampedBase).toUpperCase()
+  ).join(separator);
+};
+
+/**
+ * Decode numeric base encoding
+ * @param {string} text - The numeric text
+ * @param {number} base - Base used for encoding
+ * @param {string} separator - Separator used
+ * @returns {string} - Decoded text
+ */
+export const decodeNumericBase = (text, base = 10, separator = '-') => {
+  const clampedBase = Math.max(2, Math.min(36, base));
+  try {
+    return text.split(separator).map(num => 
+      String.fromCharCode(parseInt(num, clampedBase))
+    ).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// WORD TRANSFORMATION
+// ============================================
+
+/**
+ * Transform words with various operations
+ * @param {string} text - The text to transform
+ * @param {string} operation - 'reverse', 'sort', 'shuffle', 'double', 'truncate'
+ * @param {number} param - Optional parameter for the operation
+ * @returns {string} - Transformed text
+ */
+export const encodeWordTransform = (text, operation = 'reverse', param = 0) => {
+  return text.split(' ').map((word, idx) => {
+    switch (operation) {
+      case 'reverse':
+        return word.split('').reverse().join('');
+      
+      case 'sort':
+        return word.split('').sort().join('');
+      
+      case 'shuffle': {
+        const chars = word.split('');
+        // Deterministic shuffle
+        for (let i = chars.length - 1; i > 0; i--) {
+          const j = ((i + idx) * 7919) % (i + 1);
+          [chars[i], chars[j]] = [chars[j], chars[i]];
+        }
+        return chars.join('');
+      }
+      
+      case 'double':
+        return word.split('').map(c => c + c).join('');
+      
+      case 'truncate': {
+        const length = param || 3;
+        return word.slice(0, length);
+      }
+      
+      case 'initial':
+        return word[0] || '';
+      
+      case 'pig-latin-advanced': {
+        if (!/^[a-zA-Z]/.test(word)) return word;
+        const vowels = 'aeiouAEIOU';
+        if (vowels.includes(word[0])) {
+          return word + 'way';
+        }
+        let consonantCluster = '';
+        let i = 0;
+        while (i < word.length && !vowels.includes(word[i])) {
+          consonantCluster += word[i];
+          i++;
+        }
+        return word.slice(i) + consonantCluster + 'ay';
+      }
+      
+      default:
+        return word;
+    }
+  }).join(' ');
+};
+
+// ============================================
+// DELIMITER ENCODING
+// ============================================
+
+/**
+ * Add delimiters between characters with configurable patterns
+ * @param {string} text - The text to encode
+ * @param {string} delimiter - Delimiter pattern (can be multiple chars)
+ * @param {string} mode - 'char', 'word', 'alternate'
+ * @returns {string} - Delimited text
+ */
+export const encodeDelimited = (text, delimiter = '-', mode = 'char') => {
+  switch (mode) {
+    case 'word':
+      return text.split(' ').join(delimiter);
+    
+    case 'alternate': {
+      const delimiters = delimiter.split('');
+      return text.split('').map((char, idx) => 
+        idx === 0 ? char : delimiters[idx % delimiters.length] + char
+      ).join('');
+    }
+    
+    case 'char':
+    default:
+      return text.split('').join(delimiter);
+  }
+};
+
+/**
+ * Decode delimited text
+ * @param {string} text - The delimited text
+ * @param {string} delimiter - Delimiter used
+ * @param {string} mode - Mode used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeDelimited = (text, delimiter = '-', mode = 'char') => {
+  try {
+    switch (mode) {
+      case 'word':
+        return text.split(delimiter).join(' ');
+      
+      case 'alternate': {
+        const delimiters = delimiter.split('');
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+          if (!delimiters.includes(text[i])) {
+            result += text[i];
+          }
+        }
+        return result;
+      }
+      
+      case 'char':
+      default:
+        return text.split(delimiter).join('');
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// REPEAT ENCODING
+// ============================================
+
+/**
+ * Repeat characters based on their position or value
+ * @param {string} text - The text to encode
+ * @param {string} mode - 'position', 'value', 'fixed'
+ * @param {number} count - Fixed repeat count (for 'fixed' mode)
+ * @returns {string} - Repeated text
+ */
+export const encodeRepeat = (text, mode = 'fixed', count = 2) => {
+  return text.split('').map((char, idx) => {
+    let repeatCount;
+    switch (mode) {
+      case 'position':
+        repeatCount = (idx % 5) + 1; // 1-5 repeats based on position
+        break;
+      case 'value':
+        repeatCount = (char.charCodeAt(0) % 4) + 1; // 1-4 repeats based on char code
+        break;
+      case 'fixed':
+      default:
+        repeatCount = count;
+    }
+    return char.repeat(repeatCount);
+  }).join('');
+};
+
+// ============================================
+// VOWEL/CONSONANT OPERATIONS
+// ============================================
+
+/**
+ * Transform vowels or consonants specifically
+ * @param {string} text - The text to transform
+ * @param {string} target - 'vowels', 'consonants', or 'both'
+ * @param {string} operation - 'upper', 'lower', 'remove', 'double', 'replace'
+ * @param {string} replacement - Replacement char (for 'replace' operation)
+ * @returns {string} - Transformed text
+ */
+export const encodeVowelConsonant = (text, target = 'vowels', operation = 'upper', replacement = '*') => {
+  const vowels = 'aeiouAEIOU';
+  
+  const isTarget = (char) => {
+    const isVowel = vowels.includes(char);
+    if (target === 'vowels') return isVowel;
+    if (target === 'consonants') return /[a-zA-Z]/.test(char) && !isVowel;
+    return /[a-zA-Z]/.test(char); // both
+  };
+  
+  return text.split('').map(char => {
+    if (!isTarget(char)) return char;
+    
+    switch (operation) {
+      case 'upper':
+        return char.toUpperCase();
+      case 'lower':
+        return char.toLowerCase();
+      case 'remove':
+        return '';
+      case 'double':
+        return char + char;
+      case 'replace':
+        return replacement;
+      default:
+        return char;
+    }
+  }).join('');
+};
