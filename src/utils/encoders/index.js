@@ -35,3 +35,6 @@ export * from './parameterized.js';
 
 // Cultural and script encoders (v3.2)
 export * from './cultural.js';
+
+// Communication and signaling encoders (v3.3)
+export * from './communication.js';

@@ -3625,6 +3625,499 @@ export const encoderConfig = [
     encode: encoders.encodeToolEmoji,
     reversible: false,
     tags: ['fun', 'tool', 'emoji']
+  },
+
+  // ========================================
+  // 📡 COMMUNICATION ENCODERS (v3.3)
+  // ========================================
+
+  // Phonetic Alphabets
+  {
+    id: 'nato-extended',
+    name: 'NATO Phonetic Pro',
+    description: 'NATO/Police/Western Union phonetics',
+    emoji: '🎖️',
+    category: 'classic',
+    encode: encoders.encodeNATOExtended,
+    reversible: false,
+    hasSettings: true,
+    tags: ['classic', 'nato', 'phonetic', 'settings']
+  },
+
+  // Military
+  {
+    id: 'military-grid',
+    name: 'Military Grid',
+    description: 'Military grid reference format',
+    emoji: '🗺️',
+    category: 'advanced',
+    encode: encoders.encodeMilitaryGrid,
+    reversible: false,
+    tags: ['advanced', 'military', 'grid']
+  },
+  {
+    id: 'waypoint',
+    name: 'Aviation Waypoint',
+    description: 'Aviation waypoint format',
+    emoji: '✈️',
+    category: 'advanced',
+    encode: encoders.encodeWaypoint,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'waypoint']
+  },
+
+  // Radio
+  {
+    id: 'cb-radio',
+    name: 'CB Radio Style',
+    description: '10-codes CB radio format',
+    emoji: '📻',
+    category: 'retro',
+    encode: encoders.encodeCBRadio,
+    reversible: false,
+    tags: ['retro', 'radio', 'cb']
+  },
+  {
+    id: 'radio-operator',
+    name: 'Radio Operator',
+    description: 'Ham radio operator style',
+    emoji: '📡',
+    category: 'retro',
+    encode: encoders.encodeRadioOperator,
+    reversible: false,
+    tags: ['retro', 'radio', 'ham']
+  },
+
+  // Telegraph/Telex
+  {
+    id: 'teletype',
+    name: 'Teletype Message',
+    description: 'Classic teletype format',
+    emoji: '📟',
+    category: 'retro',
+    encode: encoders.encodeTeletype,
+    reversible: false,
+    tags: ['retro', 'teletype', 'telex']
+  },
+  {
+    id: 'wire-service',
+    name: 'Wire Service',
+    description: 'News wire service format',
+    emoji: '📰',
+    category: 'retro',
+    encode: encoders.encodeWireService,
+    reversible: false,
+    tags: ['retro', 'news', 'wire']
+  },
+
+  // Maritime
+  {
+    id: 'maritime-flags-pro',
+    name: 'Maritime Flags Pro',
+    description: 'International maritime flags',
+    emoji: '⚓',
+    category: 'unique',
+    encode: encoders.encodeMaritimeFlags,
+    reversible: false,
+    tags: ['unique', 'maritime', 'flags']
+  },
+  {
+    id: 'call-sign',
+    name: 'Ship Call Sign',
+    description: 'Maritime call sign format',
+    emoji: '🚢',
+    category: 'unique',
+    encode: encoders.encodeCallSign,
+    reversible: false,
+    tags: ['unique', 'maritime', 'callsign']
+  },
+
+  // Aviation
+  {
+    id: 'metar',
+    name: 'METAR Weather',
+    description: 'Aviation weather report format',
+    emoji: '🌤️',
+    category: 'advanced',
+    encode: encoders.encodeMETAR,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'weather']
+  },
+  {
+    id: 'notam',
+    name: 'NOTAM Format',
+    description: 'Notice to Airmen format',
+    emoji: '⚠️',
+    category: 'advanced',
+    encode: encoders.encodeNOTAM,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'notam']
+  },
+
+  // Broadcast
+  {
+    id: 'news-ticker',
+    name: 'News Ticker',
+    description: 'Breaking news ticker style',
+    emoji: '📺',
+    category: 'fun',
+    encode: encoders.encodeNewsTicker,
+    reversible: false,
+    tags: ['fun', 'news', 'ticker']
+  },
+  {
+    id: 'emergency-broadcast',
+    name: 'Emergency Broadcast',
+    description: 'Emergency alert style',
+    emoji: '🚨',
+    category: 'fun',
+    encode: encoders.encodeEmergencyBroadcast,
+    reversible: false,
+    tags: ['fun', 'emergency', 'alert']
+  },
+  {
+    id: 'headline',
+    name: 'News Headline',
+    description: 'News headline format',
+    emoji: '📰',
+    category: 'fun',
+    encode: encoders.encodeHeadline,
+    reversible: false,
+    tags: ['fun', 'news', 'headline']
+  },
+
+  // Postal/Shipping
+  {
+    id: 'postal-barcode',
+    name: 'Postal Barcode',
+    description: 'Postal barcode pattern',
+    emoji: '📮',
+    category: 'unique',
+    encode: encoders.encodePostalBarcode,
+    reversible: false,
+    tags: ['unique', 'postal', 'barcode']
+  },
+  {
+    id: 'tracking-number',
+    name: 'Tracking Number',
+    description: 'Package tracking format',
+    emoji: '📦',
+    category: 'unique',
+    encode: encoders.encodeTrackingNumber,
+    reversible: false,
+    tags: ['unique', 'shipping', 'tracking']
+  },
+
+  // Medical/Emergency
+  {
+    id: 'hospital-code',
+    name: 'Hospital Code',
+    description: 'Hospital emergency codes',
+    emoji: '🏥',
+    category: 'unique',
+    encode: encoders.encodeHospitalCode,
+    reversible: false,
+    tags: ['unique', 'hospital', 'emergency']
+  },
+  {
+    id: 'ems-dispatch',
+    name: 'EMS Dispatch',
+    description: 'Emergency dispatch format',
+    emoji: '🚑',
+    category: 'unique',
+    encode: encoders.encodeEMS,
+    reversible: false,
+    tags: ['unique', 'ems', 'dispatch']
+  },
+
+  // Financial
+  {
+    id: 'stock-ticker',
+    name: 'Stock Ticker',
+    description: 'Stock market ticker format',
+    emoji: '📈',
+    category: 'modern',
+    encode: encoders.encodeStockTicker,
+    reversible: false,
+    tags: ['modern', 'stock', 'finance']
+  },
+  {
+    id: 'swift-code',
+    name: 'SWIFT Code',
+    description: 'Bank SWIFT code format',
+    emoji: '🏦',
+    category: 'modern',
+    encode: encoders.encodeSWIFT,
+    reversible: false,
+    tags: ['modern', 'bank', 'swift']
+  },
+
+  // Library/Academic
+  {
+    id: 'isbn-style',
+    name: 'ISBN Style',
+    description: 'Book ISBN format',
+    emoji: '📚',
+    category: 'unique',
+    encode: encoders.encodeISBN,
+    reversible: false,
+    tags: ['unique', 'isbn', 'book']
+  },
+  {
+    id: 'doi-style',
+    name: 'DOI Style',
+    description: 'Digital Object Identifier',
+    emoji: '🔗',
+    category: 'unique',
+    encode: encoders.encodeDOI,
+    reversible: false,
+    tags: ['unique', 'doi', 'academic']
+  },
+  {
+    id: 'call-number',
+    name: 'Library Call Number',
+    description: 'Library classification',
+    emoji: '📖',
+    category: 'unique',
+    encode: encoders.encodeCallNumber,
+    reversible: false,
+    tags: ['unique', 'library', 'dewey']
+  },
+
+  // Internet/Network
+  {
+    id: 'http-status',
+    name: 'HTTP Status',
+    description: 'HTTP response status style',
+    emoji: '🌐',
+    category: 'computer',
+    encode: encoders.encodeHTTPStatus,
+    reversible: false,
+    tags: ['computer', 'http', 'status']
+  },
+  {
+    id: 'log-entry',
+    name: 'Log Entry',
+    description: 'Application log format',
+    emoji: '📝',
+    category: 'computer',
+    encode: encoders.encodeLogEntry,
+    reversible: false,
+    tags: ['computer', 'log', 'debug']
+  },
+  {
+    id: 'terminal-command',
+    name: 'Terminal Command',
+    description: 'Unix terminal style',
+    emoji: '💻',
+    category: 'computer',
+    encode: encoders.encodeTerminal,
+    reversible: false,
+    tags: ['computer', 'terminal', 'unix']
+  },
+  {
+    id: 'file-path',
+    name: 'File Path',
+    description: 'Unix file path format',
+    emoji: '📁',
+    category: 'computer',
+    encode: encoders.encodeFilePath,
+    reversible: false,
+    tags: ['computer', 'file', 'path']
+  },
+
+  // Time Encoding
+  {
+    id: 'unix-epoch',
+    name: 'Unix Epoch',
+    description: 'Unix timestamp format',
+    emoji: '⏱️',
+    category: 'computer',
+    encode: encoders.encodeUnixEpoch,
+    reversible: false,
+    tags: ['computer', 'unix', 'timestamp']
+  },
+  {
+    id: 'iso-date',
+    name: 'ISO Date Sequence',
+    description: 'ISO 8601 date encoding',
+    emoji: '📅',
+    category: 'computer',
+    encode: encoders.encodeISODate,
+    reversible: false,
+    tags: ['computer', 'iso', 'date']
+  },
+  {
+    id: 'relative-time',
+    name: 'Relative Time',
+    description: 'Human-readable time ago',
+    emoji: '🕐',
+    category: 'modern',
+    encode: encoders.encodeRelativeTime,
+    reversible: false,
+    tags: ['modern', 'time', 'relative']
+  },
+
+  // Coordinates
+  {
+    id: 'utm-coords',
+    name: 'UTM Coordinates',
+    description: 'Universal Transverse Mercator',
+    emoji: '🗺️',
+    category: 'scientific',
+    encode: encoders.encodeUTM,
+    reversible: false,
+    tags: ['scientific', 'utm', 'coordinates']
+  },
+  {
+    id: 'what3words-style',
+    name: 'What3Words Style',
+    description: 'Three-word location format',
+    emoji: '📍',
+    category: 'modern',
+    encode: encoders.encodeWhat3Words,
+    reversible: false,
+    tags: ['modern', 'location', 'words']
+  },
+
+  // QR/Barcode Formats
+  {
+    id: 'vcard-format',
+    name: 'vCard Format',
+    description: 'Contact card format',
+    emoji: '📇',
+    category: 'modern',
+    encode: encoders.encodeVCard,
+    reversible: false,
+    tags: ['modern', 'vcard', 'contact']
+  },
+  {
+    id: 'wifi-qr',
+    name: 'WiFi QR Format',
+    description: 'WiFi network QR format',
+    emoji: '📶',
+    category: 'modern',
+    encode: encoders.encodeWiFiQR,
+    reversible: false,
+    tags: ['modern', 'wifi', 'qr']
+  },
+  {
+    id: 'ical-event',
+    name: 'iCal Event',
+    description: 'Calendar event format',
+    emoji: '🗓️',
+    category: 'modern',
+    encode: encoders.encodeICal,
+    reversible: false,
+    tags: ['modern', 'ical', 'calendar']
+  },
+
+  // Gaming Communication
+  {
+    id: 'game-chat',
+    name: 'Game Chat',
+    description: 'Twitch/game chat style',
+    emoji: '🎮',
+    category: 'games',
+    encode: encoders.encodeGameChat,
+    reversible: false,
+    tags: ['games', 'chat', 'twitch']
+  },
+  {
+    id: 'mmo-loot',
+    name: 'MMO Loot',
+    description: 'MMORPG item rarity format',
+    emoji: '⚔️',
+    category: 'games',
+    encode: encoders.encodeMMOLoot,
+    reversible: false,
+    tags: ['games', 'mmo', 'loot']
+  },
+  {
+    id: 'dice-notation',
+    name: 'D&D Dice Notation',
+    description: 'Tabletop RPG dice format',
+    emoji: '🎲',
+    category: 'games',
+    encode: encoders.encodeDiceNotation,
+    reversible: false,
+    tags: ['games', 'dnd', 'dice']
+  },
+
+  // Social Media
+  {
+    id: 'twitter-style',
+    name: 'Twitter Style',
+    description: 'Twitter post with hashtags',
+    emoji: '🐦',
+    category: 'modern',
+    encode: encoders.encodeTwitterStyle,
+    reversible: false,
+    tags: ['modern', 'twitter', 'social']
+  },
+  {
+    id: 'reddit-style',
+    name: 'Reddit Style',
+    description: 'Reddit post format',
+    emoji: '🤖',
+    category: 'modern',
+    encode: encoders.encodeRedditStyle,
+    reversible: false,
+    tags: ['modern', 'reddit', 'social']
+  },
+  {
+    id: 'forum-quote',
+    name: 'Forum Quote',
+    description: 'BBCode forum quote',
+    emoji: '💬',
+    category: 'modern',
+    encode: encoders.encodeForumQuote,
+    reversible: false,
+    tags: ['modern', 'forum', 'bbcode']
+  },
+
+  // Encryption Style
+  {
+    id: 'pgp-style',
+    name: 'PGP Message',
+    description: 'PGP encrypted message style',
+    emoji: '🔐',
+    category: 'forensics',
+    encode: encoders.encodePGPStyle,
+    reversible: false,
+    tags: ['forensics', 'pgp', 'encrypted']
+  },
+  {
+    id: 'encrypted-placeholder',
+    name: 'Encrypted Display',
+    description: 'Encrypted message placeholder',
+    emoji: '🔒',
+    category: 'forensics',
+    encode: encoders.encodeEncryptedPlaceholder,
+    reversible: false,
+    tags: ['forensics', 'encrypted', 'placeholder']
+  },
+
+  // Linguistic
+  {
+    id: 'phonetic-simple',
+    name: 'Simple IPA',
+    description: 'Simple phonetic transcription',
+    emoji: '🗣️',
+    category: 'linguistic',
+    encode: encoders.encodePhoneticSimple,
+    reversible: false,
+    tags: ['linguistic', 'phonetic', 'ipa']
+  },
+  {
+    id: 'iso-language',
+    name: 'ISO Language Tags',
+    description: 'ISO language code format',
+    emoji: '🌍',
+    category: 'linguistic',
+    encode: encoders.encodeISOLanguage,
+    reversible: false,
+    tags: ['linguistic', 'iso', 'language']
   }
 ];
 
