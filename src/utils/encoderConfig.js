@@ -784,7 +784,7 @@ export const encoderConfig = [
   {
     id: 'klingon',
     name: 'Klingon pIqaD',
-    description: 'Star Trek Klingon script',
+    description: 'Star Trek Klingon script (requires Klingon font)',
     emoji: '🖖',
     category: 'fantasy',
     encode: encoders.encodeKlingon,
