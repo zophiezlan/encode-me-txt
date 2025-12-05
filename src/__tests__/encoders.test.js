@@ -383,9 +383,7 @@ import {
   encodePlayfair,
   decodePlayfair,
   encodeColumnar,
-  decodeColumnar,
-  encodePigpen,
-  decodePigpen
+  decodeColumnar
 } from '../utils/encoders/ciphers.js'
 
 import {

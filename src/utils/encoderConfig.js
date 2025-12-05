@@ -784,7 +784,7 @@ export const encoderConfig = [
   {
     id: 'klingon',
     name: 'Klingon pIqaD',
-    description: 'Star Trek Klingon script',
+    description: 'Star Trek Klingon script (requires Klingon font)',
     emoji: '🖖',
     category: 'fantasy',
     encode: encoders.encodeKlingon,
@@ -4076,7 +4076,7 @@ export const encoderConfig = [
     description: 'Parentheses around each char',
     emoji: '🔵',
     category: 'aesthetic',
-    encode: encoders.encodeParenthesized,
+    encode: encoders.encodeParensWrapped,
     reversible: false,
     tags: ['aesthetic', 'parentheses', 'decoration']
   },
@@ -4205,14 +4205,14 @@ export const encoderConfig = [
     tags: ['visual', 'diamond', 'shape']
   },
   {
-    id: 'wave-pattern',
-    name: 'Wave Pattern',
-    description: 'Sine wave text pattern',
+    id: 'wave-layout',
+    name: 'Wave Layout',
+    description: 'Sine wave text layout',
     emoji: '🌊',
     category: 'visual',
-    encode: encoders.encodeWavePattern,
+    encode: encoders.encodeWaveLayout,
     reversible: false,
-    tags: ['visual', 'wave', 'pattern']
+    tags: ['visual', 'wave', 'layout']
   },
   {
     id: 'zigzag-pattern',
@@ -4391,12 +4391,12 @@ export const encoderConfig = [
 
   // Special Characters
   {
-    id: 'box-drawing',
-    name: 'Box Drawing',
+    id: 'box-drawing-lines',
+    name: 'Box Drawing Lines',
     description: '┌├┼ box drawing chars',
     emoji: '📊',
     category: 'unique',
-    encode: encoders.encodeBoxDrawing,
+    encode: encoders.encodeBoxDrawingLines,
     reversible: false,
     tags: ['unique', 'box', 'drawing']
   },

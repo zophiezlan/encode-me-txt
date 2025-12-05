@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Plus, Save, Upload, Trash2, Check, Sparkles } from 'lucide-react';
+import { X, Plus, Trash2, Save, Check, Sparkles, Upload } from 'lucide-react';
 import { CustomEncoderManager } from '../utils/customEncoderManager.js';
 
 const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
@@ -103,7 +103,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
 
     if (encodedData) {
       try {
-        const encoder = CustomEncoderManager.importEncoder(encodedData);
+        CustomEncoderManager.importEncoder(encodedData);
         setSavedEncoders(CustomEncoderManager.getEncoders());
         alert('✅ Custom encoder imported successfully!');
 

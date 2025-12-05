@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from 'react';
 import {
   Copy, Check, Search, X, History,
   Share2, Keyboard, Trash2, TrendingUp, Zap, Eye, HelpCircle,
-  BookOpen, Wand2, Film, Package, Gamepad2, Filter, SortAsc, Tag, Settings, RotateCcw
+  BookOpen, Wand2, Film, Package, Gamepad2, Filter, SortAsc, Tag, Settings, RotateCcw,
+  Loader2
 } from 'lucide-react';
-import { 
-  encoderConfig, 
-  categories, 
-  searchEncoders, 
-  getAllTags, 
+import {
+  encoderConfig,
+  categories,
+  searchEncoders,
+  getAllTags,
   getEncoderStats,
   filterPresets,
   getFilterPreset
@@ -20,11 +21,21 @@ import { EncodingAnalyzer } from '../utils/encodingAnalyzer.js';
 import { ShareManager } from '../utils/shareManager.js';
 import { KeyboardShortcuts } from '../utils/keyboardShortcuts.js';
 import { CustomEncoderManager } from '../utils/customEncoderManager.js';
-import CustomEncoderBuilder from './CustomEncoderBuilder.jsx';
-import VisualEncodingFlowViewer from './VisualEncodingFlowViewer.jsx';
-import PresetsBrowser from './PresetsBrowser.jsx';
-import DailyPuzzle from './DailyPuzzle.jsx';
-import ParticlesBackground from './ParticlesBackground.jsx';
+
+// Lazy load modal components for better initial load performance
+const CustomEncoderBuilder = lazy(() => import('./CustomEncoderBuilder.jsx'));
+const VisualEncodingFlowViewer = lazy(() => import('./VisualEncodingFlowViewer.jsx'));
+const PresetsBrowser = lazy(() => import('./PresetsBrowser.jsx'));
+const DailyPuzzle = lazy(() => import('./DailyPuzzle.jsx'));
+const ParticlesBackground = lazy(() => import('./ParticlesBackground.jsx'));
+
+// Loading spinner component for lazy-loaded modals
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center p-8">
+    <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
+    <span className="ml-2 text-white/70">Loading...</span>
+  </div>
+);
 
 // Configuration constants
 const MAX_DISPLAYED_TAGS = 50;
@@ -700,7 +711,9 @@ const EnhancedTextEncoder = () => {
 
   return (
     <div className={`min-h-screen bg-gradient-to-br ${theme.gradient} ${theme.textPrimary} p-4 md:p-8 transition-all duration-500`}>
-      <ParticlesBackground />
+      <Suspense fallback={null}>
+        <ParticlesBackground />
+      </Suspense>
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Welcome Modal - First Time Users */}
         {showWelcome && (
@@ -1654,7 +1667,6 @@ const EnhancedTextEncoder = () => {
           {filteredEncoders.map((encoder) => {
             const isDecodeMode = mode === 'decode';
             const canDecode = encoder.reversible;
-            const caesarShift = encoderParams.caesar || 13;
 
             // Get memoized result instead of computing on every render
             const result = encoderResults[encoder.id] || '';
@@ -2637,50 +2649,52 @@ const EnhancedTextEncoder = () => {
           </p>
         </div>
 
-        {/* NEW: Next Evolution Feature Modals */}
-        {showCustomBuilder && (
-          <CustomEncoderBuilder
-            theme={theme}
-            onClose={() => setShowCustomBuilder(false)}
-            onSave={() => {
-              // Reload custom encoders - handled by useEffect watching showCustomBuilder
-            }}
-          />
-        )}
+        {/* Lazy-loaded Feature Modals */}
+        <Suspense fallback={<LoadingSpinner />}>
+          {showCustomBuilder && (
+            <CustomEncoderBuilder
+              theme={theme}
+              onClose={() => setShowCustomBuilder(false)}
+              onSave={() => {
+                // Reload custom encoders - handled by useEffect watching showCustomBuilder
+              }}
+            />
+          )}
 
-        {showVisualFlow && visualFlowEncoder && (
-          <VisualEncodingFlowViewer
-            theme={theme}
-            inputText={inputText}
-            encoder={visualFlowEncoder}
-            caesarShift={encoderParams.caesar || 13}
-            onClose={() => {
-              setShowVisualFlow(false);
-              setVisualFlowEncoder(null);
-            }}
-          />
-        )}
+          {showVisualFlow && visualFlowEncoder && (
+            <VisualEncodingFlowViewer
+              theme={theme}
+              inputText={inputText}
+              encoder={visualFlowEncoder}
+              caesarShift={encoderParams.caesar || 13}
+              onClose={() => {
+                setShowVisualFlow(false);
+                setVisualFlowEncoder(null);
+              }}
+            />
+          )}
 
-        {showPresets && (
-          <PresetsBrowser
-            theme={theme}
-            onClose={() => setShowPresets(false)}
-            onLoadPreset={(preset) => {
-              // Load the preset's encoder chain
-              setChainSequence(preset.encoderIds);
-              setEncoderParams({ ...encoderParams, ...preset.params });
-              setShowChainMode(true);
-              setShowPresets(false);
-            }}
-          />
-        )}
+          {showPresets && (
+            <PresetsBrowser
+              theme={theme}
+              onClose={() => setShowPresets(false)}
+              onLoadPreset={(preset) => {
+                // Load the preset's encoder chain
+                setChainSequence(preset.encoderIds);
+                setEncoderParams({ ...encoderParams, ...preset.params });
+                setShowChainMode(true);
+                setShowPresets(false);
+              }}
+            />
+          )}
 
-        {showDailyPuzzle && (
-          <DailyPuzzle
-            theme={theme}
-            onClose={() => setShowDailyPuzzle(false)}
-          />
-        )}
+          {showDailyPuzzle && (
+            <DailyPuzzle
+              theme={theme}
+              onClose={() => setShowDailyPuzzle(false)}
+            />
+          )}
+        </Suspense>
       </div>
     </div>
   );

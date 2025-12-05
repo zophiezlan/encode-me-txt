@@ -245,22 +245,8 @@ export const encodeMorseEmoji = (text) => {
   return text.toUpperCase().split('').map(char => morseMap[char] || char).join(' ');
 };
 
-/**
- * Vaporwave aesthetic text encoding
- * @param {string} text - The text to encode
- * @returns {string} - Full-width text
- */
-export const encodeVaporwave = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    // Convert ASCII to full-width
-    if (code >= 33 && code <= 126) {
-      return String.fromCharCode(code + 65248);
-    }
-    if (code === 32) return '　'; // Full-width space
-    return char;
-  }).join('');
-};
+// Note: encodeVaporwave was removed - use encodeFullwidth from aesthetic.js instead
+// They are functionally identical (convert ASCII to fullwidth characters)
 
 /**
  * Tiny/Superscript text encoding

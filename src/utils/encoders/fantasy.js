@@ -75,23 +75,56 @@ export const decodeElvish = (text) => {
   return text.split('').map(char => ELVISH_REVERSE[char] || char).join('');
 };
 
-// Klingon pIqaD (Star Trek) - Note: There's no official Unicode for Klingon pIqaD
-// The ConScript Unicode Registry has a proposal (U+F8D0-U+F8FF) but it's not standard
-// We simply lowercase the text as a placeholder representation
+// Klingon pIqaD (Star Trek) - Using ConScript Private Use Area (U+F8D0-U+F8FF)
+// These characters require a Klingon font to display properly (e.g., pIqaD qolqoS)
+const KLINGON_MAP = {
+  'a': '\uF8D0', 'b': '\uF8D1', 'ch': '\uF8D2', 'd': '\uF8D3', 'e': '\uF8D4',
+  'gh': '\uF8D5', 'h': '\uF8D6', 'i': '\uF8D7', 'j': '\uF8D8', 'l': '\uF8D9',
+  'm': '\uF8DA', 'n': '\uF8DB', 'ng': '\uF8DC', 'o': '\uF8DD', 'p': '\uF8DE',
+  'q': '\uF8DF', 'Q': '\uF8E0', 'r': '\uF8E1', 's': '\uF8E2', 't': '\uF8E3',
+  'tlh': '\uF8E4', 'u': '\uF8E5', 'v': '\uF8E6', 'w': '\uF8E7', 'y': '\uF8E8',
+  '\'': '\uF8E9', '0': '\uF8F0', '1': '\uF8F1', '2': '\uF8F2', '3': '\uF8F3',
+  '4': '\uF8F4', '5': '\uF8F5', '6': '\uF8F6', '7': '\uF8F7', '8': '\uF8F8', '9': '\uF8F9',
+  ' ': ' '
+};
+
+const KLINGON_REVERSE = Object.fromEntries(Object.entries(KLINGON_MAP).map(([k, v]) => [v, k]));
 
 /**
- * Encodes text to Klingon pIqaD representation
- * Note: There's no official Unicode for Klingon, so we apply lowercase transformation
+ * Encodes text to Klingon pIqaD script
+ * Note: Requires a Klingon font to display correctly
  */
 export const encodeKlingon = (text) => {
-  // Since there's no official Klingon Unicode, we simply lowercase the text
-  // In a full implementation, this would map to ConScript Private Use Area characters
-  return text.toLowerCase();
+  let result = '';
+  const lower = text.toLowerCase();
+  let i = 0;
+
+  while (i < lower.length) {
+    // Check for trigraph 'tlh' first
+    if (i + 2 < lower.length && lower.slice(i, i + 3) === 'tlh') {
+      result += KLINGON_MAP['tlh'];
+      i += 3;
+    // Check for digraphs: ch, gh, ng
+    } else if (i + 1 < lower.length) {
+      const digraph = lower.slice(i, i + 2);
+      if (KLINGON_MAP[digraph]) {
+        result += KLINGON_MAP[digraph];
+        i += 2;
+      } else {
+        result += KLINGON_MAP[lower[i]] || lower[i];
+        i++;
+      }
+    } else {
+      result += KLINGON_MAP[lower[i]] || lower[i];
+      i++;
+    }
+  }
+  return result;
 };
 
 /**
- * Decodes Klingon back to Latin (passthrough since no transformation)
+ * Decodes Klingon pIqaD back to Latin transliteration
  */
 export const decodeKlingon = (text) => {
-  return text;
+  return [...text].map(char => KLINGON_REVERSE[char] || char).join('');
 };
