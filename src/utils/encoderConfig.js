@@ -2677,6 +2677,327 @@ export const encoderConfig = [
     encode: encoders.encodeLeaderboard,
     reversible: false,
     tags: ['games', 'leaderboard', 'rank']
+  },
+
+  // ========================================
+  // 🎛️ PARAMETERIZED ENCODERS WITH SETTINGS (v3.1)
+  // ========================================
+
+  // Leetspeak with intensity
+  {
+    id: 'leetspeak-pro',
+    name: 'Leetspeak Pro',
+    description: 'H4ck3r sp34k with intensity control',
+    emoji: '💻',
+    category: 'fun',
+    encode: encoders.encodeLeetspeakParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'hacker', 'leetspeak', 'settings']
+  },
+
+  // UwU with intensity
+  {
+    id: 'uwu-pro',
+    name: 'UwU Pro',
+    description: 'Cutesy speak with customizable intensity OwO',
+    emoji: '🥺',
+    category: 'fun',
+    encode: encoders.encodeUwUParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'cute', 'uwu', 'settings']
+  },
+
+  // Spongebob with randomness
+  {
+    id: 'spongebob-pro',
+    name: 'SpOnGeBoB Pro',
+    description: 'mOcKiNg TeXt with randomness control',
+    emoji: '🧽',
+    category: 'fun',
+    encode: encoders.encodeSpongebobParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'meme', 'spongebob', 'settings']
+  },
+
+  // Emojipasta with density
+  {
+    id: 'emojipasta-pro',
+    name: 'Emojipasta Pro 😂🔥',
+    description: 'Add emojis with density control 💯',
+    emoji: '😫',
+    category: 'fun',
+    encode: encoders.encodeEmojipastaParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'emoji', 'pasta', 'settings']
+  },
+
+  // Binary with grouping
+  {
+    id: 'binary-pro',
+    name: 'Binary Pro',
+    description: 'Binary with customizable bit grouping',
+    emoji: '🔢',
+    category: 'computer',
+    encode: encoders.encodeBinaryParam,
+    decode: encoders.decodeBinaryParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['computer', 'binary', 'bits', 'settings']
+  },
+
+  // Morse with delimiter styles
+  {
+    id: 'morse-pro',
+    name: 'Morse Code Pro',
+    description: 'Morse with customizable delimiter styles',
+    emoji: '📡',
+    category: 'classic',
+    encode: encoders.encodeMorseParam,
+    decode: encoders.decodeMorseParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['classic', 'morse', 'delimiter', 'settings']
+  },
+
+  // ROT-N with custom rotation
+  {
+    id: 'rot-n',
+    name: 'ROT-N Cipher',
+    description: 'Caesar cipher with custom rotation (1-25)',
+    emoji: '🔄',
+    category: 'cipher',
+    encode: encoders.encodeROTN,
+    decode: encoders.decodeROTN,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'rotation', 'caesar', 'settings']
+  },
+
+  // ROT5 for numbers
+  {
+    id: 'rot5',
+    name: 'ROT5 (Numbers)',
+    description: 'Rotate digits only (0-9)',
+    emoji: '5️⃣',
+    category: 'cipher',
+    encode: encoders.encodeROT5,
+    decode: encoders.decodeROT5,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'rotation', 'numbers', 'settings']
+  },
+
+  // ROT18 combined
+  {
+    id: 'rot18',
+    name: 'ROT18',
+    description: 'Combined ROT13 + ROT5 for letters and numbers',
+    emoji: '🔃',
+    category: 'cipher',
+    encode: encoders.encodeROT18,
+    decode: encoders.decodeROT18,
+    reversible: true,
+    tags: ['cipher', 'rotation', 'combined']
+  },
+
+  // Tap Code with symbols
+  {
+    id: 'tap-code-pro',
+    name: 'Tap Code Pro',
+    description: 'Prison knock cipher with symbol options',
+    emoji: '👊',
+    category: 'cipher',
+    encode: encoders.encodeTapCodeParam,
+    decode: encoders.decodeTapCodeParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'tap', 'symbols', 'settings']
+  },
+
+  // Keyword Cipher
+  {
+    id: 'keyword-cipher',
+    name: 'Keyword Cipher',
+    description: 'Substitution cipher with custom keyword',
+    emoji: '🔑',
+    category: 'cipher',
+    encode: encoders.encodeKeywordCipher,
+    decode: encoders.decodeKeywordCipher,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'keyword', 'substitution', 'settings']
+  },
+
+  // Running Key Cipher
+  {
+    id: 'running-key',
+    name: 'Running Key Cipher',
+    description: 'Uses a book or passage as the key',
+    emoji: '📖',
+    category: 'cipher',
+    encode: encoders.encodeRunningKey,
+    decode: encoders.decodeRunningKey,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'running-key', 'book', 'settings']
+  },
+
+  // Gronsfeld Cipher
+  {
+    id: 'gronsfeld',
+    name: 'Gronsfeld Cipher',
+    description: 'Vigenère variant with numeric key',
+    emoji: '🔢',
+    category: 'cipher',
+    encode: encoders.encodeGronsfeld,
+    decode: encoders.decodeGronsfeld,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'gronsfeld', 'numeric', 'settings']
+  },
+
+  // Trithemius Cipher
+  {
+    id: 'trithemius',
+    name: 'Trithemius Cipher',
+    description: 'Progressive shift cipher (tabula recta)',
+    emoji: '📈',
+    category: 'cipher',
+    encode: encoders.encodeTrithemius,
+    decode: encoders.decodeTrithemius,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'trithemius', 'progressive', 'settings']
+  },
+
+  // Porta Cipher
+  {
+    id: 'porta',
+    name: 'Porta Cipher',
+    description: 'Reciprocal polyalphabetic cipher',
+    emoji: '🚪',
+    category: 'cipher',
+    encode: encoders.encodePorta,
+    decode: encoders.decodePorta,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'porta', 'polyalphabetic', 'settings']
+  },
+
+  // Nihilist Cipher
+  {
+    id: 'nihilist',
+    name: 'Nihilist Cipher',
+    description: 'Russian nihilist movement cipher',
+    emoji: '🇷🇺',
+    category: 'cipher',
+    encode: encoders.encodeNihilist,
+    decode: encoders.decodeNihilist,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'nihilist', 'polybius', 'settings']
+  },
+
+  // Polybius Pro
+  {
+    id: 'polybius-pro',
+    name: 'Polybius Pro',
+    description: 'Polybius square with 5x5 or 6x6 grid option',
+    emoji: '⬜',
+    category: 'cipher',
+    encode: encoders.encodePolybiusParam,
+    decode: encoders.decodePolybiusParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'polybius', 'grid', 'settings']
+  },
+
+  // ADFGVX Cipher
+  {
+    id: 'adfgvx',
+    name: 'ADFGVX Cipher',
+    description: 'WWI German field cipher',
+    emoji: '⚔️',
+    category: 'cipher',
+    encode: encoders.encodeADFGVX,
+    decode: encoders.decodeADFGVX,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'adfgvx', 'military', 'settings']
+  },
+
+  // Book Cipher
+  {
+    id: 'book-cipher',
+    name: 'Book Cipher',
+    description: 'Encode using word positions from text',
+    emoji: '📚',
+    category: 'cipher',
+    encode: encoders.encodeBookCipher,
+    decode: encoders.decodeBookCipher,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'book', 'position', 'settings']
+  },
+
+  // Double Transposition
+  {
+    id: 'double-transposition',
+    name: 'Double Transposition',
+    description: 'Two-pass columnar transposition',
+    emoji: '🔀',
+    category: 'cipher',
+    encode: encoders.encodeDoubleTransposition,
+    decode: encoders.decodeDoubleTransposition,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'transposition', 'double', 'settings']
+  },
+
+  // Four-Square Cipher
+  {
+    id: 'four-square',
+    name: 'Four-Square Cipher',
+    description: 'Digraphic cipher with two keywords',
+    emoji: '🔲',
+    category: 'cipher',
+    encode: encoders.encodeFourSquare,
+    decode: encoders.decodeFourSquare,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'four-square', 'digraph', 'settings']
+  },
+
+  // Straddling Checkerboard
+  {
+    id: 'straddling-checkerboard',
+    name: 'Straddling Checkerboard',
+    description: 'Variable-length numeric cipher',
+    emoji: '♟️',
+    category: 'cipher',
+    encode: encoders.encodeStraddlingCheckerboard,
+    decode: encoders.decodeStraddlingCheckerboard,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'checkerboard', 'numeric', 'settings']
+  },
+
+  // Homophonic Substitution
+  {
+    id: 'homophonic',
+    name: 'Homophonic Cipher',
+    description: 'Multiple codes per letter',
+    emoji: '🎭',
+    category: 'cipher',
+    encode: encoders.encodeHomophonic,
+    decode: encoders.decodeHomophonic,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'homophonic', 'substitution', 'settings']
   }
 ];
 

@@ -29,3 +29,6 @@ export * from './scientific.js';
 export * from './modern.js';
 export * from './nature.js';
 export * from './games.js';
+
+// Parameterized encoders with settings (v3.1)
+export * from './parameterized.js';
