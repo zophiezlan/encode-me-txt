@@ -13,6 +13,23 @@
 import { encoderConfig, getEncoderById, categories } from './encoderConfig.js';
 
 /**
+ * Category and tag constants for consistency
+ */
+export const COMPLEXITY_CATEGORIES = {
+  SECRET: 'secret',
+  CIPHER: 'cipher',
+  COMPUTER: 'computer',
+  FUN: 'fun',
+  VISUAL: 'visual'
+};
+
+export const COMPLEXITY_TAGS = {
+  STEGANOGRAPHY: 'steganography',
+  CRYPTOGRAPHY: 'cryptography',
+  PUZZLE: 'puzzle'
+};
+
+/**
  * Difficulty levels for encoders
  * Based on complexity of the encoding algorithm and output readability
  */
@@ -387,8 +404,9 @@ export const getEncodingComplexity = (input, output, encoderId) => {
     });
   }
 
-  // Steganography bonus
-  if (encoder?.category === 'secret' || encoder?.tags?.includes('steganography')) {
+  // Steganography bonus - using constants for consistency
+  if (encoder?.category === COMPLEXITY_CATEGORIES.SECRET || 
+      encoder?.tags?.includes(COMPLEXITY_TAGS.STEGANOGRAPHY)) {
     score += 20;
     factors.push({
       name: 'Steganography',

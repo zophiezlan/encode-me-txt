@@ -1232,9 +1232,11 @@ export const encodeAlternatingCaseParam = (text, pattern = 'char') => {
       ).join('');
     }
     case 'random': {
-      // Random case for each character (seeded for consistency)
+      // Pseudo-random case for each character using prime multiplier
+      // 31337 is a prime number chosen for good distribution properties
+      const SEED_PRIME = 31337;
       return text.split('').map((char, idx) => {
-        const seed = (idx * 31337) % 100;
+        const seed = (idx * SEED_PRIME) % 100;
         return seed > 50 ? char.toUpperCase() : char.toLowerCase();
       }).join('');
     }
@@ -1348,11 +1350,16 @@ export const decodeMultiCaesar = (text, shifts = [3, 7, 13]) => {
  * @returns {string} - Scrambled text
  */
 export const encodeScrambler = (text, mode = 'middle') => {
+  // Primes for deterministic shuffle algorithm
+  // Using small primes 7 and 13 for good distribution with minimal computation
+  const SHUFFLE_PRIME_A = 7;
+  const SHUFFLE_PRIME_B = 13;
+  
   const scramble = (arr) => {
     const shuffled = [...arr];
     for (let i = shuffled.length - 1; i > 0; i--) {
-      // Deterministic shuffle based on position
-      const j = (i * 7 + arr.length * 13) % (i + 1);
+      // Deterministic shuffle using prime multipliers
+      const j = (i * SHUFFLE_PRIME_A + arr.length * SHUFFLE_PRIME_B) % (i + 1);
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
@@ -1495,6 +1502,9 @@ export const decodeNumericBase = (text, base = 10, separator = '-') => {
  * @returns {string} - Transformed text
  */
 export const encodeWordTransform = (text, operation = 'reverse', param = 0) => {
+  // Prime number for deterministic shuffle - chosen for good distribution
+  const SHUFFLE_PRIME = 7919;
+  
   return text.split(' ').map((word, idx) => {
     switch (operation) {
       case 'reverse':
@@ -1505,9 +1515,9 @@ export const encodeWordTransform = (text, operation = 'reverse', param = 0) => {
       
       case 'shuffle': {
         const chars = word.split('');
-        // Deterministic shuffle
+        // Deterministic shuffle using prime multiplier
         for (let i = chars.length - 1; i > 0; i--) {
-          const j = ((i + idx) * 7919) % (i + 1);
+          const j = ((i + idx) * SHUFFLE_PRIME) % (i + 1);
           [chars[i], chars[j]] = [chars[j], chars[i]];
         }
         return chars.join('');

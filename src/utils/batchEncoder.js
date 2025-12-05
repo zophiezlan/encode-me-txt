@@ -335,6 +335,16 @@ export const chainDecode = (text, encoderIds, options = {}) => {
 };
 
 /**
+ * Escape a string for CSV format
+ * @param {string} value - The value to escape
+ * @returns {string} - Escaped CSV value
+ */
+const escapeCSV = (value) => {
+  if (value == null) return '';
+  return `"${String(value).replace(/"/g, '""')}"`;
+};
+
+/**
  * Export batch results to various formats
  * @param {Object[]} results - Array of encoding results
  * @param {string} format - Export format ('json', 'csv', 'text')
@@ -346,8 +356,8 @@ export const exportBatchResults = (results, format = 'json') => {
       const headers = ['Index', 'Input', 'Output', 'Encoder', 'Success', 'Processing Time (ms)'];
       const rows = results.map(r => [
         r.index ?? '',
-        `"${(r.input || '').replace(/"/g, '""')}"`,
-        `"${(r.output || '').replace(/"/g, '""')}"`,
+        escapeCSV(r.input),
+        escapeCSV(r.output),
         r.encoderName || r.encoderId || '',
         r.success ? 'Yes' : 'No',
         r.processingTime?.toFixed(2) ?? ''
