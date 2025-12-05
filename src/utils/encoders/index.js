@@ -32,3 +32,6 @@ export * from './games.js';
 
 // Parameterized encoders with settings (v3.1)
 export * from './parameterized.js';
+
+// Cultural and script encoders (v3.2)
+export * from './cultural.js';
