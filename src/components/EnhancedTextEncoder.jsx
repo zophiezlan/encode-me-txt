@@ -1654,7 +1654,6 @@ const EnhancedTextEncoder = () => {
           {filteredEncoders.map((encoder) => {
             const isDecodeMode = mode === 'decode';
             const canDecode = encoder.reversible;
-            const caesarShift = encoderParams.caesar || 13;
 
             // Get memoized result instead of computing on every render
             const result = encoderResults[encoder.id] || '';

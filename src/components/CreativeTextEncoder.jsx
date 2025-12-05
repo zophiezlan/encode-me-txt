@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Copy, Check, Shuffle, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { Sparkles, Shuffle, Check, Copy } from 'lucide-react';
 
 const CreativeTextEncoder = () => {
   const [inputText, setInputText] = useState('Hello World!');
@@ -7,10 +7,10 @@ const CreativeTextEncoder = () => {
   const [mode, setMode] = useState('encode'); // 'encode' or 'decode'
   const [favorites, setFavorites] = useState(new Set());
   const [showChainMode, setShowChainMode] = useState(false);
-  const [chainSequence, setChainSequence] = useState([]);
+  const [_chainSequence, _setChainSequence] = useState([]);
   const [expandedCards, setExpandedCards] = useState(new Set());
   const [caesarShift, setCaesarShift] = useState(13);
-  const [playMorse, setPlayMorse] = useState(false);
+  const [_playMorse, _setPlayMorse] = useState(false);
 
   const copyToClipboard = (text, id) => {
     navigator.clipboard.writeText(text);
@@ -803,7 +803,7 @@ const CreativeTextEncoder = () => {
             
             const isDisabled = isDecodeMode && !canDecode;
             const isFavorite = favorites.has(encoder.id);
-            const isExpanded = expandedCards.has(encoder.id);
+            const _isExpanded = expandedCards.has(encoder.id);
 
             const categoryEmoji = {
               secret: '🔐',

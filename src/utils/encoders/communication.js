@@ -80,7 +80,8 @@ export const encodeWaypoint = (text) => {
 // RADIO CODES
 // ============================================
 
-const CB_CODES = {
+// CB radio codes reference (for potential future decode function)
+const _CB_CODES = {
   '10-1': 'Receiving poorly', '10-2': 'Receiving well', '10-3': 'Stop transmitting',
   '10-4': 'OK/Understood', '10-5': 'Relay', '10-6': 'Busy', '10-7': 'Out of service',
   '10-8': 'In service', '10-9': 'Repeat', '10-10': 'Off duty', '10-20': 'Location'
@@ -159,7 +160,8 @@ export const encodeCallSign = (text) => {
 // AVIATION CODES
 // ============================================
 
-const AVIATION_WEATHER = ['CAVOK', 'SKC', 'FEW', 'SCT', 'BKN', 'OVC', 'VV'];
+// Aviation weather codes reference (for potential future decode function)
+const _AVIATION_WEATHER = ['CAVOK', 'SKC', 'FEW', 'SCT', 'BKN', 'OVC', 'VV'];
 
 /**
  * Encode as METAR weather format

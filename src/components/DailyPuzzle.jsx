@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { X, Lightbulb, Check, Trophy, TrendingUp, Award, Flame } from 'lucide-react';
 import { DailyPuzzleSystem } from '../utils/dailyPuzzles.js';
 
 const DailyPuzzle = ({ theme, onClose }) => {

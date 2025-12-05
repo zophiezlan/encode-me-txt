@@ -59,7 +59,7 @@ export const encodeBracketed = (text) => {
 /**
  * Encode with parentheses around each char
  */
-export const encodeParenthesized = (text) => {
+export const encodeParensWrapped = (text) => {
   return text.split('').map(c => `(${c})`).join('');
 };
 
@@ -193,9 +193,9 @@ export const encodeDiamond = (text) => {
 };
 
 /**
- * Encode as wave pattern
+ * Encode as wave layout pattern (vertical)
  */
-export const encodeWavePattern = (text) => {
+export const encodeWaveLayout = (text) => {
   return text.split('').map((char, i) => {
     const offset = Math.round(Math.sin(i * 0.5) * 3 + 3);
     return ' '.repeat(offset) + char;
@@ -402,16 +402,16 @@ export const encodeRepeatingPattern = (text) => {
 // ============================================
 
 /**
- * Encode with box drawing chars
+ * Encode with box drawing line characters
  */
-export const encodeBoxDrawing = (text) => {
+export const encodeBoxDrawingLines = (text) => {
   const chars = {
     'a': '┌', 'b': '├', 'c': '┼', 'd': '┤', 'e': '┐', 'f': '└', 'g': '┴',
     'h': '┬', 'i': '│', 'j': '─', 'k': '┘', 'l': '╔', 'm': '╗', 'n': '╚',
     'o': '╝', 'p': '║', 'q': '═', 'r': '╬', 's': '╠', 't': '╣', 'u': '╦',
     'v': '╩', 'w': '▀', 'x': '▄', 'y': '█', 'z': '░'
   };
-  
+
   return text.toLowerCase().split('').map(c => chars[c] || c).join('');
 };
 

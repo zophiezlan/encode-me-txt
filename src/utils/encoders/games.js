@@ -243,11 +243,12 @@ export const decodeRubiksCube = (text) => {
  */
 export const encodeDungeonMap = (text) => {
   const tiles = ['#', '.', '~', '^', '!', '$', '@', 'D', 'T', 'M'];
-  const legend = {
+  // Legend reference for understanding tile meanings
+  const _legend = {
     '#': 'wall', '.': 'floor', '~': 'water', '^': 'trap',
     '!': 'item', '$': 'gold', '@': 'hero', 'D': 'door', 'T': 'treasure', 'M': 'monster'
   };
-  
+
   const lines = [];
   for (let i = 0; i < text.length; i += 8) {
     const chunk = text.slice(i, i + 8);
@@ -284,7 +285,7 @@ export const encodeTradingCard = (text) => {
   const rarities = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary', 'Mythic'];
   const cardTypes = ['Creature', 'Spell', 'Artifact', 'Enchantment', 'Land'];
   
-  return text.split('').map((char, i) => {
+  return text.split('').map((char, _i) => {
     const code = char.charCodeAt(0);
     const rarity = rarities[code % rarities.length];
     const type = cardTypes[Math.floor(code / rarities.length) % cardTypes.length];
@@ -379,8 +380,9 @@ export const encodeSkillTree = (text) => {
  */
 export const encodeMiniMap = (text) => {
   const terrains = ['🟫', '🟩', '🟦', '🟨', '⬛', '⬜', '🟪', '🟥'];
-  const markers = ['📍', '⭐', '❗', '❓', '🏠', '⚔️'];
-  
+  // Map markers reference (for potential enhanced version)
+  const _markers = ['📍', '⭐', '❗', '❓', '🏠', '⚔️'];
+
   const lines = [];
   for (let i = 0; i < text.length; i += 5) {
     const chunk = text.slice(i, i + 5).padEnd(5, ' ');

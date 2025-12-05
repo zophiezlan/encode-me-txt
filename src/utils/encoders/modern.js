@@ -208,7 +208,7 @@ export const encodePixelCoord = (text) => {
  */
 export const encodeAPIEndpoint = (text) => {
   const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
-  return text.split('').map((char, i) => {
+  return text.split('').map((char, _i) => {
     const code = char.charCodeAt(0);
     const method = methods[code % methods.length];
     return `${method} /api/v1/char/${code}`;
@@ -270,7 +270,7 @@ export const decodeVersion = (text) => {
  */
 export const encodeLogLevel = (text) => {
   const levels = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
-  return text.split('').map((char, i) => {
+  return text.split('').map((char, _i) => {
     const code = char.charCodeAt(0);
     const level = levels[code % levels.length];
     const timestamp = new Date(code * 1000000).toISOString();
@@ -422,7 +422,7 @@ export const encodeRating = (text) => {
  * @returns {string} - Checkbox format
  */
 export const encodeCheckbox = (text) => {
-  return text.split('').map((char, i) => {
+  return text.split('').map((char, _i) => {
     const code = char.charCodeAt(0);
     const checked = code % 2 === 0 ? '☑' : '☐';
     return `${checked} Task_${code}`;
