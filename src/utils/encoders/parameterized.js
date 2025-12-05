@@ -2388,9 +2388,9 @@ export const decodeTopological = (text) => {
       
       const twistIdx = twists.indexOf(twistMatch[1]);
       const crossIdx = crossings.indexOf(crossingMatch[1]);
-      const loopVal = Math.max(0, loops - 1);
+      const loopVal = Math.min(3, Math.max(0, loops - 1)); // Clamp to 0-3 for 2 bits
       
-      const code = crossIdx + (twistIdx << 4) + (loopVal << 6);
+      const code = Math.min(255, crossIdx + (twistIdx << 4) + (loopVal << 6));
       return String.fromCharCode(code);
     }).join('');
   } catch {
@@ -2864,7 +2864,7 @@ export const decodeSonicFrequency = (text, format = 'hz') => {
           const match = p.match(/([0-9.]+)Hz/);
           if (!match) return '';
           const freq = parseFloat(match[1]);
-          const code = Math.round(12 * Math.log2(freq / 440) + 69);
+          const code = Math.min(255, Math.max(0, Math.round(12 * Math.log2(freq / 440) + 69)));
           return String.fromCharCode(code);
         }
       }
@@ -2918,10 +2918,14 @@ export const encodeMnemonic = (text) => {
     'bulk', 'bullet', 'bundle', 'bunker', 'burden', 'burger', 'burst', 'bus'
   ];
   
-  return text.split('').map(char => {
+  // Include hex data for reversibility
+  const hex = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+  const words = text.split('').map(char => {
     const code = char.charCodeAt(0);
     return wordList[code % wordList.length];
   }).join(' ');
+  
+  return `MNEMONIC[${hex}]:${words}`;
 };
 
 /**
@@ -2930,47 +2934,17 @@ export const encodeMnemonic = (text) => {
  * @returns {string} - Decoded text
  */
 export const decodeMnemonic = (text) => {
-  const wordList = [
-    'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract',
-    'absurd', 'abuse', 'access', 'accident', 'account', 'accuse', 'achieve', 'acid',
-    'acoustic', 'acquire', 'across', 'act', 'action', 'actor', 'actress', 'actual',
-    'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult', 'advance',
-    'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent',
-    'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album',
-    'alcohol', 'alert', 'alien', 'all', 'alley', 'allow', 'almost', 'alone',
-    'alpha', 'already', 'also', 'alter', 'always', 'amateur', 'amazing', 'among',
-    'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger', 'angle', 'angry',
-    'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique',
-    'anxiety', 'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april',
-    'arch', 'arctic', 'area', 'arena', 'argue', 'arm', 'armed', 'armor',
-    'army', 'around', 'arrange', 'arrest', 'arrive', 'arrow', 'art', 'artefact',
-    'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset', 'assist', 'assume',
-    'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction',
-    'audit', 'august', 'aunt', 'author', 'auto', 'autumn', 'average', 'avocado',
-    'avoid', 'awake', 'aware', 'away', 'awesome', 'awful', 'awkward', 'axis',
-    'baby', 'bachelor', 'bacon', 'badge', 'bag', 'balance', 'balcony', 'ball',
-    'bamboo', 'banana', 'banner', 'bar', 'barely', 'bargain', 'barrel', 'base',
-    'basic', 'basket', 'battle', 'beach', 'bean', 'beauty', 'because', 'become',
-    'beef', 'before', 'begin', 'behave', 'behind', 'believe', 'below', 'belt',
-    'bench', 'benefit', 'best', 'betray', 'better', 'between', 'beyond', 'bicycle',
-    'bid', 'bike', 'bind', 'biology', 'bird', 'birth', 'bitter', 'black',
-    'blade', 'blame', 'blanket', 'blast', 'bleak', 'bless', 'blind', 'blood',
-    'blossom', 'blouse', 'blue', 'blur', 'blush', 'board', 'boat', 'body',
-    'boil', 'bomb', 'bone', 'bonus', 'book', 'boost', 'border', 'boring',
-    'borrow', 'boss', 'bottom', 'bounce', 'box', 'boy', 'bracket', 'brain',
-    'brand', 'brass', 'brave', 'bread', 'breeze', 'brick', 'bridge', 'brief',
-    'bright', 'bring', 'brisk', 'broccoli', 'broken', 'bronze', 'broom', 'brother',
-    'brown', 'brush', 'bubble', 'buddy', 'budget', 'buffalo', 'build', 'bulb',
-    'bulk', 'bullet', 'bundle', 'bunker', 'burden', 'burger', 'burst', 'bus'
-  ];
-  
   try {
-    const words = text.toLowerCase().split(/\s+/);
-    return words.map(word => {
-      const idx = wordList.indexOf(word);
-      // Since we used modulo, we can't perfectly reverse, but we can try
-      return idx >= 0 ? String.fromCharCode(idx) : '?';
-    }).join('');
+    // Extract hex from the mnemonic format
+    const hexMatch = text.match(/MNEMONIC\[([0-9a-f]+)\]/i);
+    if (!hexMatch) return '[Decode failed]';
+    
+    const hex = hexMatch[1];
+    let result = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      result += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
+    }
+    return result;
   } catch {
     return '[Decode failed]';
   }
@@ -3025,9 +2999,9 @@ export const decodeCoordinateGrid = (text, system = 'cartesian') => {
           const match = m.match(/\(([0-9.]+)∠(-?\d+)°\)/);
           const r = parseFloat(match[1]);
           const theta = parseInt(match[2]) * Math.PI / 180;
-          const x = Math.round(r * Math.cos(theta));
-          const y = Math.round(r * Math.sin(theta));
-          return String.fromCharCode((x << 4) | (y & 0x0F));
+          const x = Math.min(15, Math.max(0, Math.round(r * Math.cos(theta))));
+          const y = Math.min(15, Math.max(0, Math.round(r * Math.sin(theta))));
+          return String.fromCharCode((x << 4) | y);
         }).join('');
       }
       case 'chess': {
@@ -3043,8 +3017,8 @@ export const decodeCoordinateGrid = (text, system = 'cartesian') => {
         const matches = text.match(/\((\d+),(\d+)\)/g) || [];
         return matches.map(m => {
           const match = m.match(/\((\d+),(\d+)\)/);
-          const x = parseInt(match[1]);
-          const y = parseInt(match[2]);
+          const x = Math.min(15, parseInt(match[1]));
+          const y = Math.min(15, parseInt(match[2]));
           return String.fromCharCode((x << 4) | y);
         }).join('');
       }
