@@ -1,6 +1,7 @@
 /**
  * Novel and Original Encoders
  * 30 completely unique encoding methods inspired by diverse fields
+ * (Part of a larger collection with 38 total original encoders)
  */
 
 // ============================================
@@ -18,7 +19,7 @@ export const encodeOrigamiCrease = (text) => {
     const code = char.charCodeAt(0);
     const hex = code.toString(16).padStart(2, '0');
     const pattern = code.toString(2).padStart(8, '0').split('')
-      .map(b => folds[parseInt(b) * 4 + (code % 4)]).join('');
+      .map(b => folds[(parseInt(b) * 4 + (code % 4)) % folds.length]).join('');
     return `[${hex}]${pattern}`;
   }).join('');
 };
