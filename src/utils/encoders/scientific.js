@@ -401,9 +401,7 @@ export const encodeGeometry = (text) => {
  * @returns {string} - Number theory notation
  */
 export const encodeNumberTheory = (text) => {
-  const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
-  
-  return text.split('').map((char, i) => {
+  return text.split('').map((char) => {
     const code = char.charCodeAt(0);
     const divisors = [];
     for (let d = 1; d <= code && divisors.length < 4; d++) {

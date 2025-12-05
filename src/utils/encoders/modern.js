@@ -28,10 +28,10 @@ export const encodeDataMatrix = (text) => {
   const blocks = ['⬛', '⬜'];
   return text.split('').map(char => {
     const code = char.charCodeAt(0);
-    const binary = code.toString(2).padStart(8, '0');
-    // Create 3x3 grid
+    const binary = code.toString(2).padStart(9, '0');
+    // Create 3x3 grid from 9 bits
     let grid = '┌───┐\n│';
-    for (let i = 0; i < 9 && i < binary.length + 1; i++) {
+    for (let i = 0; i < 9; i++) {
       grid += blocks[binary[i] === '1' ? 0 : 1];
     }
     grid += '│\n└───┘';

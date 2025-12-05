@@ -33,7 +33,7 @@ export const decodeFibonacci = (text) => {
     }
     
     const fibMap = {};
-    for (let i = 0; i < 128; i++) {
+    for (let i = 0; i < 256; i++) {
       fibMap[fib[i % fib.length].toString()] = String.fromCharCode(i);
     }
     
@@ -85,7 +85,7 @@ export const decodePrime = (text) => {
     }
     
     const primeMap = {};
-    for (let i = 0; i < 128; i++) {
+    for (let i = 0; i < 256; i++) {
       primeMap[primes[i % primes.length].toString()] = String.fromCharCode(i);
     }
     

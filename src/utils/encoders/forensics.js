@@ -107,10 +107,11 @@ export const encodeVisualHash = (text) => {
  * @returns {string} - Magic bytes format
  */
 export const encodeMagicBytes = (text) => {
+  // Using readable representations of magic bytes
   const magicHeaders = {
-    '0': '‰PNG', '1': 'PK\x03\x04', '2': '%PDF', '3': 'GIF89a',
-    '4': '\xFF\xD8\xFF', '5': 'RIFF', '6': 'MZ', '7': '\x7FELF',
-    '8': 'BM', '9': 'ID3'
+    '0': 'PNG', '1': 'ZIP', '2': 'PDF', '3': 'GIF',
+    '4': 'JPEG', '5': 'RIFF', '6': 'EXE', '7': 'ELF',
+    '8': 'BMP', '9': 'MP3'
   };
   
   return text.split('').map(char => {

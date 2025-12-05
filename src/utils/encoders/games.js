@@ -29,9 +29,10 @@ export const encodePokerHand = (text) => {
   
   return text.split('').map(char => {
     const code = char.charCodeAt(0);
-    const suit = suits[code % suits.length];
-    const rank = ranks[Math.floor(code / suits.length) % ranks.length];
-    return `${rank}${suit}`;
+    // suit = code % 4, rank = (code / 4) % 13
+    const suitIdx = code % suits.length;
+    const rankIdx = Math.floor(code / suits.length) % ranks.length;
+    return `${ranks[rankIdx]}${suits[suitIdx]}`;
   }).join(' ');
 };
 
@@ -48,6 +49,7 @@ export const decodePokerHand = (text) => {
       if (!match) return '?';
       const suitVal = suits[match[2]];
       const rankVal = ranks[match[1]];
+      // Reverse: code = suitVal + rankVal * 4
       return String.fromCharCode(suitVal + rankVal * 4);
     }).join('');
   } catch {
