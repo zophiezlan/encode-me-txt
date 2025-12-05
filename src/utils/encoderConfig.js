@@ -149,6 +149,7 @@ export const encoderConfig = [
     encode: encoders.encodeVigenere,
     decode: encoders.decodeVigenere,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'cryptography', 'polyalphabetic']
   },
   {
@@ -160,6 +161,7 @@ export const encoderConfig = [
     encode: encoders.encodeRailFence,
     decode: encoders.decodeRailFence,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'transposition', 'zigzag']
   },
   {
@@ -193,6 +195,7 @@ export const encoderConfig = [
     encode: encoders.encodeAffine,
     decode: encoders.decodeAffine,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'mathematical', 'substitution']
   },
   {
@@ -237,6 +240,7 @@ export const encoderConfig = [
     encode: encoders.encodeBeaufort,
     decode: encoders.decodeBeaufort,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'polyalphabetic', 'symmetric']
   },
 
@@ -432,6 +436,7 @@ export const encoderConfig = [
     category: 'artistic',
     encode: encoders.encodeZalgo,
     reversible: false,
+    hasSettings: true,
     tags: ['artistic', 'horror', 'chaos']
   },
   {
@@ -1123,6 +1128,7 @@ export const encoderConfig = [
     category: 'fun',
     encode: encoders.encodeRedacted,
     reversible: false,
+    hasSettings: true,
     tags: ['fun', 'redacted', 'secret']
   },
   {
@@ -1256,6 +1262,7 @@ export const encoderConfig = [
     encode: encoders.encodePlayfair,
     decode: encoders.decodePlayfair,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'playfair', 'digraph']
   },
   {
@@ -1267,6 +1274,7 @@ export const encoderConfig = [
     encode: encoders.encodeColumnar,
     decode: encoders.decodeColumnar,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'transposition', 'columnar']
   },
   {
@@ -1278,6 +1286,7 @@ export const encoderConfig = [
     encode: encoders.encodeScytale,
     decode: encoders.decodeScytale,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'ancient', 'spartan']
   },
   {
@@ -1289,6 +1298,7 @@ export const encoderConfig = [
     encode: encoders.encodeAutokey,
     decode: encoders.decodeAutokey,
     reversible: true,
+    hasSettings: true,
     tags: ['cipher', 'autokey', 'vigenere']
   },
   {
@@ -2667,6 +2677,2087 @@ export const encoderConfig = [
     encode: encoders.encodeLeaderboard,
     reversible: false,
     tags: ['games', 'leaderboard', 'rank']
+  },
+
+  // ========================================
+  // 🎛️ PARAMETERIZED ENCODERS WITH SETTINGS (v3.1)
+  // ========================================
+
+  // Leetspeak with intensity
+  {
+    id: 'leetspeak-pro',
+    name: 'Leetspeak Pro',
+    description: 'H4ck3r sp34k with intensity control',
+    emoji: '💻',
+    category: 'fun',
+    encode: encoders.encodeLeetspeakParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'hacker', 'leetspeak', 'settings']
+  },
+
+  // UwU with intensity
+  {
+    id: 'uwu-pro',
+    name: 'UwU Pro',
+    description: 'Cutesy speak with customizable intensity OwO',
+    emoji: '🥺',
+    category: 'fun',
+    encode: encoders.encodeUwUParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'cute', 'uwu', 'settings']
+  },
+
+  // Spongebob with randomness
+  {
+    id: 'spongebob-pro',
+    name: 'SpOnGeBoB Pro',
+    description: 'mOcKiNg TeXt with randomness control',
+    emoji: '🧽',
+    category: 'fun',
+    encode: encoders.encodeSpongebobParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'meme', 'spongebob', 'settings']
+  },
+
+  // Emojipasta with density
+  {
+    id: 'emojipasta-pro',
+    name: 'Emojipasta Pro 😂🔥',
+    description: 'Add emojis with density control 💯',
+    emoji: '😫',
+    category: 'fun',
+    encode: encoders.encodeEmojipastaParam,
+    reversible: false,
+    hasSettings: true,
+    tags: ['fun', 'emoji', 'pasta', 'settings']
+  },
+
+  // Binary with grouping
+  {
+    id: 'binary-pro',
+    name: 'Binary Pro',
+    description: 'Binary with customizable bit grouping',
+    emoji: '🔢',
+    category: 'computer',
+    encode: encoders.encodeBinaryParam,
+    decode: encoders.decodeBinaryParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['computer', 'binary', 'bits', 'settings']
+  },
+
+  // Morse with delimiter styles
+  {
+    id: 'morse-pro',
+    name: 'Morse Code Pro',
+    description: 'Morse with customizable delimiter styles',
+    emoji: '📡',
+    category: 'classic',
+    encode: encoders.encodeMorseParam,
+    decode: encoders.decodeMorseParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['classic', 'morse', 'delimiter', 'settings']
+  },
+
+  // ROT-N with custom rotation
+  {
+    id: 'rot-n',
+    name: 'ROT-N Cipher',
+    description: 'Caesar cipher with custom rotation (1-25)',
+    emoji: '🔄',
+    category: 'cipher',
+    encode: encoders.encodeROTN,
+    decode: encoders.decodeROTN,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'rotation', 'caesar', 'settings']
+  },
+
+  // ROT5 for numbers
+  {
+    id: 'rot5',
+    name: 'ROT5 (Numbers)',
+    description: 'Rotate digits only (0-9)',
+    emoji: '5️⃣',
+    category: 'cipher',
+    encode: encoders.encodeROT5,
+    decode: encoders.decodeROT5,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'rotation', 'numbers', 'settings']
+  },
+
+  // ROT18 combined
+  {
+    id: 'rot18',
+    name: 'ROT18',
+    description: 'Combined ROT13 + ROT5 for letters and numbers',
+    emoji: '🔃',
+    category: 'cipher',
+    encode: encoders.encodeROT18,
+    decode: encoders.decodeROT18,
+    reversible: true,
+    tags: ['cipher', 'rotation', 'combined']
+  },
+
+  // Tap Code with symbols
+  {
+    id: 'tap-code-pro',
+    name: 'Tap Code Pro',
+    description: 'Prison knock cipher with symbol options',
+    emoji: '👊',
+    category: 'cipher',
+    encode: encoders.encodeTapCodeParam,
+    decode: encoders.decodeTapCodeParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'tap', 'symbols', 'settings']
+  },
+
+  // Keyword Cipher
+  {
+    id: 'keyword-cipher',
+    name: 'Keyword Cipher',
+    description: 'Substitution cipher with custom keyword',
+    emoji: '🔑',
+    category: 'cipher',
+    encode: encoders.encodeKeywordCipher,
+    decode: encoders.decodeKeywordCipher,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'keyword', 'substitution', 'settings']
+  },
+
+  // Running Key Cipher
+  {
+    id: 'running-key',
+    name: 'Running Key Cipher',
+    description: 'Uses a book or passage as the key',
+    emoji: '📖',
+    category: 'cipher',
+    encode: encoders.encodeRunningKey,
+    decode: encoders.decodeRunningKey,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'running-key', 'book', 'settings']
+  },
+
+  // Gronsfeld Cipher
+  {
+    id: 'gronsfeld',
+    name: 'Gronsfeld Cipher',
+    description: 'Vigenère variant with numeric key',
+    emoji: '🔢',
+    category: 'cipher',
+    encode: encoders.encodeGronsfeld,
+    decode: encoders.decodeGronsfeld,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'gronsfeld', 'numeric', 'settings']
+  },
+
+  // Trithemius Cipher
+  {
+    id: 'trithemius',
+    name: 'Trithemius Cipher',
+    description: 'Progressive shift cipher (tabula recta)',
+    emoji: '📈',
+    category: 'cipher',
+    encode: encoders.encodeTrithemius,
+    decode: encoders.decodeTrithemius,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'trithemius', 'progressive', 'settings']
+  },
+
+  // Porta Cipher
+  {
+    id: 'porta',
+    name: 'Porta Cipher',
+    description: 'Reciprocal polyalphabetic cipher',
+    emoji: '🚪',
+    category: 'cipher',
+    encode: encoders.encodePorta,
+    decode: encoders.decodePorta,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'porta', 'polyalphabetic', 'settings']
+  },
+
+  // Nihilist Cipher
+  {
+    id: 'nihilist',
+    name: 'Nihilist Cipher',
+    description: 'Russian nihilist movement cipher',
+    emoji: '🇷🇺',
+    category: 'cipher',
+    encode: encoders.encodeNihilist,
+    decode: encoders.decodeNihilist,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'nihilist', 'polybius', 'settings']
+  },
+
+  // Polybius Pro
+  {
+    id: 'polybius-pro',
+    name: 'Polybius Pro',
+    description: 'Polybius square with 5x5 or 6x6 grid option',
+    emoji: '⬜',
+    category: 'cipher',
+    encode: encoders.encodePolybiusParam,
+    decode: encoders.decodePolybiusParam,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'polybius', 'grid', 'settings']
+  },
+
+  // ADFGVX Cipher
+  {
+    id: 'adfgvx',
+    name: 'ADFGVX Cipher',
+    description: 'WWI German field cipher',
+    emoji: '⚔️',
+    category: 'cipher',
+    encode: encoders.encodeADFGVX,
+    decode: encoders.decodeADFGVX,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'adfgvx', 'military', 'settings']
+  },
+
+  // Book Cipher
+  {
+    id: 'book-cipher',
+    name: 'Book Cipher',
+    description: 'Encode using word positions from text',
+    emoji: '📚',
+    category: 'cipher',
+    encode: encoders.encodeBookCipher,
+    decode: encoders.decodeBookCipher,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'book', 'position', 'settings']
+  },
+
+  // Double Transposition
+  {
+    id: 'double-transposition',
+    name: 'Double Transposition',
+    description: 'Two-pass columnar transposition',
+    emoji: '🔀',
+    category: 'cipher',
+    encode: encoders.encodeDoubleTransposition,
+    decode: encoders.decodeDoubleTransposition,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'transposition', 'double', 'settings']
+  },
+
+  // Four-Square Cipher
+  {
+    id: 'four-square',
+    name: 'Four-Square Cipher',
+    description: 'Digraphic cipher with two keywords',
+    emoji: '🔲',
+    category: 'cipher',
+    encode: encoders.encodeFourSquare,
+    decode: encoders.decodeFourSquare,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'four-square', 'digraph', 'settings']
+  },
+
+  // Straddling Checkerboard
+  {
+    id: 'straddling-checkerboard',
+    name: 'Straddling Checkerboard',
+    description: 'Variable-length numeric cipher',
+    emoji: '♟️',
+    category: 'cipher',
+    encode: encoders.encodeStraddlingCheckerboard,
+    decode: encoders.decodeStraddlingCheckerboard,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'checkerboard', 'numeric', 'settings']
+  },
+
+  // Homophonic Substitution
+  {
+    id: 'homophonic',
+    name: 'Homophonic Cipher',
+    description: 'Multiple codes per letter',
+    emoji: '🎭',
+    category: 'cipher',
+    encode: encoders.encodeHomophonic,
+    decode: encoders.decodeHomophonic,
+    reversible: true,
+    hasSettings: true,
+    tags: ['cipher', 'homophonic', 'substitution', 'settings']
+  },
+
+  // ========================================
+  // 🌏 CULTURAL & SCRIPT ENCODERS (v3.2)
+  // ========================================
+
+  // Japanese
+  {
+    id: 'hiragana',
+    name: 'Hiragana Style',
+    description: 'Japanese hiragana characters',
+    emoji: '🇯🇵',
+    category: 'linguistic',
+    encode: encoders.encodeHiragana,
+    reversible: false,
+    tags: ['linguistic', 'japanese', 'hiragana']
+  },
+  {
+    id: 'katakana',
+    name: 'Katakana Style',
+    description: 'Japanese katakana characters',
+    emoji: '🗾',
+    category: 'linguistic',
+    encode: encoders.encodeKatakana,
+    reversible: false,
+    tags: ['linguistic', 'japanese', 'katakana']
+  },
+
+  // Middle Eastern
+  {
+    id: 'arabic-style',
+    name: 'Arabic Style',
+    description: 'Arabic-style letters',
+    emoji: '🕌',
+    category: 'linguistic',
+    encode: encoders.encodeArabicStyle,
+    reversible: false,
+    tags: ['linguistic', 'arabic', 'middle-east']
+  },
+
+  // Southeast Asian
+  {
+    id: 'thai-style',
+    name: 'Thai Style',
+    description: 'Thai alphabet encoding',
+    emoji: '🇹🇭',
+    category: 'linguistic',
+    encode: encoders.encodeThaiStyle,
+    reversible: false,
+    tags: ['linguistic', 'thai', 'southeast-asia']
+  },
+
+  // South Asian
+  {
+    id: 'devanagari',
+    name: 'Devanagari (Hindi)',
+    description: 'Hindi/Sanskrit script',
+    emoji: '🇮🇳',
+    category: 'linguistic',
+    encode: encoders.encodeDevanagari,
+    reversible: false,
+    tags: ['linguistic', 'hindi', 'devanagari']
+  },
+  {
+    id: 'bengali-style',
+    name: 'Bengali Style',
+    description: 'Bengali script encoding',
+    emoji: '🇧🇩',
+    category: 'linguistic',
+    encode: encoders.encodeBengali,
+    reversible: false,
+    tags: ['linguistic', 'bengali', 'south-asia']
+  },
+  {
+    id: 'tamil-style',
+    name: 'Tamil Style',
+    description: 'Tamil script encoding',
+    emoji: '🏛️',
+    category: 'linguistic',
+    encode: encoders.encodeTamil,
+    reversible: false,
+    tags: ['linguistic', 'tamil', 'south-asia']
+  },
+  {
+    id: 'telugu-style',
+    name: 'Telugu Style',
+    description: 'Telugu script encoding',
+    emoji: '📜',
+    category: 'linguistic',
+    encode: encoders.encodeTelugu,
+    reversible: false,
+    tags: ['linguistic', 'telugu', 'south-asia']
+  },
+  {
+    id: 'kannada-style',
+    name: 'Kannada Style',
+    description: 'Kannada script encoding',
+    emoji: '📝',
+    category: 'linguistic',
+    encode: encoders.encodeKannada,
+    reversible: false,
+    tags: ['linguistic', 'kannada', 'south-asia']
+  },
+  {
+    id: 'malayalam-style',
+    name: 'Malayalam Style',
+    description: 'Malayalam script encoding',
+    emoji: '🌴',
+    category: 'linguistic',
+    encode: encoders.encodeMalayalam,
+    reversible: false,
+    tags: ['linguistic', 'malayalam', 'south-asia']
+  },
+  {
+    id: 'gujarati-style',
+    name: 'Gujarati Style',
+    description: 'Gujarati script encoding',
+    emoji: '🦁',
+    category: 'linguistic',
+    encode: encoders.encodeGujarati,
+    reversible: false,
+    tags: ['linguistic', 'gujarati', 'south-asia']
+  },
+  {
+    id: 'punjabi-style',
+    name: 'Punjabi (Gurmukhi)',
+    description: 'Gurmukhi script encoding',
+    emoji: '🪷',
+    category: 'linguistic',
+    encode: encoders.encodePunjabi,
+    reversible: false,
+    tags: ['linguistic', 'punjabi', 'gurmukhi']
+  },
+  {
+    id: 'oriya-style',
+    name: 'Oriya Style',
+    description: 'Oriya script encoding',
+    emoji: '🌊',
+    category: 'linguistic',
+    encode: encoders.encodeOriya,
+    reversible: false,
+    tags: ['linguistic', 'oriya', 'south-asia']
+  },
+  {
+    id: 'sinhala-style',
+    name: 'Sinhala Style',
+    description: 'Sri Lankan Sinhala script',
+    emoji: '🇱🇰',
+    category: 'linguistic',
+    encode: encoders.encodeSinhala,
+    reversible: false,
+    tags: ['linguistic', 'sinhala', 'sri-lanka']
+  },
+
+  // Caucasus
+  {
+    id: 'georgian-style',
+    name: 'Georgian Style',
+    description: 'Georgian alphabet encoding',
+    emoji: '🇬🇪',
+    category: 'linguistic',
+    encode: encoders.encodeGeorgian,
+    reversible: false,
+    tags: ['linguistic', 'georgian', 'caucasus']
+  },
+  {
+    id: 'armenian-style',
+    name: 'Armenian Style',
+    description: 'Armenian alphabet encoding',
+    emoji: '🇦🇲',
+    category: 'linguistic',
+    encode: encoders.encodeArmenian,
+    reversible: false,
+    tags: ['linguistic', 'armenian', 'caucasus']
+  },
+
+  // African
+  {
+    id: 'ethiopic-style',
+    name: 'Ethiopic Style',
+    description: 'Ethiopian Ge\'ez script',
+    emoji: '🇪🇹',
+    category: 'linguistic',
+    encode: encoders.encodeEthiopic,
+    reversible: false,
+    tags: ['linguistic', 'ethiopic', 'african']
+  },
+
+  // Central Asian
+  {
+    id: 'tibetan-style',
+    name: 'Tibetan Style',
+    description: 'Tibetan script encoding',
+    emoji: '🏔️',
+    category: 'linguistic',
+    encode: encoders.encodeTibetan,
+    reversible: false,
+    tags: ['linguistic', 'tibetan', 'central-asia']
+  },
+  {
+    id: 'mongolian-style',
+    name: 'Mongolian Style',
+    description: 'Traditional Mongolian script',
+    emoji: '🇲🇳',
+    category: 'linguistic',
+    encode: encoders.encodeMongolian,
+    reversible: false,
+    tags: ['linguistic', 'mongolian', 'central-asia']
+  },
+
+  // Southeast Asian Scripts
+  {
+    id: 'khmer-style',
+    name: 'Khmer (Cambodian)',
+    description: 'Cambodian script encoding',
+    emoji: '🇰🇭',
+    category: 'linguistic',
+    encode: encoders.encodeKhmer,
+    reversible: false,
+    tags: ['linguistic', 'khmer', 'cambodian']
+  },
+  {
+    id: 'myanmar-style',
+    name: 'Myanmar (Burmese)',
+    description: 'Myanmar script encoding',
+    emoji: '🇲🇲',
+    category: 'linguistic',
+    encode: encoders.encodeMyanmar,
+    reversible: false,
+    tags: ['linguistic', 'myanmar', 'burmese']
+  },
+  {
+    id: 'lao-style',
+    name: 'Lao Style',
+    description: 'Lao script encoding',
+    emoji: '🇱🇦',
+    category: 'linguistic',
+    encode: encoders.encodeLao,
+    reversible: false,
+    tags: ['linguistic', 'lao', 'southeast-asia']
+  },
+  {
+    id: 'javanese-style',
+    name: 'Javanese Style',
+    description: 'Javanese script encoding',
+    emoji: '🏝️',
+    category: 'linguistic',
+    encode: encoders.encodeJavanese,
+    reversible: false,
+    tags: ['linguistic', 'javanese', 'indonesian']
+  },
+  {
+    id: 'balinese-style',
+    name: 'Balinese Style',
+    description: 'Balinese script encoding',
+    emoji: '🌺',
+    category: 'linguistic',
+    encode: encoders.encodeBalinese,
+    reversible: false,
+    tags: ['linguistic', 'balinese', 'indonesian']
+  },
+  {
+    id: 'sundanese-style',
+    name: 'Sundanese Style',
+    description: 'Sundanese script encoding',
+    emoji: '🎋',
+    category: 'linguistic',
+    encode: encoders.encodeSundanese,
+    reversible: false,
+    tags: ['linguistic', 'sundanese', 'indonesian']
+  },
+
+  // Indigenous American
+  {
+    id: 'cherokee-style',
+    name: 'Cherokee Style',
+    description: 'Cherokee syllabary',
+    emoji: '🦅',
+    category: 'linguistic',
+    encode: encoders.encodeCherokee,
+    reversible: false,
+    tags: ['linguistic', 'cherokee', 'native-american']
+  },
+  {
+    id: 'canadian-aboriginal',
+    name: 'Canadian Aboriginal',
+    description: 'Canadian Aboriginal syllabics',
+    emoji: '🍁',
+    category: 'linguistic',
+    encode: encoders.encodeCanadianAboriginal,
+    reversible: false,
+    tags: ['linguistic', 'aboriginal', 'canadian']
+  },
+
+  // ========================================
+  // 𝐀𝐁𝐂 MATHEMATICAL FONTS (v3.2)
+  // ========================================
+
+  {
+    id: 'math-bold',
+    name: '𝐌𝐚𝐭𝐡 𝐁𝐨𝐥𝐝',
+    description: 'Mathematical bold letters',
+    emoji: '🔠',
+    category: 'aesthetic',
+    encode: encoders.encodeMathBold,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'bold']
+  },
+  {
+    id: 'math-italic',
+    name: '𝑀𝑎𝑡ℎ 𝐼𝑡𝑎𝑙𝑖𝑐',
+    description: 'Mathematical italic letters',
+    emoji: '✒️',
+    category: 'aesthetic',
+    encode: encoders.encodeMathItalic,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'italic']
+  },
+  {
+    id: 'math-bold-italic',
+    name: '𝑴𝒂𝒕𝒉 𝑩𝒐𝒍𝒅 𝑰𝒕𝒂𝒍𝒊𝒄',
+    description: 'Mathematical bold italic',
+    emoji: '📝',
+    category: 'aesthetic',
+    encode: encoders.encodeMathBoldItalic,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'bold-italic']
+  },
+  {
+    id: 'math-script',
+    name: '𝒮𝒸𝓇𝒾𝓅𝓉',
+    description: 'Mathematical script (calligraphy)',
+    emoji: '✍️',
+    category: 'aesthetic',
+    encode: encoders.encodeMathScript,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'script']
+  },
+  {
+    id: 'math-bold-script',
+    name: '𝓑𝓸𝓵𝓭 𝓢𝓬𝓻𝓲𝓹𝓽',
+    description: 'Mathematical bold script',
+    emoji: '🖊️',
+    category: 'aesthetic',
+    encode: encoders.encodeMathBoldScript,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'bold-script']
+  },
+  {
+    id: 'math-fraktur',
+    name: '𝔉𝔯𝔞𝔨𝔱𝔲𝔯',
+    description: 'Mathematical Fraktur',
+    emoji: '⚔️',
+    category: 'aesthetic',
+    encode: encoders.encodeMathFraktur,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'fraktur']
+  },
+  {
+    id: 'math-bold-fraktur',
+    name: '𝖁𝖔𝖑𝖉 𝕱𝖗𝖆𝖐𝖙𝖚𝖗',
+    description: 'Mathematical bold Fraktur',
+    emoji: '🗡️',
+    category: 'aesthetic',
+    encode: encoders.encodeMathBoldFraktur,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'bold-fraktur']
+  },
+  {
+    id: 'math-sans',
+    name: '𝖲𝖺𝗇𝗌-𝖲𝖾𝗋𝗂𝖿',
+    description: 'Mathematical sans-serif',
+    emoji: '📋',
+    category: 'aesthetic',
+    encode: encoders.encodeMathSansSerif,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'sans-serif']
+  },
+  {
+    id: 'math-sans-bold',
+    name: '𝗦𝗮𝗻𝘀 𝗕𝗼𝗹𝗱',
+    description: 'Mathematical sans-serif bold',
+    emoji: '📊',
+    category: 'aesthetic',
+    encode: encoders.encodeMathSansSerifBold,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'sans-bold']
+  },
+  {
+    id: 'math-sans-italic',
+    name: '𝘚𝘢𝘯𝘴 𝘐𝘵𝘢𝘭𝘪𝘤',
+    description: 'Mathematical sans-serif italic',
+    emoji: '📄',
+    category: 'aesthetic',
+    encode: encoders.encodeMathSansSerifItalic,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'sans-italic']
+  },
+  {
+    id: 'math-monospace',
+    name: '𝙼𝚘𝚗𝚘𝚜𝚙𝚊𝚌𝚎',
+    description: 'Mathematical monospace',
+    emoji: '💻',
+    category: 'aesthetic',
+    encode: encoders.encodeMathMonospace,
+    reversible: false,
+    tags: ['aesthetic', 'math', 'monospace']
+  },
+
+  // ========================================
+  // ✨ UNICODE DECORATIONS (v3.2)
+  // ========================================
+
+  {
+    id: 'circle-overlay',
+    name: 'C⃝i⃝r⃝c⃝l⃝e⃝ ⃝O⃝v⃝e⃝r⃝l⃝a⃝y⃝',
+    description: 'Circle around each character',
+    emoji: '⭕',
+    category: 'aesthetic',
+    encode: encoders.encodeCircleOverlay,
+    reversible: false,
+    tags: ['aesthetic', 'overlay', 'circle']
+  },
+  {
+    id: 'square-overlay',
+    name: 'S⃞q⃞u⃞a⃞r⃞e⃞ ⃞O⃞v⃞e⃞r⃞l⃞a⃞y⃞',
+    description: 'Square around each character',
+    emoji: '⬜',
+    category: 'aesthetic',
+    encode: encoders.encodeSquareOverlay,
+    reversible: false,
+    tags: ['aesthetic', 'overlay', 'square']
+  },
+  {
+    id: 'diamond-overlay',
+    name: 'D⃟i⃟a⃟m⃟o⃟n⃟d⃟',
+    description: 'Diamond around each character',
+    emoji: '💎',
+    category: 'aesthetic',
+    encode: encoders.encodeDiamondOverlay,
+    reversible: false,
+    tags: ['aesthetic', 'overlay', 'diamond']
+  },
+  {
+    id: 'double-underline',
+    name: 'D̳o̳u̳b̳l̳e̳ ̳U̳n̳d̳e̳r̳l̳i̳n̳e̳',
+    description: 'Double underlined text',
+    emoji: '➖',
+    category: 'aesthetic',
+    encode: encoders.encodeDoubleUnderline,
+    reversible: false,
+    tags: ['aesthetic', 'underline', 'double']
+  },
+  {
+    id: 'overline',
+    name: 'O̅v̅e̅r̅l̅i̅n̅e̅',
+    description: 'Line above each character',
+    emoji: '📏',
+    category: 'aesthetic',
+    encode: encoders.encodeOverline,
+    reversible: false,
+    tags: ['aesthetic', 'overline', 'decoration']
+  },
+  {
+    id: 'double-overline',
+    name: 'D̿o̿u̿b̿l̿e̿ ̿O̿v̿e̿r̿',
+    description: 'Double line above',
+    emoji: '═',
+    category: 'aesthetic',
+    encode: encoders.encodeDoubleOverline,
+    reversible: false,
+    tags: ['aesthetic', 'overline', 'double']
+  },
+  {
+    id: 'slash-overlay',
+    name: 'S̸l̸a̸s̸h̸ ̸O̸v̸e̸r̸l̸a̸y̸',
+    description: 'Slash through characters',
+    emoji: '🚫',
+    category: 'aesthetic',
+    encode: encoders.encodeSlashOverlay,
+    reversible: false,
+    tags: ['aesthetic', 'overlay', 'slash']
+  },
+  {
+    id: 'x-overlay',
+    name: 'X̷ ̷O̷v̷e̷r̷l̷a̷y̷',
+    description: 'X through characters',
+    emoji: '❌',
+    category: 'aesthetic',
+    encode: encoders.encodeXOverlay,
+    reversible: false,
+    tags: ['aesthetic', 'overlay', 'x']
+  },
+  {
+    id: 'small-caps',
+    name: 'ꜱᴍᴀʟʟ ᴄᴀᴘꜱ',
+    description: 'Small capital letters',
+    emoji: '🔡',
+    category: 'aesthetic',
+    encode: encoders.encodeSmallCaps,
+    reversible: false,
+    tags: ['aesthetic', 'smallcaps', 'text']
+  },
+  {
+    id: 'subscript-text',
+    name: 'ₛᵤbₛcᵣᵢₚₜ',
+    description: 'Subscript text style',
+    emoji: '⬇️',
+    category: 'aesthetic',
+    encode: encoders.encodeSubscript,
+    reversible: false,
+    tags: ['aesthetic', 'subscript', 'text']
+  },
+  {
+    id: 'regional-indicators',
+    name: '🇷🇪🇬🇮🇴🇳🇦🇱',
+    description: 'Regional indicator symbols',
+    emoji: '🏳️',
+    category: 'aesthetic',
+    encode: encoders.encodeRegionalIndicators,
+    reversible: false,
+    tags: ['aesthetic', 'regional', 'flags']
+  },
+  {
+    id: 'negative-circled',
+    name: '🅝🅔🅖🅐🅣🅘🅥🅔',
+    description: 'Negative circled letters',
+    emoji: '⚫',
+    category: 'aesthetic',
+    encode: encoders.encodeNegativeCircled,
+    reversible: false,
+    tags: ['aesthetic', 'negative', 'circled']
+  },
+  {
+    id: 'negative-squared',
+    name: '🅽🅴🅶🅰🆃🅸🆅🅴',
+    description: 'Negative squared letters',
+    emoji: '⬛',
+    category: 'aesthetic',
+    encode: encoders.encodeNegativeSquared,
+    reversible: false,
+    tags: ['aesthetic', 'negative', 'squared']
+  },
+
+  // ========================================
+  // 😊 EMOJI THEME ENCODERS (v3.2)
+  // ========================================
+
+  {
+    id: 'fruit-emoji',
+    name: 'Fruit Encoding',
+    description: 'Encode with fruit emojis',
+    emoji: '🍎',
+    category: 'fun',
+    encode: encoders.encodeFruitEmoji,
+    reversible: false,
+    tags: ['fun', 'fruit', 'emoji']
+  },
+  {
+    id: 'face-emoji',
+    name: 'Face Encoding',
+    description: 'Encode with face emojis',
+    emoji: '😀',
+    category: 'fun',
+    encode: encoders.encodeFaceEmoji,
+    reversible: false,
+    tags: ['fun', 'face', 'emoji']
+  },
+  {
+    id: 'hand-emoji',
+    name: 'Hand Encoding',
+    description: 'Encode with hand emojis',
+    emoji: '👋',
+    category: 'fun',
+    encode: encoders.encodeHandEmoji,
+    reversible: false,
+    tags: ['fun', 'hand', 'emoji']
+  },
+  {
+    id: 'heart-emoji',
+    name: 'Heart Encoding',
+    description: 'Encode with heart emojis',
+    emoji: '❤️',
+    category: 'fun',
+    encode: encoders.encodeHeartEmoji,
+    reversible: false,
+    tags: ['fun', 'heart', 'emoji']
+  },
+  {
+    id: 'nature-emoji',
+    name: 'Nature Encoding',
+    description: 'Encode with nature emojis',
+    emoji: '🌸',
+    category: 'fun',
+    encode: encoders.encodeNatureEmoji,
+    reversible: false,
+    tags: ['fun', 'nature', 'emoji']
+  },
+  {
+    id: 'transport-emoji',
+    name: 'Transport Encoding',
+    description: 'Encode with transport emojis',
+    emoji: '🚗',
+    category: 'fun',
+    encode: encoders.encodeTransportEmoji,
+    reversible: false,
+    tags: ['fun', 'transport', 'emoji']
+  },
+  {
+    id: 'building-emoji',
+    name: 'Building Encoding',
+    description: 'Encode with building emojis',
+    emoji: '🏠',
+    category: 'fun',
+    encode: encoders.encodeBuildingEmoji,
+    reversible: false,
+    tags: ['fun', 'building', 'emoji']
+  },
+  {
+    id: 'tool-emoji',
+    name: 'Tool Encoding',
+    description: 'Encode with tool emojis',
+    emoji: '🔧',
+    category: 'fun',
+    encode: encoders.encodeToolEmoji,
+    reversible: false,
+    tags: ['fun', 'tool', 'emoji']
+  },
+
+  // ========================================
+  // 📡 COMMUNICATION ENCODERS (v3.3)
+  // ========================================
+
+  // Phonetic Alphabets
+  {
+    id: 'nato-extended',
+    name: 'NATO Phonetic Pro',
+    description: 'NATO/Police/Western Union phonetics',
+    emoji: '🎖️',
+    category: 'classic',
+    encode: encoders.encodeNATOExtended,
+    reversible: false,
+    hasSettings: true,
+    tags: ['classic', 'nato', 'phonetic', 'settings']
+  },
+
+  // Military
+  {
+    id: 'military-grid',
+    name: 'Military Grid',
+    description: 'Military grid reference format',
+    emoji: '🗺️',
+    category: 'advanced',
+    encode: encoders.encodeMilitaryGrid,
+    reversible: false,
+    tags: ['advanced', 'military', 'grid']
+  },
+  {
+    id: 'waypoint',
+    name: 'Aviation Waypoint',
+    description: 'Aviation waypoint format',
+    emoji: '✈️',
+    category: 'advanced',
+    encode: encoders.encodeWaypoint,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'waypoint']
+  },
+
+  // Radio
+  {
+    id: 'cb-radio',
+    name: 'CB Radio Style',
+    description: '10-codes CB radio format',
+    emoji: '📻',
+    category: 'retro',
+    encode: encoders.encodeCBRadio,
+    reversible: false,
+    tags: ['retro', 'radio', 'cb']
+  },
+  {
+    id: 'radio-operator',
+    name: 'Radio Operator',
+    description: 'Ham radio operator style',
+    emoji: '📡',
+    category: 'retro',
+    encode: encoders.encodeRadioOperator,
+    reversible: false,
+    tags: ['retro', 'radio', 'ham']
+  },
+
+  // Telegraph/Telex
+  {
+    id: 'teletype',
+    name: 'Teletype Message',
+    description: 'Classic teletype format',
+    emoji: '📟',
+    category: 'retro',
+    encode: encoders.encodeTeletype,
+    reversible: false,
+    tags: ['retro', 'teletype', 'telex']
+  },
+  {
+    id: 'wire-service',
+    name: 'Wire Service',
+    description: 'News wire service format',
+    emoji: '📰',
+    category: 'retro',
+    encode: encoders.encodeWireService,
+    reversible: false,
+    tags: ['retro', 'news', 'wire']
+  },
+
+  // Maritime
+  {
+    id: 'maritime-flags-pro',
+    name: 'Maritime Flags Pro',
+    description: 'International maritime flags',
+    emoji: '⚓',
+    category: 'unique',
+    encode: encoders.encodeMaritimeFlags,
+    reversible: false,
+    tags: ['unique', 'maritime', 'flags']
+  },
+  {
+    id: 'call-sign',
+    name: 'Ship Call Sign',
+    description: 'Maritime call sign format',
+    emoji: '🚢',
+    category: 'unique',
+    encode: encoders.encodeCallSign,
+    reversible: false,
+    tags: ['unique', 'maritime', 'callsign']
+  },
+
+  // Aviation
+  {
+    id: 'metar',
+    name: 'METAR Weather',
+    description: 'Aviation weather report format',
+    emoji: '🌤️',
+    category: 'advanced',
+    encode: encoders.encodeMETAR,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'weather']
+  },
+  {
+    id: 'notam',
+    name: 'NOTAM Format',
+    description: 'Notice to Airmen format',
+    emoji: '⚠️',
+    category: 'advanced',
+    encode: encoders.encodeNOTAM,
+    reversible: false,
+    tags: ['advanced', 'aviation', 'notam']
+  },
+
+  // Broadcast
+  {
+    id: 'news-ticker',
+    name: 'News Ticker',
+    description: 'Breaking news ticker style',
+    emoji: '📺',
+    category: 'fun',
+    encode: encoders.encodeNewsTicker,
+    reversible: false,
+    tags: ['fun', 'news', 'ticker']
+  },
+  {
+    id: 'emergency-broadcast',
+    name: 'Emergency Broadcast',
+    description: 'Emergency alert style',
+    emoji: '🚨',
+    category: 'fun',
+    encode: encoders.encodeEmergencyBroadcast,
+    reversible: false,
+    tags: ['fun', 'emergency', 'alert']
+  },
+  {
+    id: 'headline',
+    name: 'News Headline',
+    description: 'News headline format',
+    emoji: '📰',
+    category: 'fun',
+    encode: encoders.encodeHeadline,
+    reversible: false,
+    tags: ['fun', 'news', 'headline']
+  },
+
+  // Postal/Shipping
+  {
+    id: 'postal-barcode',
+    name: 'Postal Barcode',
+    description: 'Postal barcode pattern',
+    emoji: '📮',
+    category: 'unique',
+    encode: encoders.encodePostalBarcode,
+    reversible: false,
+    tags: ['unique', 'postal', 'barcode']
+  },
+  {
+    id: 'tracking-number',
+    name: 'Tracking Number',
+    description: 'Package tracking format',
+    emoji: '📦',
+    category: 'unique',
+    encode: encoders.encodeTrackingNumber,
+    reversible: false,
+    tags: ['unique', 'shipping', 'tracking']
+  },
+
+  // Medical/Emergency
+  {
+    id: 'hospital-code',
+    name: 'Hospital Code',
+    description: 'Hospital emergency codes',
+    emoji: '🏥',
+    category: 'unique',
+    encode: encoders.encodeHospitalCode,
+    reversible: false,
+    tags: ['unique', 'hospital', 'emergency']
+  },
+  {
+    id: 'ems-dispatch',
+    name: 'EMS Dispatch',
+    description: 'Emergency dispatch format',
+    emoji: '🚑',
+    category: 'unique',
+    encode: encoders.encodeEMS,
+    reversible: false,
+    tags: ['unique', 'ems', 'dispatch']
+  },
+
+  // Financial
+  {
+    id: 'stock-ticker',
+    name: 'Stock Ticker',
+    description: 'Stock market ticker format',
+    emoji: '📈',
+    category: 'modern',
+    encode: encoders.encodeStockTicker,
+    reversible: false,
+    tags: ['modern', 'stock', 'finance']
+  },
+  {
+    id: 'swift-code',
+    name: 'SWIFT Code',
+    description: 'Bank SWIFT code format',
+    emoji: '🏦',
+    category: 'modern',
+    encode: encoders.encodeSWIFT,
+    reversible: false,
+    tags: ['modern', 'bank', 'swift']
+  },
+
+  // Library/Academic
+  {
+    id: 'isbn-style',
+    name: 'ISBN Style',
+    description: 'Book ISBN format',
+    emoji: '📚',
+    category: 'unique',
+    encode: encoders.encodeISBN,
+    reversible: false,
+    tags: ['unique', 'isbn', 'book']
+  },
+  {
+    id: 'doi-style',
+    name: 'DOI Style',
+    description: 'Digital Object Identifier',
+    emoji: '🔗',
+    category: 'unique',
+    encode: encoders.encodeDOI,
+    reversible: false,
+    tags: ['unique', 'doi', 'academic']
+  },
+  {
+    id: 'call-number',
+    name: 'Library Call Number',
+    description: 'Library classification',
+    emoji: '📖',
+    category: 'unique',
+    encode: encoders.encodeCallNumber,
+    reversible: false,
+    tags: ['unique', 'library', 'dewey']
+  },
+
+  // Internet/Network
+  {
+    id: 'http-status',
+    name: 'HTTP Status',
+    description: 'HTTP response status style',
+    emoji: '🌐',
+    category: 'computer',
+    encode: encoders.encodeHTTPStatus,
+    reversible: false,
+    tags: ['computer', 'http', 'status']
+  },
+  {
+    id: 'log-entry',
+    name: 'Log Entry',
+    description: 'Application log format',
+    emoji: '📝',
+    category: 'computer',
+    encode: encoders.encodeLogEntry,
+    reversible: false,
+    tags: ['computer', 'log', 'debug']
+  },
+  {
+    id: 'terminal-command',
+    name: 'Terminal Command',
+    description: 'Unix terminal style',
+    emoji: '💻',
+    category: 'computer',
+    encode: encoders.encodeTerminal,
+    reversible: false,
+    tags: ['computer', 'terminal', 'unix']
+  },
+  {
+    id: 'file-path',
+    name: 'File Path',
+    description: 'Unix file path format',
+    emoji: '📁',
+    category: 'computer',
+    encode: encoders.encodeFilePath,
+    reversible: false,
+    tags: ['computer', 'file', 'path']
+  },
+
+  // Time Encoding
+  {
+    id: 'unix-epoch',
+    name: 'Unix Epoch',
+    description: 'Unix timestamp format',
+    emoji: '⏱️',
+    category: 'computer',
+    encode: encoders.encodeUnixEpoch,
+    reversible: false,
+    tags: ['computer', 'unix', 'timestamp']
+  },
+  {
+    id: 'iso-date',
+    name: 'ISO Date Sequence',
+    description: 'ISO 8601 date encoding',
+    emoji: '📅',
+    category: 'computer',
+    encode: encoders.encodeISODate,
+    reversible: false,
+    tags: ['computer', 'iso', 'date']
+  },
+  {
+    id: 'relative-time',
+    name: 'Relative Time',
+    description: 'Human-readable time ago',
+    emoji: '🕐',
+    category: 'modern',
+    encode: encoders.encodeRelativeTime,
+    reversible: false,
+    tags: ['modern', 'time', 'relative']
+  },
+
+  // Coordinates
+  {
+    id: 'utm-coords',
+    name: 'UTM Coordinates',
+    description: 'Universal Transverse Mercator',
+    emoji: '🗺️',
+    category: 'scientific',
+    encode: encoders.encodeUTM,
+    reversible: false,
+    tags: ['scientific', 'utm', 'coordinates']
+  },
+  {
+    id: 'what3words-style',
+    name: 'What3Words Style',
+    description: 'Three-word location format',
+    emoji: '📍',
+    category: 'modern',
+    encode: encoders.encodeWhat3Words,
+    reversible: false,
+    tags: ['modern', 'location', 'words']
+  },
+
+  // QR/Barcode Formats
+  {
+    id: 'vcard-format',
+    name: 'vCard Format',
+    description: 'Contact card format',
+    emoji: '📇',
+    category: 'modern',
+    encode: encoders.encodeVCard,
+    reversible: false,
+    tags: ['modern', 'vcard', 'contact']
+  },
+  {
+    id: 'wifi-qr',
+    name: 'WiFi QR Format',
+    description: 'WiFi network QR format',
+    emoji: '📶',
+    category: 'modern',
+    encode: encoders.encodeWiFiQR,
+    reversible: false,
+    tags: ['modern', 'wifi', 'qr']
+  },
+  {
+    id: 'ical-event',
+    name: 'iCal Event',
+    description: 'Calendar event format',
+    emoji: '🗓️',
+    category: 'modern',
+    encode: encoders.encodeICal,
+    reversible: false,
+    tags: ['modern', 'ical', 'calendar']
+  },
+
+  // Gaming Communication
+  {
+    id: 'game-chat',
+    name: 'Game Chat',
+    description: 'Twitch/game chat style',
+    emoji: '🎮',
+    category: 'games',
+    encode: encoders.encodeGameChat,
+    reversible: false,
+    tags: ['games', 'chat', 'twitch']
+  },
+  {
+    id: 'mmo-loot',
+    name: 'MMO Loot',
+    description: 'MMORPG item rarity format',
+    emoji: '⚔️',
+    category: 'games',
+    encode: encoders.encodeMMOLoot,
+    reversible: false,
+    tags: ['games', 'mmo', 'loot']
+  },
+  {
+    id: 'dice-notation',
+    name: 'D&D Dice Notation',
+    description: 'Tabletop RPG dice format',
+    emoji: '🎲',
+    category: 'games',
+    encode: encoders.encodeDiceNotation,
+    reversible: false,
+    tags: ['games', 'dnd', 'dice']
+  },
+
+  // Social Media
+  {
+    id: 'twitter-style',
+    name: 'Twitter Style',
+    description: 'Twitter post with hashtags',
+    emoji: '🐦',
+    category: 'modern',
+    encode: encoders.encodeTwitterStyle,
+    reversible: false,
+    tags: ['modern', 'twitter', 'social']
+  },
+  {
+    id: 'reddit-style',
+    name: 'Reddit Style',
+    description: 'Reddit post format',
+    emoji: '🤖',
+    category: 'modern',
+    encode: encoders.encodeRedditStyle,
+    reversible: false,
+    tags: ['modern', 'reddit', 'social']
+  },
+  {
+    id: 'forum-quote',
+    name: 'Forum Quote',
+    description: 'BBCode forum quote',
+    emoji: '💬',
+    category: 'modern',
+    encode: encoders.encodeForumQuote,
+    reversible: false,
+    tags: ['modern', 'forum', 'bbcode']
+  },
+
+  // Encryption Style
+  {
+    id: 'pgp-style',
+    name: 'PGP Message',
+    description: 'PGP encrypted message style',
+    emoji: '🔐',
+    category: 'forensics',
+    encode: encoders.encodePGPStyle,
+    reversible: false,
+    tags: ['forensics', 'pgp', 'encrypted']
+  },
+  {
+    id: 'encrypted-placeholder',
+    name: 'Encrypted Display',
+    description: 'Encrypted message placeholder',
+    emoji: '🔒',
+    category: 'forensics',
+    encode: encoders.encodeEncryptedPlaceholder,
+    reversible: false,
+    tags: ['forensics', 'encrypted', 'placeholder']
+  },
+
+  // Linguistic
+  {
+    id: 'phonetic-simple',
+    name: 'Simple IPA',
+    description: 'Simple phonetic transcription',
+    emoji: '🗣️',
+    category: 'linguistic',
+    encode: encoders.encodePhoneticSimple,
+    reversible: false,
+    tags: ['linguistic', 'phonetic', 'ipa']
+  },
+  {
+    id: 'iso-language',
+    name: 'ISO Language Tags',
+    description: 'ISO language code format',
+    emoji: '🌍',
+    category: 'linguistic',
+    encode: encoders.encodeISOLanguage,
+    reversible: false,
+    tags: ['linguistic', 'iso', 'language']
+  },
+
+  // ========================================
+  // ✨ CREATIVE TEXT EFFECTS (v3.4)
+  // ========================================
+
+  // Text Decoration
+  {
+    id: 'hearts-between',
+    name: 'Hearts Between',
+    description: 'H♥e♥a♥r♥t♥s between chars',
+    emoji: '💕',
+    category: 'aesthetic',
+    encode: encoders.encodeHeartsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'hearts', 'decoration']
+  },
+  {
+    id: 'stars-between',
+    name: 'Stars Between',
+    description: 'S★t★a★r★s between chars',
+    emoji: '⭐',
+    category: 'aesthetic',
+    encode: encoders.encodeStarsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'stars', 'decoration']
+  },
+  {
+    id: 'dots-between',
+    name: 'Dots Between',
+    description: 'D•o•t•s between chars',
+    emoji: '🔘',
+    category: 'aesthetic',
+    encode: encoders.encodeDotsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'dots', 'decoration']
+  },
+  {
+    id: 'sparkles-between',
+    name: 'Sparkles Between',
+    description: 'S✨p✨a✨r✨k✨l✨e between chars',
+    emoji: '✨',
+    category: 'aesthetic',
+    encode: encoders.encodeSparklesBetween,
+    reversible: false,
+    tags: ['aesthetic', 'sparkles', 'decoration']
+  },
+  {
+    id: 'double-space',
+    name: 'Double Spaced',
+    description: 'D o u b l e spaced text',
+    emoji: '📐',
+    category: 'aesthetic',
+    encode: encoders.encodeDoubleSpace,
+    reversible: false,
+    tags: ['aesthetic', 'space', 'wide']
+  },
+  {
+    id: 'underscore-between',
+    name: 'Underscore Between',
+    description: 'U_n_d_e_r_s_c_o_r_e style',
+    emoji: '➖',
+    category: 'aesthetic',
+    encode: encoders.encodeUnderscoreBetween,
+    reversible: false,
+    tags: ['aesthetic', 'underscore', 'decoration']
+  },
+  {
+    id: 'bracketed',
+    name: '[B][r][a][c][k][e][t][e][d]',
+    description: 'Brackets around each char',
+    emoji: '🔲',
+    category: 'aesthetic',
+    encode: encoders.encodeBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'brackets', 'decoration']
+  },
+  {
+    id: 'parenthesized-chars',
+    name: '(P)(a)(r)(e)(n)(s)',
+    description: 'Parentheses around each char',
+    emoji: '🔵',
+    category: 'aesthetic',
+    encode: encoders.encodeParenthesized,
+    reversible: false,
+    tags: ['aesthetic', 'parentheses', 'decoration']
+  },
+  {
+    id: 'angle-bracketed',
+    name: '<A><n><g><l><e>',
+    description: 'Angle brackets around each',
+    emoji: '📐',
+    category: 'aesthetic',
+    encode: encoders.encodeAngleBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'angle', 'brackets']
+  },
+  {
+    id: 'curly-bracketed',
+    name: '{C}{u}{r}{l}{y}',
+    description: 'Curly braces around each',
+    emoji: '🔶',
+    category: 'aesthetic',
+    encode: encoders.encodeCurlyBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'curly', 'braces']
+  },
+
+  // Text Bordering
+  {
+    id: 'ascii-box',
+    name: 'ASCII Box',
+    description: '+-----+ style box',
+    emoji: '📦',
+    category: 'visual',
+    encode: encoders.encodeASCIIBox,
+    reversible: false,
+    tags: ['visual', 'box', 'ascii']
+  },
+  {
+    id: 'fancy-box',
+    name: 'Fancy Box',
+    description: '╔═══╗ style box',
+    emoji: '🖼️',
+    category: 'visual',
+    encode: encoders.encodeFancyBox,
+    reversible: false,
+    tags: ['visual', 'box', 'fancy']
+  },
+  {
+    id: 'double-box',
+    name: 'Double Box',
+    description: 'Double-lined box',
+    emoji: '📋',
+    category: 'visual',
+    encode: encoders.encodeDoubleBox,
+    reversible: false,
+    tags: ['visual', 'box', 'double']
+  },
+  {
+    id: 'rounded-box',
+    name: 'Rounded Box',
+    description: '╭───╮ rounded corners',
+    emoji: '⬜',
+    category: 'visual',
+    encode: encoders.encodeRoundedBox,
+    reversible: false,
+    tags: ['visual', 'box', 'rounded']
+  },
+  {
+    id: 'emoji-border',
+    name: 'Emoji Border',
+    description: '🌟 emoji border 🌟',
+    emoji: '🌟',
+    category: 'visual',
+    encode: encoders.encodeEmojiBorder,
+    reversible: false,
+    tags: ['visual', 'border', 'emoji']
+  },
+  {
+    id: 'star-border',
+    name: 'Star Border',
+    description: '★ star border ★',
+    emoji: '★',
+    category: 'visual',
+    encode: encoders.encodeStarBorder,
+    reversible: false,
+    tags: ['visual', 'border', 'star']
+  },
+
+  // Text Alignment
+  {
+    id: 'staircase',
+    name: 'Staircase',
+    description: 'Diagonal staircase pattern',
+    emoji: '📶',
+    category: 'visual',
+    encode: encoders.encodeStaircase,
+    reversible: false,
+    tags: ['visual', 'staircase', 'diagonal']
+  },
+  {
+    id: 'reverse-staircase',
+    name: 'Reverse Staircase',
+    description: 'Reverse diagonal pattern',
+    emoji: '📉',
+    category: 'visual',
+    encode: encoders.encodeReverseStaircase,
+    reversible: false,
+    tags: ['visual', 'staircase', 'reverse']
+  },
+  {
+    id: 'pyramid-shape',
+    name: 'Pyramid Shape',
+    description: 'Pyramid text pattern',
+    emoji: '🔺',
+    category: 'visual',
+    encode: encoders.encodePyramid,
+    reversible: false,
+    tags: ['visual', 'pyramid', 'shape']
+  },
+  {
+    id: 'diamond-shape',
+    name: 'Diamond Shape',
+    description: 'Diamond text pattern',
+    emoji: '💎',
+    category: 'visual',
+    encode: encoders.encodeDiamond,
+    reversible: false,
+    tags: ['visual', 'diamond', 'shape']
+  },
+  {
+    id: 'wave-pattern',
+    name: 'Wave Pattern',
+    description: 'Sine wave text pattern',
+    emoji: '🌊',
+    category: 'visual',
+    encode: encoders.encodeWavePattern,
+    reversible: false,
+    tags: ['visual', 'wave', 'pattern']
+  },
+  {
+    id: 'zigzag-pattern',
+    name: 'Zigzag Pattern',
+    description: 'Zigzag text layout',
+    emoji: '⚡',
+    category: 'visual',
+    encode: encoders.encodeZigzag,
+    reversible: false,
+    tags: ['visual', 'zigzag', 'pattern']
+  },
+
+  // Case Manipulation
+  {
+    id: 'title-case',
+    name: 'Title Case',
+    description: 'Capitalize First Letter Of Each Word',
+    emoji: '📝',
+    category: 'aesthetic',
+    encode: encoders.encodeTitleCase,
+    reversible: false,
+    tags: ['aesthetic', 'title', 'case']
+  },
+  {
+    id: 'alternating-word-case',
+    name: 'Alternating Word Case',
+    description: 'ALTERNATING word CASE',
+    emoji: '🔀',
+    category: 'aesthetic',
+    encode: encoders.encodeAlternatingWordCase,
+    reversible: false,
+    tags: ['aesthetic', 'alternating', 'case']
+  },
+  {
+    id: 'inverted-title',
+    name: 'Inverted Title',
+    description: 'iNVERTED tITLE cASE',
+    emoji: '🔃',
+    category: 'aesthetic',
+    encode: encoders.encodeInvertedTitleCase,
+    reversible: false,
+    tags: ['aesthetic', 'inverted', 'case']
+  },
+  {
+    id: 'random-case',
+    name: 'Random Case',
+    description: 'rAnDoM cAsE',
+    emoji: '🎲',
+    category: 'fun',
+    encode: encoders.encodeRandomCase,
+    reversible: false,
+    tags: ['fun', 'random', 'case']
+  },
+  {
+    id: 'word-reversal',
+    name: 'Word Reversal',
+    description: 'droW lasreveR',
+    emoji: '↩️',
+    category: 'fun',
+    encode: encoders.encodeWordReversal,
+    reversible: false,
+    tags: ['fun', 'word', 'reverse']
+  },
+  {
+    id: 'word-order-reversal',
+    name: 'Word Order Reversal',
+    description: 'Reversal Order Word',
+    emoji: '🔄',
+    category: 'fun',
+    encode: encoders.encodeWordOrderReversal,
+    reversible: false,
+    tags: ['fun', 'order', 'reverse']
+  },
+  {
+    id: 'sentence-case',
+    name: 'Sentence Case',
+    description: 'Sentence case format',
+    emoji: '📜',
+    category: 'aesthetic',
+    encode: encoders.encodeSentenceCase,
+    reversible: false,
+    tags: ['aesthetic', 'sentence', 'case']
+  },
+  {
+    id: 'toggle-case',
+    name: 'Toggle Case',
+    description: 'tOGGLE cASE',
+    emoji: '🔁',
+    category: 'aesthetic',
+    encode: encoders.encodeToggleCase,
+    reversible: false,
+    tags: ['aesthetic', 'toggle', 'case']
+  },
+
+  // Artistic Transformations
+  {
+    id: 'ascii-banner',
+    name: 'ASCII Banner',
+    description: 'Large ASCII art letters',
+    emoji: '🎨',
+    category: 'visual',
+    encode: encoders.encodeASCIIBanner,
+    reversible: false,
+    tags: ['visual', 'ascii', 'banner']
+  },
+  {
+    id: 'block-letters',
+    name: 'Block Letters',
+    description: '🇧🇱🇴🇨🇰 style letters',
+    emoji: '🔤',
+    category: 'aesthetic',
+    encode: encoders.encodeBlockLetters,
+    reversible: false,
+    tags: ['aesthetic', 'block', 'letters']
+  },
+  {
+    id: 'dotted-outline',
+    name: 'Dotted Outline',
+    description: '· dotted outline ·',
+    emoji: '⚬',
+    category: 'visual',
+    encode: encoders.encodeDottedOutline,
+    reversible: false,
+    tags: ['visual', 'dotted', 'outline']
+  },
+  {
+    id: 'shadow-effect',
+    name: 'Shadow Effect',
+    description: 'Text with shadow',
+    emoji: '🌑',
+    category: 'aesthetic',
+    encode: encoders.encodeShadowEffect,
+    reversible: false,
+    tags: ['aesthetic', 'shadow', 'effect']
+  },
+  {
+    id: '3d-effect',
+    name: '3D Effect',
+    description: 'Text with 3D depth',
+    emoji: '🎯',
+    category: 'aesthetic',
+    encode: encoders.encode3DEffect,
+    reversible: false,
+    tags: ['aesthetic', '3d', 'effect']
+  },
+  {
+    id: 'glitch-effect',
+    name: 'Glitch Effect',
+    description: 'G̷l̸i̵t̶c̷h̸ text',
+    emoji: '📺',
+    category: 'aesthetic',
+    encode: encoders.encodeGlitchEffect,
+    reversible: false,
+    tags: ['aesthetic', 'glitch', 'effect']
+  },
+  {
+    id: 'mirrored-text',
+    name: 'Mirrored Text',
+    description: 'Text | txeT',
+    emoji: '🪞',
+    category: 'fun',
+    encode: encoders.encodeMirroredText,
+    reversible: false,
+    tags: ['fun', 'mirror', 'text']
+  },
+  {
+    id: 'repeating-pattern',
+    name: 'Repeating Pattern',
+    description: 'Text · Text · Text',
+    emoji: '🔁',
+    category: 'aesthetic',
+    encode: encoders.encodeRepeatingPattern,
+    reversible: false,
+    tags: ['aesthetic', 'repeat', 'pattern']
+  },
+
+  // Special Characters
+  {
+    id: 'box-drawing',
+    name: 'Box Drawing',
+    description: '┌├┼ box drawing chars',
+    emoji: '📊',
+    category: 'unique',
+    encode: encoders.encodeBoxDrawing,
+    reversible: false,
+    tags: ['unique', 'box', 'drawing']
+  },
+  {
+    id: 'currency-symbols',
+    name: 'Currency Symbols',
+    description: '$€£¥ currency symbols',
+    emoji: '💰',
+    category: 'unique',
+    encode: encoders.encodeCurrencySymbols,
+    reversible: false,
+    tags: ['unique', 'currency', 'money']
+  },
+  {
+    id: 'chess-pieces',
+    name: 'Chess Pieces',
+    description: '♔♕♖♗♘♙ chess encoding',
+    emoji: '♟️',
+    category: 'unique',
+    encode: encoders.encodeChessPieces,
+    reversible: false,
+    tags: ['unique', 'chess', 'pieces']
+  },
+  {
+    id: 'card-suits',
+    name: 'Card Suits',
+    description: '♠♣♥♦ card suits',
+    emoji: '🃏',
+    category: 'unique',
+    encode: encoders.encodeCardSuits,
+    reversible: false,
+    tags: ['unique', 'cards', 'suits']
+  },
+  {
+    id: 'music-notes',
+    name: 'Music Notes',
+    description: '♩♪♫♬ musical notes',
+    emoji: '🎵',
+    category: 'unique',
+    encode: encoders.encodeMusicNotes,
+    reversible: false,
+    tags: ['unique', 'music', 'notes']
+  },
+  {
+    id: 'weather-symbols',
+    name: 'Weather Symbols',
+    description: '☀☁☂☃ weather icons',
+    emoji: '🌦️',
+    category: 'unique',
+    encode: encoders.encodeWeatherSymbols,
+    reversible: false,
+    tags: ['unique', 'weather', 'symbols']
+  },
+  {
+    id: 'zodiac-signs',
+    name: 'Zodiac Signs',
+    description: '♈♉♊♋ zodiac encoding',
+    emoji: '♌',
+    category: 'unique',
+    encode: encoders.encodeZodiacSigns,
+    reversible: false,
+    tags: ['unique', 'zodiac', 'astrology']
+  },
+  {
+    id: 'planet-symbols',
+    name: 'Planet Symbols',
+    description: '☿♀♁♂ planetary symbols',
+    emoji: '🪐',
+    category: 'unique',
+    encode: encoders.encodePlanetSymbols,
+    reversible: false,
+    tags: ['unique', 'planets', 'astronomy']
+  },
+  {
+    id: 'arrow-symbols',
+    name: 'Arrow Symbols',
+    description: '←↑→↓ arrow encoding',
+    emoji: '➡️',
+    category: 'unique',
+    encode: encoders.encodeArrowSymbols,
+    reversible: false,
+    tags: ['unique', 'arrows', 'direction']
+  },
+  {
+    id: 'geometric-shapes',
+    name: 'Geometric Shapes',
+    description: '●○◐◑ geometric encoding',
+    emoji: '⬡',
+    category: 'unique',
+    encode: encoders.encodeGeometricShapes,
+    reversible: false,
+    tags: ['unique', 'geometric', 'shapes']
+  },
+  {
+    id: 'dingbats',
+    name: 'Dingbats',
+    description: '✁✂✃✄ dingbat symbols',
+    emoji: '✂️',
+    category: 'unique',
+    encode: encoders.encodeDingbats,
+    reversible: false,
+    tags: ['unique', 'dingbats', 'symbols']
+  },
+
+  // Text Wrappers
+  {
+    id: 'quote-marks',
+    name: 'Quote Marks',
+    description: '"Quoted text"',
+    emoji: '💬',
+    category: 'aesthetic',
+    encode: encoders.encodeQuoteMark,
+    reversible: false,
+    tags: ['aesthetic', 'quote', 'marks']
+  },
+  {
+    id: 'fancy-quotes',
+    name: 'Fancy Quotes',
+    description: '"Fancy quotes"',
+    emoji: '📖',
+    category: 'aesthetic',
+    encode: encoders.encodeFancyQuotes,
+    reversible: false,
+    tags: ['aesthetic', 'fancy', 'quotes']
+  },
+  {
+    id: 'guillemets',
+    name: 'Guillemets',
+    description: '«French quotes»',
+    emoji: '🇫🇷',
+    category: 'aesthetic',
+    encode: encoders.encodeGuillemets,
+    reversible: false,
+    tags: ['aesthetic', 'french', 'guillemets']
+  },
+  {
+    id: 'japanese-quotes',
+    name: 'Japanese Quotes',
+    description: '「Japanese quotes」',
+    emoji: '🇯🇵',
+    category: 'aesthetic',
+    encode: encoders.encodeJapaneseQuotes,
+    reversible: false,
+    tags: ['aesthetic', 'japanese', 'quotes']
+  },
+  {
+    id: 'parenthetical-wrap',
+    name: 'Parenthetical',
+    description: '(Parenthetical text)',
+    emoji: '🔵',
+    category: 'aesthetic',
+    encode: encoders.encodeParenthetical,
+    reversible: false,
+    tags: ['aesthetic', 'parenthetical', 'wrap']
+  },
+  {
+    id: 'aside-wrap',
+    name: 'Em Dash Aside',
+    description: '— Aside text —',
+    emoji: '➖',
+    category: 'aesthetic',
+    encode: encoders.encodeAside,
+    reversible: false,
+    tags: ['aesthetic', 'aside', 'em-dash']
+  },
+  {
+    id: 'ellipsis-wrap',
+    name: 'Ellipsis Wrap',
+    description: '...trailing off...',
+    emoji: '💭',
+    category: 'aesthetic',
+    encode: encoders.encodeEllipsisWrap,
+    reversible: false,
+    tags: ['aesthetic', 'ellipsis', 'wrap']
+  },
+  {
+    id: 'action-asterisks',
+    name: 'Action Asterisks',
+    description: '*does action*',
+    emoji: '⭐',
+    category: 'fun',
+    encode: encoders.encodeActionAsterisks,
+    reversible: false,
+    tags: ['fun', 'action', 'roleplay']
+  },
+  {
+    id: 'emphasis-markers',
+    name: 'Emphasis Markers',
+    description: '***Emphasized***',
+    emoji: '❗',
+    category: 'aesthetic',
+    encode: encoders.encodeEmphasisMarkers,
+    reversible: false,
+    tags: ['aesthetic', 'emphasis', 'markdown']
+  },
+
+  // Word Effects
+  {
+    id: 'drop-cap',
+    name: 'Drop Cap',
+    description: '『D』rop cap style',
+    emoji: '📜',
+    category: 'aesthetic',
+    encode: encoders.encodeDropCap,
+    reversible: false,
+    tags: ['aesthetic', 'dropcap', 'typography']
+  },
+  {
+    id: 'word-wrapping',
+    name: 'Flower Wrapping',
+    description: '✿Word✿ wrapped',
+    emoji: '🌸',
+    category: 'aesthetic',
+    encode: encoders.encodeWordWrapping,
+    reversible: false,
+    tags: ['aesthetic', 'flower', 'wrap']
+  },
+  {
+    id: 'word-decoration',
+    name: 'Word Decoration',
+    description: '❀Decorated❀ words',
+    emoji: '🌺',
+    category: 'aesthetic',
+    encode: encoders.encodeWordDecoration,
+    reversible: false,
+    tags: ['aesthetic', 'decorated', 'words']
+  },
+  {
+    id: 'alternating-decorations',
+    name: 'Alternating Decorations',
+    description: '★Word♥ ✦Another✿',
+    emoji: '🎭',
+    category: 'aesthetic',
+    encode: encoders.encodeAlternatingDecorations,
+    reversible: false,
+    tags: ['aesthetic', 'alternating', 'decorations']
   }
 ];
 

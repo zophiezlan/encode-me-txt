@@ -25,7 +25,42 @@ const EnhancedTextEncoder = () => {
   const [copiedId, setCopiedId] = useState(null);
   const [encoderParams, setEncoderParams] = useState(() => {
     const saved = localStorage.getItem('encoder-params');
-    return saved ? JSON.parse(saved) : { caesar: 13 };
+    return saved ? JSON.parse(saved) : { 
+      caesar: 13,
+      vigenere: 'SECRET',
+      'rail-fence': 3,
+      affine: { a: 5, b: 8 },
+      scytale: 4,
+      columnar: 'SECRET',
+      autokey: 'KEY',
+      beaufort: 'SECRET',
+      playfair: 'KEYWORD',
+      zalgo: 5,
+      redacted: 40,
+      // New parameterized encoders (v3.1)
+      'leetspeak-pro': 1,          // intensity 1-3
+      'uwu-pro': 5,                // intensity 1-10
+      'spongebob-pro': 0,          // randomness 0-100
+      'emojipasta-pro': 2,         // density 1-5
+      'binary-pro': 8,             // group size (0, 4, 8)
+      'morse-pro': 1,              // style 1-4
+      'rot-n': 13,                 // rotation 1-25
+      'rot5': 5,                   // rotation 1-9
+      'tap-code-pro': 1,           // style 1-4
+      'keyword-cipher': 'KEYWORD',
+      'running-key': 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG',
+      'gronsfeld': '31415',
+      'trithemius': 0,             // start shift 0-25
+      'porta': 'SECRET',
+      'nihilist': 'ZEBRA',
+      'polybius-pro': 5,           // grid size 5 or 6
+      'adfgvx': 'GERMAN',
+      'book-cipher': 'The quick brown fox jumps over the lazy dog',
+      'double-transposition': { key1: 'FIRST', key2: 'SECOND' },
+      'four-square': { key1: 'EXAMPLE', key2: 'KEYWORD' },
+      'straddling-checkerboard': 'ESTONAI',
+      'homophonic': 3              // complexity 2-5
+    };
   });
 
   // UI state
@@ -277,28 +312,250 @@ const EnhancedTextEncoder = () => {
 
     const results = {};
     const caesarShift = encoderParams.caesar || 13;
+    const vigenereKey = encoderParams.vigenere || 'SECRET';
+    const railFenceRails = encoderParams['rail-fence'] || 3;
+    const affineA = encoderParams.affine?.a || 5;
+    const affineB = encoderParams.affine?.b || 8;
+    const scytaleDiameter = encoderParams.scytale || 4;
+    const columnarKey = encoderParams.columnar || 'SECRET';
+    const autokeyKey = encoderParams.autokey || 'KEY';
+    const beaufortKey = encoderParams.beaufort || 'SECRET';
+    const playfairKey = encoderParams.playfair || 'KEYWORD';
+    const zalgoIntensity = encoderParams.zalgo || 5;
+    const redactedPercent = encoderParams.redacted || 40;
+
+    // New parameterized encoder params (v3.1)
+    const leetspeakIntensity = encoderParams['leetspeak-pro'] || 1;
+    const uwuIntensity = encoderParams['uwu-pro'] || 5;
+    const spongebobRandomness = encoderParams['spongebob-pro'] || 0;
+    const emojiDensity = encoderParams['emojipasta-pro'] || 2;
+    const binaryGrouping = encoderParams['binary-pro'] || 8;
+    const morseStyle = encoderParams['morse-pro'] || 1;
+    const rotN = encoderParams['rot-n'] || 13;
+    const rot5Shift = encoderParams['rot5'] || 5;
+    const tapCodeStyle = encoderParams['tap-code-pro'] || 1;
+    const keywordCipherKey = encoderParams['keyword-cipher'] || 'KEYWORD';
+    const runningKeyText = encoderParams['running-key'] || 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG';
+    const gronsfeldKey = encoderParams['gronsfeld'] || '31415';
+    const trithemiusStart = encoderParams['trithemius'] || 0;
+    const portaKey = encoderParams['porta'] || 'SECRET';
+    const nihilistKey = encoderParams['nihilist'] || 'ZEBRA';
+    const polybiusSize = encoderParams['polybius-pro'] || 5;
+    const adfgvxKey = encoderParams['adfgvx'] || 'GERMAN';
+    const bookCipherText = encoderParams['book-cipher'] || 'The quick brown fox jumps over the lazy dog';
+    const doubleTransKey1 = encoderParams['double-transposition']?.key1 || 'FIRST';
+    const doubleTransKey2 = encoderParams['double-transposition']?.key2 || 'SECOND';
+    const fourSquareKey1 = encoderParams['four-square']?.key1 || 'EXAMPLE';
+    const fourSquareKey2 = encoderParams['four-square']?.key2 || 'KEYWORD';
+    const straddlingKey = encoderParams['straddling-checkerboard'] || 'ESTONAI';
+    const homophonicComplexity = encoderParams['homophonic'] || 3;
 
     allEncoders.forEach(encoder => {
       try {
         if (mode === 'decode') {
           if (encoder.reversible) {
-            if (encoder.id === 'caesar') {
-              results[encoder.id] = encoder.decode(inputText, caesarShift);
-            } else if (encoder.id === 'shuffle') {
-              results[encoder.id] = encoder.decode(inputText);
-            } else {
-              results[encoder.id] = encoder.decode(inputText);
+            switch (encoder.id) {
+              case 'caesar':
+                results[encoder.id] = encoder.decode(inputText, caesarShift);
+                break;
+              case 'vigenere':
+                results[encoder.id] = encoder.decode(inputText, vigenereKey);
+                break;
+              case 'rail-fence':
+                results[encoder.id] = encoder.decode(inputText, railFenceRails);
+                break;
+              case 'affine':
+                results[encoder.id] = encoder.decode(inputText, affineA, affineB);
+                break;
+              case 'scytale':
+                results[encoder.id] = encoder.decode(inputText, scytaleDiameter);
+                break;
+              case 'columnar':
+                results[encoder.id] = encoder.decode(inputText, columnarKey);
+                break;
+              case 'autokey':
+                results[encoder.id] = encoder.decode(inputText, autokeyKey);
+                break;
+              case 'beaufort':
+                results[encoder.id] = encoder.decode(inputText, beaufortKey);
+                break;
+              case 'playfair':
+                results[encoder.id] = encoder.decode(inputText, playfairKey);
+                break;
+              case 'shuffle':
+                results[encoder.id] = encoder.decode(inputText);
+                break;
+              // New parameterized decoders (v3.1)
+              case 'binary-pro':
+                results[encoder.id] = encoder.decode(inputText);
+                break;
+              case 'morse-pro':
+                results[encoder.id] = encoder.decode(inputText);
+                break;
+              case 'rot-n':
+                results[encoder.id] = encoder.decode(inputText, rotN);
+                break;
+              case 'rot5':
+                results[encoder.id] = encoder.decode(inputText, rot5Shift);
+                break;
+              case 'tap-code-pro':
+                results[encoder.id] = encoder.decode(inputText);
+                break;
+              case 'keyword-cipher':
+                results[encoder.id] = encoder.decode(inputText, keywordCipherKey);
+                break;
+              case 'running-key':
+                results[encoder.id] = encoder.decode(inputText, runningKeyText);
+                break;
+              case 'gronsfeld':
+                results[encoder.id] = encoder.decode(inputText, gronsfeldKey);
+                break;
+              case 'trithemius':
+                results[encoder.id] = encoder.decode(inputText, trithemiusStart);
+                break;
+              case 'porta':
+                results[encoder.id] = encoder.decode(inputText, portaKey);
+                break;
+              case 'nihilist':
+                results[encoder.id] = encoder.decode(inputText, nihilistKey);
+                break;
+              case 'polybius-pro':
+                results[encoder.id] = encoder.decode(inputText, polybiusSize);
+                break;
+              case 'adfgvx':
+                results[encoder.id] = encoder.decode(inputText, adfgvxKey);
+                break;
+              case 'book-cipher':
+                results[encoder.id] = encoder.decode(inputText, bookCipherText);
+                break;
+              case 'double-transposition':
+                results[encoder.id] = encoder.decode(inputText, doubleTransKey1, doubleTransKey2);
+                break;
+              case 'four-square':
+                results[encoder.id] = encoder.decode(inputText, fourSquareKey1, fourSquareKey2);
+                break;
+              case 'straddling-checkerboard':
+                results[encoder.id] = encoder.decode(inputText, straddlingKey);
+                break;
+              case 'homophonic':
+                results[encoder.id] = encoder.decode(inputText, homophonicComplexity);
+                break;
+              default:
+                results[encoder.id] = encoder.decode(inputText);
             }
           } else {
             results[encoder.id] = '[Not reversible]';
           }
         } else {
-          if (encoder.id === 'caesar') {
-            results[encoder.id] = encoder.encode(inputText, caesarShift);
-          } else if (encoder.id === 'shuffle') {
-            results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
-          } else {
-            results[encoder.id] = encoder.encode(inputText);
+          switch (encoder.id) {
+            case 'caesar':
+              results[encoder.id] = encoder.encode(inputText, caesarShift);
+              break;
+            case 'vigenere':
+              results[encoder.id] = encoder.encode(inputText, vigenereKey);
+              break;
+            case 'rail-fence':
+              results[encoder.id] = encoder.encode(inputText, railFenceRails);
+              break;
+            case 'affine':
+              results[encoder.id] = encoder.encode(inputText, affineA, affineB);
+              break;
+            case 'scytale':
+              results[encoder.id] = encoder.encode(inputText, scytaleDiameter);
+              break;
+            case 'columnar':
+              results[encoder.id] = encoder.encode(inputText, columnarKey);
+              break;
+            case 'autokey':
+              results[encoder.id] = encoder.encode(inputText, autokeyKey);
+              break;
+            case 'beaufort':
+              results[encoder.id] = encoder.encode(inputText, beaufortKey);
+              break;
+            case 'playfair':
+              results[encoder.id] = encoder.encode(inputText, playfairKey);
+              break;
+            case 'zalgo':
+              results[encoder.id] = encoder.encode(inputText, zalgoIntensity);
+              break;
+            case 'redacted':
+              results[encoder.id] = encoder.encode(inputText, redactedPercent);
+              break;
+            case 'shuffle':
+              results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
+              break;
+            // New parameterized encoders (v3.1)
+            case 'leetspeak-pro':
+              results[encoder.id] = encoder.encode(inputText, leetspeakIntensity);
+              break;
+            case 'uwu-pro':
+              results[encoder.id] = encoder.encode(inputText, uwuIntensity);
+              break;
+            case 'spongebob-pro':
+              results[encoder.id] = encoder.encode(inputText, spongebobRandomness);
+              break;
+            case 'emojipasta-pro':
+              results[encoder.id] = encoder.encode(inputText, emojiDensity);
+              break;
+            case 'binary-pro':
+              results[encoder.id] = encoder.encode(inputText, binaryGrouping);
+              break;
+            case 'morse-pro':
+              results[encoder.id] = encoder.encode(inputText, morseStyle);
+              break;
+            case 'rot-n':
+              results[encoder.id] = encoder.encode(inputText, rotN);
+              break;
+            case 'rot5':
+              results[encoder.id] = encoder.encode(inputText, rot5Shift);
+              break;
+            case 'rot18':
+              results[encoder.id] = encoder.encode(inputText);
+              break;
+            case 'tap-code-pro':
+              results[encoder.id] = encoder.encode(inputText, tapCodeStyle);
+              break;
+            case 'keyword-cipher':
+              results[encoder.id] = encoder.encode(inputText, keywordCipherKey);
+              break;
+            case 'running-key':
+              results[encoder.id] = encoder.encode(inputText, runningKeyText);
+              break;
+            case 'gronsfeld':
+              results[encoder.id] = encoder.encode(inputText, gronsfeldKey);
+              break;
+            case 'trithemius':
+              results[encoder.id] = encoder.encode(inputText, trithemiusStart);
+              break;
+            case 'porta':
+              results[encoder.id] = encoder.encode(inputText, portaKey);
+              break;
+            case 'nihilist':
+              results[encoder.id] = encoder.encode(inputText, nihilistKey);
+              break;
+            case 'polybius-pro':
+              results[encoder.id] = encoder.encode(inputText, polybiusSize);
+              break;
+            case 'adfgvx':
+              results[encoder.id] = encoder.encode(inputText, adfgvxKey);
+              break;
+            case 'book-cipher':
+              results[encoder.id] = encoder.encode(inputText, bookCipherText);
+              break;
+            case 'double-transposition':
+              results[encoder.id] = encoder.encode(inputText, doubleTransKey1, doubleTransKey2);
+              break;
+            case 'four-square':
+              results[encoder.id] = encoder.encode(inputText, fourSquareKey1, fourSquareKey2);
+              break;
+            case 'straddling-checkerboard':
+              results[encoder.id] = encoder.encode(inputText, straddlingKey);
+              break;
+            case 'homophonic':
+              results[encoder.id] = encoder.encode(inputText, homophonicComplexity);
+              break;
+            default:
+              results[encoder.id] = encoder.encode(inputText);
           }
         }
       } catch {
@@ -1304,20 +1561,748 @@ const EnhancedTextEncoder = () => {
                   <div className="mt-3 p-3 bg-white/10 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <label className="text-xs font-semibold">
-                        Shift: {caesarShift}
+                        Shift: {encoderParams.caesar || 13}
                       </label>
-                      <span className="text-xs text-white/60">ROT-{caesarShift}</span>
+                      <span className="text-xs text-white/60">ROT-{encoderParams.caesar || 13}</span>
                     </div>
                     <input
                       type="range"
                       min="1"
                       max="25"
-                      value={caesarShift}
+                      value={encoderParams.caesar || 13}
                       onChange={(e) => updateEncoderParam('caesar', 'shift', parseInt(e.target.value))}
                       className="w-full h-2"
                     />
                     <p className="text-xs text-white/50 mt-1">
-                      {caesarShift === 13 ? 'ROT13 (classic)' : `Shift ${caesarShift} positions`}
+                      {(encoderParams.caesar || 13) === 13 ? 'ROT13 (classic)' : `Shift ${encoderParams.caesar || 13} positions`}
+                    </p>
+                  </div>
+                )}
+
+                {/* Vigenère Cipher Controls */}
+                {encoder.id === 'vigenere' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.vigenere || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.vigenere || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('vigenere', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Letters only. Key repeats for longer messages.
+                    </p>
+                  </div>
+                )}
+
+                {/* Rail Fence Cipher Controls */}
+                {encoder.id === 'rail-fence' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Rails: {encoderParams['rail-fence'] || 3}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="10"
+                      value={encoderParams['rail-fence'] || 3}
+                      onChange={(e) => updateEncoderParam('rail-fence', 'rails', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Text zigzags across {encoderParams['rail-fence'] || 3} rows
+                    </p>
+                  </div>
+                )}
+
+                {/* Affine Cipher Controls */}
+                {encoder.id === 'affine' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          a: {encoderParams.affine?.a || 5}
+                        </label>
+                        <input
+                          type="range"
+                          min="1"
+                          max="25"
+                          step="2"
+                          value={encoderParams.affine?.a || 5}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            // a must be coprime with 26 (odd and not 13)
+                            const validA = val === 13 ? 15 : val;
+                            updateEncoderParam('affine', 'a', { ...encoderParams.affine, a: validA });
+                          }}
+                          className="w-full h-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          b: {encoderParams.affine?.b || 8}
+                        </label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="25"
+                          value={encoderParams.affine?.b || 8}
+                          onChange={(e) => updateEncoderParam('affine', 'b', { ...encoderParams.affine, b: parseInt(e.target.value) })}
+                          className="w-full h-2"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/50">
+                      E(x) = ({encoderParams.affine?.a || 5}x + {encoderParams.affine?.b || 8}) mod 26
+                    </p>
+                  </div>
+                )}
+
+                {/* Scytale Cipher Controls */}
+                {encoder.id === 'scytale' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Diameter: {encoderParams.scytale || 4}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="10"
+                      value={encoderParams.scytale || 4}
+                      onChange={(e) => updateEncoderParam('scytale', 'diameter', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Cylinder wraps text in {encoderParams.scytale || 4} columns
+                    </p>
+                  </div>
+                )}
+
+                {/* Columnar Transposition Controls */}
+                {encoder.id === 'columnar' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.columnar || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.columnar || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('columnar', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams.columnar || 'SECRET').length} columns
+                    </p>
+                  </div>
+                )}
+
+                {/* Autokey Cipher Controls */}
+                {encoder.id === 'autokey' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Primer Key: {encoderParams.autokey || 'KEY'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.autokey || 'KEY'}
+                      onChange={(e) => updateEncoderParam('autokey', 'key', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEY')}
+                      placeholder="Enter primer key"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Key extends with plaintext
+                    </p>
+                  </div>
+                )}
+
+                {/* Beaufort Cipher Controls */}
+                {encoder.id === 'beaufort' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.beaufort || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.beaufort || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('beaufort', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Symmetric variant of Vigenère
+                    </p>
+                  </div>
+                )}
+
+                {/* Playfair Cipher Controls */}
+                {encoder.id === 'playfair' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams.playfair || 'KEYWORD'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams.playfair || 'KEYWORD'}
+                      onChange={(e) => updateEncoderParam('playfair', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEYWORD')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      5x5 grid cipher (I/J combined)
+                    </p>
+                  </div>
+                )}
+
+                {/* Zalgo Controls */}
+                {encoder.id === 'zalgo' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Intensity: {encoderParams.zalgo || 5}
+                      </label>
+                      <span className="text-xs text-white/60">
+                        {(encoderParams.zalgo || 5) <= 3 ? 'Mild' : (encoderParams.zalgo || 5) <= 6 ? 'Medium' : 'Chaos'}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={encoderParams.zalgo || 5}
+                      onChange={(e) => updateEncoderParam('zalgo', 'intensity', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Controls how many combining marks are added
+                    </p>
+                  </div>
+                )}
+
+                {/* Redacted Controls */}
+                {encoder.id === 'redacted' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Redaction: {encoderParams.redacted || 40}%
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="90"
+                      value={encoderParams.redacted || 40}
+                      onChange={(e) => updateEncoderParam('redacted', 'percentage', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams.redacted || 40) < 30 ? 'Lightly classified' : (encoderParams.redacted || 40) < 60 ? 'Partially classified' : 'Heavily classified'}
+                    </p>
+                  </div>
+                )}
+
+                {/* ============================================ */}
+                {/* NEW PARAMETERIZED ENCODER CONTROLS (v3.1)    */}
+                {/* ============================================ */}
+
+                {/* Leetspeak Pro Controls */}
+                {encoder.id === 'leetspeak-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Intensity: {['Basic', 'Medium', 'Extreme'][((encoderParams['leetspeak-pro'] || 1) - 1)]}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="3"
+                      value={encoderParams['leetspeak-pro'] || 1}
+                      onChange={(e) => updateEncoderParam('leetspeak-pro', 'intensity', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams['leetspeak-pro'] || 1) === 1 ? 'Simple substitutions (a→4, e→3)' : 
+                       (encoderParams['leetspeak-pro'] || 1) === 2 ? 'More substitutions (b→8, g→9)' : 
+                       'Full h4ck3r mode (m→|\\/|)'}
+                    </p>
+                  </div>
+                )}
+
+                {/* UwU Pro Controls */}
+                {encoder.id === 'uwu-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        UwU Intensity: {encoderParams['uwu-pro'] || 5}
+                      </label>
+                      <span className="text-xs text-white/60">
+                        {(encoderParams['uwu-pro'] || 5) <= 3 ? 'OwO' : (encoderParams['uwu-pro'] || 5) <= 6 ? 'UwU' : '>w<'}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={encoderParams['uwu-pro'] || 5}
+                      onChange={(e) => updateEncoderParam('uwu-pro', 'intensity', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Higher = more stuttering and faces
+                    </p>
+                  </div>
+                )}
+
+                {/* Spongebob Pro Controls */}
+                {encoder.id === 'spongebob-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Randomness: {encoderParams['spongebob-pro'] || 0}%
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={encoderParams['spongebob-pro'] || 0}
+                      onChange={(e) => updateEncoderParam('spongebob-pro', 'randomness', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams['spongebob-pro'] || 0) === 0 ? 'Strict alternating pattern' : 
+                       (encoderParams['spongebob-pro'] || 0) < 50 ? 'Some randomness' : 'Chaotic mocking'}
+                    </p>
+                  </div>
+                )}
+
+                {/* Emojipasta Pro Controls */}
+                {encoder.id === 'emojipasta-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Emoji Density: {encoderParams['emojipasta-pro'] || 2}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="5"
+                      value={encoderParams['emojipasta-pro'] || 2}
+                      onChange={(e) => updateEncoderParam('emojipasta-pro', 'density', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Up to {encoderParams['emojipasta-pro'] || 2} emojis per word 💯🔥
+                    </p>
+                  </div>
+                )}
+
+                {/* Binary Pro Controls */}
+                {encoder.id === 'binary-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Bit Grouping: {encoderParams['binary-pro'] === 0 ? 'None' : encoderParams['binary-pro'] || 8}
+                      </label>
+                    </div>
+                    <select
+                      value={encoderParams['binary-pro'] || 8}
+                      onChange={(e) => updateEncoderParam('binary-pro', 'groupSize', parseInt(e.target.value))}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                    >
+                      <option value="0">No grouping</option>
+                      <option value="4">4-bit (nibbles)</option>
+                      <option value="8">8-bit (bytes)</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* Morse Pro Controls */}
+                {encoder.id === 'morse-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Delimiter Style
+                      </label>
+                    </div>
+                    <select
+                      value={encoderParams['morse-pro'] || 1}
+                      onChange={(e) => updateEncoderParam('morse-pro', 'style', parseInt(e.target.value))}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                    >
+                      <option value="1">Classic (space / slash)</option>
+                      <option value="2">Slash style (/ //)</option>
+                      <option value="3">Pipe style (| ||)</option>
+                      <option value="4">Emoji style (· 🔹)</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* ROT-N Controls */}
+                {encoder.id === 'rot-n' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Rotation: {encoderParams['rot-n'] || 13}
+                      </label>
+                      <span className="text-xs text-white/60">ROT-{encoderParams['rot-n'] || 13}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="25"
+                      value={encoderParams['rot-n'] || 13}
+                      onChange={(e) => updateEncoderParam('rot-n', 'n', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams['rot-n'] || 13) === 13 ? 'ROT13 (self-inverse)' : `Shift ${encoderParams['rot-n'] || 13} positions`}
+                    </p>
+                  </div>
+                )}
+
+                {/* ROT5 Controls */}
+                {encoder.id === 'rot5' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Digit Rotation: {encoderParams['rot5'] || 5}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="9"
+                      value={encoderParams['rot5'] || 5}
+                      onChange={(e) => updateEncoderParam('rot5', 'shift', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      {(encoderParams['rot5'] || 5) === 5 ? 'ROT5 (self-inverse for 0-9)' : `Shift digits by ${encoderParams['rot5'] || 5}`}
+                    </p>
+                  </div>
+                )}
+
+                {/* Tap Code Pro Controls */}
+                {encoder.id === 'tap-code-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Symbol Style
+                      </label>
+                    </div>
+                    <select
+                      value={encoderParams['tap-code-pro'] || 1}
+                      onChange={(e) => updateEncoderParam('tap-code-pro', 'style', parseInt(e.target.value))}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                    >
+                      <option value="1">Dots (. . .. ..)</option>
+                      <option value="2">Numbers (1-1 1-2)</option>
+                      <option value="3">Asterisks (* * ** **)</option>
+                      <option value="4">Emoji (👊👊 👊)</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* Keyword Cipher Controls */}
+                {encoder.id === 'keyword-cipher' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams['keyword-cipher'] || 'KEYWORD'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['keyword-cipher'] || 'KEYWORD'}
+                      onChange={(e) => updateEncoderParam('keyword-cipher', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEYWORD')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Alphabet starts with unique letters from keyword
+                    </p>
+                  </div>
+                )}
+
+                {/* Running Key Controls */}
+                {encoder.id === 'running-key' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Key Text
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['running-key'] || 'THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG'}
+                      onChange={(e) => updateEncoderParam('running-key', 'key', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'THEQUICKBROWNFOX')}
+                      placeholder="Enter key text"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Use a passage from a book as the key
+                    </p>
+                  </div>
+                )}
+
+                {/* Gronsfeld Controls */}
+                {encoder.id === 'gronsfeld' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Numeric Key: {encoderParams['gronsfeld'] || '31415'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['gronsfeld'] || '31415'}
+                      onChange={(e) => updateEncoderParam('gronsfeld', 'key', e.target.value.replace(/[^0-9]/g, '') || '31415')}
+                      placeholder="Enter numeric key"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Numbers 0-9 for shift values (like π digits)
+                    </p>
+                  </div>
+                )}
+
+                {/* Trithemius Controls */}
+                {encoder.id === 'trithemius' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Start Shift: {encoderParams['trithemius'] || 0}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="25"
+                      value={encoderParams['trithemius'] || 0}
+                      onChange={(e) => updateEncoderParam('trithemius', 'start', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Progressive shift: {encoderParams['trithemius'] || 0}, {((encoderParams['trithemius'] || 0) + 1) % 26}, {((encoderParams['trithemius'] || 0) + 2) % 26}...
+                    </p>
+                  </div>
+                )}
+
+                {/* Porta Controls */}
+                {encoder.id === 'porta' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams['porta'] || 'SECRET'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['porta'] || 'SECRET'}
+                      onChange={(e) => updateEncoderParam('porta', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECRET')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Self-inverse (encode = decode)
+                    </p>
+                  </div>
+                )}
+
+                {/* Nihilist Controls */}
+                {encoder.id === 'nihilist' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword: {encoderParams['nihilist'] || 'ZEBRA'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['nihilist'] || 'ZEBRA'}
+                      onChange={(e) => updateEncoderParam('nihilist', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'ZEBRA')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Outputs numeric pairs based on Polybius
+                    </p>
+                  </div>
+                )}
+
+                {/* Polybius Pro Controls */}
+                {encoder.id === 'polybius-pro' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Grid Size
+                      </label>
+                    </div>
+                    <select
+                      value={encoderParams['polybius-pro'] || 5}
+                      onChange={(e) => updateEncoderParam('polybius-pro', 'size', parseInt(e.target.value))}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                    >
+                      <option value="5">5×5 (A-Z, I/J combined)</option>
+                      <option value="6">6×6 (A-Z + 0-9)</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* ADFGVX Controls */}
+                {encoder.id === 'adfgvx' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Transposition Key: {encoderParams['adfgvx'] || 'GERMAN'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['adfgvx'] || 'GERMAN'}
+                      onChange={(e) => updateEncoderParam('adfgvx', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'GERMAN')}
+                      placeholder="Enter keyword"
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      WWI German cipher using ADFGVX letters
+                    </p>
+                  </div>
+                )}
+
+                {/* Book Cipher Controls */}
+                {encoder.id === 'book-cipher' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Reference Text
+                    </label>
+                    <textarea
+                      value={encoderParams['book-cipher'] || 'The quick brown fox jumps over the lazy dog'}
+                      onChange={(e) => updateEncoderParam('book-cipher', 'book', e.target.value || 'The quick brown fox')}
+                      placeholder="Enter reference text"
+                      rows={2}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Words encoded as positions in this text
+                    </p>
+                  </div>
+                )}
+
+                {/* Double Transposition Controls */}
+                {encoder.id === 'double-transposition' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          Key 1: {encoderParams['double-transposition']?.key1 || 'FIRST'}
+                        </label>
+                        <input
+                          type="text"
+                          value={encoderParams['double-transposition']?.key1 || 'FIRST'}
+                          onChange={(e) => updateEncoderParam('double-transposition', 'key1', { 
+                            ...encoderParams['double-transposition'], 
+                            key1: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'FIRST' 
+                          })}
+                          className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          Key 2: {encoderParams['double-transposition']?.key2 || 'SECOND'}
+                        </label>
+                        <input
+                          type="text"
+                          value={encoderParams['double-transposition']?.key2 || 'SECOND'}
+                          onChange={(e) => updateEncoderParam('double-transposition', 'key2', { 
+                            ...encoderParams['double-transposition'], 
+                            key2: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'SECOND' 
+                          })}
+                          className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/50">
+                      Two-pass columnar transposition
+                    </p>
+                  </div>
+                )}
+
+                {/* Four-Square Controls */}
+                {encoder.id === 'four-square' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="grid grid-cols-2 gap-2 mb-2">
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          Key 1: {encoderParams['four-square']?.key1 || 'EXAMPLE'}
+                        </label>
+                        <input
+                          type="text"
+                          value={encoderParams['four-square']?.key1 || 'EXAMPLE'}
+                          onChange={(e) => updateEncoderParam('four-square', 'key1', { 
+                            ...encoderParams['four-square'], 
+                            key1: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'EXAMPLE' 
+                          })}
+                          className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-semibold block mb-1">
+                          Key 2: {encoderParams['four-square']?.key2 || 'KEYWORD'}
+                        </label>
+                        <input
+                          type="text"
+                          value={encoderParams['four-square']?.key2 || 'KEYWORD'}
+                          onChange={(e) => updateEncoderParam('four-square', 'key2', { 
+                            ...encoderParams['four-square'], 
+                            key2: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') || 'KEYWORD' 
+                          })}
+                          className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-white/50">
+                      Digraphic cipher with two keywords
+                    </p>
+                  </div>
+                )}
+
+                {/* Straddling Checkerboard Controls */}
+                {encoder.id === 'straddling-checkerboard' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <label className="text-xs font-semibold block mb-2">
+                      Keyword (8 letters): {encoderParams['straddling-checkerboard'] || 'ESTONAI'}
+                    </label>
+                    <input
+                      type="text"
+                      value={encoderParams['straddling-checkerboard'] || 'ESTONAI'}
+                      onChange={(e) => updateEncoderParam('straddling-checkerboard', 'keyword', e.target.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 8) || 'ESTONAI')}
+                      placeholder="Enter 8-letter keyword"
+                      maxLength={8}
+                      className="w-full px-2 py-1 bg-white/20 border border-white/30 rounded text-xs text-white placeholder-white/50"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Variable-length numeric encoding
+                    </p>
+                  </div>
+                )}
+
+                {/* Homophonic Controls */}
+                {encoder.id === 'homophonic' && (
+                  <div className="mt-3 p-3 bg-white/10 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold">
+                        Complexity: {encoderParams['homophonic'] || 3}
+                      </label>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="5"
+                      value={encoderParams['homophonic'] || 3}
+                      onChange={(e) => updateEncoderParam('homophonic', 'complexity', parseInt(e.target.value))}
+                      className="w-full h-2"
+                    />
+                    <p className="text-xs text-white/50 mt-1">
+                      Up to {encoderParams['homophonic'] || 3} different codes per letter
                     </p>
                   </div>
                 )}

@@ -90,11 +90,16 @@ export const encodeMusical = (text) => {
 /**
  * Encodes text to Zalgo (chaotic combining marks)
  * @param {string} text - The text to encode
+ * @param {number} intensity - Intensity level (1-10, default 5)
  * @returns {string} - Zalgo text with combining marks
  */
-export const encodeZalgo = (text) => {
+export const encodeZalgo = (text, intensity = 5) => {
+  const level = Math.max(1, Math.min(10, intensity));
+  const minMarks = Math.max(1, Math.floor(level / 2));
+  const maxMarks = level;
+  
   return text.split('').map(char => {
-    const numMarks = Math.floor(Math.random() * 4) + 2;
+    const numMarks = Math.floor(Math.random() * (maxMarks - minMarks + 1)) + minMarks;
     let zalgoChar = char;
     for (let i = 0; i < numMarks; i++) {
       zalgoChar += COMBINING_MARKS[Math.floor(Math.random() * COMBINING_MARKS.length)];
