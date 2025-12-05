@@ -437,11 +437,18 @@ export const encodePlayfair = (text, key = 'KEYWORD') => {
   let prepared = text.toUpperCase().replace(/J/g, 'I').replace(/[^A-Z]/g, '');
   // Handle double letters by inserting X
   let pairs = [];
-  for (let i = 0; i < prepared.length; i += 2) {
+  let i = 0;
+  while (i < prepared.length) {
     let a = prepared[i];
     let b = prepared[i + 1] || 'X';
-    if (a === b) { b = 'X'; i--; }
-    pairs.push([a, b]);
+    if (a === b) { 
+      b = 'X'; 
+      pairs.push([a, b]);
+      i++; // Only advance by 1 when inserting X
+    } else {
+      pairs.push([a, b]);
+      i += 2; // Advance by 2 for normal pairs
+    }
   }
   
   const getPos = (c) => [Math.floor(grid.indexOf(c) / 5), grid.indexOf(c) % 5];

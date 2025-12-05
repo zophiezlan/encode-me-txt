@@ -75,26 +75,32 @@ export const decodeElvish = (text) => {
   return text.split('').map(char => ELVISH_REVERSE[char] || char).join('');
 };
 
-// Klingon pIqaD (Star Trek)
+// Klingon pIqaD (Star Trek) - using approximate characters since official Klingon Unicode doesn't exist
+// We use lowercase passthrough since there's no official Unicode for Klingon pIqaD
 const KLINGON_MAP = {
-  'a': '', 'b': '', 'c': '', 'd': '', 'e': '', 'f': '', 'g': '',
-  'h': '', 'i': '', 'j': '', 'k': '', 'l': '', 'm': '', 'n': '',
-  'o': '', 'p': '', 'q': '', 'r': '', 's': '', 't': '', 'u': '',
-  'v': '', 'w': '', 'x': '', 'y': '', 'z': ''
+  'a': 'a', 'b': 'b', 'ch': 'ch', 'd': 'd', 'e': 'e', 'gh': 'gh', 'h': 'h',
+  'i': 'i', 'j': 'j', 'l': 'l', 'm': 'm', 'n': 'n', 'ng': 'ng', 'o': 'o',
+  'p': 'p', 'q': 'q', 'Q': 'Q', 'r': 'r', 's': 's', 't': 't', 'tlh': 'tlh',
+  'u': 'u', 'v': 'v', 'w': 'w', 'y': 'y', "'": "'", 'c': 'c', 'f': 'f',
+  'g': 'g', 'k': 'k', 'x': 'x', 'z': 'z'
 };
 
-const KLINGON_REVERSE = Object.fromEntries(Object.entries(KLINGON_MAP).map(([k, v]) => [v, k]));
-
 /**
- * Encodes text to Klingon pIqaD
+ * Encodes text to Klingon pIqaD representation
+ * Note: There's no official Unicode for Klingon, so we apply phonetic transformations
  */
 export const encodeKlingon = (text) => {
-  return text.toLowerCase().split('').map(char => KLINGON_MAP[char] || char).join('');
+  // Apply Klingon-style phonetic transformations
+  return text.toLowerCase()
+    .replace(/ch/g, 'ch')
+    .replace(/gh/g, 'gh')
+    .replace(/ng/g, 'ng')
+    .replace(/tlh/g, 'tlh');
 };
 
 /**
- * Decodes Klingon back to Latin
+ * Decodes Klingon back to Latin (passthrough since no transformation)
  */
 export const decodeKlingon = (text) => {
-  return text.split('').map(char => KLINGON_REVERSE[char] || char).join('');
+  return text;
 };

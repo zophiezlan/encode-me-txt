@@ -606,6 +606,150 @@ describe('Binary Encoder', () => {
 
 Not required - application targets modern browsers only.
 
+## New Encoder Categories (v2.0)
+
+### 🌍 Linguistic Encoders
+
+```javascript
+import { 
+  encodeGreek, decodeGreek,
+  encodeCyrillic, decodeCyrillic,
+  encodeHebrew, decodeHebrew,
+  encodeKorean, decodeKorean,
+  encodeIPA
+} from './utils/encoders/linguistic.js';
+
+encodeGreek('Hello');    // Returns: 'ηελλο'
+encodeCyrillic('Hello'); // Returns: 'хелло'
+encodeHebrew('Hello');   // Returns: 'העללו'
+encodeKorean('Hello');   // Returns: '흐에을을오'
+encodeIPA('Hello');      // Returns: '/hɛllɒ/'
+```
+
+### 🧙 Fantasy Encoders
+
+```javascript
+import {
+  encodeAurebesh, decodeAurebesh,
+  encodeGallifreyan, decodeGallifreyan,
+  encodeElvish, decodeElvish,
+  encodeKlingon, decodeKlingon
+} from './utils/encoders/fantasy.js';
+
+encodeAurebesh('Hello');    // Returns: Star Wars Aurebesh characters
+encodeGallifreyan('Hello'); // Returns: Doctor Who circular patterns
+encodeElvish('Hello');      // Returns: ᚺᛖᛚᛚᛟ (Tengwar-inspired)
+```
+
+### 👁️ Visual Encoders
+
+```javascript
+import {
+  encodeASL,
+  encode7Segment,
+  encodeDancingMen, decodeDancingMen,
+  encodePigpen, decodePigpen
+} from './utils/encoders/visual.js';
+
+encodeASL('Hello');        // Returns: ASL hand sign emojis
+encode7Segment('Hello');   // Returns: [H][E][L][L][0]
+encodeDancingMen('Hello'); // Returns: Sherlock Holmes dancing figures
+encodePigpen('Hello');     // Returns: Pigpen cipher symbols
+```
+
+### 📟 Retro Encoders
+
+```javascript
+import {
+  encodePhoneKeypad, decodePhoneKeypad,
+  encodePagerCode,
+  encodePunchCard,
+  encodeBaudot, decodeBaudot,
+  encodeResistorColorCode
+} from './utils/encoders/retro.js';
+
+encodePhoneKeypad('Hello'); // Returns: '44-33-555-555-666'
+encodePagerCode('Hello');   // Returns: Pager-style numeric codes
+encodePunchCard('Hello');   // Returns: IBM punch card patterns
+encodeBaudot('Hello');      // Returns: 5-bit teleprinter code
+```
+
+### 🏛️ Ancient Encoders
+
+```javascript
+import {
+  encodeOgham, decodeOgham,
+  encodeHieroglyphs, decodeHieroglyphs,
+  encodeCuneiform, decodeCuneiform,
+  encodeMayan, decodeMayan
+} from './utils/encoders/ancient.js';
+
+encodeOgham('Hello');      // Returns: ᚆᚓᚂᚂᚑ (Celtic Ogham)
+encodeHieroglyphs('Hello'); // Returns: 𓉔𓇋𓃭𓃭𓍯 (Egyptian)
+encodeCuneiform('Hello');  // Returns: 𒄩𒂊𒇷𒇷𒌋 (Sumerian)
+encodeMayan('Hello');      // Returns: Mayan numeral representation
+```
+
+### ✨ Aesthetic Encoders
+
+```javascript
+import {
+  encodeFullwidth, decodeFullwidth,
+  encodeSquared, decodeSquared,
+  encodeParenthesized, decodeParenthesized,
+  encodeDoubleStruck, decodeDoubleStruck,
+  encodeCursive, decodeCursive,
+  encodeMirror
+} from './utils/encoders/aesthetic.js';
+
+encodeFullwidth('Hello');     // Returns: Ｈｅｌｌｏ
+encodeSquared('Hello');       // Returns: 🄷🄴🄻🄻🄾
+encodeParenthesized('Hello'); // Returns: ⒣⒠⒧⒧⒪
+encodeDoubleStruck('Hello');  // Returns: ℍ𝕖𝕝𝕝𝕠
+encodeCursive('Hello');       // Returns: ℋ𝑒𝓁𝓁𝑜
+encodeMirror('Hello');        // Returns: ollɘH (horizontally mirrored)
+```
+
+### Additional Cipher Encoders
+
+```javascript
+import {
+  encodePlayfair, decodePlayfair,
+  encodeColumnar, decodeColumnar,
+  encodeScytale, decodeScytale,
+  encodeAutokey, decodeAutokey,
+  encodeHill, decodeHill,
+  encodeBifid, decodeBifid
+} from './utils/encoders/ciphers.js';
+
+encodePlayfair('Hello World', 'KEYWORD'); // Playfair cipher
+encodeColumnar('Hello World', 'KEY');     // Columnar transposition
+encodeScytale('Hello World', 4);          // Spartan scytale cipher
+encodeAutokey('Hello World', 'KEY');      // Autokey Vigenère variant
+encodeHill('Hello World');                // Hill cipher (matrix-based)
+encodeBifid('Hello World', 'KEYWORD');    // Bifid cipher
+```
+
+### Additional Computer Encoders
+
+```javascript
+import {
+  encodeBase32, decodeBase32,
+  encodeOctal, decodeOctal,
+  encodeAscii85, decodeAscii85,
+  encodeQuotedPrintable, decodeQuotedPrintable,
+  encodeA1Z26, decodeA1Z26,
+  encodeBrainfuck, decodeBrainfuck
+} from './utils/encoders/computer.js';
+
+encodeBase32('Hello');          // Returns: JBSWY3DP
+encodeOctal('Hello');           // Returns: 110 145 154 154 157
+encodeAscii85('Hello');         // Returns: <~87cURD]~>
+encodeQuotedPrintable('Hello'); // Returns: Hello (with =XX escapes)
+encodeA1Z26('Hello');           // Returns: 8-5-12-12-15
+encodeBrainfuck('Hello');       // Returns: Brainfuck program
+```
+
 ## License
 
 All encoder implementations are MIT licensed. See LICENSE file for details.

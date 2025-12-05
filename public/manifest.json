@@ -1,7 +1,7 @@
 {
   "name": "Creative Text Encoder",
   "short_name": "Encoder",
-  "description": "Transform your messages into 25+ creative encodings - Binary, Morse Code, Base64, Emoji, QR Codes, and more!",
+  "description": "Transform your messages into 120+ creative encodings - Binary, Morse Code, Base64, Emoji, Hieroglyphs, Elvish, and more!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#581c87",

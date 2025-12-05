@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v2.0
 
-**Transform your messages into 37+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 120+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,12 +19,12 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **38+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, and the new Shuffle Encoding. All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **120+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
 Unlike other text encoders, Creative Text Encoder v2.0 offers:
-- **12 unique encoders** not found in any other app (DNA, Playing Cards, GPS Coordinates, Zodiac, etc.)
+- **83 NEW encoders** not found in any other app (Hieroglyphs, Cuneiform, Elvish, Aurebesh, and more!)
 - **Shuffle encoding** - mix multiple encoders randomly for each character
 - **Custom encoder builder** - create your own encoding schemes
 - **Visual flow viewer** - watch character transformations in real-time
@@ -50,9 +50,9 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **38+ Encoding Methods** - Comprehensive collection from technical to artistic
+- **120+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic
 - **Real-time Encoding/Decoding** - See results as you type
-- **Reversible Encodings** - 18 methods support full decode back to original
+- **Reversible Encodings** - 50+ methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
 - **Custom Encoder Builder** - Create and save your own encoding schemes
 - **Visual Encoding Flow** - Watch character-by-character transformations animate
@@ -87,30 +87,58 @@ Perfect for:
 
 ## 🎨 Encoding Categories
 
-### 🔐 Secret (1)
+### 🔐 Secret (2)
 - **Zero-Width Steganography** 👻 - Hide messages in invisible Unicode characters (Reversible!)
+- **Whitespace Stego** 🌫️ - Hide data in spaces and tabs (Reversible!)
 
 ### 📻 Classic (3)
 - **Morse Code** 📡 - Dit-dah communication with audio playback (Reversible!)
 - **Braille Patterns** 🤚 - Touch-readable text encoding (Reversible!)
 - **NATO Phonetic** 🎖️ - Alpha-Bravo-Charlie spelling
 
-### 💾 Computer Science (3)
+### 💾 Computer Science (10)
 - **Binary** 💻 - Classic 0s and 1s (8-bit) (Reversible!)
 - **Hexadecimal** 🔢 - Base-16 number system (Reversible!)
 - **Base64** 📦 - Standard encoding for data transfer (Reversible!)
+- **Base32** 📋 - RFC 4648 encoding (Reversible!)
+- **Octal (Base-8)** 8️⃣ - Octal number representation (Reversible!)
+- **ASCII85** 📄 - Adobe-style Base85 encoding (Reversible!)
+- **Quoted-Printable** 📧 - Email-safe encoding (Reversible!)
+- **A1Z26** 🔢 - Letter to number substitution (Reversible!)
+- **Brainfuck** 🤯 - Esoteric programming language (Reversible!)
 
-### 🔑 Ciphers (3)
+### 🔑 Ciphers (18)
 - **Caesar Cipher** 🏛️ - Shift alphabet by N positions (adjustable) (Reversible!)
 - **ROT13** 🔄 - Caesar cipher with 13-letter shift (Reversible!)
+- **ROT47** 🔄 - Extended ASCII rotation cipher (Reversible!)
 - **Reverse Text** ↩️ - Simply backwards (Reversible!)
+- **Atbash Cipher** 🔀 - Hebrew cipher - reverse alphabet (Reversible!)
+- **Vigenère Cipher** 🔐 - Keyword-based polyalphabetic cipher (Reversible!)
+- **Rail Fence Cipher** 🚃 - Zigzag transposition cipher (Reversible!)
+- **Bacon's Cipher** 🥓 - Binary cipher using A and B (Reversible!)
+- **Polybius Square** 🏛️ - Ancient Greek grid cipher (Reversible!)
+- **Affine Cipher** 📐 - Mathematical substitution cipher (Reversible!)
+- **Tap Code** 👊 - Prison/POW knock cipher (Reversible!)
+- **QWERTY Substitution** ⌨️ - QWERTY keyboard cipher (Reversible!)
+- **Beaufort Cipher** ⚓ - Symmetric Vigenère variant (Reversible!)
+- **Playfair Cipher** 🎭 - Keyword-based digraph cipher (Reversible!)
+- **Columnar Transposition** 📊 - Column-based rearrangement (Reversible!)
+- **Scytale Cipher** 📜 - Ancient Spartan cylinder cipher (Reversible!)
+- **Autokey Cipher** 🗝️ - Self-keying Vigenère variant (Reversible!)
+- **Hill Cipher** 📐 - Matrix-based encryption (Reversible!)
+- **Bifid Cipher** 🔺 - Polybius-based fractionation (Reversible!)
 
-### 🎉 Fun (5)
+### 🎉 Fun (10)
 - **Emoji Encoding** 😎 - Express text through emoji pairs (Reversible!)
 - **Bubble Text** ⭕ - Cute circled characters (ⓗⓔⓛⓛⓞ)
 - **Upside Down** 🙃 - Australian mode activated (oʃʃǝH)
 - **Leetspeak** 🤓 - H4ck3r 5p34k
 - **Pig Latin** 🐷 - Ixnay on the ormalfay
+- **Redacted Text** ⬛ - Randomly redacted text
+- **Keyboard Shift** ⌨️ - Shift keys right on keyboard (Reversible!)
+- **Emojipasta** 😫 - Add random emojis everywhere
+- **Tally Marks** 𝍡 - Counting tally marks
+- **Acrostic Generator** 📝 - First letters spell message
 
 ### 🎨 Artistic (5)
 - **Block Art** ◼️ - Geometric pattern encoding (█▓▒░)
@@ -127,7 +155,7 @@ Perfect for:
 - **Sound Wave** 🔊 - Visual sound wave representation (▁▂▃▄▅▆▇█)
 - **Hash Generator** 🔐 - Generate unique fingerprint from text
 
-### 🌟 Unique (12) **BRAND NEW!**
+### 🌟 Unique (20)
 These creative encoders are not found in any other encoding app:
 - **DNA Sequence** 🧬 - Encode as genetic base pairs (ATGC) (Reversible!)
 - **Playing Cards** 🃏 - Express text through card deck (Reversible!)
@@ -141,6 +169,54 @@ These creative encoders are not found in any other encoding app:
 - **Weather Symbols** ⛅ - Meteorological encoding
 - **Domino Tiles** 🁣 - Game piece patterns
 - **Traffic Signs** 🛑 - Road sign symbols
+- **Tree Pattern** 🌲 - Nature and tree symbols
+- **Moon Phases** 🌙 - Lunar cycle encoding
+- **Animal Encoding** 🐶 - Cute animal emojis
+- **Food Encoding** 🍎 - Delicious food emojis
+- **Sports Encoding** ⚽ - Athletic sports emojis
+- **Musical Instruments** 🎸 - Instrument emojis
+- **Space Encoding** 🚀 - Cosmic space emojis
+- **Ocean Encoding** 🌊 - Marine sea life emojis
+
+### 🌍 Linguistic (5) **NEW!**
+- **Greek Alphabet** Ω - Transliterate to Greek letters (Reversible!)
+- **Cyrillic Script** Д - Transliterate to Cyrillic letters (Reversible!)
+- **Hebrew Alefbet** א - Transliterate to Hebrew letters (Reversible!)
+- **Korean Hangul** 한 - Map to Korean syllables (Reversible!)
+- **IPA Transcription** 🗣️ - International Phonetic Alphabet
+
+### 🧙 Fantasy (4) **NEW!**
+- **Aurebesh** ⭐ - Star Wars galaxy script (Reversible!)
+- **Circular Gallifreyan** 🌀 - Doctor Who Time Lord script (Reversible!)
+- **Elvish/Tengwar** 💍 - Lord of the Rings script (Reversible!)
+- **Klingon pIqaD** 🖖 - Star Trek Klingon script (Reversible!)
+
+### 👁️ Visual (4) **NEW!**
+- **ASL Fingerspelling** 🤟 - American Sign Language hand signs
+- **7-Segment Display** 🧮 - Digital display encoding
+- **Dancing Men Cipher** 🕺 - Sherlock Holmes' Dancing Men (Reversible!)
+- **Pigpen Cipher** 🔳 - Geometric substitution cipher (Reversible!)
+
+### 📟 Retro (5) **NEW!**
+- **Phone Keypad (T9)** 📱 - Old mobile phone multi-tap (Reversible!)
+- **Pager Code** 📟 - Classic pager numeric codes
+- **IBM Punch Card** 🎫 - Vintage punch card patterns
+- **Baudot Code** 📟 - 5-bit teleprinter code (Reversible!)
+- **Resistor Color Code** ⚡ - Electronics color bands
+
+### 🏛️ Ancient (4) **NEW!**
+- **Ogham Script** 🎋 - Celtic tree alphabet (Reversible!)
+- **Egyptian Hieroglyphs** 🦅 - Ancient Egyptian writing (Reversible!)
+- **Sumerian Cuneiform** 🧱 - Ancient Mesopotamian script (Reversible!)
+- **Mayan Numerals** 🗿 - Ancient Mayan number system (Reversible!)
+
+### ✨ Aesthetic (6) **NEW!**
+- **Ｆｕｌｌｗｉｄｔｈ Ｔｅｘｔ** ↔️ - Wide aesthetic characters (Reversible!)
+- **🅂🅀🅄🄰🅁🄴🄳 🅃🄴🅇🅃** 🔲 - Squared Unicode letters (Reversible!)
+- **⒫⒜⒭⒠⒩⒯⒣⒠⒮⒤⒵⒠⒟** ⒜ - Parenthesized letters (Reversible!)
+- **𝔻𝕠𝕦𝕓𝕝𝕖 𝕊𝕥𝕣𝕦𝕔𝕜** 🎯 - Mathematical blackboard bold (Reversible!)
+- **𝒞𝓊𝓇𝓈𝒾𝓋𝑒 𝒮𝒸𝓇𝒾𝓅𝓉** ✒️ - Elegant cursive script (Reversible!)
+- **Mirror Text** 🪞 - Horizontally mirrored text
 
 ## 🚀 Quick Start
 
@@ -204,17 +280,23 @@ encode-me-txt/
 │   │   ├── DailyPuzzle.jsx
 │   │   └── ParticlesBackground.jsx
 │   ├── utils/
-│   │   ├── encoders/   # Modular encoder functions
-│   │   │   ├── steganography.js
-│   │   │   ├── classic.js
-│   │   │   ├── computer.js
-│   │   │   ├── ciphers.js
-│   │   │   ├── fun.js
-│   │   │   ├── artistic.js
-│   │   │   ├── advanced.js
-│   │   │   ├── unique.js
-│   │   │   ├── shuffle.js
-│   │   │   └── index.js
+│   │   ├── encoders/   # Modular encoder functions (120+ encoders)
+│   │   │   ├── steganography.js  # Zero-width, whitespace stego
+│   │   │   ├── classic.js        # Morse, Braille, NATO
+│   │   │   ├── computer.js       # Binary, Hex, Base64, Base32, Octal, ASCII85, etc.
+│   │   │   ├── ciphers.js        # Caesar, ROT13, Vigenère, Playfair, Hill, Bifid, etc.
+│   │   │   ├── fun.js            # Emoji, Bubble, Leetspeak, Redacted, Emojipasta, etc.
+│   │   │   ├── artistic.js       # Block art, Musical, Zalgo, Runes, etc.
+│   │   │   ├── advanced.js       # QR Code, URL, HTML, Hash, etc.
+│   │   │   ├── unique.js         # DNA, Playing Cards, GPS, Zodiac, etc.
+│   │   │   ├── shuffle.js        # Multi-encoder random mixing
+│   │   │   ├── linguistic.js     # Greek, Cyrillic, Hebrew, Korean, IPA
+│   │   │   ├── fantasy.js        # Aurebesh, Gallifreyan, Elvish, Klingon
+│   │   │   ├── visual.js         # ASL, 7-segment, Dancing Men, Pigpen
+│   │   │   ├── retro.js          # Phone keypad, Pager, Punch card, Baudot
+│   │   │   ├── ancient.js        # Ogham, Hieroglyphs, Cuneiform, Mayan
+│   │   │   ├── aesthetic.js      # Fullwidth, Squared, Cursive, Mirror
+│   │   │   └── index.js          # Export aggregator
 │   │   ├── encoderConfig.js        # Encoder metadata
 │   │   ├── themeSystem.js          # Theme management
 │   │   ├── historyManager.js       # History persistence
@@ -378,7 +460,14 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [x] Chain encoding (apply multiple encoders in sequence) ✅
 - [x] Share functionality ✅
 - [x] Light/dark theme toggle (+ 4 more themes!) ✅
-- [x] More encoding methods (12 unique new encoders!) ✅
+- [x] More encoding methods (83 NEW encoders - now 120+ total!) ✅
+- [x] Linguistic encoders (Greek, Cyrillic, Hebrew, Korean, IPA) ✅
+- [x] Fantasy scripts (Aurebesh, Gallifreyan, Elvish, Klingon) ✅
+- [x] Ancient scripts (Hieroglyphs, Cuneiform, Ogham, Mayan) ✅
+- [x] Aesthetic styles (Fullwidth, Squared, Cursive, Double-Struck) ✅
+- [x] Retro encoders (Phone keypad, Pager code, Punch card, Baudot) ✅
+- [x] Visual encoders (ASL, 7-segment, Dancing Men, Pigpen) ✅
+- [x] More cipher methods (Playfair, Hill, Bifid, Columnar, etc.) ✅
 - [x] Encoding strength analyzer ✅
 - [x] History system ✅
 - [x] Keyboard shortcuts ✅
