@@ -4118,6 +4118,646 @@ export const encoderConfig = [
     encode: encoders.encodeISOLanguage,
     reversible: false,
     tags: ['linguistic', 'iso', 'language']
+  },
+
+  // ========================================
+  // ✨ CREATIVE TEXT EFFECTS (v3.4)
+  // ========================================
+
+  // Text Decoration
+  {
+    id: 'hearts-between',
+    name: 'Hearts Between',
+    description: 'H♥e♥a♥r♥t♥s between chars',
+    emoji: '💕',
+    category: 'aesthetic',
+    encode: encoders.encodeHeartsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'hearts', 'decoration']
+  },
+  {
+    id: 'stars-between',
+    name: 'Stars Between',
+    description: 'S★t★a★r★s between chars',
+    emoji: '⭐',
+    category: 'aesthetic',
+    encode: encoders.encodeStarsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'stars', 'decoration']
+  },
+  {
+    id: 'dots-between',
+    name: 'Dots Between',
+    description: 'D•o•t•s between chars',
+    emoji: '🔘',
+    category: 'aesthetic',
+    encode: encoders.encodeDotsBetween,
+    reversible: false,
+    tags: ['aesthetic', 'dots', 'decoration']
+  },
+  {
+    id: 'sparkles-between',
+    name: 'Sparkles Between',
+    description: 'S✨p✨a✨r✨k✨l✨e between chars',
+    emoji: '✨',
+    category: 'aesthetic',
+    encode: encoders.encodeSparklesBetween,
+    reversible: false,
+    tags: ['aesthetic', 'sparkles', 'decoration']
+  },
+  {
+    id: 'double-space',
+    name: 'Double Spaced',
+    description: 'D o u b l e spaced text',
+    emoji: '📐',
+    category: 'aesthetic',
+    encode: encoders.encodeDoubleSpace,
+    reversible: false,
+    tags: ['aesthetic', 'space', 'wide']
+  },
+  {
+    id: 'underscore-between',
+    name: 'Underscore Between',
+    description: 'U_n_d_e_r_s_c_o_r_e style',
+    emoji: '➖',
+    category: 'aesthetic',
+    encode: encoders.encodeUnderscoreBetween,
+    reversible: false,
+    tags: ['aesthetic', 'underscore', 'decoration']
+  },
+  {
+    id: 'bracketed',
+    name: '[B][r][a][c][k][e][t][e][d]',
+    description: 'Brackets around each char',
+    emoji: '🔲',
+    category: 'aesthetic',
+    encode: encoders.encodeBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'brackets', 'decoration']
+  },
+  {
+    id: 'parenthesized-chars',
+    name: '(P)(a)(r)(e)(n)(s)',
+    description: 'Parentheses around each char',
+    emoji: '🔵',
+    category: 'aesthetic',
+    encode: encoders.encodeParenthesized,
+    reversible: false,
+    tags: ['aesthetic', 'parentheses', 'decoration']
+  },
+  {
+    id: 'angle-bracketed',
+    name: '<A><n><g><l><e>',
+    description: 'Angle brackets around each',
+    emoji: '📐',
+    category: 'aesthetic',
+    encode: encoders.encodeAngleBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'angle', 'brackets']
+  },
+  {
+    id: 'curly-bracketed',
+    name: '{C}{u}{r}{l}{y}',
+    description: 'Curly braces around each',
+    emoji: '🔶',
+    category: 'aesthetic',
+    encode: encoders.encodeCurlyBracketed,
+    reversible: false,
+    tags: ['aesthetic', 'curly', 'braces']
+  },
+
+  // Text Bordering
+  {
+    id: 'ascii-box',
+    name: 'ASCII Box',
+    description: '+-----+ style box',
+    emoji: '📦',
+    category: 'visual',
+    encode: encoders.encodeASCIIBox,
+    reversible: false,
+    tags: ['visual', 'box', 'ascii']
+  },
+  {
+    id: 'fancy-box',
+    name: 'Fancy Box',
+    description: '╔═══╗ style box',
+    emoji: '🖼️',
+    category: 'visual',
+    encode: encoders.encodeFancyBox,
+    reversible: false,
+    tags: ['visual', 'box', 'fancy']
+  },
+  {
+    id: 'double-box',
+    name: 'Double Box',
+    description: 'Double-lined box',
+    emoji: '📋',
+    category: 'visual',
+    encode: encoders.encodeDoubleBox,
+    reversible: false,
+    tags: ['visual', 'box', 'double']
+  },
+  {
+    id: 'rounded-box',
+    name: 'Rounded Box',
+    description: '╭───╮ rounded corners',
+    emoji: '⬜',
+    category: 'visual',
+    encode: encoders.encodeRoundedBox,
+    reversible: false,
+    tags: ['visual', 'box', 'rounded']
+  },
+  {
+    id: 'emoji-border',
+    name: 'Emoji Border',
+    description: '🌟 emoji border 🌟',
+    emoji: '🌟',
+    category: 'visual',
+    encode: encoders.encodeEmojiBorder,
+    reversible: false,
+    tags: ['visual', 'border', 'emoji']
+  },
+  {
+    id: 'star-border',
+    name: 'Star Border',
+    description: '★ star border ★',
+    emoji: '★',
+    category: 'visual',
+    encode: encoders.encodeStarBorder,
+    reversible: false,
+    tags: ['visual', 'border', 'star']
+  },
+
+  // Text Alignment
+  {
+    id: 'staircase',
+    name: 'Staircase',
+    description: 'Diagonal staircase pattern',
+    emoji: '📶',
+    category: 'visual',
+    encode: encoders.encodeStaircase,
+    reversible: false,
+    tags: ['visual', 'staircase', 'diagonal']
+  },
+  {
+    id: 'reverse-staircase',
+    name: 'Reverse Staircase',
+    description: 'Reverse diagonal pattern',
+    emoji: '📉',
+    category: 'visual',
+    encode: encoders.encodeReverseStaircase,
+    reversible: false,
+    tags: ['visual', 'staircase', 'reverse']
+  },
+  {
+    id: 'pyramid-shape',
+    name: 'Pyramid Shape',
+    description: 'Pyramid text pattern',
+    emoji: '🔺',
+    category: 'visual',
+    encode: encoders.encodePyramid,
+    reversible: false,
+    tags: ['visual', 'pyramid', 'shape']
+  },
+  {
+    id: 'diamond-shape',
+    name: 'Diamond Shape',
+    description: 'Diamond text pattern',
+    emoji: '💎',
+    category: 'visual',
+    encode: encoders.encodeDiamond,
+    reversible: false,
+    tags: ['visual', 'diamond', 'shape']
+  },
+  {
+    id: 'wave-pattern',
+    name: 'Wave Pattern',
+    description: 'Sine wave text pattern',
+    emoji: '🌊',
+    category: 'visual',
+    encode: encoders.encodeWavePattern,
+    reversible: false,
+    tags: ['visual', 'wave', 'pattern']
+  },
+  {
+    id: 'zigzag-pattern',
+    name: 'Zigzag Pattern',
+    description: 'Zigzag text layout',
+    emoji: '⚡',
+    category: 'visual',
+    encode: encoders.encodeZigzag,
+    reversible: false,
+    tags: ['visual', 'zigzag', 'pattern']
+  },
+
+  // Case Manipulation
+  {
+    id: 'title-case',
+    name: 'Title Case',
+    description: 'Capitalize First Letter Of Each Word',
+    emoji: '📝',
+    category: 'aesthetic',
+    encode: encoders.encodeTitleCase,
+    reversible: false,
+    tags: ['aesthetic', 'title', 'case']
+  },
+  {
+    id: 'alternating-word-case',
+    name: 'Alternating Word Case',
+    description: 'ALTERNATING word CASE',
+    emoji: '🔀',
+    category: 'aesthetic',
+    encode: encoders.encodeAlternatingWordCase,
+    reversible: false,
+    tags: ['aesthetic', 'alternating', 'case']
+  },
+  {
+    id: 'inverted-title',
+    name: 'Inverted Title',
+    description: 'iNVERTED tITLE cASE',
+    emoji: '🔃',
+    category: 'aesthetic',
+    encode: encoders.encodeInvertedTitleCase,
+    reversible: false,
+    tags: ['aesthetic', 'inverted', 'case']
+  },
+  {
+    id: 'random-case',
+    name: 'Random Case',
+    description: 'rAnDoM cAsE',
+    emoji: '🎲',
+    category: 'fun',
+    encode: encoders.encodeRandomCase,
+    reversible: false,
+    tags: ['fun', 'random', 'case']
+  },
+  {
+    id: 'word-reversal',
+    name: 'Word Reversal',
+    description: 'droW lasreveR',
+    emoji: '↩️',
+    category: 'fun',
+    encode: encoders.encodeWordReversal,
+    reversible: false,
+    tags: ['fun', 'word', 'reverse']
+  },
+  {
+    id: 'word-order-reversal',
+    name: 'Word Order Reversal',
+    description: 'Reversal Order Word',
+    emoji: '🔄',
+    category: 'fun',
+    encode: encoders.encodeWordOrderReversal,
+    reversible: false,
+    tags: ['fun', 'order', 'reverse']
+  },
+  {
+    id: 'sentence-case',
+    name: 'Sentence Case',
+    description: 'Sentence case format',
+    emoji: '📜',
+    category: 'aesthetic',
+    encode: encoders.encodeSentenceCase,
+    reversible: false,
+    tags: ['aesthetic', 'sentence', 'case']
+  },
+  {
+    id: 'toggle-case',
+    name: 'Toggle Case',
+    description: 'tOGGLE cASE',
+    emoji: '🔁',
+    category: 'aesthetic',
+    encode: encoders.encodeToggleCase,
+    reversible: false,
+    tags: ['aesthetic', 'toggle', 'case']
+  },
+
+  // Artistic Transformations
+  {
+    id: 'ascii-banner',
+    name: 'ASCII Banner',
+    description: 'Large ASCII art letters',
+    emoji: '🎨',
+    category: 'visual',
+    encode: encoders.encodeASCIIBanner,
+    reversible: false,
+    tags: ['visual', 'ascii', 'banner']
+  },
+  {
+    id: 'block-letters',
+    name: 'Block Letters',
+    description: '🇧🇱🇴🇨🇰 style letters',
+    emoji: '🔤',
+    category: 'aesthetic',
+    encode: encoders.encodeBlockLetters,
+    reversible: false,
+    tags: ['aesthetic', 'block', 'letters']
+  },
+  {
+    id: 'dotted-outline',
+    name: 'Dotted Outline',
+    description: '· dotted outline ·',
+    emoji: '⚬',
+    category: 'visual',
+    encode: encoders.encodeDottedOutline,
+    reversible: false,
+    tags: ['visual', 'dotted', 'outline']
+  },
+  {
+    id: 'shadow-effect',
+    name: 'Shadow Effect',
+    description: 'Text with shadow',
+    emoji: '🌑',
+    category: 'aesthetic',
+    encode: encoders.encodeShadowEffect,
+    reversible: false,
+    tags: ['aesthetic', 'shadow', 'effect']
+  },
+  {
+    id: '3d-effect',
+    name: '3D Effect',
+    description: 'Text with 3D depth',
+    emoji: '🎯',
+    category: 'aesthetic',
+    encode: encoders.encode3DEffect,
+    reversible: false,
+    tags: ['aesthetic', '3d', 'effect']
+  },
+  {
+    id: 'glitch-effect',
+    name: 'Glitch Effect',
+    description: 'G̷l̸i̵t̶c̷h̸ text',
+    emoji: '📺',
+    category: 'aesthetic',
+    encode: encoders.encodeGlitchEffect,
+    reversible: false,
+    tags: ['aesthetic', 'glitch', 'effect']
+  },
+  {
+    id: 'mirrored-text',
+    name: 'Mirrored Text',
+    description: 'Text | txeT',
+    emoji: '🪞',
+    category: 'fun',
+    encode: encoders.encodeMirroredText,
+    reversible: false,
+    tags: ['fun', 'mirror', 'text']
+  },
+  {
+    id: 'repeating-pattern',
+    name: 'Repeating Pattern',
+    description: 'Text · Text · Text',
+    emoji: '🔁',
+    category: 'aesthetic',
+    encode: encoders.encodeRepeatingPattern,
+    reversible: false,
+    tags: ['aesthetic', 'repeat', 'pattern']
+  },
+
+  // Special Characters
+  {
+    id: 'box-drawing',
+    name: 'Box Drawing',
+    description: '┌├┼ box drawing chars',
+    emoji: '📊',
+    category: 'unique',
+    encode: encoders.encodeBoxDrawing,
+    reversible: false,
+    tags: ['unique', 'box', 'drawing']
+  },
+  {
+    id: 'currency-symbols',
+    name: 'Currency Symbols',
+    description: '$€£¥ currency symbols',
+    emoji: '💰',
+    category: 'unique',
+    encode: encoders.encodeCurrencySymbols,
+    reversible: false,
+    tags: ['unique', 'currency', 'money']
+  },
+  {
+    id: 'chess-pieces',
+    name: 'Chess Pieces',
+    description: '♔♕♖♗♘♙ chess encoding',
+    emoji: '♟️',
+    category: 'unique',
+    encode: encoders.encodeChessPieces,
+    reversible: false,
+    tags: ['unique', 'chess', 'pieces']
+  },
+  {
+    id: 'card-suits',
+    name: 'Card Suits',
+    description: '♠♣♥♦ card suits',
+    emoji: '🃏',
+    category: 'unique',
+    encode: encoders.encodeCardSuits,
+    reversible: false,
+    tags: ['unique', 'cards', 'suits']
+  },
+  {
+    id: 'music-notes',
+    name: 'Music Notes',
+    description: '♩♪♫♬ musical notes',
+    emoji: '🎵',
+    category: 'unique',
+    encode: encoders.encodeMusicNotes,
+    reversible: false,
+    tags: ['unique', 'music', 'notes']
+  },
+  {
+    id: 'weather-symbols',
+    name: 'Weather Symbols',
+    description: '☀☁☂☃ weather icons',
+    emoji: '🌦️',
+    category: 'unique',
+    encode: encoders.encodeWeatherSymbols,
+    reversible: false,
+    tags: ['unique', 'weather', 'symbols']
+  },
+  {
+    id: 'zodiac-signs',
+    name: 'Zodiac Signs',
+    description: '♈♉♊♋ zodiac encoding',
+    emoji: '♌',
+    category: 'unique',
+    encode: encoders.encodeZodiacSigns,
+    reversible: false,
+    tags: ['unique', 'zodiac', 'astrology']
+  },
+  {
+    id: 'planet-symbols',
+    name: 'Planet Symbols',
+    description: '☿♀♁♂ planetary symbols',
+    emoji: '🪐',
+    category: 'unique',
+    encode: encoders.encodePlanetSymbols,
+    reversible: false,
+    tags: ['unique', 'planets', 'astronomy']
+  },
+  {
+    id: 'arrow-symbols',
+    name: 'Arrow Symbols',
+    description: '←↑→↓ arrow encoding',
+    emoji: '➡️',
+    category: 'unique',
+    encode: encoders.encodeArrowSymbols,
+    reversible: false,
+    tags: ['unique', 'arrows', 'direction']
+  },
+  {
+    id: 'geometric-shapes',
+    name: 'Geometric Shapes',
+    description: '●○◐◑ geometric encoding',
+    emoji: '⬡',
+    category: 'unique',
+    encode: encoders.encodeGeometricShapes,
+    reversible: false,
+    tags: ['unique', 'geometric', 'shapes']
+  },
+  {
+    id: 'dingbats',
+    name: 'Dingbats',
+    description: '✁✂✃✄ dingbat symbols',
+    emoji: '✂️',
+    category: 'unique',
+    encode: encoders.encodeDingbats,
+    reversible: false,
+    tags: ['unique', 'dingbats', 'symbols']
+  },
+
+  // Text Wrappers
+  {
+    id: 'quote-marks',
+    name: 'Quote Marks',
+    description: '"Quoted text"',
+    emoji: '💬',
+    category: 'aesthetic',
+    encode: encoders.encodeQuoteMark,
+    reversible: false,
+    tags: ['aesthetic', 'quote', 'marks']
+  },
+  {
+    id: 'fancy-quotes',
+    name: 'Fancy Quotes',
+    description: '"Fancy quotes"',
+    emoji: '📖',
+    category: 'aesthetic',
+    encode: encoders.encodeFancyQuotes,
+    reversible: false,
+    tags: ['aesthetic', 'fancy', 'quotes']
+  },
+  {
+    id: 'guillemets',
+    name: 'Guillemets',
+    description: '«French quotes»',
+    emoji: '🇫🇷',
+    category: 'aesthetic',
+    encode: encoders.encodeGuillemets,
+    reversible: false,
+    tags: ['aesthetic', 'french', 'guillemets']
+  },
+  {
+    id: 'japanese-quotes',
+    name: 'Japanese Quotes',
+    description: '「Japanese quotes」',
+    emoji: '🇯🇵',
+    category: 'aesthetic',
+    encode: encoders.encodeJapaneseQuotes,
+    reversible: false,
+    tags: ['aesthetic', 'japanese', 'quotes']
+  },
+  {
+    id: 'parenthetical-wrap',
+    name: 'Parenthetical',
+    description: '(Parenthetical text)',
+    emoji: '🔵',
+    category: 'aesthetic',
+    encode: encoders.encodeParenthetical,
+    reversible: false,
+    tags: ['aesthetic', 'parenthetical', 'wrap']
+  },
+  {
+    id: 'aside-wrap',
+    name: 'Em Dash Aside',
+    description: '— Aside text —',
+    emoji: '➖',
+    category: 'aesthetic',
+    encode: encoders.encodeAside,
+    reversible: false,
+    tags: ['aesthetic', 'aside', 'em-dash']
+  },
+  {
+    id: 'ellipsis-wrap',
+    name: 'Ellipsis Wrap',
+    description: '...trailing off...',
+    emoji: '💭',
+    category: 'aesthetic',
+    encode: encoders.encodeEllipsisWrap,
+    reversible: false,
+    tags: ['aesthetic', 'ellipsis', 'wrap']
+  },
+  {
+    id: 'action-asterisks',
+    name: 'Action Asterisks',
+    description: '*does action*',
+    emoji: '⭐',
+    category: 'fun',
+    encode: encoders.encodeActionAsterisks,
+    reversible: false,
+    tags: ['fun', 'action', 'roleplay']
+  },
+  {
+    id: 'emphasis-markers',
+    name: 'Emphasis Markers',
+    description: '***Emphasized***',
+    emoji: '❗',
+    category: 'aesthetic',
+    encode: encoders.encodeEmphasisMarkers,
+    reversible: false,
+    tags: ['aesthetic', 'emphasis', 'markdown']
+  },
+
+  // Word Effects
+  {
+    id: 'drop-cap',
+    name: 'Drop Cap',
+    description: '『D』rop cap style',
+    emoji: '📜',
+    category: 'aesthetic',
+    encode: encoders.encodeDropCap,
+    reversible: false,
+    tags: ['aesthetic', 'dropcap', 'typography']
+  },
+  {
+    id: 'word-wrapping',
+    name: 'Flower Wrapping',
+    description: '✿Word✿ wrapped',
+    emoji: '🌸',
+    category: 'aesthetic',
+    encode: encoders.encodeWordWrapping,
+    reversible: false,
+    tags: ['aesthetic', 'flower', 'wrap']
+  },
+  {
+    id: 'word-decoration',
+    name: 'Word Decoration',
+    description: '❀Decorated❀ words',
+    emoji: '🌺',
+    category: 'aesthetic',
+    encode: encoders.encodeWordDecoration,
+    reversible: false,
+    tags: ['aesthetic', 'decorated', 'words']
+  },
+  {
+    id: 'alternating-decorations',
+    name: 'Alternating Decorations',
+    description: '★Word♥ ✦Another✿',
+    emoji: '🎭',
+    category: 'aesthetic',
+    encode: encoders.encodeAlternatingDecorations,
+    reversible: false,
+    tags: ['aesthetic', 'alternating', 'decorations']
   }
 ];
 

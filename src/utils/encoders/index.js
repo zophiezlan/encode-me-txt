@@ -38,3 +38,6 @@ export * from './cultural.js';
 
 // Communication and signaling encoders (v3.3)
 export * from './communication.js';
+
+// Creative text effects (v3.4)
+export * from './effects.js';
