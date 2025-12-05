@@ -75,27 +75,18 @@ export const decodeElvish = (text) => {
   return text.split('').map(char => ELVISH_REVERSE[char] || char).join('');
 };
 
-// Klingon pIqaD (Star Trek) - using approximate characters since official Klingon Unicode doesn't exist
-// We use lowercase passthrough since there's no official Unicode for Klingon pIqaD
-const KLINGON_MAP = {
-  'a': 'a', 'b': 'b', 'ch': 'ch', 'd': 'd', 'e': 'e', 'gh': 'gh', 'h': 'h',
-  'i': 'i', 'j': 'j', 'l': 'l', 'm': 'm', 'n': 'n', 'ng': 'ng', 'o': 'o',
-  'p': 'p', 'q': 'q', 'Q': 'Q', 'r': 'r', 's': 's', 't': 't', 'tlh': 'tlh',
-  'u': 'u', 'v': 'v', 'w': 'w', 'y': 'y', "'": "'", 'c': 'c', 'f': 'f',
-  'g': 'g', 'k': 'k', 'x': 'x', 'z': 'z'
-};
+// Klingon pIqaD (Star Trek) - Note: There's no official Unicode for Klingon pIqaD
+// The ConScript Unicode Registry has a proposal (U+F8D0-U+F8FF) but it's not standard
+// We simply lowercase the text as a placeholder representation
 
 /**
  * Encodes text to Klingon pIqaD representation
- * Note: There's no official Unicode for Klingon, so we apply phonetic transformations
+ * Note: There's no official Unicode for Klingon, so we apply lowercase transformation
  */
 export const encodeKlingon = (text) => {
-  // Apply Klingon-style phonetic transformations
-  return text.toLowerCase()
-    .replace(/ch/g, 'ch')
-    .replace(/gh/g, 'gh')
-    .replace(/ng/g, 'ng')
-    .replace(/tlh/g, 'tlh');
+  // Since there's no official Klingon Unicode, we simply lowercase the text
+  // In a full implementation, this would map to ConScript Private Use Area characters
+  return text.toLowerCase();
 };
 
 /**
