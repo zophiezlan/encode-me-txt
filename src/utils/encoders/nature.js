@@ -395,3 +395,530 @@ export const encodeCellOrganelle = (text) => {
     return `${organelle}×${count}`;
   }).join(' ');
 };
+
+// ============================================
+// ORIGAMI CREASE PATTERN ENCODING
+// ============================================
+
+/**
+ * Encode text as origami crease patterns (mountain/valley folds)
+ * @param {string} text - The text to encode
+ * @returns {string} - Crease pattern encoding
+ */
+export const encodeOrigamiCrease = (text) => {
+  const folds = ['╱', '╲', '─', '│', '┼', '╳', '◢', '◣'];
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const pattern = code.toString(2).padStart(8, '0').split('')
+      .map(b => folds[(parseInt(b) * 4 + (code % 4)) % folds.length]).join('');
+    return `[${hex}]${pattern}`;
+  }).join('');
+};
+
+export const decodeOrigamiCrease = (text) => {
+  try {
+    const matches = text.match(/\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => String.fromCharCode(parseInt(m.slice(1, 3), 16))).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// CONSTELLATION MAP ENCODING
+// ============================================
+
+/**
+ * Encode text as star positions in constellations
+ * @param {string} text - The text to encode
+ * @returns {string} - Constellation encoding
+ */
+export const encodeConstellationMap = (text) => {
+  const stars = ['✦', '✧', '★', '☆', '✯', '✰', '⋆', '✵'];
+  const magnitudes = ['α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const star = stars[code % stars.length];
+    const mag = magnitudes[(code >> 3) % magnitudes.length];
+    const ra = ((code * 15) % 360).toString().padStart(3, '0');
+    const dec = ((code % 180) - 90).toString();
+    return `${mag}${star}(${ra}°,${dec}°)[${hex}]`;
+  }).join(' ');
+};
+
+export const decodeConstellationMap = (text) => {
+  try {
+    const matches = text.match(/\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => String.fromCharCode(parseInt(m.slice(1, 3), 16))).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// TECTONIC PLATE ENCODING
+// ============================================
+
+/**
+ * Encode text as tectonic plate movements
+ * @param {string} text - The text to encode
+ * @returns {string} - Tectonic encoding
+ */
+export const encodeTectonicPlate = (text) => {
+  const movements = ['↗↙', '↘↖', '→←', '↑↓', '⤢⤡', '⇄⇅', '↻↺', '⟳⟲'];
+  const boundaries = ['convergent', 'divergent', 'transform', 'subduction'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const move = movements[code % movements.length];
+    const boundary = boundaries[(code >> 4) % boundaries.length];
+    const rate = ((code % 15) + 1).toFixed(1);
+    return `PLATE[${hex}]{${boundary}:${move}@${rate}cm/yr}`;
+  }).join('⚏');
+};
+
+export const decodeTectonicPlate = (text) => {
+  try {
+    const matches = text.match(/PLATE\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// FUNGAL MYCELIUM NETWORK ENCODING
+// ============================================
+
+/**
+ * Encode text as mycelium network connections
+ * @param {string} text - The text to encode
+ * @returns {string} - Mycelium encoding
+ */
+export const encodeMyceliumNetwork = (text) => {
+  const nodes = ['◉', '◎', '●', '○', '◐', '◑', '◒', '◓'];
+  const connections = ['╌', '┄', '┈', '╎', '┆', '┊', '╏', '║'];
+  
+  return text.split('').map((char) => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const node = nodes[code % nodes.length];
+    const conn = connections[(code >> 3) % connections.length];
+    const nutrients = ['N', 'P', 'K', 'C'][(code >> 5) % 4];
+    return `${node}${conn}[${hex}:${nutrients}]${conn}`;
+  }).join('⌇');
+};
+
+export const decodeMyceliumNetwork = (text) => {
+  try {
+    const matches = text.match(/\[([0-9a-f]{2}):[NPKC]\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// BIOLUMINESCENCE ENCODING
+// ============================================
+
+/**
+ * Encode text as bioluminescent patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Bioluminescence encoding
+ */
+export const encodeBioluminescence = (text) => {
+  const glows = ['💫', '✨', '🌟', '⭐', '🔆', '💡', '🌠', '☀️'];
+  // Wavelengths in nanometers (nm) - typical bioluminescence range
+  const wavelengths = [460, 480, 500, 520, 540, 560, 580, 600];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const glow = glows[code % glows.length];
+    const wl = wavelengths[(code >> 3) % wavelengths.length];
+    const intensity = ((code % 100) + 1).toString().padStart(3, '0');
+    return `${glow}λ${wl}nm:I${intensity}[${hex}]`;
+  }).join('~');
+};
+
+export const decodeBioluminescence = (text) => {
+  try {
+    const matches = text.match(/\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => String.fromCharCode(parseInt(m.slice(1, 3), 16))).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// AURORA BOREALIS ENCODING
+// ============================================
+
+/**
+ * Encode text as aurora patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Aurora encoding
+ */
+export const encodeAuroraBorealis = (text) => {
+  const colors = ['🟢', '🟣', '🔵', '🟡', '🟠', '🔴', '⚪', '🟤'];
+  const forms = ['arc', 'band', 'ray', 'corona', 'veil', 'patch', 'glow', 'flaming'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const color = colors[code % colors.length];
+    const form = forms[(code >> 3) % forms.length];
+    const altitude = 100 + (code % 200);
+    const kp = (code % 9) + 1;
+    return `AURORA[${hex}]${color}{${form}:${altitude}km,Kp${kp}}`;
+  }).join('🌌');
+};
+
+export const decodeAuroraBorealis = (text) => {
+  try {
+    const matches = text.match(/AURORA\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// BEEHIVE WAGGLE DANCE ENCODING
+// ============================================
+
+/**
+ * Encode text as bee waggle dance patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Waggle dance encoding
+ */
+export const encodeWaggleDance = (text) => {
+  const waggles = ['∿', '≋', '⌇', '〰', '⏦', '∾', '≀', '⁓'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const waggle = waggles[code % waggles.length];
+    const angle = (code * 1.4) % 360;
+    const duration = (code % 5) + 1;
+    const distance = code * 10;
+    return `🐝[${hex}]${waggle.repeat(duration)}∠${angle.toFixed(0)}°→${distance}m`;
+  }).join(' ');
+};
+
+export const decodeWaggleDance = (text) => {
+  try {
+    const matches = text.match(/🐝\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// GLACIER STRATIGRAPHY ENCODING
+// ============================================
+
+/**
+ * Encode text as ice core layers
+ * @param {string} text - The text to encode
+ * @returns {string} - Glacier encoding
+ */
+export const encodeGlacierStratigraphy = (text) => {
+  const layers = ['❄', '🧊', '⛄', '❆', '❅', '✻', '✼', '❉'];
+  const epochs = ['Holocene', 'Pleistocene', 'Pliocene', 'Miocene'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const layer = layers[code % layers.length];
+    const epoch = epochs[(code >> 4) % epochs.length];
+    const depth = code * 10;
+    const age = code * 1000;
+    return `ICE[${hex}]${layer}@${depth}m(${epoch}:${age}BP)`;
+  }).join('═');
+};
+
+export const decodeGlacierStratigraphy = (text) => {
+  try {
+    const matches = text.match(/ICE\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// WIND ROSE ENCODING
+// ============================================
+
+/**
+ * Encode text as wind rose patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Wind rose encoding
+ */
+export const encodeWindRose = (text) => {
+  const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+  const beaufort = ['calm', 'light-air', 'light-breeze', 'gentle-breeze', 'moderate', 'fresh', 'strong', 'near-gale', 'gale', 'strong-gale', 'storm', 'violent-storm', 'hurricane'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const dir = directions[code % directions.length];
+    const bft = beaufort[code % beaufort.length];
+    const speed = code % 100;
+    return `🌬️[${hex}]${dir}@${speed}kts(${bft})`;
+  }).join('↺');
+};
+
+export const decodeWindRose = (text) => {
+  try {
+    const matches = text.match(/🌬️\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// DENDROCHRONOLOGY ENCODING
+// ============================================
+
+/**
+ * Encode text as tree ring patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Tree ring encoding
+ */
+export const encodeDendrochronology = (text) => {
+  const rings = ['◯', '◎', '⊚', '⊛', '⦾', '⦿', '⊙', '⊕'];
+  const conditions = ['wet', 'dry', 'normal', 'fire', 'frost', 'optimal', 'stress', 'recovery'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const ring = rings[code % rings.length];
+    const condition = conditions[(code >> 3) % conditions.length];
+    const width = ((code % 10) / 10 + 0.1).toFixed(2);
+    const year = 2024 - (code % 200);
+    return `🌳[${hex}]${ring}(${year}:${width}mm:${condition})`;
+  }).join('≡');
+};
+
+export const decodeDendrochronology = (text) => {
+  try {
+    const matches = text.match(/🌳\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// CORAL REEF ENCODING
+// ============================================
+
+/**
+ * Encode text as coral polyp patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Coral encoding
+ */
+export const encodeCoralReef = (text) => {
+  const corals = ['🪸', '🐚', '🦪', '🐙', '🦑', '🦐', '🦞', '🦀'];
+  const species = ['staghorn', 'brain', 'elkhorn', 'pillar', 'star', 'mushroom', 'finger', 'table'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const coral = corals[code % corals.length];
+    const sp = species[(code >> 3) % species.length];
+    const depth = (code % 50) + 5;
+    const bleaching = (code % 100);
+    return `CORAL[${hex}]${coral}{${sp}@${depth}m:${bleaching}%health}`;
+  }).join('🌊');
+};
+
+export const decodeCoralReef = (text) => {
+  try {
+    const matches = text.match(/CORAL\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// BIRD MIGRATION ENCODING
+// ============================================
+
+/**
+ * Encode text as bird migration patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Migration encoding
+ */
+export const encodeBirdMigration = (text) => {
+  const formations = ['V', 'J', 'line', 'cluster', 'echelon', 'column', 'extended', 'compressed'];
+  const birds = ['🦅', '🦆', '🦢', '🦩', '🕊️', '🦜', '🐦', '🦉'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const bird = birds[code % birds.length];
+    const formation = formations[(code >> 3) % formations.length];
+    const altitude = (code * 50) + 500;
+    const heading = (code * 1.4) % 360;
+    return `MIGRATE[${hex}]${bird}{${formation}@${altitude}ft→${heading.toFixed(0)}°}`;
+  }).join('➤');
+};
+
+export const decodeBirdMigration = (text) => {
+  try {
+    const matches = text.match(/MIGRATE\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// EROSION PATTERN ENCODING
+// ============================================
+
+/**
+ * Encode text as geological erosion patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Erosion encoding
+ */
+export const encodeErosionPattern = (text) => {
+  const types = ['fluvial', 'aeolian', 'glacial', 'coastal', 'karst', 'mass-wasting', 'biological', 'chemical'];
+  const features = ['canyon', 'arch', 'hoodoo', 'mesa', 'butte', 'pillar', 'cave', 'sinkhole'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const type = types[code % types.length];
+    const feature = features[(code >> 3) % features.length];
+    const rate = ((code % 100) / 10).toFixed(1);
+    return `ERODE[${hex}]🏜️{${type}:${feature}@${rate}mm/yr}`;
+  }).join('≈');
+};
+
+export const decodeErosionPattern = (text) => {
+  try {
+    const matches = text.match(/ERODE\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// AURORA AUSTRALIS ENCODING
+// ============================================
+
+/**
+ * Encode text as southern aurora patterns (distinct from borealis)
+ * @param {string} text - The text to encode
+ * @returns {string} - Aurora Australis encoding
+ */
+export const encodeAuroraAustralis = (text) => {
+  const zones = ['auroral-oval', 'polar-cap', 'sub-auroral', 'diffuse'];
+  const emissions = ['557.7nm-green', '630.0nm-red', '427.8nm-blue', '391.4nm-violet'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const zone = zones[code % zones.length];
+    const emission = emissions[(code >> 4) % emissions.length];
+    const lat = -90 + (code % 30);
+    const intensity = code % 100;
+    return `SOUTH[${hex}]🌌{${zone}:${emission}@${lat}°S:I${intensity}}`;
+  }).join('✧');
+};
+
+export const decodeAuroraAustralis = (text) => {
+  try {
+    const matches = text.match(/SOUTH\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// SNOWFLAKE CRYSTAL ENCODING
+// ============================================
+
+/**
+ * Encode text as snowflake crystal structures
+ * @param {string} text - The text to encode
+ * @returns {string} - Snowflake encoding
+ */
+export const encodeSnowflakeCrystal = (text) => {
+  const types = ['stellar-dendrite', 'plate', 'column', 'needle', 'capped-column', 'spatial-dendrite', 'irregular', 'rime'];
+  const branches = ['✻', '❅', '❆', '❄', '✼', '✽', '✾', '✿'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const type = types[code % types.length];
+    const branch = branches[(code >> 3) % branches.length];
+    const temp = -40 + (code % 35);
+    const size = ((code % 50) / 10).toFixed(1);
+    return `SNOW[${hex}]${branch}{${type}:${temp}°C:${size}mm}`;
+  }).join('·');
+};
+
+export const decodeSnowflakeCrystal = (text) => {
+  try {
+    const matches = text.match(/SNOW\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};
+
+// ============================================
+// BONSAI GROWTH ENCODING
+// ============================================
+
+/**
+ * Encode text as bonsai growth patterns
+ * @param {string} text - The text to encode
+ * @returns {string} - Bonsai encoding
+ */
+export const encodeBonsaiGrowth = (text) => {
+  const styles = ['formal-upright', 'informal-upright', 'slanting', 'cascade', 'semi-cascade', 'literati', 'windswept', 'forest'];
+  const trees = ['🌳', '🌲', '🌴', '🎋', '🎍', '🌿', '🍃', '🌱'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const style = styles[code % styles.length];
+    const tree = trees[(code >> 3) % trees.length];
+    const age = code + 5;
+    const height = (code % 80) + 10;
+    const branchCount = (code % 12) + 3;
+    return `BONSAI[${hex}]${tree}{${style}:${age}yr:${height}cm:${branchCount}branches}`;
+  }).join('✿');
+};
+
+export const decodeBonsaiGrowth = (text) => {
+  try {
+    const matches = text.match(/BONSAI\[([0-9a-f]{2})\]/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch { return '[Decode failed]'; }
+};

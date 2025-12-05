@@ -1206,3 +1206,1824 @@ export const decodeHomophonic = (text, complexity = 3) => {
     return '[Decode failed]';
   }
 };
+
+// ============================================
+// ALTERNATING CASE WITH PATTERNS
+// ============================================
+
+/**
+ * Alternating case with configurable patterns
+ * @param {string} text - The text to encode
+ * @param {string} pattern - Pattern type: 'char', 'word', 'sentence', 'random'
+ * @returns {string} - Alternating case text
+ */
+export const encodeAlternatingCaseParam = (text, pattern = 'char') => {
+  switch (pattern) {
+    case 'word': {
+      // Alternate case by word
+      return text.split(' ').map((word, idx) => 
+        idx % 2 === 0 ? word.toUpperCase() : word.toLowerCase()
+      ).join(' ');
+    }
+    case 'sentence': {
+      // Alternate case by sentence
+      return text.split(/([.!?]+\s*)/).map((part, idx) => 
+        idx % 4 === 0 ? part.toUpperCase() : part.toLowerCase()
+      ).join('');
+    }
+    case 'random': {
+      // Pseudo-random case for each character using prime multiplier
+      // 31337 is a prime number chosen for good distribution properties
+      const SEED_PRIME = 31337;
+      return text.split('').map((char, idx) => {
+        const seed = (idx * SEED_PRIME) % 100;
+        return seed > 50 ? char.toUpperCase() : char.toLowerCase();
+      }).join('');
+    }
+    case 'char':
+    default: {
+      // Classic character-by-character alternation
+      let upper = false;
+      return text.split('').map(char => {
+        if (/[a-zA-Z]/.test(char)) {
+          upper = !upper;
+          return upper ? char.toUpperCase() : char.toLowerCase();
+        }
+        return char;
+      }).join('');
+    }
+  }
+};
+
+// ============================================
+// BASE ENCODING WITH CUSTOM ALPHABET
+// ============================================
+
+/**
+ * Base encoding with custom alphabet
+ * @param {string} text - The text to encode
+ * @param {string} alphabet - Custom alphabet string (min 2 chars)
+ * @returns {string} - Encoded text using custom base
+ */
+export const encodeCustomBase = (text, alphabet = '01') => {
+  if (alphabet.length < 2) alphabet = '01';
+  const base = alphabet.length;
+  
+  return text.split('').map(char => {
+    let num = char.charCodeAt(0);
+    const digits = [];
+    do {
+      digits.unshift(alphabet[num % base]);
+      num = Math.floor(num / base);
+    } while (num > 0);
+    return digits.join('');
+  }).join(' ');
+};
+
+/**
+ * Decode custom base encoding
+ * @param {string} text - The encoded text
+ * @param {string} alphabet - Custom alphabet used
+ * @returns {string} - Decoded text
+ */
+export const decodeCustomBase = (text, alphabet = '01') => {
+  if (alphabet.length < 2) alphabet = '01';
+  const base = alphabet.length;
+  
+  try {
+    return text.split(' ').map(encoded => {
+      let num = 0;
+      for (const char of encoded) {
+        const idx = alphabet.indexOf(char);
+        if (idx === -1) return encoded;
+        num = num * base + idx;
+      }
+      return String.fromCharCode(num);
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// CAESAR WITH MULTIPLE SHIFTS
+// ============================================
+
+/**
+ * Caesar cipher with multiple rotating shifts
+ * @param {string} text - The text to encode
+ * @param {number[]} shifts - Array of shift values to cycle through
+ * @returns {string} - Encoded text
+ */
+export const encodeMultiCaesar = (text, shifts = [3, 7, 13]) => {
+  if (!shifts || shifts.length === 0) shifts = [3, 7, 13];
+  let shiftIndex = 0;
+  
+  return text.replace(/[a-zA-Z]/g, (char) => {
+    const shift = shifts[shiftIndex % shifts.length];
+    shiftIndex++;
+    const start = char <= 'Z' ? 65 : 97;
+    return String.fromCharCode(((char.charCodeAt(0) - start + shift) % 26) + start);
+  });
+};
+
+/**
+ * Decode multi-shift Caesar cipher
+ * @param {string} text - The encoded text
+ * @param {number[]} shifts - Array of shift values used
+ * @returns {string} - Decoded text
+ */
+export const decodeMultiCaesar = (text, shifts = [3, 7, 13]) => {
+  if (!shifts || shifts.length === 0) shifts = [3, 7, 13];
+  const reverseShifts = shifts.map(s => (26 - (s % 26)) % 26);
+  return encodeMultiCaesar(text, reverseShifts);
+};
+
+// ============================================
+// TEXT SCRAMBLER WITH WORD PRESERVATION
+// ============================================
+
+/**
+ * Text scrambler that preserves word readability
+ * @param {string} text - The text to scramble
+ * @param {string} mode - 'middle' (keep first/last), 'ends' (keep middle), 'all' (full scramble)
+ * @returns {string} - Scrambled text
+ */
+export const encodeScrambler = (text, mode = 'middle') => {
+  // Primes for deterministic shuffle algorithm
+  // Using small primes 7 and 13 for good distribution with minimal computation
+  const SHUFFLE_PRIME_A = 7;
+  const SHUFFLE_PRIME_B = 13;
+  
+  const scramble = (arr) => {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      // Deterministic shuffle using prime multipliers
+      const j = (i * SHUFFLE_PRIME_A + arr.length * SHUFFLE_PRIME_B) % (i + 1);
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  return text.split(' ').map(word => {
+    if (word.length <= 3) return word;
+    const chars = word.split('');
+    
+    switch (mode) {
+      case 'ends':
+        // Keep first and last 2 chars, scramble middle
+        if (chars.length <= 4) return word;
+        return chars[0] + chars[1] + scramble(chars.slice(2, -2)).join('') + chars.slice(-2).join('');
+      
+      case 'all':
+        // Full scramble
+        return scramble(chars).join('');
+      
+      case 'middle':
+      default:
+        // Keep first and last char (Cambridge style)
+        if (chars.length <= 2) return word;
+        return chars[0] + scramble(chars.slice(1, -1)).join('') + chars[chars.length - 1];
+    }
+  }).join(' ');
+};
+
+// ============================================
+// PHONETIC SUBSTITUTION WITH STYLES
+// ============================================
+
+const PHONETIC_STYLES = {
+  nato: {
+    'A': 'Alpha', 'B': 'Bravo', 'C': 'Charlie', 'D': 'Delta', 'E': 'Echo',
+    'F': 'Foxtrot', 'G': 'Golf', 'H': 'Hotel', 'I': 'India', 'J': 'Juliet',
+    'K': 'Kilo', 'L': 'Lima', 'M': 'Mike', 'N': 'November', 'O': 'Oscar',
+    'P': 'Papa', 'Q': 'Quebec', 'R': 'Romeo', 'S': 'Sierra', 'T': 'Tango',
+    'U': 'Uniform', 'V': 'Victor', 'W': 'Whiskey', 'X': 'X-ray', 'Y': 'Yankee',
+    'Z': 'Zulu', ' ': '[space]'
+  },
+  police: {
+    'A': 'Adam', 'B': 'Boy', 'C': 'Charles', 'D': 'David', 'E': 'Edward',
+    'F': 'Frank', 'G': 'George', 'H': 'Henry', 'I': 'Ida', 'J': 'John',
+    'K': 'King', 'L': 'Lincoln', 'M': 'Mary', 'N': 'Nora', 'O': 'Ocean',
+    'P': 'Paul', 'Q': 'Queen', 'R': 'Robert', 'S': 'Sam', 'T': 'Tom',
+    'U': 'Union', 'V': 'Victor', 'W': 'William', 'X': 'X-ray', 'Y': 'Young',
+    'Z': 'Zebra', ' ': '[space]'
+  },
+  german: {
+    'A': 'Anton', 'B': 'Berta', 'C': 'Cäsar', 'D': 'Dora', 'E': 'Emil',
+    'F': 'Friedrich', 'G': 'Gustav', 'H': 'Heinrich', 'I': 'Ida', 'J': 'Julius',
+    'K': 'Kaufmann', 'L': 'Ludwig', 'M': 'Martha', 'N': 'Nordpol', 'O': 'Otto',
+    'P': 'Paula', 'Q': 'Quelle', 'R': 'Richard', 'S': 'Samuel', 'T': 'Theodor',
+    'U': 'Ulrich', 'V': 'Viktor', 'W': 'Wilhelm', 'X': 'Xanthippe', 'Y': 'Ypsilon',
+    'Z': 'Zacharias', ' ': '[Pause]'
+  }
+};
+
+/**
+ * Phonetic alphabet encoding with style selection
+ * @param {string} text - The text to encode
+ * @param {string} style - 'nato', 'police', or 'german'
+ * @returns {string} - Phonetic representation
+ */
+export const encodePhoneticParam = (text, style = 'nato') => {
+  const alphabet = PHONETIC_STYLES[style] || PHONETIC_STYLES.nato;
+  return text.toUpperCase().split('').map(char => 
+    alphabet[char] || char
+  ).join(' ');
+};
+
+/**
+ * Decode phonetic alphabet
+ * @param {string} text - The phonetic text
+ * @param {string} style - Style used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodePhoneticParam = (text, style = 'nato') => {
+  const alphabet = PHONETIC_STYLES[style] || PHONETIC_STYLES.nato;
+  const reverse = Object.fromEntries(
+    Object.entries(alphabet).map(([k, v]) => [v.toLowerCase(), k])
+  );
+  
+  try {
+    return text.split(' ').map(word => {
+      const key = word.toLowerCase();
+      return reverse[key] || word;
+    }).join('').replace(/\[space\]/gi, ' ').replace(/\[pause\]/gi, ' ');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// NUMERIC SUBSTITUTION WITH BASES
+// ============================================
+
+/**
+ * Convert text to numeric values with configurable base
+ * @param {string} text - The text to convert
+ * @param {number} base - Output number base (2-36)
+ * @param {string} separator - Character to separate numbers
+ * @returns {string} - Numeric representation
+ */
+export const encodeNumericBase = (text, base = 10, separator = '-') => {
+  const clampedBase = Math.max(2, Math.min(36, base));
+  return text.split('').map(char => 
+    char.charCodeAt(0).toString(clampedBase).toUpperCase()
+  ).join(separator);
+};
+
+/**
+ * Decode numeric base encoding
+ * @param {string} text - The numeric text
+ * @param {number} base - Base used for encoding
+ * @param {string} separator - Separator used
+ * @returns {string} - Decoded text
+ */
+export const decodeNumericBase = (text, base = 10, separator = '-') => {
+  const clampedBase = Math.max(2, Math.min(36, base));
+  try {
+    return text.split(separator).map(num => 
+      String.fromCharCode(parseInt(num, clampedBase))
+    ).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// WORD TRANSFORMATION
+// ============================================
+
+/**
+ * Transform words with various operations
+ * @param {string} text - The text to transform
+ * @param {string} operation - 'reverse', 'sort', 'shuffle', 'double', 'truncate'
+ * @param {number} param - Optional parameter for the operation
+ * @returns {string} - Transformed text
+ */
+export const encodeWordTransform = (text, operation = 'reverse', param = 0) => {
+  // Prime number for deterministic shuffle - chosen for good distribution
+  const SHUFFLE_PRIME = 7919;
+  
+  return text.split(' ').map((word, idx) => {
+    switch (operation) {
+      case 'reverse':
+        return word.split('').reverse().join('');
+      
+      case 'sort':
+        return word.split('').sort().join('');
+      
+      case 'shuffle': {
+        const chars = word.split('');
+        // Deterministic shuffle using prime multiplier
+        for (let i = chars.length - 1; i > 0; i--) {
+          const j = ((i + idx) * SHUFFLE_PRIME) % (i + 1);
+          [chars[i], chars[j]] = [chars[j], chars[i]];
+        }
+        return chars.join('');
+      }
+      
+      case 'double':
+        return word.split('').map(c => c + c).join('');
+      
+      case 'truncate': {
+        const length = param || 3;
+        return word.slice(0, length);
+      }
+      
+      case 'initial':
+        return word[0] || '';
+      
+      case 'pig-latin-advanced': {
+        if (!/^[a-zA-Z]/.test(word)) return word;
+        const vowels = 'aeiouAEIOU';
+        if (vowels.includes(word[0])) {
+          return word + 'way';
+        }
+        let consonantCluster = '';
+        let i = 0;
+        while (i < word.length && !vowels.includes(word[i])) {
+          consonantCluster += word[i];
+          i++;
+        }
+        return word.slice(i) + consonantCluster + 'ay';
+      }
+      
+      default:
+        return word;
+    }
+  }).join(' ');
+};
+
+// ============================================
+// DELIMITER ENCODING
+// ============================================
+
+/**
+ * Add delimiters between characters with configurable patterns
+ * @param {string} text - The text to encode
+ * @param {string} delimiter - Delimiter pattern (can be multiple chars)
+ * @param {string} mode - 'char', 'word', 'alternate'
+ * @returns {string} - Delimited text
+ */
+export const encodeDelimited = (text, delimiter = '-', mode = 'char') => {
+  switch (mode) {
+    case 'word':
+      return text.split(' ').join(delimiter);
+    
+    case 'alternate': {
+      const delimiters = delimiter.split('');
+      return text.split('').map((char, idx) => 
+        idx === 0 ? char : delimiters[idx % delimiters.length] + char
+      ).join('');
+    }
+    
+    case 'char':
+    default:
+      return text.split('').join(delimiter);
+  }
+};
+
+/**
+ * Decode delimited text
+ * @param {string} text - The delimited text
+ * @param {string} delimiter - Delimiter used
+ * @param {string} mode - Mode used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeDelimited = (text, delimiter = '-', mode = 'char') => {
+  try {
+    switch (mode) {
+      case 'word':
+        return text.split(delimiter).join(' ');
+      
+      case 'alternate': {
+        const delimiters = delimiter.split('');
+        let result = '';
+        for (let i = 0; i < text.length; i++) {
+          if (!delimiters.includes(text[i])) {
+            result += text[i];
+          }
+        }
+        return result;
+      }
+      
+      case 'char':
+      default:
+        return text.split(delimiter).join('');
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// REPEAT ENCODING
+// ============================================
+
+/**
+ * Repeat characters based on their position or value
+ * @param {string} text - The text to encode
+ * @param {string} mode - 'position', 'value', 'fixed'
+ * @param {number} count - Fixed repeat count (for 'fixed' mode)
+ * @returns {string} - Repeated text
+ */
+export const encodeRepeat = (text, mode = 'fixed', count = 2) => {
+  return text.split('').map((char, idx) => {
+    let repeatCount;
+    switch (mode) {
+      case 'position':
+        repeatCount = (idx % 5) + 1; // 1-5 repeats based on position
+        break;
+      case 'value':
+        repeatCount = (char.charCodeAt(0) % 4) + 1; // 1-4 repeats based on char code
+        break;
+      case 'fixed':
+      default:
+        repeatCount = count;
+    }
+    return char.repeat(repeatCount);
+  }).join('');
+};
+
+// ============================================
+// VOWEL/CONSONANT OPERATIONS
+// ============================================
+
+/**
+ * Transform vowels or consonants specifically
+ * @param {string} text - The text to transform
+ * @param {string} target - 'vowels', 'consonants', or 'both'
+ * @param {string} operation - 'upper', 'lower', 'remove', 'double', 'replace'
+ * @param {string} replacement - Replacement char (for 'replace' operation)
+ * @returns {string} - Transformed text
+ */
+export const encodeVowelConsonant = (text, target = 'vowels', operation = 'upper', replacement = '*') => {
+  const vowels = 'aeiouAEIOU';
+  
+  const isTarget = (char) => {
+    const isVowel = vowels.includes(char);
+    if (target === 'vowels') return isVowel;
+    if (target === 'consonants') return /[a-zA-Z]/.test(char) && !isVowel;
+    return /[a-zA-Z]/.test(char); // both
+  };
+  
+  return text.split('').map(char => {
+    if (!isTarget(char)) return char;
+    
+    switch (operation) {
+      case 'upper':
+        return char.toUpperCase();
+      case 'lower':
+        return char.toLowerCase();
+      case 'remove':
+        return '';
+      case 'double':
+        return char + char;
+      case 'replace':
+        return replacement;
+      default:
+        return char;
+    }
+  }).join('');
+};
+
+// ============================================
+// CUTTING-EDGE ENCODERS
+// ============================================
+
+// ============================================
+// BLOCKCHAIN-STYLE ENCODING
+// ============================================
+
+/**
+ * Encode text as blockchain-style hash chain
+ * Each character becomes a "block" with a hash reference to the previous
+ * @param {string} text - The text to encode
+ * @param {string} style - 'full', 'compact', or 'visual'
+ * @returns {string} - Blockchain-style encoding
+ */
+export const encodeBlockchain = (text, style = 'compact') => {
+  const simpleHash = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0');
+  };
+
+  let prevHash = '00000000';
+  const blocks = text.split('').map((char, idx) => {
+    const data = char.charCodeAt(0).toString(16).padStart(2, '0');
+    const blockHash = simpleHash(prevHash + data + idx);
+    const block = style === 'full' 
+      ? `[B${idx}:${data}|prev:${prevHash.slice(0,4)}|hash:${blockHash}]`
+      : style === 'visual'
+      ? `⛓${data}:${blockHash.slice(0,4)}`
+      : `${data}:${blockHash.slice(0,4)}`;
+    prevHash = blockHash;
+    return block;
+  });
+  
+  return style === 'full' 
+    ? blocks.join('\n')
+    : blocks.join(style === 'visual' ? '' : '-');
+};
+
+/**
+ * Decode blockchain-style encoding
+ * @param {string} text - The blockchain encoding
+ * @param {string} style - Style used for encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeBlockchain = (text, style = 'compact') => {
+  try {
+    let parts;
+    if (style === 'full') {
+      parts = text.split('\n').map(block => {
+        const match = block.match(/\[B\d+:([0-9a-f]{2})/i);
+        return match ? match[1] : null;
+      });
+    } else if (style === 'visual') {
+      parts = text.split('⛓').filter(Boolean).map(p => p.split(':')[0]);
+    } else {
+      parts = text.split('-').map(p => p.split(':')[0]);
+    }
+    return parts.filter(Boolean).map(hex => 
+      String.fromCharCode(parseInt(hex, 16))
+    ).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// MERKLE TREE ENCODING
+// ============================================
+
+/**
+ * Encode text as Merkle tree structure
+ * @param {string} text - The text to encode
+ * @returns {string} - Merkle tree representation
+ */
+export const encodeMerkleTree = (text) => {
+  const simpleHash = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash + str.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0');
+  };
+
+  // Create leaf nodes
+  const leaves = text.split('').map(char => ({
+    data: char.charCodeAt(0).toString(16).padStart(2, '0'),
+    hash: simpleHash(char)
+  }));
+
+  // Build tree levels
+  const buildLevel = (nodes) => {
+    if (nodes.length <= 1) return nodes;
+    const newLevel = [];
+    for (let i = 0; i < nodes.length; i += 2) {
+      const left = nodes[i];
+      const right = nodes[i + 1] || left;
+      newLevel.push({
+        hash: simpleHash(left.hash + right.hash),
+        children: [left, right]
+      });
+    }
+    return newLevel;
+  };
+
+  let level = leaves;
+  while (level.length > 1) {
+    level = buildLevel(level);
+  }
+
+  const root = level[0]?.hash || '00000000';
+  const leafData = leaves.map(l => l.data).join('');
+  return `ROOT:${root}|DATA:${leafData}`;
+};
+
+/**
+ * Decode Merkle tree encoding
+ * @param {string} text - The Merkle encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeMerkleTree = (text) => {
+  try {
+    const match = text.match(/DATA:([0-9a-f]+)/i);
+    if (!match) return '[Decode failed]';
+    const hexData = match[1];
+    let result = '';
+    for (let i = 0; i < hexData.length; i += 2) {
+      result += String.fromCharCode(parseInt(hexData.slice(i, i + 2), 16));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// NEURAL NETWORK STYLE ENCODING
+// ============================================
+
+/**
+ * Encode text as neural network weight matrices
+ * @param {string} text - The text to encode
+ * @param {number} layers - Number of "layers" (1-5)
+ * @returns {string} - Neural network style encoding
+ */
+export const encodeNeuralNetwork = (text, layers = 2) => {
+  const clampedLayers = Math.max(1, Math.min(5, layers));
+  
+  // Convert to initial "input layer"
+  let values = text.split('').map(c => c.charCodeAt(0));
+  
+  // Apply "transformations" through layers
+  const layerOutputs = [values.map(v => v.toString(16).padStart(2, '0')).join('')];
+  
+  for (let layer = 0; layer < clampedLayers; layer++) {
+    const weights = [0.7, 0.3, 0.5, 0.2, 0.8]; // Simulated weights
+    const bias = layer * 7;
+    values = values.map((v, i) => {
+      const w = weights[i % weights.length];
+      return Math.floor((v * w + bias) % 256);
+    });
+    layerOutputs.push(values.map(v => v.toString(16).padStart(2, '0')).join(''));
+  }
+  
+  return `NN[${clampedLayers}]:{${layerOutputs.join('→')}}`;
+};
+
+/**
+ * Decode neural network encoding (extracts original input)
+ * @param {string} text - The neural encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeNeuralNetwork = (text) => {
+  try {
+    const match = text.match(/NN\[\d+\]:\{([^→]+)/);
+    if (!match) return '[Decode failed]';
+    const hexData = match[1];
+    let result = '';
+    for (let i = 0; i < hexData.length; i += 2) {
+      result += String.fromCharCode(parseInt(hexData.slice(i, i + 2), 16));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// QUANTUM SUPERPOSITION ENCODING
+// ============================================
+
+/**
+ * Encode text as quantum superposition states
+ * @param {string} text - The text to encode
+ * @param {string} notation - 'ket', 'wave', or 'matrix'
+ * @returns {string} - Quantum-style encoding
+ */
+export const encodeQuantumSuperposition = (text, notation = 'ket') => {
+  const chars = text.split('');
+  
+  switch (notation) {
+    case 'wave':
+      // Schrödinger wave function style
+      return chars.map(c => {
+        const code = c.charCodeAt(0);
+        const real = ((code >> 4) / 16).toFixed(2);
+        const imag = ((code & 0x0F) / 16).toFixed(2);
+        return `Ψ(${real}+${imag}i)`;
+      }).join('⊗');
+    
+    case 'matrix':
+      // Density matrix style
+      return chars.map(c => {
+        const code = c.charCodeAt(0);
+        const a = ((code >> 6) / 4).toFixed(1);
+        const b = (((code >> 4) & 0x3) / 4).toFixed(1);
+        const cp = (((code >> 2) & 0x3) / 4).toFixed(1);
+        const d = ((code & 0x3) / 4).toFixed(1);
+        return `[${a},${b};${cp},${d}]`;
+      }).join('');
+    
+    case 'ket':
+    default:
+      // Dirac notation |ψ⟩
+      return chars.map(c => {
+        const code = c.charCodeAt(0);
+        const alpha = (code >> 4).toString(16);
+        const beta = (code & 0x0F).toString(16);
+        return `|${alpha}⟩⊕|${beta}⟩`;
+      }).join('⊗');
+  }
+};
+
+/**
+ * Decode quantum superposition encoding
+ * @param {string} text - The quantum encoding
+ * @param {string} notation - Notation used
+ * @returns {string} - Decoded text
+ */
+export const decodeQuantumSuperposition = (text, notation = 'ket') => {
+  try {
+    switch (notation) {
+      case 'wave': {
+        const parts = text.split('⊗');
+        return parts.map(p => {
+          const match = p.match(/Ψ\(([0-9.]+)\+([0-9.]+)i\)/);
+          if (!match) return '';
+          const real = Math.round(parseFloat(match[1]) * 16);
+          const imag = Math.round(parseFloat(match[2]) * 16);
+          return String.fromCharCode((real << 4) | imag);
+        }).join('');
+      }
+      case 'matrix': {
+        const matrices = text.match(/\[[0-9.,;]+\]/g) || [];
+        return matrices.map(m => {
+          const nums = m.match(/[0-9.]+/g);
+          if (!nums || nums.length < 4) return '';
+          const a = Math.round(parseFloat(nums[0]) * 4);
+          const b = Math.round(parseFloat(nums[1]) * 4);
+          const c = Math.round(parseFloat(nums[2]) * 4);
+          const d = Math.round(parseFloat(nums[3]) * 4);
+          return String.fromCharCode((a << 6) | (b << 4) | (c << 2) | d);
+        }).join('');
+      }
+      case 'ket':
+      default: {
+        const parts = text.split('⊗');
+        return parts.map(p => {
+          const match = p.match(/\|([0-9a-f])⟩⊕\|([0-9a-f])⟩/i);
+          if (!match) return '';
+          const alpha = parseInt(match[1], 16);
+          const beta = parseInt(match[2], 16);
+          return String.fromCharCode((alpha << 4) | beta);
+        }).join('');
+      }
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// COMPRESSION-STYLE ENCODING (RLE)
+// ============================================
+
+/**
+ * Run-length encoding with configurable format
+ * @param {string} text - The text to encode
+ * @param {string} format - 'standard', 'compact', 'verbose'
+ * @returns {string} - RLE encoded text
+ */
+export const encodeRLE = (text, format = 'standard') => {
+  if (!text) return '';
+  
+  const runs = [];
+  let currentChar = text[0];
+  let count = 1;
+  
+  for (let i = 1; i < text.length; i++) {
+    if (text[i] === currentChar) {
+      count++;
+    } else {
+      runs.push({ char: currentChar, count });
+      currentChar = text[i];
+      count = 1;
+    }
+  }
+  runs.push({ char: currentChar, count });
+  
+  switch (format) {
+    case 'compact':
+      return runs.map(r => r.count > 1 ? `${r.count}${r.char}` : r.char).join('');
+    case 'verbose':
+      return runs.map(r => `[${r.char}×${r.count}]`).join('');
+    case 'standard':
+    default:
+      return runs.map(r => `${r.char}${r.count}`).join('');
+  }
+};
+
+/**
+ * Decode RLE
+ * @param {string} text - The RLE text
+ * @param {string} format - Format used
+ * @returns {string} - Decoded text
+ */
+export const decodeRLE = (text, format = 'standard') => {
+  try {
+    switch (format) {
+      case 'compact': {
+        return text.replace(/(\d+)(.)/g, (_, count, char) => char.repeat(parseInt(count)));
+      }
+      case 'verbose': {
+        const matches = text.match(/\[(.?)×(\d+)\]/g) || [];
+        return matches.map(m => {
+          const match = m.match(/\[(.?)×(\d+)\]/);
+          return match ? match[1].repeat(parseInt(match[2])) : '';
+        }).join('');
+      }
+      case 'standard':
+      default: {
+        return text.replace(/(.)(\d+)/g, (_, char, count) => char.repeat(parseInt(count)));
+      }
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// HUFFMAN-STYLE ENCODING
+// ============================================
+
+/**
+ * Simplified Huffman-style encoding
+ * @param {string} text - The text to encode
+ * @returns {string} - Huffman-style encoding with dictionary
+ */
+export const encodeHuffmanStyle = (text) => {
+  if (!text) return '';
+  
+  // Count frequencies
+  const freq = {};
+  for (const char of text) {
+    freq[char] = (freq[char] || 0) + 1;
+  }
+  
+  // Sort by frequency (most frequent = shortest code)
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+  
+  // Assign prefix-free codes using canonical Huffman approach
+  const codes = {};
+  let code = 0;
+  let prevLen = 1;
+  
+  sorted.forEach(([char], idx) => {
+    // Calculate code length based on position
+    const codeLen = Math.max(1, Math.ceil(Math.log2(idx + 2)));
+    
+    // Shift code if length increased
+    if (codeLen > prevLen) {
+      code = code << (codeLen - prevLen);
+    }
+    
+    codes[char] = code.toString(2).padStart(codeLen, '0');
+    code++;
+    prevLen = codeLen;
+  });
+  
+  // Encode
+  const encoded = text.split('').map(c => codes[c]).join('|');
+  const dict = sorted.map(([c]) => `${c.charCodeAt(0).toString(16).padStart(2, '0')}:${codes[c]}`).join(',');
+  
+  return `HUFF{${dict}}[${encoded}]`;
+};
+
+/**
+ * Decode Huffman-style encoding
+ * @param {string} text - The Huffman encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeHuffmanStyle = (text) => {
+  try {
+    const dictMatch = text.match(/HUFF\{([^}]+)\}/);
+    const dataMatch = text.match(/\[([^[\]]+)\]/);
+    if (!dictMatch || !dataMatch) return '[Decode failed]';
+    
+    // Parse dictionary
+    const reverseDict = {};
+    dictMatch[1].split(',').forEach(entry => {
+      const [hex, code] = entry.split(':');
+      reverseDict[code] = String.fromCharCode(parseInt(hex, 16));
+    });
+    
+    // Decode using separator
+    const data = dataMatch[1];
+    return data.split('|').map(code => reverseDict[code] || '?').join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// SEMANTIC ENCODING
+// ============================================
+
+/**
+ * Encode text using semantic word categories
+ * @param {string} text - The text to encode
+ * @param {string} theme - 'nature', 'tech', 'food', 'space'
+ * @returns {string} - Semantically encoded text
+ */
+export const encodeSemanticTheme = (text, theme = 'nature') => {
+  const themes = {
+    nature: ['🌳', '🌸', '🌊', '🌙', '⭐', '🌿', '🍃', '🌺', '🦋', '🐦', '☀️', '🌈', '⛰️', '🌻', '🍀', '🌴'],
+    tech: ['💻', '🖥️', '⌨️', '🖱️', '📱', '💾', '🔌', '⚡', '🤖', '🛸', '📡', '🔋', '💡', '🎮', '📟', '🔧'],
+    food: ['🍕', '🍔', '🌮', '🍣', '🍜', '🍩', '🍪', '🎂', '🍰', '🍦', '🍫', '🍿', '🥗', '🍱', '🥐', '🧁'],
+    space: ['🚀', '🛸', '🌍', '🌑', '🌕', '⭐', '💫', '☄️', '🌌', '👽', '🛰️', '🔭', '🌟', '✨', '🪐', '🌠']
+  };
+  
+  const symbols = themes[theme] || themes.nature;
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const high = (code >> 4) % symbols.length;
+    const low = (code & 0x0F) % symbols.length;
+    return symbols[high] + symbols[low];
+  }).join('');
+};
+
+/**
+ * Decode semantic theme encoding
+ * @param {string} text - The semantic encoding
+ * @param {string} theme - Theme used
+ * @returns {string} - Decoded text
+ */
+export const decodeSemanticTheme = (text, theme = 'nature') => {
+  const themes = {
+    nature: ['🌳', '🌸', '🌊', '🌙', '⭐', '🌿', '🍃', '🌺', '🦋', '🐦', '☀️', '🌈', '⛰️', '🌻', '🍀', '🌴'],
+    tech: ['💻', '🖥️', '⌨️', '🖱️', '📱', '💾', '🔌', '⚡', '🤖', '🛸', '📡', '🔋', '💡', '🎮', '📟', '🔧'],
+    food: ['🍕', '🍔', '🌮', '🍣', '🍜', '🍩', '🍪', '🎂', '🍰', '🍦', '🍫', '🍿', '🥗', '🍱', '🥐', '🧁'],
+    space: ['🚀', '🛸', '🌍', '🌑', '🌕', '⭐', '💫', '☄️', '🌌', '👽', '🛰️', '🔭', '🌟', '✨', '🪐', '🌠']
+  };
+  
+  const symbols = themes[theme] || themes.nature;
+  
+  try {
+    // Convert text to array of grapheme clusters
+    const graphemes = [...text];
+    const result = [];
+    
+    for (let i = 0; i < graphemes.length; i += 2) {
+      const highSymbol = graphemes[i];
+      const lowSymbol = graphemes[i + 1];
+      const high = symbols.indexOf(highSymbol);
+      const low = symbols.indexOf(lowSymbol);
+      if (high >= 0 && low >= 0) {
+        result.push(String.fromCharCode((high << 4) | low));
+      }
+    }
+    
+    return result.join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// GENETIC ALGORITHM ENCODING
+// ============================================
+
+/**
+ * Encode text as genetic algorithm chromosome representation
+ * Each character becomes a "gene" with fitness scores
+ * @param {string} text - The text to encode
+ * @param {number} generations - Number of simulated generations (1-10)
+ * @returns {string} - Genetic encoding
+ */
+export const encodeGeneticAlgorithm = (text, generations = 3) => {
+  const clampedGen = Math.max(1, Math.min(10, generations));
+  
+  // Create initial population (characters as genes)
+  const genes = text.split('').map((char, idx) => {
+    const code = char.charCodeAt(0);
+    // Simulate fitness based on char code
+    const fitness = ((code * 7 + idx * 13) % 100) / 100;
+    return {
+      allele: code.toString(16).padStart(2, '0'),
+      fitness: fitness.toFixed(2),
+      generation: clampedGen
+    };
+  });
+  
+  const chromosome = genes.map(g => 
+    `[${g.allele}|f:${g.fitness}|g${g.generation}]`
+  ).join('');
+  
+  return `GENOME{gen:${clampedGen},pop:${genes.length}}::${chromosome}`;
+};
+
+/**
+ * Decode genetic algorithm encoding
+ * @param {string} text - The genetic encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeGeneticAlgorithm = (text) => {
+  try {
+    const geneMatches = text.match(/\[([0-9a-f]{2})\|/gi) || [];
+    return geneMatches.map(g => {
+      const hex = g.match(/\[([0-9a-f]{2})/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// CELLULAR AUTOMATA ENCODING
+// ============================================
+
+/**
+ * Encode text using cellular automata patterns (Rule 110 inspired)
+ * @param {string} text - The text to encode
+ * @param {number} rule - CA rule number (0-255)
+ * @returns {string} - Cellular automata pattern
+ */
+export const encodeCellularAutomata = (text, rule = 110) => {
+  const clampedRule = Math.max(0, Math.min(255, rule));
+  
+  // Convert text to binary seed
+  const binary = text.split('').map(c => 
+    c.charCodeAt(0).toString(2).padStart(8, '0')
+  ).join('');
+  
+  // Apply CA rule for one generation
+  const applyRule = (cells) => {
+    let result = '';
+    for (let i = 0; i < cells.length; i++) {
+      const left = i > 0 ? cells[i-1] : '0';
+      const center = cells[i];
+      const right = i < cells.length - 1 ? cells[i+1] : '0';
+      const pattern = parseInt(left + center + right, 2);
+      result += (clampedRule >> pattern) & 1;
+    }
+    return result;
+  };
+  
+  const evolved = applyRule(binary);
+  
+  // Convert to visual pattern
+  const visual = evolved.split('').map(b => b === '1' ? '█' : '░').join('');
+  
+  return `CA[R${clampedRule}]:{${binary}}→{${visual}}`;
+};
+
+/**
+ * Decode cellular automata encoding
+ * @param {string} text - The CA encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeCellularAutomata = (text) => {
+  try {
+    const match = text.match(/\{([01]+)\}→/);
+    if (!match) return '[Decode failed]';
+    
+    const binary = match[1];
+    let result = '';
+    for (let i = 0; i < binary.length; i += 8) {
+      result += String.fromCharCode(parseInt(binary.slice(i, i + 8), 2));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// FRACTAL DIMENSION ENCODING
+// ============================================
+
+/**
+ * Encode text using fractal-like recursive patterns
+ * @param {string} text - The text to encode
+ * @param {number} depth - Recursion depth (1-4)
+ * @returns {string} - Fractal encoding
+ */
+export const encodeFractalDimension = (text, depth = 2) => {
+  const clampedDepth = Math.max(1, Math.min(4, depth));
+  
+  const fractalPattern = (code, d) => {
+    if (d === 0) return code.toString(16).padStart(2, '0');
+    
+    const high = (code >> 4) & 0x0F;
+    const low = code & 0x0F;
+    
+    return `(${fractalPattern(high, d-1)}⊕${fractalPattern(low, d-1)})`;
+  };
+  
+  const patterns = text.split('').map(c => 
+    fractalPattern(c.charCodeAt(0), clampedDepth)
+  );
+  
+  return `FRACTAL[d${clampedDepth}]:${patterns.join('∘')}`;
+};
+
+/**
+ * Decode fractal dimension encoding
+ * @param {string} text - The fractal encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeFractalDimension = (text) => {
+  try {
+    const match = text.match(/FRACTAL\[d(\d+)\]:(.+)/);
+    if (!match) return '[Decode failed]';
+    
+    const pattern = match[2];
+    // Extract all hex pairs at deepest level
+    const hexPairs = pattern.match(/[0-9a-f]{2}(?=[⊕)])/gi) || [];
+    
+    // Reconstruct bytes from fractal pattern
+    const result = [];
+    for (let i = 0; i < hexPairs.length; i += 2) {
+      const high = parseInt(hexPairs[i], 16);
+      const low = parseInt(hexPairs[i + 1] || '0', 16);
+      result.push(String.fromCharCode((high << 4) | low));
+    }
+    
+    return result.join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// TOPOLOGICAL ENCODING
+// ============================================
+
+/**
+ * Encode text using topological/knot theory notation
+ * @param {string} text - The text to encode
+ * @returns {string} - Topological encoding
+ */
+export const encodeTopological = (text) => {
+  // Represent characters as knot crossings
+  const crossings = ['⊗', '⊘', '⊙', '⊚', '⊛', '⊜', '⊝', '⊞', '⊟', '⊠', '⊡', '⧉', '⧊', '⧋', '⧌', '⧍'];
+  const twists = ['↷', '↶', '⟳', '⟲'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const crossing = crossings[code % crossings.length];
+    const twist = twists[(code >> 4) % twists.length];
+    const loops = (code >> 6) + 1;
+    return `${twist}${crossing}${'○'.repeat(loops)}`;
+  }).join('─');
+};
+
+/**
+ * Decode topological encoding
+ * @param {string} text - The topological encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeTopological = (text) => {
+  const crossings = ['⊗', '⊘', '⊙', '⊚', '⊛', '⊜', '⊝', '⊞', '⊟', '⊠', '⊡', '⧉', '⧊', '⧋', '⧌', '⧍'];
+  const twists = ['↷', '↶', '⟳', '⟲'];
+  
+  try {
+    const parts = text.split('─');
+    return parts.map(p => {
+      const twistMatch = p.match(/^([↷↶⟳⟲])/);
+      const crossingMatch = p.match(/([⊗⊘⊙⊚⊛⊜⊝⊞⊟⊠⊡⧉⧊⧋⧌⧍])/);
+      const loops = (p.match(/○/g) || []).length;
+      
+      if (!twistMatch || !crossingMatch) return '';
+      
+      const twistIdx = twists.indexOf(twistMatch[1]);
+      const crossIdx = crossings.indexOf(crossingMatch[1]);
+      const loopVal = Math.min(3, Math.max(0, loops - 1)); // Clamp to 0-3 for 2 bits
+      
+      const code = Math.min(255, crossIdx + (twistIdx << 4) + (loopVal << 6));
+      return String.fromCharCode(code);
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// SYNAESTHETIC ENCODING
+// ============================================
+
+/**
+ * Encode text as synaesthetic color-sound-taste mappings
+ * @param {string} text - The text to encode
+ * @returns {string} - Synaesthetic encoding
+ */
+export const encodeSynaesthetic = (text) => {
+  const colors = ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '🟤', '⚫'];
+  const sounds = ['♩', '♪', '♫', '♬', '𝄞', '𝄢', '𝄫', '𝄬'];
+  const tastes = ['甘', '酸', '苦', '辛', '咸', '鮮', '渋', '淡'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const color = colors[code % colors.length];
+    const sound = sounds[(code >> 3) % sounds.length];
+    const taste = tastes[(code >> 5) % tastes.length];
+    return `${color}${sound}${taste}`;
+  }).join('');
+};
+
+/**
+ * Decode synaesthetic encoding
+ * @param {string} text - The synaesthetic encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeSynaesthetic = (text) => {
+  const colors = ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '🟤', '⚫'];
+  const sounds = ['♩', '♪', '♫', '♬', '𝄞', '𝄢', '𝄫', '𝄬'];
+  const tastes = ['甘', '酸', '苦', '辛', '咸', '鮮', '渋', '淡'];
+  
+  try {
+    const graphemes = [...text];
+    const results = [];
+    
+    for (let i = 0; i < graphemes.length; i += 3) {
+      const color = graphemes[i];
+      const sound = graphemes[i + 1];
+      const taste = graphemes[i + 2];
+      
+      const colorIdx = colors.indexOf(color);
+      const soundIdx = sounds.indexOf(sound);
+      const tasteIdx = tastes.indexOf(taste);
+      
+      if (colorIdx >= 0 && soundIdx >= 0 && tasteIdx >= 0) {
+        // Reconstruct approximate character code
+        const code = colorIdx + (soundIdx << 3) + (tasteIdx << 5);
+        results.push(String.fromCharCode(code));
+      }
+    }
+    
+    return results.join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// METABOLIC PATHWAY ENCODING
+// ============================================
+
+/**
+ * Encode text as biochemical pathway notation
+ * @param {string} text - The text to encode
+ * @returns {string} - Metabolic pathway encoding
+ */
+export const encodeMetabolicPathway = (text) => {
+  const enzymes = ['kinase', 'synthase', 'lyase', 'ligase', 'hydrolase', 'transferase', 'isomerase', 'oxidase'];
+  const cofactors = ['ATP', 'NAD+', 'FAD', 'CoA', 'NADP+', 'GTP', 'UTP', 'CTP'];
+  
+  return text.split('').map((char) => {
+    const code = char.charCodeAt(0);
+    const enzyme = enzymes[code % enzymes.length];
+    const cofactor = cofactors[(code >> 3) % cofactors.length];
+    const hex = code.toString(16).padStart(2, '0');
+    return `[${hex}]─${cofactor}→(${enzyme})`;
+  }).join('⟶');
+};
+
+/**
+ * Decode metabolic pathway encoding
+ * @param {string} text - The pathway encoding
+ * @returns {string} - Decoded text
+ */
+export const decodeMetabolicPathway = (text) => {
+  try {
+    const hexMatches = text.match(/\[([0-9a-f]{2})\]/gi) || [];
+    return hexMatches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// NEURAL SPIKE TRAIN ENCODING
+// ============================================
+
+/**
+ * Encode text as neural spike train patterns
+ * @param {string} text - The text to encode
+ * @param {string} format - 'visual', 'timing', 'rate'
+ * @returns {string} - Spike train encoding
+ */
+export const encodeSpikeTrain = (text, format = 'visual') => {
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const binary = code.toString(2).padStart(8, '0');
+    
+    switch (format) {
+      case 'timing': {
+        // Inter-spike intervals in ms
+        const intervals = binary.split('').map((b, i) => 
+          b === '1' ? (i + 1) * 10 : 0
+        ).filter(t => t > 0);
+        return `ISI[${intervals.join(',')}]`;
+      }
+      case 'rate': {
+        const spikeCount = (code.toString(2).match(/1/g) || []).length;
+        const rate = (spikeCount / 8 * 100).toFixed(0);
+        return `${rate}Hz:${code.toString(16)}`;
+      }
+      case 'visual':
+      default: {
+        return binary.split('').map(b => b === '1' ? '│' : '·').join('');
+      }
+    }
+  }).join(format === 'visual' ? ' ' : '→');
+};
+
+/**
+ * Decode spike train encoding
+ * @param {string} text - The spike train encoding
+ * @param {string} format - Format used
+ * @returns {string} - Decoded text
+ */
+export const decodeSpikeTrain = (text, format = 'visual') => {
+  try {
+    switch (format) {
+      case 'timing': {
+        const matches = text.match(/ISI\[([^\]]+)\]/g) || [];
+        return matches.map(m => {
+          const intervals = m.match(/\[([^\]]+)\]/)[1].split(',').map(Number);
+          let binary = '00000000'.split('');
+          intervals.forEach(t => {
+            const pos = Math.floor(t / 10) - 1;
+            if (pos >= 0 && pos < 8) binary[pos] = '1';
+          });
+          return String.fromCharCode(parseInt(binary.join(''), 2));
+        }).join('');
+      }
+      case 'rate': {
+        const matches = text.match(/\d+Hz:([0-9a-f]{2})/gi) || [];
+        return matches.map(m => {
+          const hex = m.match(/:([0-9a-f]{2})/i)[1];
+          return String.fromCharCode(parseInt(hex, 16));
+        }).join('');
+      }
+      case 'visual':
+      default: {
+        const patterns = text.split(' ');
+        return patterns.map(p => {
+          const binary = p.split('').map(c => c === '│' ? '1' : '0').join('');
+          return String.fromCharCode(parseInt(binary, 2));
+        }).join('');
+      }
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// LINGUISTIC PHONEME ENCODING
+// ============================================
+
+/**
+ * Encode text using IPA-inspired phoneme transcription
+ * Different from existing IPA - this creates a fictional phoneme system
+ * @param {string} text - The text to encode
+ * @returns {string} - Phoneme encoding
+ */
+export const encodePhonemeSystem = (text) => {
+  // Custom fictional phoneme system with hex encoding
+  const consonants = ['pʰ', 'tʰ', 'kʰ', 'bʱ', 'dʱ', 'gʱ', 'ʈ', 'ɖ', 'ɳ', 'ɽ', 'ʂ', 'ʐ', 'ɕ', 'ʑ', 'ɧ', 'ʜ'];
+  const vowels = ['ɨ', 'ʉ', 'ɯ', 'ɤ', 'ɵ', 'ɞ', 'ɐ', 'ɶ'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const hex = code.toString(16).padStart(2, '0');
+    const c = consonants[code % consonants.length];
+    const v = vowels[(code >> 4) % vowels.length];
+    // Store hex in transcription for reversibility
+    return `/[${hex}]${c}${v}/`;
+  }).join('');
+};
+
+/**
+ * Decode phoneme system encoding
+ * @param {string} text - The phoneme encoding
+ * @returns {string} - Decoded text
+ */
+export const decodePhonemeSystem = (text) => {
+  try {
+    const hexMatches = text.match(/\[([0-9a-f]{2})\]/gi) || [];
+    return hexMatches.map(m => {
+      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// AI PROMPT STYLE ENCODING
+// ============================================
+
+/**
+ * Encode text as AI-style prompt/response format
+ * @param {string} text - The text to encode
+ * @param {string} style - 'chatgpt', 'claude', 'llama', 'instruct'
+ * @returns {string} - AI prompt style encoding
+ */
+export const encodeAIPrompt = (text, style = 'chatgpt') => {
+  const hex = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+  
+  switch (style) {
+    case 'claude':
+      return `Human: Decode: ${hex}\n\nAssistant: The decoded message is: [HIDDEN]`;
+    case 'llama':
+      return `[INST] Decode this hex: ${hex} [/INST]\nDecoded: [HIDDEN]`;
+    case 'instruct':
+      return `### Instruction:\nDecode: ${hex}\n\n### Response:\n[HIDDEN]`;
+    case 'chatgpt':
+    default:
+      return `<|system|>Decode hex<|user|>${hex}<|assistant|>[HIDDEN]`;
+  }
+};
+
+/**
+ * Decode AI prompt encoding
+ * @param {string} text - The AI prompt text
+ * @returns {string} - Decoded text
+ */
+export const decodeAIPrompt = (text) => {
+  try {
+    // Extract hex from various formats
+    // ChatGPT: <|user|>HEX<|assistant|>
+    // Claude: Decode: HEX
+    // Llama: hex: HEX
+    // Instruct: Decode: HEX
+    const hexMatch = text.match(/(?:Decode[^:]*:\s*|hex:\s*|<\|user\|>)([0-9a-f]+)/i);
+    if (!hexMatch) return '[Decode failed]';
+    
+    const hex = hexMatch[1];
+    let result = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      result += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// PROTOCOL BUFFER STYLE ENCODING
+// ============================================
+
+/**
+ * Encode text as Protocol Buffer-style format
+ * @param {string} text - The text to encode
+ * @returns {string} - Protobuf-style encoding
+ */
+export const encodeProtobuf = (text) => {
+  const fields = text.split('').map((char, idx) => {
+    const fieldNum = idx + 1;
+    const wireType = 0; // Varint
+    const tag = (fieldNum << 3) | wireType;
+    const value = char.charCodeAt(0);
+    return `${tag.toString(16)}:${value.toString(16)}`;
+  });
+  
+  return `message{${fields.join(';')}}`;
+};
+
+/**
+ * Decode Protocol Buffer-style encoding
+ * @param {string} text - The protobuf text
+ * @returns {string} - Decoded text
+ */
+export const decodeProtobuf = (text) => {
+  try {
+    const match = text.match(/message\{([^}]+)\}/);
+    if (!match) return '[Decode failed]';
+    
+    const fields = match[1].split(';');
+    return fields.map(field => {
+      const [_tag, value] = field.split(':');
+      return String.fromCharCode(parseInt(value, 16));
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// GRAPHQL STYLE ENCODING
+// ============================================
+
+/**
+ * Encode text as GraphQL-style query
+ * @param {string} text - The text to encode
+ * @returns {string} - GraphQL-style encoding
+ */
+export const encodeGraphQL = (text) => {
+  const chars = text.split('').map((char, idx) => {
+    const code = char.charCodeAt(0);
+    return `  char_${idx}: decode(hex: "${code.toString(16).padStart(2, '0')}")`;
+  });
+  
+  return `query DecodeMessage {\n${chars.join('\n')}\n}`;
+};
+
+/**
+ * Decode GraphQL-style encoding
+ * @param {string} text - The GraphQL text
+ * @returns {string} - Decoded text
+ */
+export const decodeGraphQL = (text) => {
+  try {
+    const matches = text.match(/hex:\s*"([0-9a-f]{2})"/gi) || [];
+    return matches.map(m => {
+      const hex = m.match(/([0-9a-f]{2})/i)[1];
+      return String.fromCharCode(parseInt(hex, 16));
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// LAMBDA/FUNCTIONAL ENCODING
+// ============================================
+
+/**
+ * Encode text as lambda calculus style
+ * @param {string} text - The text to encode
+ * @param {string} style - 'lambda', 'arrow', 'haskell'
+ * @returns {string} - Functional style encoding
+ */
+export const encodeLambda = (text, style = 'lambda') => {
+  const chars = text.split('').map(c => c.charCodeAt(0));
+  
+  switch (style) {
+    case 'arrow':
+      return chars.map((c, i) => `f${i} = x => ${c}`).join('; ');
+    case 'haskell':
+      return chars.map((c, i) => `let c${i} = ${c}`).join(' in ');
+    case 'lambda':
+    default:
+      return chars.map((c, i) => `(λc${i}.${c})`).join(' ');
+  }
+};
+
+/**
+ * Decode lambda encoding
+ * @param {string} text - The lambda text
+ * @param {string} style - Style used
+ * @returns {string} - Decoded text
+ */
+export const decodeLambda = (text, style = 'lambda') => {
+  try {
+    switch (style) {
+      case 'arrow': {
+        const matches = text.match(/=>\s*(\d+)/g) || [];
+        return matches.map(m => String.fromCharCode(parseInt(m.match(/(\d+)/)[1]))).join('');
+      }
+      case 'haskell': {
+        const matches = text.match(/=\s*(\d+)/g) || [];
+        return matches.map(m => String.fromCharCode(parseInt(m.match(/(\d+)/)[1]))).join('');
+      }
+      case 'lambda':
+      default: {
+        const matches = text.match(/\.(\d+)\)/g) || [];
+        return matches.map(m => String.fromCharCode(parseInt(m.match(/(\d+)/)[1]))).join('');
+      }
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// SONIC/FREQUENCY ENCODING
+// ============================================
+
+/**
+ * Encode text as audio frequency representation
+ * @param {string} text - The text to encode
+ * @param {string} format - 'hz', 'note', 'waveform'
+ * @returns {string} - Frequency encoding
+ */
+export const encodeSonicFrequency = (text, format = 'hz') => {
+  const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const baseFreq = 440; // A4
+    const freq = baseFreq * Math.pow(2, (code - 69) / 12);
+    
+    switch (format) {
+      case 'note': {
+        const noteIdx = code % 12;
+        const octave = Math.floor(code / 12) - 1;
+        return `${notes[noteIdx]}${octave}`;
+      }
+      case 'waveform': {
+        const amplitude = ((code >> 4) / 16).toFixed(2);
+        const phase = ((code & 0x0F) / 16 * 360).toFixed(0);
+        return `~${amplitude}∠${phase}°`;
+      }
+      case 'hz':
+      default:
+        return `${freq.toFixed(1)}Hz`;
+    }
+  }).join(' ');
+};
+
+/**
+ * Decode sonic frequency encoding
+ * @param {string} text - The frequency text
+ * @param {string} format - Format used
+ * @returns {string} - Decoded text
+ */
+export const decodeSonicFrequency = (text, format = 'hz') => {
+  try {
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const parts = text.split(' ');
+    
+    return parts.map(p => {
+      switch (format) {
+        case 'note': {
+          const match = p.match(/([A-G]#?)(-?\d+)/);
+          if (!match) return '';
+          const noteIdx = notes.indexOf(match[1]);
+          const octave = parseInt(match[2]);
+          return String.fromCharCode(noteIdx + (octave + 1) * 12);
+        }
+        case 'waveform': {
+          const match = p.match(/~([0-9.]+)∠(\d+)°/);
+          if (!match) return '';
+          const amplitude = Math.round(parseFloat(match[1]) * 16);
+          const phase = Math.round(parseInt(match[2]) / 360 * 16);
+          return String.fromCharCode((amplitude << 4) | phase);
+        }
+        case 'hz':
+        default: {
+          const match = p.match(/([0-9.]+)Hz/);
+          if (!match) return '';
+          const freq = parseFloat(match[1]);
+          const code = Math.min(255, Math.max(0, Math.round(12 * Math.log2(freq / 440) + 69)));
+          return String.fromCharCode(code);
+        }
+      }
+    }).join('');
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// MNEMONIC ENCODING
+// ============================================
+
+/**
+ * Encode text as BIP39-style mnemonic words
+ * @param {string} text - The text to encode
+ * @returns {string} - Mnemonic phrase
+ */
+export const encodeMnemonic = (text) => {
+  const wordList = [
+    'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract',
+    'absurd', 'abuse', 'access', 'accident', 'account', 'accuse', 'achieve', 'acid',
+    'acoustic', 'acquire', 'across', 'act', 'action', 'actor', 'actress', 'actual',
+    'adapt', 'add', 'addict', 'address', 'adjust', 'admit', 'adult', 'advance',
+    'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent',
+    'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album',
+    'alcohol', 'alert', 'alien', 'all', 'alley', 'allow', 'almost', 'alone',
+    'alpha', 'already', 'also', 'alter', 'always', 'amateur', 'amazing', 'among',
+    'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger', 'angle', 'angry',
+    'animal', 'ankle', 'announce', 'annual', 'another', 'answer', 'antenna', 'antique',
+    'anxiety', 'any', 'apart', 'apology', 'appear', 'apple', 'approve', 'april',
+    'arch', 'arctic', 'area', 'arena', 'argue', 'arm', 'armed', 'armor',
+    'army', 'around', 'arrange', 'arrest', 'arrive', 'arrow', 'art', 'artefact',
+    'artist', 'artwork', 'ask', 'aspect', 'assault', 'asset', 'assist', 'assume',
+    'asthma', 'athlete', 'atom', 'attack', 'attend', 'attitude', 'attract', 'auction',
+    'audit', 'august', 'aunt', 'author', 'auto', 'autumn', 'average', 'avocado',
+    'avoid', 'awake', 'aware', 'away', 'awesome', 'awful', 'awkward', 'axis',
+    'baby', 'bachelor', 'bacon', 'badge', 'bag', 'balance', 'balcony', 'ball',
+    'bamboo', 'banana', 'banner', 'bar', 'barely', 'bargain', 'barrel', 'base',
+    'basic', 'basket', 'battle', 'beach', 'bean', 'beauty', 'because', 'become',
+    'beef', 'before', 'begin', 'behave', 'behind', 'believe', 'below', 'belt',
+    'bench', 'benefit', 'best', 'betray', 'better', 'between', 'beyond', 'bicycle',
+    'bid', 'bike', 'bind', 'biology', 'bird', 'birth', 'bitter', 'black',
+    'blade', 'blame', 'blanket', 'blast', 'bleak', 'bless', 'blind', 'blood',
+    'blossom', 'blouse', 'blue', 'blur', 'blush', 'board', 'boat', 'body',
+    'boil', 'bomb', 'bone', 'bonus', 'book', 'boost', 'border', 'boring',
+    'borrow', 'boss', 'bottom', 'bounce', 'box', 'boy', 'bracket', 'brain',
+    'brand', 'brass', 'brave', 'bread', 'breeze', 'brick', 'bridge', 'brief',
+    'bright', 'bring', 'brisk', 'broccoli', 'broken', 'bronze', 'broom', 'brother',
+    'brown', 'brush', 'bubble', 'buddy', 'budget', 'buffalo', 'build', 'bulb',
+    'bulk', 'bullet', 'bundle', 'bunker', 'burden', 'burger', 'burst', 'bus'
+  ];
+  
+  // Include hex data for reversibility
+  const hex = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+  const words = text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    return wordList[code % wordList.length];
+  }).join(' ');
+  
+  return `MNEMONIC[${hex}]:${words}`;
+};
+
+/**
+ * Decode mnemonic encoding
+ * @param {string} text - The mnemonic phrase
+ * @returns {string} - Decoded text
+ */
+export const decodeMnemonic = (text) => {
+  try {
+    // Extract hex from the mnemonic format
+    const hexMatch = text.match(/MNEMONIC\[([0-9a-f]+)\]/i);
+    if (!hexMatch) return '[Decode failed]';
+    
+    const hex = hexMatch[1];
+    let result = '';
+    for (let i = 0; i < hex.length; i += 2) {
+      result += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
+    }
+    return result;
+  } catch {
+    return '[Decode failed]';
+  }
+};
+
+// ============================================
+// COORDINATE GRID ENCODING
+// ============================================
+
+/**
+ * Encode text as coordinate grid positions
+ * @param {string} text - The text to encode
+ * @param {string} system - 'cartesian', 'polar', 'chess'
+ * @returns {string} - Coordinate encoding
+ */
+export const encodeCoordinateGrid = (text, system = 'cartesian') => {
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0);
+    const x = code >> 4;
+    const y = code & 0x0F;
+    
+    switch (system) {
+      case 'polar': {
+        const r = Math.sqrt(x * x + y * y).toFixed(1);
+        const theta = (Math.atan2(y, x) * 180 / Math.PI).toFixed(0);
+        return `(${r}∠${theta}°)`;
+      }
+      case 'chess': {
+        const file = String.fromCharCode(65 + (x % 8));
+        const rank = (y % 8) + 1;
+        return `${file}${rank}`;
+      }
+      case 'cartesian':
+      default:
+        return `(${x},${y})`;
+    }
+  }).join('');
+};
+
+/**
+ * Decode coordinate grid encoding
+ * @param {string} text - The coordinate text
+ * @param {string} system - System used
+ * @returns {string} - Decoded text
+ */
+export const decodeCoordinateGrid = (text, system = 'cartesian') => {
+  try {
+    switch (system) {
+      case 'polar': {
+        const matches = text.match(/\(([0-9.]+)∠(-?\d+)°\)/g) || [];
+        return matches.map(m => {
+          const match = m.match(/\(([0-9.]+)∠(-?\d+)°\)/);
+          const r = parseFloat(match[1]);
+          const theta = parseInt(match[2]) * Math.PI / 180;
+          const x = Math.min(15, Math.max(0, Math.round(r * Math.cos(theta))));
+          const y = Math.min(15, Math.max(0, Math.round(r * Math.sin(theta))));
+          return String.fromCharCode((x << 4) | y);
+        }).join('');
+      }
+      case 'chess': {
+        const matches = text.match(/[A-H][1-8]/gi) || [];
+        return matches.map(m => {
+          const x = m.charCodeAt(0) - 65;
+          const y = parseInt(m[1]) - 1;
+          return String.fromCharCode((x << 4) | y);
+        }).join('');
+      }
+      case 'cartesian':
+      default: {
+        const matches = text.match(/\((\d+),(\d+)\)/g) || [];
+        return matches.map(m => {
+          const match = m.match(/\((\d+),(\d+)\)/);
+          const x = Math.min(15, parseInt(match[1]));
+          const y = Math.min(15, parseInt(match[2]));
+          return String.fromCharCode((x << 4) | y);
+        }).join('');
+      }
+    }
+  } catch {
+    return '[Decode failed]';
+  }
+};

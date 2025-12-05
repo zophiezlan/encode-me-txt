@@ -11,6 +11,8 @@ All encoder functions follow consistent patterns for ease of use and testing.
 - [Configuration API](#configuration-api)
 - [Encoder Deduplication API](#encoder-deduplication-api)
 - [Advanced Search API](#advanced-search-api)
+- [Batch Encoder API](#batch-encoder-api) **NEW!**
+- [Encoder Analytics API](#encoder-analytics-api) **NEW!**
 - [Audio Player API](#audio-player-api)
 - [Usage Examples](#usage-examples)
 
@@ -782,6 +784,220 @@ const preset = getFilterPreset('reversible');
 
 // Apply preset
 const reversibleEncoders = searchEncoders(encoderConfig, preset);
+```
+
+## Batch Encoder API
+
+The batch encoder utility provides powerful multi-text and multi-encoder processing capabilities.
+
+### Batch Encode
+
+Process multiple texts with a single encoder:
+
+```javascript
+import { batchEncode } from './utils/batchEncoder.js';
+
+const texts = ['Hello', 'World', 'Test'];
+const results = batchEncode(texts, 'hex');
+
+results.forEach(r => {
+  console.log(`${r.input} -> ${r.output}`);
+  console.log(`Processing time: ${r.processingTime}ms`);
+});
+```
+
+### Multi-Encode
+
+Encode a single text with multiple encoders:
+
+```javascript
+import { multiEncode } from './utils/batchEncoder.js';
+
+const results = multiEncode('Hello', ['hex', 'base64', 'rot13']);
+
+results.forEach(r => {
+  console.log(`${r.encoderName}: ${r.output}`);
+});
+```
+
+### Chain Encode
+
+Apply multiple encoders in sequence:
+
+```javascript
+import { chainEncode, chainDecode } from './utils/batchEncoder.js';
+
+const encoded = chainEncode('Secret Message', ['base64', 'hex']);
+console.log(encoded.finalOutput);
+console.log(encoded.steps); // Shows each intermediate step
+
+// Decode in reverse order
+const decoded = chainDecode(encoded.finalOutput, ['base64', 'hex']);
+console.log(decoded.finalOutput); // 'Secret Message'
+```
+
+### Generate Comparison Matrix
+
+Create a matrix comparing multiple texts with multiple encoders:
+
+```javascript
+import { generateComparisonMatrix } from './utils/batchEncoder.js';
+
+const matrix = generateComparisonMatrix(
+  ['Hello', 'World'],
+  ['hex', 'base64', 'rot13']
+);
+
+console.log(matrix.results[0].encodings.hex.output);
+```
+
+### Export Results
+
+Export batch results to various formats:
+
+```javascript
+import { exportBatchResults } from './utils/batchEncoder.js';
+
+const results = batchEncode(['Test'], 'hex');
+
+// Export as JSON
+const json = exportBatchResults(results, 'json');
+
+// Export as CSV
+const csv = exportBatchResults(results, 'csv');
+
+// Export as plain text
+const text = exportBatchResults(results, 'text');
+```
+
+### Validate Encoder Chain
+
+Check if an encoder chain is valid:
+
+```javascript
+import { validateEncoderChain } from './utils/batchEncoder.js';
+
+const validation = validateEncoderChain(['base64', 'hex', 'rot13']);
+console.log(validation.valid); // true
+console.log(validation.reversible); // true if all encoders support decode
+```
+
+## Encoder Analytics API
+
+The encoder analytics utility provides statistics, insights, and recommendations about encoders.
+
+### Difficulty Levels
+
+Encoders are rated by difficulty from 1 (Beginner) to 5 (Expert):
+
+```javascript
+import { 
+  difficultyLevels, 
+  getEncoderDifficulty, 
+  getDifficultyLabel 
+} from './utils/encoderAnalytics.js';
+
+const difficulty = getEncoderDifficulty('caesar');
+console.log(getDifficultyLabel(difficulty)); // 'Easy'
+```
+
+### Encoder Statistics
+
+Get comprehensive statistics about all encoders:
+
+```javascript
+import { getEncoderStatistics } from './utils/encoderAnalytics.js';
+
+const stats = getEncoderStatistics();
+console.log(`Total encoders: ${stats.total}`);
+console.log(`Reversible: ${stats.reversible} (${stats.reversiblePercent}%)`);
+console.log('By category:', stats.byCategory);
+console.log('By difficulty:', stats.byDifficulty);
+```
+
+### Category Analysis
+
+Analyze encoders by category:
+
+```javascript
+import { getCategoryAnalysis } from './utils/encoderAnalytics.js';
+
+const analysis = getCategoryAnalysis();
+analysis.forEach(cat => {
+  console.log(`${cat.name}: ${cat.totalEncoders} encoders`);
+  console.log(`  Reversible: ${cat.reversiblePercent}%`);
+  console.log(`  Avg. Difficulty: ${cat.difficultyLabel}`);
+});
+```
+
+### Encoder Recommendations
+
+Get encoder recommendations based on criteria:
+
+```javascript
+import { getEncoderRecommendations } from './utils/encoderAnalytics.js';
+
+const recommendations = getEncoderRecommendations({
+  difficulty: 'easy',
+  mustBeReversible: true,
+  category: 'cipher',
+  limit: 5
+});
+
+recommendations.forEach(e => {
+  console.log(`${e.name} - ${e.difficultyLabel}`);
+});
+```
+
+### Encoding Analysis
+
+Analyze an encoding result:
+
+```javascript
+import { analyzeEncoding } from './utils/encoderAnalytics.js';
+
+const analysis = analyzeEncoding('Hello', '48 65 6c 6c 6f', 'hex');
+console.log(`Expansion ratio: ${analysis.expansionRatio}`);
+console.log(`Readability score: ${analysis.readabilityScore}/100`);
+```
+
+### Encoding Complexity
+
+Get a complexity score for an encoding:
+
+```javascript
+import { getEncodingComplexity } from './utils/encoderAnalytics.js';
+
+const complexity = getEncodingComplexity('Hello', 'encoded', 'caesar');
+console.log(`Score: ${complexity.totalScore}/100`);
+console.log(`Level: ${complexity.level}`);
+console.log(complexity.recommendation);
+```
+
+### Popular Combinations
+
+Get recommended encoder combinations by purpose:
+
+```javascript
+import { getPopularCombinations } from './utils/encoderAnalytics.js';
+
+const combos = getPopularCombinations('educational');
+combos.forEach(c => {
+  console.log(`${c.name}: ${c.encoders.join(' -> ')}`);
+});
+```
+
+### Encoder Tips
+
+Get usage tips for a specific encoder:
+
+```javascript
+import { getEncoderTips } from './utils/encoderAnalytics.js';
+
+const tips = getEncoderTips('caesar');
+console.log('Best for:', tips.bestFor);
+console.log('Limitations:', tips.limitations);
+console.log('Suggested combinations:', tips.combinations);
 ```
 
 ## Audio Player API
