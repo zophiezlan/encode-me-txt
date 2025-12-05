@@ -1,6 +1,16 @@
 /**
  * Shared Encoder Utilities
  * Common patterns used across multiple encoder modules
+ * 
+ * This module provides:
+ * - Factory functions for creating encoders/decoders (createMapEncoder, etc.)
+ * - Shared constant data (MORSE_ALPHABET, EMOJI_SETS, etc.)
+ * 
+ * These utilities exist to support gradual consolidation of similar patterns
+ * found across encoder modules. New encoders should prefer using these utilities.
+ * Existing encoders may be migrated over time.
+ * 
+ * See ARCHITECTURE.md for documentation on coding patterns and refactoring plans.
  */
 
 /**

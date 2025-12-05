@@ -1,9 +1,15 @@
 /**
  * Classic Encoders
  * Traditional encoding methods like Morse Code, Braille, and NATO Phonetic
+ * 
+ * NOTE: This module uses Unicode visual symbols (• and −) for better display.
+ * For ASCII-compatible Morse or parameterized variants, see parameterized.js.
+ * See ARCHITECTURE.md for design rationale on keeping these separate.
  */
 
 // Morse Code lookup tables
+// Uses Unicode bullet (•) and minus sign (−) for visual clarity
+// For ASCII dots/dashes with configurable delimiters, see encodeMorseParam in parameterized.js
 const MORSE_CODE_MAP = {
   'a': '•−', 'b': '−•••', 'c': '−•−•', 'd': '−••', 'e': '•', 'f': '••−•',
   'g': '−−•', 'h': '••••', 'i': '••', 'j': '•−−−', 'k': '−•−', 'l': '•−••',
