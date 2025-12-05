@@ -38,6 +38,51 @@ import {
   decodeDelimited,
   encodeRepeat,
   encodeVowelConsonant,
+  // Cutting-edge encoders
+  encodeBlockchain,
+  decodeBlockchain,
+  encodeMerkleTree,
+  decodeMerkleTree,
+  encodeNeuralNetwork,
+  decodeNeuralNetwork,
+  encodeQuantumSuperposition,
+  decodeQuantumSuperposition,
+  encodeRLE,
+  decodeRLE,
+  encodeHuffmanStyle,
+  decodeHuffmanStyle,
+  encodeSemanticTheme,
+  _decodeSemanticTheme,
+  encodeAIPrompt,
+  decodeAIPrompt,
+  encodeProtobuf,
+  decodeProtobuf,
+  encodeGraphQL,
+  decodeGraphQL,
+  encodeLambda,
+  decodeLambda,
+  encodeSonicFrequency,
+  _decodeSonicFrequency,
+  encodeMnemonic,
+  encodeCoordinateGrid,
+  decodeCoordinateGrid,
+  // Novel encoders
+  encodeGeneticAlgorithm,
+  decodeGeneticAlgorithm,
+  encodeCellularAutomata,
+  decodeCellularAutomata,
+  encodeFractalDimension,
+  decodeFractalDimension,
+  encodeTopological,
+  decodeTopological,
+  encodeSynaesthetic,
+  decodeSynaesthetic,
+  encodeMetabolicPathway,
+  decodeMetabolicPathway,
+  encodeSpikeTrain,
+  decodeSpikeTrain,
+  encodePhonemeSystem,
+  decodePhonemeSystem,
 } from '../utils/encoders/parameterized.js';
 
 import { encodeZalgo } from '../utils/encoders/artistic.js';
@@ -490,6 +535,326 @@ describe('Parameterized Encoders', () => {
     it('replaces vowels', () => {
       const result = encodeVowelConsonant('hello', 'vowels', 'replace', '*');
       expect(result).toBe('h*ll*');
+    });
+  });
+
+  // ============================================
+  // CUTTING-EDGE ENCODER TESTS
+  // ============================================
+
+  describe('encodeBlockchain / decodeBlockchain', () => {
+    it('encodes as blockchain-style hash chain', () => {
+      const result = encodeBlockchain('Hi', 'compact');
+      expect(result).toContain(':');
+      expect(result.split('-').length).toBe(2);
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeBlockchain(original, 'compact');
+      const decoded = decodeBlockchain(encoded, 'compact');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeMerkleTree / decodeMerkleTree', () => {
+    it('encodes as Merkle tree', () => {
+      const result = encodeMerkleTree('Hi');
+      expect(result).toContain('ROOT:');
+      expect(result).toContain('DATA:');
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeMerkleTree(original);
+      const decoded = decodeMerkleTree(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeNeuralNetwork / decodeNeuralNetwork', () => {
+    it('encodes as neural network layers', () => {
+      const result = encodeNeuralNetwork('Hi', 2);
+      expect(result).toContain('NN[');
+      expect(result).toContain('→');
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeNeuralNetwork(original, 3);
+      const decoded = decodeNeuralNetwork(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeQuantumSuperposition / decodeQuantumSuperposition', () => {
+    it('encodes as ket notation', () => {
+      const result = encodeQuantumSuperposition('Hi', 'ket');
+      expect(result).toContain('|');
+      expect(result).toContain('⟩');
+    });
+
+    it('is reversible with ket notation', () => {
+      const original = 'AB';
+      const encoded = encodeQuantumSuperposition(original, 'ket');
+      const decoded = decodeQuantumSuperposition(encoded, 'ket');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeRLE / decodeRLE', () => {
+    it('encodes with run-length encoding', () => {
+      const result = encodeRLE('aaa', 'standard');
+      expect(result).toBe('a3');
+    });
+
+    it('is reversible', () => {
+      const original = 'aaabbbcc';
+      const encoded = encodeRLE(original, 'standard');
+      const decoded = decodeRLE(encoded, 'standard');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeHuffmanStyle / decodeHuffmanStyle', () => {
+    it('encodes with Huffman-style compression', () => {
+      const result = encodeHuffmanStyle('hello');
+      expect(result).toContain('HUFF{');
+    });
+
+    it('is reversible', () => {
+      const original = 'hello';
+      const encoded = encodeHuffmanStyle(original);
+      const decoded = decodeHuffmanStyle(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeSemanticTheme / decodeSemanticTheme', () => {
+    it('encodes with nature theme', () => {
+      const result = encodeSemanticTheme('Hi', 'nature');
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('encodes with tech theme', () => {
+      const result = encodeSemanticTheme('Hi', 'tech');
+      expect(result.length).toBeGreaterThan(0);
+    });
+  });
+
+  // ============================================
+  // NOVEL ENCODER TESTS
+  // ============================================
+
+  describe('encodeGeneticAlgorithm / decodeGeneticAlgorithm', () => {
+    it('encodes as genetic chromosome', () => {
+      const result = encodeGeneticAlgorithm('Hi', 3);
+      expect(result).toContain('GENOME');
+      expect(result).toContain('|f:'); // fitness score
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeGeneticAlgorithm(original, 2);
+      const decoded = decodeGeneticAlgorithm(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeCellularAutomata / decodeCellularAutomata', () => {
+    it('encodes using CA patterns', () => {
+      const result = encodeCellularAutomata('Hi', 110);
+      expect(result).toContain('CA[R110]');
+      expect(result).toContain('→');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeCellularAutomata(original, 30);
+      const decoded = decodeCellularAutomata(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeFractalDimension / decodeFractalDimension', () => {
+    it('encodes with fractal patterns', () => {
+      const result = encodeFractalDimension('Hi', 2);
+      expect(result).toContain('FRACTAL');
+      expect(result).toContain('⊕');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeFractalDimension(original, 1);
+      const decoded = decodeFractalDimension(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeTopological / decodeTopological', () => {
+    it('encodes as topological knots', () => {
+      const result = encodeTopological('Hi');
+      expect(result).toContain('─');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeTopological(original);
+      const decoded = decodeTopological(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeSynaesthetic / decodeSynaesthetic', () => {
+    it('encodes with color-sound-taste', () => {
+      const result = encodeSynaesthetic('Hi');
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeSynaesthetic(original);
+      const decoded = decodeSynaesthetic(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeMetabolicPathway / decodeMetabolicPathway', () => {
+    it('encodes as biochemical pathway', () => {
+      const result = encodeMetabolicPathway('Hi');
+      expect(result).toContain('→');
+      expect(result).toMatch(/kinase|synthase|lyase/);
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeMetabolicPathway(original);
+      const decoded = decodeMetabolicPathway(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeSpikeTrain / decodeSpikeTrain', () => {
+    it('encodes as visual spike train', () => {
+      const result = encodeSpikeTrain('Hi', 'visual');
+      expect(result).toMatch(/[│·]/);
+    });
+
+    it('is reversible with visual format', () => {
+      const original = 'AB';
+      const encoded = encodeSpikeTrain(original, 'visual');
+      const decoded = decodeSpikeTrain(encoded, 'visual');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodePhonemeSystem / decodePhonemeSystem', () => {
+    it('encodes with phoneme notation', () => {
+      const result = encodePhonemeSystem('Hi');
+      expect(result).toContain('/');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodePhonemeSystem(original);
+      const decoded = decodePhonemeSystem(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeAIPrompt / decodeAIPrompt', () => {
+    it('encodes as ChatGPT style', () => {
+      const result = encodeAIPrompt('Hi', 'chatgpt');
+      expect(result).toContain('<|');
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeAIPrompt(original, 'chatgpt');
+      const decoded = decodeAIPrompt(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeProtobuf / decodeProtobuf', () => {
+    it('encodes as protobuf style', () => {
+      const result = encodeProtobuf('Hi');
+      expect(result).toContain('message{');
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeProtobuf(original);
+      const decoded = decodeProtobuf(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeGraphQL / decodeGraphQL', () => {
+    it('encodes as GraphQL query', () => {
+      const result = encodeGraphQL('Hi');
+      expect(result).toContain('query');
+      expect(result).toContain('decode');
+    });
+
+    it('is reversible', () => {
+      const original = 'Test';
+      const encoded = encodeGraphQL(original);
+      const decoded = decodeGraphQL(encoded);
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeLambda / decodeLambda', () => {
+    it('encodes as lambda style', () => {
+      const result = encodeLambda('Hi', 'lambda');
+      expect(result).toContain('λ');
+    });
+
+    it('encodes as arrow style', () => {
+      const result = encodeLambda('Hi', 'arrow');
+      expect(result).toContain('=>');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeLambda(original, 'arrow');
+      const decoded = decodeLambda(encoded, 'arrow');
+      expect(decoded).toBe(original);
+    });
+  });
+
+  describe('encodeSonicFrequency / decodeSonicFrequency', () => {
+    it('encodes as Hz frequencies', () => {
+      const result = encodeSonicFrequency('Hi', 'hz');
+      expect(result).toContain('Hz');
+    });
+
+    it('encodes as musical notes', () => {
+      const result = encodeSonicFrequency('Hi', 'note');
+      expect(result).toMatch(/[A-G]/);
+    });
+  });
+
+  describe('encodeMnemonic', () => {
+    it('encodes as mnemonic words', () => {
+      const result = encodeMnemonic('Hi');
+      expect(result.split(' ').length).toBe(2);
+    });
+  });
+
+  describe('encodeCoordinateGrid / decodeCoordinateGrid', () => {
+    it('encodes as cartesian coordinates', () => {
+      const result = encodeCoordinateGrid('Hi', 'cartesian');
+      expect(result).toContain('(');
+      expect(result).toContain(',');
+    });
+
+    it('is reversible', () => {
+      const original = 'AB';
+      const encoded = encodeCoordinateGrid(original, 'cartesian');
+      const decoded = decodeCoordinateGrid(encoded, 'cartesian');
+      expect(decoded).toBe(original);
     });
   });
 });
