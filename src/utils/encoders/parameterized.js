@@ -1,6 +1,10 @@
 /**
  * Parameterized Encoders
  * Encoders with customizable settings and parameters
+ * 
+ * NOTE: This module provides ASCII-compatible encoders with configurable options.
+ * For simpler Unicode-display versions, see classic.js.
+ * See ARCHITECTURE.md for design rationale on keeping these separate.
  */
 
 // ============================================
@@ -185,6 +189,9 @@ export const decodeBinaryParam = (text) => {
 // MORSE WITH DELIMITER STYLES
 // ============================================
 
+// Uses ASCII dots/dashes (. and -) for compatibility with external systems
+// For Unicode visual symbols (• and −), see encodeMorse in classic.js
+// This map uses uppercase keys and supports configurable delimiter styles
 const MORSE_MAP = {
   'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
   'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',

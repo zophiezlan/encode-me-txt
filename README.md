@@ -328,6 +328,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ## 📚 Documentation
 
 - **[API Documentation](API.md)** - Complete encoder function reference
+- **[Architecture Guide](ARCHITECTURE.md)** - Design decisions and rationale
 - **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
 - **[Security Policy](SECURITY.md)** - Security best practices
 

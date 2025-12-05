@@ -14,6 +14,8 @@ Thank you for your interest in contributing to Creative Text Encoder! This docum
 - [Pull Request Process](#pull-request-process)
 - [Adding New Encoders](#adding-new-encoders)
 
+> **Note:** For architectural decisions and design rationale, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+
 ## Code of Conduct
 
 This project adheres to a code of conduct that all contributors are expected to follow:

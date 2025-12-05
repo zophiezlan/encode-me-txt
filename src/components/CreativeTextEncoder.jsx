@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { Sparkles, Shuffle, Check, Copy } from 'lucide-react';
 
+/**
+ * CreativeTextEncoder Component
+ * 
+ * NOTE: This component is NOT used in the main application (App.jsx uses EnhancedTextEncoder).
+ * It is intentionally kept in the codebase for:
+ * 1. Test coverage - see src/__tests__/CreativeTextEncoder.test.jsx
+ * 2. Reference implementation for encoder integration with React
+ * 3. Standalone demo capability
+ * 
+ * See ARCHITECTURE.md for more details on this design decision.
+ */
 const CreativeTextEncoder = () => {
   const [inputText, setInputText] = useState('Hello World!');
   const [copiedId, setCopiedId] = useState(null);
