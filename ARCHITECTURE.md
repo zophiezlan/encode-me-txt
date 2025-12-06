@@ -1,11 +1,10 @@
 # Architecture Decisions
 
-This document explains key architectural decisions and design choices made in the encode-me-txt project. These decisions address common questions about code organization and potential "issues" that are actually intentional design choices.
+This document explains key architectural decisions and design choices made in the encode-me-txt project. These decisions address common questions about code organization.
 
 ## Table of Contents
 
 - [Morse Code Maps in Classic vs Parameterized](#morse-code-maps-in-classic-vs-parameterized)
-- [CreativeTextEncoder Component](#creativetextencoder-component)
 - [Encoder Functions Not in Config](#encoder-functions-not-in-config)
 - [Similar Coding Patterns](#similar-coding-patterns)
 - [Shared Utilities](#shared-utilities)
@@ -64,51 +63,6 @@ If consolidation becomes necessary, consider:
 - Create a base map in `shared.js` with ASCII characters
 - Transform at runtime for Unicode display
 - Keep both exports for backward compatibility
-
----
-
-## CreativeTextEncoder Component
-
-### Status: Intentional - Used for Tests
-
-**File:** `src/components/CreativeTextEncoder.jsx`
-
-### Rationale
-
-While `CreativeTextEncoder` is **not used in the main application** (App.jsx uses `EnhancedTextEncoder`), it is intentionally kept in the codebase for the following reasons:
-
-1. **Test Coverage**: It has dedicated tests in `src/__tests__/CreativeTextEncoder.test.jsx` that validate encoding behavior independent of the main application UI
-2. **Reference Implementation**: It serves as a reference for how encoders integrate with React components
-3. **Standalone Demo**: Can be used as a simpler standalone encoder component for documentation or demos
-4. **Historical Context**: Preserves the original implementation approach for comparison
-
-### Usage in Tests
-
-```javascript
-// src/__tests__/CreativeTextEncoder.test.jsx
-describe('CreativeTextEncoder', () => {
-  it('renders the main heading', () => {
-    render(<CreativeTextEncoder />)
-    expect(screen.getByText(/Creative Text Encoder/i)).toBeInTheDocument()
-  })
-  // ... additional tests
-})
-```
-
-### App Architecture
-
-```
-App.jsx
-└── EnhancedTextEncoder (main production component)
-
-CreativeTextEncoder (standalone, used for tests)
-```
-
-### Future Considerations
-
-- Keep as long as tests depend on it
-- Consider converting to a Storybook story if implementing Storybook
-- Could be removed if tests are migrated to use EnhancedTextEncoder
 
 ---
 
@@ -174,42 +128,52 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md#adding-new-encoders) for instructions on
 
 ## Similar Coding Patterns
 
-### Status: Documented - Future Refactoring Candidates
+### Status: Refactored - Using Shared Utilities
 
-**Observation:** Multiple encoder modules contain similar coding patterns.
+**Observation:** Multiple encoder modules previously contained similar coding patterns. These have been refactored to use shared utilities.
 
-### Identified Patterns
+### Refactored Modules
+
+The following modules now use shared utilities from `shared.js`:
+
+- **`classic.js`**: `encodeMorse`, `decodeMorse`, `encodeBraille`, `decodeBraille`, `encodeNATO` - all use `createMapEncoder`/`createMapDecoder`
+- **`fun.js`**: `encodeBubble`, `encodeUpsideDown`, `encodeLeetspeak` - use `createMapEncoder`
+- **`aesthetic.js`**: `encodeSquared`, `decodeSquared`, `encodeParenthesized`, `decodeParenthesized`, `encodeDoubleStruck`, `decodeDoubleStruck`, `encodeCursive`, `decodeCursive`, `encodeMirror` - use `createMapEncoder`/`createMapDecoder`
+- **`artistic.js`**: `encodeBoxDrawing`, `encodeMusical`, `encodeColorBlocks`, `encodeRunes` - use `createModuloEncoder`
+- **`ancient.js`**: `encodeOgham`, `decodeOgham`, `encodeHieroglyphs`, `decodeHieroglyphs`, `encodeCuneiform`, `decodeCuneiform` - use `createMapEncoder`/`createMapDecoder`
+- **`fantasy.js`**: `encodeAurebesh`, `decodeAurebesh`, `encodeGallifreyan`, `decodeGallifreyan`, `encodeElvish`, `decodeElvish` - use `createMapEncoder`/`createMapDecoder`
+- **`visual.js`**: `encodeASL`, `encodeSevenSegment`, `encodeDancingMen`, `decodeDancingMen`, `encodePigpen`, `decodePigpen` - use `createMapEncoder`/`createMapDecoder`
+- **`cultural.js`**: `encodeHiragana`, `encodeKatakana`, `encodeArabicStyle`, `encodeThaiStyle`, `encodeDevanagari`, `encodeBengali`, `encodeTamil`, `encodeGeorgian` - use `createMapEncoder`
+- **`effects.js`**: `encodeBoxDrawingLines` uses `createMapEncoder`; `encodeCurrencySymbols`, `encodeChessPieces`, `encodeCardSuits`, `encodeMusicNotes`, `encodeWeatherSymbols`, `encodeZodiacSigns`, `encodePlanetSymbols`, `encodeArrowSymbols`, `encodeGeometricShapes`, `encodeDingbats` - use `createModuloEncoder`
+- **`linguistic.js`**: `encodeGreek`, `decodeGreek`, `encodeCyrillic`, `decodeCyrillic`, `encodeHebrew`, `decodeHebrew`, `encodeKorean`, `decodeKorean`, `encodeIPA` - use `createMapEncoder`/`createMapDecoder`
+- **`unique.js`**: `encodeMinecraft`, `encodeWeather`, `encodeDomino`, `encodeTrafficSigns`, `encodeTreePattern`, `encodeMoonPhase`, `encodeAnimal`, `encodeFood`, `encodeSports`, `encodeInstruments`, `encodeSpace`, `encodeOcean`, `encodeChess`, `encodeMahjong`, `encodeHexagram` - use `createModuloEncoder`
+
+### Common Patterns (for reference)
 
 #### 1. Character Map Transformations
 
 ```javascript
-// Pattern found in 20+ encoders
-const result = text.split('').map(char => MAP[char] || char).join('');
+// Before: Direct implementation
+export const encodeX = (text) => {
+  return text.toLowerCase().split('').map(char => MAP[char] || char).join('');
+};
+
+// After: Using shared utility
+import { createMapEncoder } from './shared.js';
+export const encodeX = createMapEncoder(MAP, { lowercase: true });
 ```
 
-**Files:** `classic.js`, `fun.js`, `artistic.js`, `aesthetic.js`, etc.
-
-#### 2. Reverse Map Generation
+#### 2. Reverse Map Generation (for decoders)
 
 ```javascript
-// Pattern found in 15+ encoders
+// Before: Manual reverse map
 const reverseMap = Object.fromEntries(
   Object.entries(forwardMap).map(([k, v]) => [v, k])
 );
-```
 
-**Files:** `classic.js`, `parameterized.js`, `ciphers.js`, etc.
-
-#### 3. Decode with Error Handling
-
-```javascript
-// Pattern found in all decoders
-try {
-  // decoding logic
-  return result;
-} catch {
-  return '[Decode failed]';
-}
+// After: Using shared utility
+import { createMapDecoder } from './shared.js';
+const decoder = createMapDecoder(forwardMap, { separator: ' ' });
 ```
 
 ### Available Utilities in shared.js
@@ -231,46 +195,22 @@ export const POLYBIUS_ALPHABET = '...';
 export const EMOJI_SETS = { ... };
 ```
 
-### Why Patterns Aren't Fully Consolidated
+### Guidelines for New Encoders
 
-1. **Incremental Development**: Encoders were added over time, patterns emerged naturally
-2. **Clarity Over DRYness**: Direct implementations are easier to understand and modify
-3. **Testing Isolation**: Each encoder is independently testable
-4. **Gradual Migration**: New encoders can use utilities, old ones work fine as-is
+New encoders **should** use the shared utilities:
 
-### Future Refactoring Plan
+1. Use `createMapEncoder` for simple character mappings
+2. Use `createMapDecoder` for decoding with reverse lookups
+3. Use `createCaesarEncoder`/`createCaesarDecoder` for rotation ciphers
+4. Import shared data like `MORSE_ALPHABET` instead of duplicating
 
-When refactoring, prioritize:
+### When to Use Direct Implementation
 
-1. **High-Value Consolidation**
-   - Encoders with identical patterns
-   - Functions that can use `createMapEncoder`/`createMapDecoder`
+Some encoders have unique logic that doesn't fit the shared utilities:
 
-2. **Medium-Value Consolidation**
-   - Caesar/ROT variants sharing shift logic
-   - Unicode block mappers
-
-3. **Keep Separate**
-   - Encoders with unique logic
-   - Parameterized encoders (need flexibility)
-
-### Refactoring Guidelines
-
-When consolidating patterns:
-
-```javascript
-// BEFORE: Direct implementation
-export const encodeMyEncoder = (text) => {
-  const map = { 'a': 'X', 'b': 'Y', ... };
-  return text.toLowerCase().split('').map(char => map[char] || char).join('');
-};
-
-// AFTER: Using shared utility
-import { createMapEncoder } from './shared.js';
-
-const MY_ENCODER_MAP = { 'a': 'X', 'b': 'Y', ... };
-export const encodeMyEncoder = createMapEncoder(MY_ENCODER_MAP, { lowercase: true });
-```
+- Encoders with custom transformation logic (e.g., Pig Latin)
+- Encoders requiring state or randomness (e.g., UwU with faces)
+- Parameterized encoders with complex options
 
 ---
 
@@ -321,12 +261,11 @@ export const encodeWithAnimals = createModuloEncoder(animals, { separator: '' })
 | Design Decision | Status | Rationale |
 |----------------|--------|-----------|
 | Duplicate Morse maps | Kept separate | Different styles (Unicode vs ASCII) |
-| CreativeTextEncoder unused | Kept | Used for tests |
 | 38+ functions not in config | Intentional | Decoder-only and utility functions |
-| Similar coding patterns | Documented | Utilities available for future refactoring |
+| Similar coding patterns | Refactored | 11 encoder modules now use shared utilities |
 
 These decisions prioritize:
-- **Clarity** over premature optimization
+- **Code reuse** through shared utilities
+- **Maintainability** through consistent patterns
 - **Flexibility** for different use cases
-- **Stability** of existing functionality
-- **Testability** through isolation
+- **Testability** through the actual production component (EnhancedTextEncoder)

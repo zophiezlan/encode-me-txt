@@ -1,7 +1,11 @@
 /**
  * Artistic Encoders
  * Creative visual encodings using blocks, music, zalgo, colors, runes, and ASCII art
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createModuloEncoder } from './shared.js';
 
 // Character sets for artistic encodings
 const BLOCKS = ['█', '▓', '▒', '░', '▀', '▄', '▌', '▐', '■', '▪', '▫', '◾', '◽', '▪️', '▫️'];
@@ -66,29 +70,36 @@ const ASCII_LETTERS = {
 };
 
 /**
- * Encodes text to block art using geometric patterns
+ * Encodes text to block art using geometric patterns (uses createModuloEncoder)
  * @param {string} text - The text to encode
  * @returns {string} - Block art representation
  */
-export const encodeBoxDrawing = (text) => {
-  return text.split('').map(char =>
-    BLOCKS[char.charCodeAt(0) % BLOCKS.length]
-  ).join('');
-};
+export const encodeBoxDrawing = createModuloEncoder(BLOCKS);
 
 /**
- * Encodes text to musical notation
+ * Encodes text to musical notation (uses createModuloEncoder)
  * @param {string} text - The text to encode
  * @returns {string} - Musical notes representation
  */
-export const encodeMusical = (text) => {
-  return text.split('').map(char =>
-    MUSICAL_NOTES[char.charCodeAt(0) % MUSICAL_NOTES.length]
-  ).join('');
-};
+export const encodeMusical = createModuloEncoder(MUSICAL_NOTES);
+
+/**
+ * Encodes text to color blocks (uses createModuloEncoder)
+ * @param {string} text - The text to encode
+ * @returns {string} - Color blocks representation
+ */
+export const encodeColorBlocks = createModuloEncoder(COLOR_BLOCKS);
+
+/**
+ * Encodes text to ancient runes (uses createModuloEncoder)
+ * @param {string} text - The text to encode
+ * @returns {string} - Runic representation
+ */
+export const encodeRunes = createModuloEncoder(RUNES);
 
 /**
  * Encodes text to Zalgo (chaotic combining marks)
+ * Note: Uses randomness, not suitable for shared utility
  * @param {string} text - The text to encode
  * @param {number} intensity - Intensity level (1-10, default 5)
  * @returns {string} - Zalgo text with combining marks
@@ -109,29 +120,8 @@ export const encodeZalgo = (text, intensity = 5) => {
 };
 
 /**
- * Encodes text to color blocks
- * @param {string} text - The text to encode
- * @returns {string} - Color blocks representation
- */
-export const encodeColorBlocks = (text) => {
-  return text.split('').map(char =>
-    COLOR_BLOCKS[char.charCodeAt(0) % COLOR_BLOCKS.length]
-  ).join('');
-};
-
-/**
- * Encodes text to ancient runes (Elder Futhark)
- * @param {string} text - The text to encode
- * @returns {string} - Runic representation
- */
-export const encodeRunes = (text) => {
-  return text.split('').map(char =>
-    RUNES[char.charCodeAt(0) % RUNES.length]
-  ).join('');
-};
-
-/**
  * Encodes text to ASCII art banner (3 lines)
+ * Note: Has unique multi-line output logic
  * @param {string} text - The text to encode
  * @returns {string} - ASCII art representation
  */

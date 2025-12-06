@@ -1,7 +1,11 @@
 /**
  * Linguistic Encoders
  * Greek, Cyrillic, Hebrew, Korean, and IPA transcription
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createMapDecoder } from './shared.js';
 
 // Greek alphabet mapping
 const GREEK_MAP = {
@@ -11,21 +15,19 @@ const GREEK_MAP = {
   'v': 'ω', 'w': 'ς', 'x': 'χ', 'y': 'υ', 'z': 'ζ'
 };
 
-const GREEK_REVERSE = Object.fromEntries(Object.entries(GREEK_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Greek alphabet using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Greek encoded text
+ */
+export const encodeGreek = createMapEncoder(GREEK_MAP, { lowercase: true });
 
 /**
- * Encodes text to Greek alphabet
+ * Decodes Greek alphabet back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeGreek = (text) => {
-  return text.toLowerCase().split('').map(char => GREEK_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Greek alphabet back to Latin
- */
-export const decodeGreek = (text) => {
-  return text.split('').map(char => GREEK_REVERSE[char] || char).join('');
-};
+export const decodeGreek = createMapDecoder(GREEK_MAP);
 
 // Cyrillic alphabet mapping
 const CYRILLIC_MAP = {
@@ -35,21 +37,19 @@ const CYRILLIC_MAP = {
   'v': 'в', 'w': 'в', 'x': 'кс', 'y': 'ы', 'z': 'з'
 };
 
-const CYRILLIC_REVERSE = Object.fromEntries(Object.entries(CYRILLIC_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Cyrillic script using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Cyrillic encoded text
+ */
+export const encodeCyrillic = createMapEncoder(CYRILLIC_MAP, { lowercase: true });
 
 /**
- * Encodes text to Cyrillic script
+ * Decodes Cyrillic back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeCyrillic = (text) => {
-  return text.toLowerCase().split('').map(char => CYRILLIC_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Cyrillic back to Latin
- */
-export const decodeCyrillic = (text) => {
-  return text.split('').map(char => CYRILLIC_REVERSE[char] || char).join('');
-};
+export const decodeCyrillic = createMapDecoder(CYRILLIC_MAP);
 
 // Hebrew alphabet mapping
 const HEBREW_MAP = {
@@ -59,21 +59,19 @@ const HEBREW_MAP = {
   'v': 'ו', 'w': 'ו', 'x': 'קס', 'y': 'י', 'z': 'ז'
 };
 
-const HEBREW_REVERSE = Object.fromEntries(Object.entries(HEBREW_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Hebrew alephbet using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Hebrew encoded text
+ */
+export const encodeHebrew = createMapEncoder(HEBREW_MAP, { lowercase: true });
 
 /**
- * Encodes text to Hebrew alephbet
+ * Decodes Hebrew back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeHebrew = (text) => {
-  return text.toLowerCase().split('').map(char => HEBREW_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Hebrew back to Latin
- */
-export const decodeHebrew = (text) => {
-  return text.split('').map(char => HEBREW_REVERSE[char] || char).join('');
-};
+export const decodeHebrew = createMapDecoder(HEBREW_MAP);
 
 // Korean Hangul mapping (basic consonant/vowel approximations)
 const KOREAN_MAP = {
@@ -83,21 +81,19 @@ const KOREAN_MAP = {
   'v': '브', 'w': '우', 'x': '크스', 'y': '이', 'z': '즈'
 };
 
-const KOREAN_REVERSE = Object.fromEntries(Object.entries(KOREAN_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Korean Hangul using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Korean encoded text
+ */
+export const encodeKorean = createMapEncoder(KOREAN_MAP, { lowercase: true });
 
 /**
- * Encodes text to Korean Hangul
+ * Decodes Korean Hangul back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeKorean = (text) => {
-  return text.toLowerCase().split('').map(char => KOREAN_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Korean Hangul back to Latin
- */
-export const decodeKorean = (text) => {
-  return text.split('').map(char => KOREAN_REVERSE[char] || char).join('');
-};
+export const decodeKorean = createMapDecoder(KOREAN_MAP);
 
 // IPA (International Phonetic Alphabet) approximation
 const IPA_MAP = {
@@ -109,7 +105,10 @@ const IPA_MAP = {
 
 /**
  * Encodes text to IPA (phonetic transcription approximation)
+ * @param {string} text - The text to encode
+ * @returns {string} - IPA transcription with slashes
  */
 export const encodeIPA = (text) => {
-  return '/' + text.toLowerCase().split('').map(char => IPA_MAP[char] || char).join('') + '/';
+  const encoder = createMapEncoder(IPA_MAP, { lowercase: true });
+  return '/' + encoder(text) + '/';
 };

@@ -1,10 +1,15 @@
 /**
  * Aesthetic Text Encoders
  * Fullwidth, Squared, Parenthesized, Double-Struck, Cursive
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createMapDecoder } from './shared.js';
 
 /**
  * Encodes text to Fullwidth characters
+ * Note: Uses character code transformation, not simple map
  */
 export const encodeFullwidth = (text) => {
   return text.split('').map(char => {
@@ -41,21 +46,19 @@ const SQUARED_MAP = {
   'v': '🅅', 'w': '🅆', 'x': '🅇', 'y': '🅈', 'z': '🅉'
 };
 
-const SQUARED_REVERSE = Object.fromEntries(Object.entries(SQUARED_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Squared letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Squared letters representation
+ */
+export const encodeSquared = createMapEncoder(SQUARED_MAP, { lowercase: true });
 
 /**
- * Encodes text to Squared letters
+ * Decodes Squared back to regular text using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeSquared = (text) => {
-  return text.toLowerCase().split('').map(char => SQUARED_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Squared back to regular text
- */
-export const decodeSquared = (text) => {
-  return [...text].map(char => SQUARED_REVERSE[char] || char).join('');
-};
+export const decodeSquared = createMapDecoder(SQUARED_MAP);
 
 // Parenthesized letters
 const PARENTHESIZED_MAP = {
@@ -65,21 +68,19 @@ const PARENTHESIZED_MAP = {
   'v': '⒱', 'w': '⒲', 'x': '⒳', 'y': '⒴', 'z': '⒵'
 };
 
-const PARENTHESIZED_REVERSE = Object.fromEntries(Object.entries(PARENTHESIZED_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Parenthesized letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Parenthesized letters representation
+ */
+export const encodeParenthesized = createMapEncoder(PARENTHESIZED_MAP, { lowercase: true });
 
 /**
- * Encodes text to Parenthesized letters
+ * Decodes Parenthesized back to regular text using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeParenthesized = (text) => {
-  return text.toLowerCase().split('').map(char => PARENTHESIZED_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Parenthesized back to regular text
- */
-export const decodeParenthesized = (text) => {
-  return [...text].map(char => PARENTHESIZED_REVERSE[char] || char).join('');
-};
+export const decodeParenthesized = createMapDecoder(PARENTHESIZED_MAP);
 
 // Double-struck (Blackboard bold) letters
 const DOUBLE_STRUCK_MAP = {
@@ -95,21 +96,19 @@ const DOUBLE_STRUCK_MAP = {
   '5': '𝟝', '6': '𝟞', '7': '𝟟', '8': '𝟠', '9': '𝟡'
 };
 
-const DOUBLE_STRUCK_REVERSE = Object.fromEntries(Object.entries(DOUBLE_STRUCK_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Double-Struck (Blackboard Bold) using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Double-struck letters representation
+ */
+export const encodeDoubleStruck = createMapEncoder(DOUBLE_STRUCK_MAP);
 
 /**
- * Encodes text to Double-Struck (Blackboard Bold)
+ * Decodes Double-Struck back to regular text using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeDoubleStruck = (text) => {
-  return text.split('').map(char => DOUBLE_STRUCK_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Double-Struck back to regular text
- */
-export const decodeDoubleStruck = (text) => {
-  return [...text].map(char => DOUBLE_STRUCK_REVERSE[char] || char).join('');
-};
+export const decodeDoubleStruck = createMapDecoder(DOUBLE_STRUCK_MAP);
 
 // Cursive/Script letters (Mathematical Script)
 const CURSIVE_MAP = {
@@ -123,21 +122,19 @@ const CURSIVE_MAP = {
   'V': '𝒱', 'W': '𝒲', 'X': '𝒳', 'Y': '𝒴', 'Z': '𝒵'
 };
 
-const CURSIVE_REVERSE = Object.fromEntries(Object.entries(CURSIVE_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Cursive/Script style using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Cursive/script letters representation
+ */
+export const encodeCursive = createMapEncoder(CURSIVE_MAP);
 
 /**
- * Encodes text to Cursive/Script style
+ * Decodes Cursive back to regular text using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeCursive = (text) => {
-  return text.split('').map(char => CURSIVE_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Cursive back to regular text
- */
-export const decodeCursive = (text) => {
-  return [...text].map(char => CURSIVE_REVERSE[char] || char).join('');
-};
+export const decodeCursive = createMapDecoder(CURSIVE_MAP);
 
 // Mirror text
 const MIRROR_MAP = {
@@ -149,7 +146,9 @@ const MIRROR_MAP = {
 
 /**
  * Encodes text to Mirror text (reversed and mirrored)
+ * Uses createMapEncoder for character mapping, then reverses for mirror effect
  */
 export const encodeMirror = (text) => {
-  return text.toLowerCase().split('').reverse().map(char => MIRROR_MAP[char] || char).join('');
+  const encoder = createMapEncoder(MIRROR_MAP, { lowercase: true });
+  return encoder(text).split('').reverse().join('');
 };

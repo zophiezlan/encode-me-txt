@@ -1,7 +1,11 @@
 /**
  * Fantasy/Fictional Script Encoders
  * Aurebesh, Gallifreyan, Elvish/Tengwar, Klingon
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createMapDecoder } from './shared.js';
 
 // Aurebesh (Star Wars) mapping using Unicode approximations
 const AUREBESH_MAP = {
@@ -11,21 +15,19 @@ const AUREBESH_MAP = {
   'v': '𐤕', 'w': '𐤖', 'x': '𐤗', 'y': '𐤘', 'z': '𐤙'
 };
 
-const AUREBESH_REVERSE = Object.fromEntries(Object.entries(AUREBESH_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Aurebesh (Star Wars galaxy script) using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Aurebesh encoded text
+ */
+export const encodeAurebesh = createMapEncoder(AUREBESH_MAP, { lowercase: true });
 
 /**
- * Encodes text to Aurebesh (Star Wars galaxy script)
+ * Decodes Aurebesh back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeAurebesh = (text) => {
-  return text.toLowerCase().split('').map(char => AUREBESH_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Aurebesh back to Latin
- */
-export const decodeAurebesh = (text) => {
-  return text.split('').map(char => AUREBESH_REVERSE[char] || char).join('');
-};
+export const decodeAurebesh = createMapDecoder(AUREBESH_MAP);
 
 // Circular Gallifreyan (Doctor Who) - using circles and symbols
 const GALLIFREYAN_MAP = {
@@ -35,21 +37,19 @@ const GALLIFREYAN_MAP = {
   'v': '⊖', 'w': '⊗', 'x': '⊘', 'y': '⊕', 'z': '⊜'
 };
 
-const GALLIFREYAN_REVERSE = Object.fromEntries(Object.entries(GALLIFREYAN_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Circular Gallifreyan style using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Gallifreyan encoded text
+ */
+export const encodeGallifreyan = createMapEncoder(GALLIFREYAN_MAP, { lowercase: true });
 
 /**
- * Encodes text to Circular Gallifreyan style
+ * Decodes Gallifreyan back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeGallifreyan = (text) => {
-  return text.toLowerCase().split('').map(char => GALLIFREYAN_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Gallifreyan back to Latin
- */
-export const decodeGallifreyan = (text) => {
-  return text.split('').map(char => GALLIFREYAN_REVERSE[char] || char).join('');
-};
+export const decodeGallifreyan = createMapDecoder(GALLIFREYAN_MAP);
 
 // Elvish/Tengwar (Lord of the Rings) - using Unicode Tengwar approximations
 const ELVISH_MAP = {
@@ -59,21 +59,19 @@ const ELVISH_MAP = {
   'v': 'ᚡ', 'w': 'ᚹ', 'x': 'ᚲᛋ', 'y': 'ᚤ', 'z': 'ᛉ'
 };
 
-const ELVISH_REVERSE = Object.fromEntries(Object.entries(ELVISH_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Elvish/Tengwar style using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Elvish encoded text
+ */
+export const encodeElvish = createMapEncoder(ELVISH_MAP, { lowercase: true });
 
 /**
- * Encodes text to Elvish/Tengwar style
+ * Decodes Elvish back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodeElvish = (text) => {
-  return text.toLowerCase().split('').map(char => ELVISH_MAP[char] || char).join('');
-};
-
-/**
- * Decodes Elvish back to Latin
- */
-export const decodeElvish = (text) => {
-  return text.split('').map(char => ELVISH_REVERSE[char] || char).join('');
-};
+export const decodeElvish = createMapDecoder(ELVISH_MAP);
 
 // Klingon pIqaD (Star Trek) - Using ConScript Private Use Area (U+F8D0-U+F8FF)
 // These characters require a Klingon font to display properly (e.g., pIqaD qolqoS)
