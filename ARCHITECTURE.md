@@ -138,6 +138,8 @@ The following modules now use shared utilities from `shared.js`:
 
 - **`classic.js`**: `encodeMorse`, `decodeMorse`, `encodeBraille`, `decodeBraille`, `encodeNATO` - all use `createMapEncoder`/`createMapDecoder`
 - **`fun.js`**: `encodeBubble`, `encodeUpsideDown`, `encodeLeetspeak` - use `createMapEncoder`
+- **`aesthetic.js`**: `encodeSquared`, `decodeSquared`, `encodeParenthesized`, `decodeParenthesized`, `encodeDoubleStruck`, `decodeDoubleStruck`, `encodeCursive`, `decodeCursive`, `encodeMirror` - use `createMapEncoder`/`createMapDecoder`
+- **`artistic.js`**: `encodeBoxDrawing`, `encodeMusical`, `encodeColorBlocks`, `encodeRunes` - use `createModuloEncoder`
 
 ### Common Patterns (for reference)
 
@@ -253,7 +255,7 @@ export const encodeWithAnimals = createModuloEncoder(animals, { separator: '' })
 |----------------|--------|-----------|
 | Duplicate Morse maps | Kept separate | Different styles (Unicode vs ASCII) |
 | 38+ functions not in config | Intentional | Decoder-only and utility functions |
-| Similar coding patterns | Refactored | `classic.js` and `fun.js` now use shared utilities |
+| Similar coding patterns | Refactored | `classic.js`, `fun.js`, `aesthetic.js`, `artistic.js` now use shared utilities |
 
 These decisions prioritize:
 - **Code reuse** through shared utilities

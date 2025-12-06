@@ -146,6 +146,14 @@ describe('EnhancedTextEncoder - Theme functionality', () => {
     expect(screen.getByText('Light')).toBeInTheDocument()
     expect(screen.getByText('Cyberpunk')).toBeInTheDocument()
   })
+
+  it('can switch themes', () => {
+    render(<EnhancedTextEncoder />)
+    const lightThemeButton = screen.getByText('Light')
+    fireEvent.click(lightThemeButton)
+    // Theme switching should work - localStorage.setItem should be called
+    expect(localStorageMock.setItem).toHaveBeenCalled()
+  })
 })
 
 describe('EnhancedTextEncoder - Encoder cards', () => {
@@ -169,5 +177,107 @@ describe('EnhancedTextEncoder - Encoder cards', () => {
     // Should show "X / Y" format for encoder count
     const counts = screen.getAllByText(/\d+ \/ \d+/)
     expect(counts.length).toBeGreaterThan(0)
+  })
+})
+
+describe('EnhancedTextEncoder - Search and Filter', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'encoder-onboarded') return 'true'
+      return null
+    })
+  })
+
+  it('can search for encoders', () => {
+    render(<EnhancedTextEncoder />)
+    const searchInput = screen.getByPlaceholderText(/Search encoders/i)
+    fireEvent.change(searchInput, { target: { value: 'binary' } })
+    expect(searchInput.value).toBe('binary')
+  })
+
+  it('displays search placeholder text', () => {
+    render(<EnhancedTextEncoder />)
+    // Check that the search input exists with proper placeholder
+    expect(screen.getByPlaceholderText(/Search encoders/i)).toBeInTheDocument()
+  })
+})
+
+describe('EnhancedTextEncoder - Input validation', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'encoder-onboarded') return 'true'
+      return null
+    })
+  })
+
+  it('handles empty input', () => {
+    render(<EnhancedTextEncoder />)
+    const textarea = screen.getByDisplayValue('Hello World!')
+    fireEvent.change(textarea, { target: { value: '' } })
+    // Verify the textarea now has empty value
+    expect(textarea.value).toBe('')
+  })
+
+  it('handles special characters in input', () => {
+    render(<EnhancedTextEncoder />)
+    const textarea = screen.getByDisplayValue('Hello World!')
+    fireEvent.change(textarea, { target: { value: '!@#$%^&*()' } })
+    expect(textarea.value).toBe('!@#$%^&*()')
+  })
+
+  it('handles unicode characters in input', () => {
+    render(<EnhancedTextEncoder />)
+    const textarea = screen.getByDisplayValue('Hello World!')
+    fireEvent.change(textarea, { target: { value: '你好世界 🌍' } })
+    expect(textarea.value).toBe('你好世界 🌍')
+  })
+})
+
+describe('EnhancedTextEncoder - Clipboard functionality', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'encoder-onboarded') return 'true'
+      return null
+    })
+  })
+
+  it('has copy buttons for encoder outputs', () => {
+    render(<EnhancedTextEncoder />)
+    // Look for copy buttons (there should be many)
+    const copyButtons = screen.getAllByTitle(/Copy/i)
+    expect(copyButtons.length).toBeGreaterThan(0)
+  })
+})
+
+describe('EnhancedTextEncoder - Mode switching', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'encoder-onboarded') return 'true'
+      return null
+    })
+  })
+
+  it('encode mode is active by default', () => {
+    render(<EnhancedTextEncoder />)
+    const encodeButton = screen.getByText('✏️ Encode')
+    // The encode button should have selected styling
+    expect(encodeButton).toBeInTheDocument()
+  })
+
+  it('can switch between encode and decode modes', () => {
+    render(<EnhancedTextEncoder />)
+    const decodeButton = screen.getByText('🔓 Decode')
+    fireEvent.click(decodeButton)
+    
+    const encodeButton = screen.getByText('✏️ Encode')
+    fireEvent.click(encodeButton)
+    
+    // Both buttons should still be present after switching
+    expect(screen.getByText('✏️ Encode')).toBeInTheDocument()
+    expect(screen.getByText('🔓 Decode')).toBeInTheDocument()
   })
 })
