@@ -1,25 +1,26 @@
 /**
  * Visual Encoders
  * ASL Fingerspelling, 7-Segment Display, Dancing Men
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createMapDecoder } from './shared.js';
 
 // ASL Fingerspelling using hand sign emojis (approximations)
 const ASL_MAP = {
   'a': '🤙', 'b': '🖐️', 'c': '🤏', 'd': '☝️', 'e': '✊', 'f': '👌', 'g': '🤞',
   'h': '🤟', 'i': '🤙', 'j': '🤙', 'k': '✌️', 'l': '🤟', 'm': '✊', 'n': '✊',
   'o': '👌', 'p': '👇', 'q': '👇', 'r': '✌️', 's': '✊', 't': '✊', 'u': '✌️',
-  'v': '✌️', 'w': '🤟', 'x': '☝️', 'y': '🤙', 'z': '☝️'
+  'v': '✌️', 'w': '🤟', 'x': '☝️', 'y': '🤙', 'z': '☝️', ' ': '  '
 };
 
 /**
- * Encodes text to ASL fingerspelling representation
+ * Encodes text to ASL fingerspelling representation using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - ASL encoded text
  */
-export const encodeASL = (text) => {
-  return text.toLowerCase().split('').map(char => {
-    if (char === ' ') return '  ';
-    return ASL_MAP[char] || char;
-  }).join(' ');
-};
+export const encodeASL = createMapEncoder(ASL_MAP, { lowercase: true, separator: ' ' });
 
 // 7-Segment Display encoding
 const SEVEN_SEGMENT_MAP = {
@@ -33,11 +34,11 @@ const SEVEN_SEGMENT_MAP = {
 };
 
 /**
- * Encodes text to 7-segment display representation
+ * Encodes text to 7-segment display representation using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - 7-segment encoded text
  */
-export const encodeSevenSegment = (text) => {
-  return text.toLowerCase().split('').map(char => SEVEN_SEGMENT_MAP[char] || char).join('');
-};
+export const encodeSevenSegment = createMapEncoder(SEVEN_SEGMENT_MAP, { lowercase: true });
 
 // Dancing Men cipher (Sherlock Holmes)
 const DANCING_MEN_MAP = {
@@ -45,30 +46,22 @@ const DANCING_MEN_MAP = {
   'g': '🏃', 'h': '🤸', 'i': '🏌️', 'j': '🏋️', 'k': '⛹️', 'l': '🤾',
   'm': '🏊', 'n': '🚣', 'o': '🧗', 'p': '🤺', 'q': '🏇', 'r': '⛷️',
   's': '🏂', 't': '🪂', 'u': '🤼', 'v': '🤽', 'w': '🤹', 'x': '🧘',
-  'y': '🛀', 'z': '🛌'
-};
-
-const DANCING_MEN_REVERSE = Object.fromEntries(Object.entries(DANCING_MEN_MAP).map(([k, v]) => [v, k]));
-
-/**
- * Encodes text to Dancing Men cipher (stick figures)
- */
-export const encodeDancingMen = (text) => {
-  return text.toLowerCase().split('').map(char => {
-    if (char === ' ') return '|';
-    return DANCING_MEN_MAP[char] || char;
-  }).join('');
+  'y': '🛀', 'z': '🛌', ' ': '|'
 };
 
 /**
- * Decodes Dancing Men back to Latin
+ * Encodes text to Dancing Men cipher (stick figures) using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Dancing Men encoded text
  */
-export const decodeDancingMen = (text) => {
-  return [...text].map(char => {
-    if (char === '|') return ' ';
-    return DANCING_MEN_REVERSE[char] || char;
-  }).join('');
-};
+export const encodeDancingMen = createMapEncoder(DANCING_MEN_MAP, { lowercase: true });
+
+/**
+ * Decodes Dancing Men back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
+ */
+export const decodeDancingMen = createMapDecoder(DANCING_MEN_MAP);
 
 // Pigpen cipher symbols
 const PIGPEN_MAP = {
@@ -79,21 +72,16 @@ const PIGPEN_MAP = {
   'y': '○', 'z': '●'
 };
 
-const PIGPEN_REVERSE = Object.fromEntries(Object.entries(PIGPEN_MAP).map(([k, v]) => [v, k]));
+/**
+ * Encodes text to Pigpen cipher using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Pigpen encoded text
+ */
+export const encodePigpen = createMapEncoder(PIGPEN_MAP, { lowercase: true });
 
 /**
- * Encodes text to Pigpen cipher
+ * Decodes Pigpen cipher back to Latin using shared utility
+ * @param {string} text - The text to decode
+ * @returns {string} - Decoded text
  */
-export const encodePigpen = (text) => {
-  return text.toLowerCase().split('').map(char => {
-    if (char === ' ') return ' ';
-    return PIGPEN_MAP[char] || char;
-  }).join('');
-};
-
-/**
- * Decodes Pigpen cipher back to Latin
- */
-export const decodePigpen = (text) => {
-  return text.split('').map(char => PIGPEN_REVERSE[char] || char).join('');
-};
+export const decodePigpen = createMapDecoder(PIGPEN_MAP);

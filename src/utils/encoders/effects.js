@@ -1,7 +1,11 @@
 /**
  * Creative Text Effects Encoders
  * Various creative text transformation effects
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createModuloEncoder } from './shared.js';
 
 // ============================================
 // TEXT DECORATION EFFECTS
@@ -9,6 +13,8 @@
 
 /**
  * Encode with hearts between chars
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with hearts between chars
  */
 export const encodeHeartsBetween = (text) => {
   return text.split('').join('♥');
@@ -16,6 +22,8 @@ export const encodeHeartsBetween = (text) => {
 
 /**
  * Encode with stars between chars
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with stars between chars
  */
 export const encodeStarsBetween = (text) => {
   return text.split('').join('★');
@@ -23,6 +31,8 @@ export const encodeStarsBetween = (text) => {
 
 /**
  * Encode with dots between chars
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with dots between chars
  */
 export const encodeDotsBetween = (text) => {
   return text.split('').join('•');
@@ -30,6 +40,8 @@ export const encodeDotsBetween = (text) => {
 
 /**
  * Encode with sparkles between chars
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with sparkles between chars
  */
 export const encodeSparklesBetween = (text) => {
   return text.split('').join('✨');
@@ -37,6 +49,8 @@ export const encodeSparklesBetween = (text) => {
 
 /**
  * Encode with double spacing
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with double spacing
  */
 export const encodeDoubleSpace = (text) => {
   return text.split('').join(' ');
@@ -44,6 +58,8 @@ export const encodeDoubleSpace = (text) => {
 
 /**
  * Encode with underscores between
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with underscores between chars
  */
 export const encodeUnderscoreBetween = (text) => {
   return text.split('').join('_');
@@ -51,6 +67,8 @@ export const encodeUnderscoreBetween = (text) => {
 
 /**
  * Encode with brackets around each char
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with brackets around each char
  */
 export const encodeBracketed = (text) => {
   return text.split('').map(c => `[${c}]`).join('');
@@ -58,6 +76,8 @@ export const encodeBracketed = (text) => {
 
 /**
  * Encode with parentheses around each char
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with parentheses around each char
  */
 export const encodeParensWrapped = (text) => {
   return text.split('').map(c => `(${c})`).join('');
@@ -65,6 +85,8 @@ export const encodeParensWrapped = (text) => {
 
 /**
  * Encode with angle brackets
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with angle brackets around each char
  */
 export const encodeAngleBracketed = (text) => {
   return text.split('').map(c => `<${c}>`).join('');
@@ -72,6 +94,8 @@ export const encodeAngleBracketed = (text) => {
 
 /**
  * Encode with curly braces
+ * @param {string} text - The text to encode
+ * @returns {string} - Text with curly braces around each char
  */
 export const encodeCurlyBracketed = (text) => {
   return text.split('').map(c => `{${c}}`).join('');
@@ -401,159 +425,102 @@ export const encodeRepeatingPattern = (text) => {
 // SPECIAL CHARACTERS
 // ============================================
 
-/**
- * Encode with box drawing line characters
- */
-export const encodeBoxDrawingLines = (text) => {
-  const chars = {
-    'a': '┌', 'b': '├', 'c': '┼', 'd': '┤', 'e': '┐', 'f': '└', 'g': '┴',
-    'h': '┬', 'i': '│', 'j': '─', 'k': '┘', 'l': '╔', 'm': '╗', 'n': '╚',
-    'o': '╝', 'p': '║', 'q': '═', 'r': '╬', 's': '╠', 't': '╣', 'u': '╦',
-    'v': '╩', 'w': '▀', 'x': '▄', 'y': '█', 'z': '░'
-  };
-
-  return text.toLowerCase().split('').map(c => chars[c] || c).join('');
+// Box drawing map for createMapEncoder
+const BOX_DRAWING_MAP = {
+  'a': '┌', 'b': '├', 'c': '┼', 'd': '┤', 'e': '┐', 'f': '└', 'g': '┴',
+  'h': '┬', 'i': '│', 'j': '─', 'k': '┘', 'l': '╔', 'm': '╗', 'n': '╚',
+  'o': '╝', 'p': '║', 'q': '═', 'r': '╬', 's': '╠', 't': '╣', 'u': '╦',
+  'v': '╩', 'w': '▀', 'x': '▄', 'y': '█', 'z': '░'
 };
 
 /**
- * Encode with currency symbols
+ * Encode with box drawing line characters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with box drawing chars
  */
-export const encodeCurrencySymbols = (text) => {
-  const currencies = ['$', '€', '£', '¥', '₹', '₽', '₿', '₩', '฿', '₫', '₴', '₦', '₡', '₱', '₪', '₨', '₵', '₲', '₮', '₸', '₺', '₼', '₾', '֏', '₢', '₯'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return currencies[(c.charCodeAt(0) - 97) % currencies.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeBoxDrawingLines = createMapEncoder(BOX_DRAWING_MAP, { lowercase: true });
+
+// Symbol arrays for modulo-based encoding
+const CURRENCIES = ['$', '€', '£', '¥', '₹', '₽', '₿', '₩', '฿', '₫', '₴', '₦', '₡', '₱', '₪', '₨', '₵', '₲', '₮', '₸', '₺', '₼', '₾', '֏', '₢', '₯'];
+const CHESS_PIECES = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+const CARD_SUITS = ['♠', '♣', '♥', '♦', '♤', '♧', '♡', '♢'];
+const MUSIC_NOTES = ['♩', '♪', '♫', '♬', '𝄞', '𝄢', '♭', '♮', '♯'];
+const WEATHER_SYMBOLS = ['☀', '☁', '☂', '☃', '☄', '★', '☆', '☇', '☈', '☉', '☊', '☋', '⚡', '❄', '❅', '❆', '🌤', '🌥', '🌦', '🌧', '🌨', '🌩', '🌪', '🌫', '🌬', '☔'];
+const ZODIAC_SIGNS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+const PLANET_SYMBOLS = ['☿', '♀', '♁', '♂', '♃', '♄', '♅', '♆', '♇', '⚳', '⚴', '⚵'];
+const ARROW_SYMBOLS = ['←', '↑', '→', '↓', '↔', '↕', '↖', '↗', '↘', '↙', '↚', '↛', '↜', '↝', '↞', '↟', '↠', '↡', '↢', '↣', '↤', '↥', '↦', '↧', '↨', '↩'];
+const GEOMETRIC_SHAPES = ['●', '○', '◐', '◑', '◒', '◓', '◔', '◕', '◖', '◗', '◘', '◙', '◚', '◛', '◜', '◝', '◞', '◟', '◠', '◡', '◢', '◣', '◤', '◥', '◦', '◧'];
+const DINGBATS = ['✁', '✂', '✃', '✄', '✆', '✇', '✈', '✉', '✌', '✍', '✎', '✏', '✐', '✑', '✒', '✓', '✔', '✕', '✖', '✗', '✘', '✙', '✚', '✛', '✜', '✝'];
 
 /**
- * Encode with chess pieces
+ * Encode with currency symbols using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with currency symbols
  */
-export const encodeChessPieces = (text) => {
-  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return pieces[(c.charCodeAt(0) - 97) % pieces.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeCurrencySymbols = createModuloEncoder(CURRENCIES);
 
 /**
- * Encode with card suits
+ * Encode with chess pieces using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with chess pieces
  */
-export const encodeCardSuits = (text) => {
-  const suits = ['♠', '♣', '♥', '♦', '♤', '♧', '♡', '♢'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return suits[(c.charCodeAt(0) - 97) % suits.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeChessPieces = createModuloEncoder(CHESS_PIECES);
 
 /**
- * Encode with music notes
+ * Encode with card suits using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with card suits
  */
-export const encodeMusicNotes = (text) => {
-  const notes = ['♩', '♪', '♫', '♬', '𝄞', '𝄢', '♭', '♮', '♯'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return notes[(c.charCodeAt(0) - 97) % notes.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeCardSuits = createModuloEncoder(CARD_SUITS);
 
 /**
- * Encode with weather symbols
+ * Encode with music notes using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with music notes
  */
-export const encodeWeatherSymbols = (text) => {
-  const weather = ['☀', '☁', '☂', '☃', '☄', '★', '☆', '☇', '☈', '☉', '☊', '☋', '⚡', '❄', '❅', '❆', '🌤', '🌥', '🌦', '🌧', '🌨', '🌩', '🌪', '🌫', '🌬', '☔'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return weather[(c.charCodeAt(0) - 97) % weather.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeMusicNotes = createModuloEncoder(MUSIC_NOTES);
 
 /**
- * Encode with zodiac signs
+ * Encode with weather symbols using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with weather symbols
  */
-export const encodeZodiacSigns = (text) => {
-  const zodiac = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return zodiac[(c.charCodeAt(0) - 97) % zodiac.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeWeatherSymbols = createModuloEncoder(WEATHER_SYMBOLS);
 
 /**
- * Encode with planets
+ * Encode with zodiac signs using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with zodiac signs
  */
-export const encodePlanetSymbols = (text) => {
-  const planets = ['☿', '♀', '♁', '♂', '♃', '♄', '♅', '♆', '♇', '⚳', '⚴', '⚵'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return planets[(c.charCodeAt(0) - 97) % planets.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeZodiacSigns = createModuloEncoder(ZODIAC_SIGNS);
 
 /**
- * Encode with arrows
+ * Encode with planets using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with planet symbols
  */
-export const encodeArrowSymbols = (text) => {
-  const arrows = ['←', '↑', '→', '↓', '↔', '↕', '↖', '↗', '↘', '↙', '↚', '↛', '↜', '↝', '↞', '↟', '↠', '↡', '↢', '↣', '↤', '↥', '↦', '↧', '↨', '↩'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return arrows[(c.charCodeAt(0) - 97) % arrows.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodePlanetSymbols = createModuloEncoder(PLANET_SYMBOLS);
 
 /**
- * Encode with geometric shapes
+ * Encode with arrows using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with arrow symbols
  */
-export const encodeGeometricShapes = (text) => {
-  const shapes = ['●', '○', '◐', '◑', '◒', '◓', '◔', '◕', '◖', '◗', '◘', '◙', '◚', '◛', '◜', '◝', '◞', '◟', '◠', '◡', '◢', '◣', '◤', '◥', '◦', '◧'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return shapes[(c.charCodeAt(0) - 97) % shapes.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeArrowSymbols = createModuloEncoder(ARROW_SYMBOLS);
 
 /**
- * Encode with dingbats
+ * Encode with geometric shapes using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with geometric shapes
  */
-export const encodeDingbats = (text) => {
-  const dingbats = ['✁', '✂', '✃', '✄', '✆', '✇', '✈', '✉', '✌', '✍', '✎', '✏', '✐', '✑', '✒', '✓', '✔', '✕', '✖', '✗', '✘', '✙', '✚', '✛', '✜', '✝'];
-  
-  return text.toLowerCase().split('').map(c => {
-    if (c >= 'a' && c <= 'z') {
-      return dingbats[(c.charCodeAt(0) - 97) % dingbats.length];
-    }
-    return c;
-  }).join('');
-};
+export const encodeGeometricShapes = createModuloEncoder(GEOMETRIC_SHAPES);
+
+/**
+ * Encode with dingbats using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Text encoded with dingbats
+ */
+export const encodeDingbats = createModuloEncoder(DINGBATS);
 
 // ============================================
 // TEXT WRAPPERS

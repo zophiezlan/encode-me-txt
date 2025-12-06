@@ -1,7 +1,11 @@
 /**
  * Cultural Encoders
  * Encoders based on various cultural writing systems and codes
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder } from './shared.js';
 
 // ============================================
 // JAPANESE ENCODINGS
@@ -35,18 +39,18 @@ const KATAKANA_MAP = {
 };
 
 /**
- * Encode text to Hiragana-style
+ * Encode text to Hiragana-style using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Hiragana encoded text
  */
-export const encodeHiragana = (text) => {
-  return text.toLowerCase().split('').map(char => HIRAGANA_MAP[char] || char).join('');
-};
+export const encodeHiragana = createMapEncoder(HIRAGANA_MAP, { lowercase: true });
 
 /**
- * Encode text to Katakana-style
+ * Encode text to Katakana-style using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Katakana encoded text
  */
-export const encodeKatakana = (text) => {
-  return text.toLowerCase().split('').map(char => KATAKANA_MAP[char] || char).join('');
-};
+export const encodeKatakana = createMapEncoder(KATAKANA_MAP, { lowercase: true });
 
 // ============================================
 // ARABIC STYLE
@@ -61,11 +65,11 @@ const ARABIC_MAP = {
 };
 
 /**
- * Encode to Arabic-style letters
+ * Encode to Arabic-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Arabic-style encoded text
  */
-export const encodeArabicStyle = (text) => {
-  return text.toLowerCase().split('').map(char => ARABIC_MAP[char] || char).join('');
-};
+export const encodeArabicStyle = createMapEncoder(ARABIC_MAP, { lowercase: true });
 
 // ============================================
 // THAI STYLE
@@ -80,11 +84,11 @@ const THAI_MAP = {
 };
 
 /**
- * Encode to Thai-style letters
+ * Encode to Thai-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Thai-style encoded text
  */
-export const encodeThaiStyle = (text) => {
-  return text.toLowerCase().split('').map(char => THAI_MAP[char] || char).join('');
-};
+export const encodeThaiStyle = createMapEncoder(THAI_MAP, { lowercase: true });
 
 // ============================================
 // DEVANAGARI (HINDI) STYLE
@@ -99,11 +103,11 @@ const DEVANAGARI_MAP = {
 };
 
 /**
- * Encode to Devanagari-style letters
+ * Encode to Devanagari-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Devanagari-style encoded text
  */
-export const encodeDevanagari = (text) => {
-  return text.toLowerCase().split('').map(char => DEVANAGARI_MAP[char] || char).join('');
-};
+export const encodeDevanagari = createMapEncoder(DEVANAGARI_MAP, { lowercase: true });
 
 // ============================================
 // BENGALI STYLE
@@ -118,11 +122,11 @@ const BENGALI_MAP = {
 };
 
 /**
- * Encode to Bengali-style letters
+ * Encode to Bengali-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Bengali-style encoded text
  */
-export const encodeBengali = (text) => {
-  return text.toLowerCase().split('').map(char => BENGALI_MAP[char] || char).join('');
-};
+export const encodeBengali = createMapEncoder(BENGALI_MAP, { lowercase: true });
 
 // ============================================
 // TAMIL STYLE
@@ -137,11 +141,11 @@ const TAMIL_MAP = {
 };
 
 /**
- * Encode to Tamil-style letters
+ * Encode to Tamil-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Tamil-style encoded text
  */
-export const encodeTamil = (text) => {
-  return text.toLowerCase().split('').map(char => TAMIL_MAP[char] || char).join('');
-};
+export const encodeTamil = createMapEncoder(TAMIL_MAP, { lowercase: true });
 
 // ============================================
 // GEORGIAN STYLE
@@ -156,11 +160,11 @@ const GEORGIAN_MAP = {
 };
 
 /**
- * Encode to Georgian-style letters
+ * Encode to Georgian-style letters using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Georgian-style encoded text
  */
-export const encodeGeorgian = (text) => {
-  return text.toLowerCase().split('').map(char => GEORGIAN_MAP[char] || char).join('');
-};
+export const encodeGeorgian = createMapEncoder(GEORGIAN_MAP, { lowercase: true });
 
 // ============================================
 // ARMENIAN STYLE
