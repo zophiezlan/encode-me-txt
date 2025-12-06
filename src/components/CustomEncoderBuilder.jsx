@@ -189,25 +189,25 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
             </div>
 
             {/* Character Mapping */}
-            <div>
+            <div className="w-full overflow-hidden">
               <label className="block text-sm font-semibold mb-2">Character Mappings</label>
               <div className="flex flex-col gap-2 mb-2">
-                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
+                <div className="grid grid-cols-[1fr_auto_1fr_auto] sm:flex sm:flex-nowrap items-center gap-2">
                   <input
                     type="text"
                     value={inputChar}
                     onChange={(e) => setInputChar(e.target.value)}
-                    placeholder="Input"
-                    className={`flex-1 min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                    placeholder="In"
+                    className={`w-full sm:flex-1 sm:min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
                     maxLength={1}
                   />
-                  <span className="flex items-center text-xl sm:text-2xl">→</span>
+                  <span className="flex items-center justify-center text-lg sm:text-2xl">→</span>
                   <input
                     type="text"
                     value={outputChar}
                     onChange={(e) => setOutputChar(e.target.value)}
-                    placeholder="Output"
-                    className={`flex-1 min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                    placeholder="Out"
+                    className={`w-full sm:flex-1 sm:min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
                   />
                   <button
                     onClick={addMapping}
