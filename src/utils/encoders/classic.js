@@ -5,7 +5,11 @@
  * NOTE: This module uses Unicode visual symbols (• and −) for better display.
  * For ASCII-compatible Morse or parameterized variants, see parameterized.js.
  * See ARCHITECTURE.md for design rationale on keeping these separate.
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder, createMapDecoder } from './shared.js';
 
 // Morse Code lookup tables
 // Uses Unicode bullet (•) and minus sign (−) for visual clarity
@@ -44,60 +48,50 @@ const NATO_MAP = {
 };
 
 /**
- * Encodes text to Morse code
+ * Encodes text to Morse code using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Morse code representation
  */
-export const encodeMorse = (text) => {
-  return text.toLowerCase().split('').map(char => MORSE_CODE_MAP[char] || char).join(' ');
-};
+export const encodeMorse = createMapEncoder(MORSE_CODE_MAP, { lowercase: true, separator: ' ' });
 
 /**
- * Decodes Morse code back to text
+ * Decodes Morse code back to text using shared utility
  * @param {string} text - The Morse code to decode
  * @returns {string} - Decoded text or error message
  */
 export const decodeMorse = (text) => {
   try {
-    const reverseMorse = Object.fromEntries(
-      Object.entries(MORSE_CODE_MAP).map(([k, v]) => [v, k])
-    );
-    return text.split(' ').map(code => reverseMorse[code] || '').join('');
+    const decoder = createMapDecoder(MORSE_CODE_MAP, { separator: ' ' });
+    return decoder(text);
   } catch {
     return '[Decode failed]';
   }
 };
 
 /**
- * Encodes text to Braille patterns
+ * Encodes text to Braille patterns using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Braille representation
  */
-export const encodeBraille = (text) => {
-  return text.toLowerCase().split('').map(char => BRAILLE_MAP[char] || char).join('');
-};
+export const encodeBraille = createMapEncoder(BRAILLE_MAP, { lowercase: true });
 
 /**
- * Decodes Braille patterns back to text
+ * Decodes Braille patterns back to text using shared utility
  * @param {string} text - The Braille to decode
  * @returns {string} - Decoded text or error message
  */
 export const decodeBraille = (text) => {
   try {
-    const reverseBraille = Object.fromEntries(
-      Object.entries(BRAILLE_MAP).map(([k, v]) => [v, k])
-    );
-    return text.split('').map(char => reverseBraille[char] || '').join('');
+    const decoder = createMapDecoder(BRAILLE_MAP);
+    return decoder(text);
   } catch {
     return '[Decode failed]';
   }
 };
 
 /**
- * Encodes text to NATO phonetic alphabet
+ * Encodes text to NATO phonetic alphabet using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - NATO phonetic representation
  */
-export const encodeNATO = (text) => {
-  return text.toLowerCase().split('').map(char => NATO_MAP[char] || char).join('-');
-};
+export const encodeNATO = createMapEncoder(NATO_MAP, { lowercase: true, separator: '-' });

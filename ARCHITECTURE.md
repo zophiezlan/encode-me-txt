@@ -1,6 +1,6 @@
 # Architecture Decisions
 
-This document explains key architectural decisions and design choices made in the encode-me-txt project. These decisions address common questions about code organization and potential "issues" that are actually intentional design choices.
+This document explains key architectural decisions and design choices made in the encode-me-txt project. These decisions address common questions about code organization.
 
 ## Table of Contents
 
@@ -128,42 +128,43 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md#adding-new-encoders) for instructions on
 
 ## Similar Coding Patterns
 
-### Status: Refactoring Recommended
+### Status: Refactored - Using Shared Utilities
 
-**Observation:** Multiple encoder modules contain similar coding patterns.
+**Observation:** Multiple encoder modules previously contained similar coding patterns. These have been refactored to use shared utilities.
 
-### Identified Patterns
+### Refactored Modules
+
+The following modules now use shared utilities from `shared.js`:
+
+- **`classic.js`**: `encodeMorse`, `decodeMorse`, `encodeBraille`, `decodeBraille`, `encodeNATO` - all use `createMapEncoder`/`createMapDecoder`
+- **`fun.js`**: `encodeBubble`, `encodeUpsideDown`, `encodeLeetspeak` - use `createMapEncoder`
+
+### Common Patterns (for reference)
 
 #### 1. Character Map Transformations
 
 ```javascript
-// Pattern found in 20+ encoders
-const result = text.split('').map(char => MAP[char] || char).join('');
+// Before: Direct implementation
+export const encodeX = (text) => {
+  return text.toLowerCase().split('').map(char => MAP[char] || char).join('');
+};
+
+// After: Using shared utility
+import { createMapEncoder } from './shared.js';
+export const encodeX = createMapEncoder(MAP, { lowercase: true });
 ```
 
-**Files:** `classic.js`, `fun.js`, `artistic.js`, `aesthetic.js`, etc.
-
-#### 2. Reverse Map Generation
+#### 2. Reverse Map Generation (for decoders)
 
 ```javascript
-// Pattern found in 15+ encoders
+// Before: Manual reverse map
 const reverseMap = Object.fromEntries(
   Object.entries(forwardMap).map(([k, v]) => [v, k])
 );
-```
 
-**Files:** `classic.js`, `parameterized.js`, `ciphers.js`, etc.
-
-#### 3. Decode with Error Handling
-
-```javascript
-// Pattern found in all decoders
-try {
-  // decoding logic
-  return result;
-} catch {
-  return '[Decode failed]';
-}
+// After: Using shared utility
+import { createMapDecoder } from './shared.js';
+const decoder = createMapDecoder(forwardMap, { separator: ' ' });
 ```
 
 ### Available Utilities in shared.js
@@ -185,41 +186,22 @@ export const POLYBIUS_ALPHABET = '...';
 export const EMOJI_SETS = { ... };
 ```
 
-### Refactoring Plan
+### Guidelines for New Encoders
 
-New encoders should use the utilities in `shared.js`. Existing encoders can be incrementally migrated to use these utilities to reduce code duplication and improve maintainability.
+New encoders **should** use the shared utilities:
 
-When refactoring, prioritize:
+1. Use `createMapEncoder` for simple character mappings
+2. Use `createMapDecoder` for decoding with reverse lookups
+3. Use `createCaesarEncoder`/`createCaesarDecoder` for rotation ciphers
+4. Import shared data like `MORSE_ALPHABET` instead of duplicating
 
-1. **High-Value Consolidation**
-   - Encoders with identical patterns
-   - Functions that can use `createMapEncoder`/`createMapDecoder`
+### When to Use Direct Implementation
 
-2. **Medium-Value Consolidation**
-   - Caesar/ROT variants sharing shift logic
-   - Unicode block mappers
+Some encoders have unique logic that doesn't fit the shared utilities:
 
-3. **Keep Separate**
-   - Encoders with unique logic
-   - Parameterized encoders (need flexibility)
-
-### Refactoring Guidelines
-
-When consolidating patterns:
-
-```javascript
-// BEFORE: Direct implementation
-export const encodeMyEncoder = (text) => {
-  const map = { 'a': 'X', 'b': 'Y', ... };
-  return text.toLowerCase().split('').map(char => map[char] || char).join('');
-};
-
-// AFTER: Using shared utility
-import { createMapEncoder } from './shared.js';
-
-const MY_ENCODER_MAP = { 'a': 'X', 'b': 'Y', ... };
-export const encodeMyEncoder = createMapEncoder(MY_ENCODER_MAP, { lowercase: true });
-```
+- Encoders with custom transformation logic (e.g., Pig Latin)
+- Encoders requiring state or randomness (e.g., UwU with faces)
+- Parameterized encoders with complex options
 
 ---
 
@@ -271,10 +253,10 @@ export const encodeWithAnimals = createModuloEncoder(animals, { separator: '' })
 |----------------|--------|-----------|
 | Duplicate Morse maps | Kept separate | Different styles (Unicode vs ASCII) |
 | 38+ functions not in config | Intentional | Decoder-only and utility functions |
-| Similar coding patterns | Refactoring recommended | Utilities available in shared.js |
+| Similar coding patterns | Refactored | `classic.js` and `fun.js` now use shared utilities |
 
 These decisions prioritize:
-- **Clarity** over premature optimization
+- **Code reuse** through shared utilities
+- **Maintainability** through consistent patterns
 - **Flexibility** for different use cases
-- **Stability** of existing functionality
-- **Testability** through isolation
+- **Testability** through the actual production component (EnhancedTextEncoder)

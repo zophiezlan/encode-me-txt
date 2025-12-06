@@ -1,7 +1,11 @@
 /**
  * Fun Encoders
  * Emoji, Bubble Text, Upside Down, Leetspeak, and Pig Latin
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createMapEncoder } from './shared.js';
 
 // Emoji palette for encoding
 const EMOJI_PALETTE = [
@@ -77,31 +81,30 @@ export const decodeEmoji = (text) => {
 };
 
 /**
- * Encodes text to bubble text
+ * Encodes text to bubble text using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Bubble text representation
  */
-export const encodeBubble = (text) => {
-  return text.toLowerCase().split('').map(char => BUBBLE_MAP[char] || char).join('');
-};
+export const encodeBubble = createMapEncoder(BUBBLE_MAP, { lowercase: true });
 
 /**
  * Encodes text to upside down text
+ * Note: This has custom reverse logic, so uses partial shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Upside down text
  */
 export const encodeUpsideDown = (text) => {
-  return text.toLowerCase().split('').reverse().map(char => UPSIDE_DOWN_MAP[char] || char).join('');
+  const encoder = createMapEncoder(UPSIDE_DOWN_MAP, { lowercase: true });
+  // Reverse the result for upside-down effect
+  return encoder(text).split('').reverse().join('');
 };
 
 /**
- * Encodes text to leetspeak
+ * Encodes text to leetspeak using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Leetspeak representation
  */
-export const encodeLeetspeak = (text) => {
-  return text.split('').map(char => LEET_MAP[char] || char).join('');
-};
+export const encodeLeetspeak = createMapEncoder(LEET_MAP);
 
 /**
  * Encodes text to Pig Latin
