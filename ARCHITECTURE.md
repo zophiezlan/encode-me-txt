@@ -145,6 +145,8 @@ The following modules now use shared utilities from `shared.js`:
 - **`visual.js`**: `encodeASL`, `encodeSevenSegment`, `encodeDancingMen`, `decodeDancingMen`, `encodePigpen`, `decodePigpen` - use `createMapEncoder`/`createMapDecoder`
 - **`cultural.js`**: `encodeHiragana`, `encodeKatakana`, `encodeArabicStyle`, `encodeThaiStyle`, `encodeDevanagari`, `encodeBengali`, `encodeTamil`, `encodeGeorgian` - use `createMapEncoder`
 - **`effects.js`**: `encodeBoxDrawingLines` uses `createMapEncoder`; `encodeCurrencySymbols`, `encodeChessPieces`, `encodeCardSuits`, `encodeMusicNotes`, `encodeWeatherSymbols`, `encodeZodiacSigns`, `encodePlanetSymbols`, `encodeArrowSymbols`, `encodeGeometricShapes`, `encodeDingbats` - use `createModuloEncoder`
+- **`linguistic.js`**: `encodeGreek`, `decodeGreek`, `encodeCyrillic`, `decodeCyrillic`, `encodeHebrew`, `decodeHebrew`, `encodeKorean`, `decodeKorean`, `encodeIPA` - use `createMapEncoder`/`createMapDecoder`
+- **`unique.js`**: `encodeMinecraft`, `encodeWeather`, `encodeDomino`, `encodeTrafficSigns`, `encodeTreePattern`, `encodeMoonPhase`, `encodeAnimal`, `encodeFood`, `encodeSports`, `encodeInstruments`, `encodeSpace`, `encodeOcean`, `encodeChess`, `encodeMahjong`, `encodeHexagram` - use `createModuloEncoder`
 
 ### Common Patterns (for reference)
 
@@ -260,7 +262,7 @@ export const encodeWithAnimals = createModuloEncoder(animals, { separator: '' })
 |----------------|--------|-----------|
 | Duplicate Morse maps | Kept separate | Different styles (Unicode vs ASCII) |
 | 38+ functions not in config | Intentional | Decoder-only and utility functions |
-| Similar coding patterns | Refactored | 9 encoder modules now use shared utilities |
+| Similar coding patterns | Refactored | 11 encoder modules now use shared utilities |
 
 These decisions prioritize:
 - **Code reuse** through shared utilities

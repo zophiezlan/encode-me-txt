@@ -1,7 +1,11 @@
 /**
  * Unique Encoders
  * Creative and novel encoding methods not found in typical encoder apps
+ * 
+ * Refactored to use shared utilities from shared.js where applicable.
  */
+
+import { createModuloEncoder } from './shared.js';
 
 /**
  * DNA Sequence Encoding
@@ -224,23 +228,192 @@ export const encodeBarcode = (text) => {
   return result.trim();
 };
 
-/**
- * Minecraft Block Encoding
- * Encode text using Minecraft block emojis
- */
-export const encodeMinecraft = (text) => {
-  const blocks = [
-    '⛏️', '🟫', '🟩', '🟦', '🟥', '🟨', '⬜', '⬛',
-    '🔥', '💎', '⛰️', '🌳', '💧', '🔆', '🌙', '⭐'
-  ];
+// Modulo-based encoder arrays
+const MINECRAFT_BLOCKS = [
+  '⛏️', '🟫', '🟩', '🟦', '🟥', '🟨', '⬜', '⬛',
+  '🔥', '💎', '⛰️', '🌳', '💧', '🔆', '🌙', '⭐'
+];
 
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += blocks[code % blocks.length];
-  }
-  return result;
-};
+const WEATHER_EMOJIS = [
+  '☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️', '🌧️', '⛈️',
+  '🌩️', '❄️', '🌨️', '💨', '🌪️', '🌫️', '🌈', '⚡'
+];
+
+const DOMINO_TILES = [
+  '🁣', '🁤', '🁥', '🁦', '🁧', '🁨', '🁩', '🁪',
+  '🁫', '🁬', '🁭', '🁮', '🁯', '🁰', '🁱', '🁲'
+];
+
+const TRAFFIC_SIGNS = [
+  '🛑', '⚠️', '🚸', '🚫', '🚳', '🚭', '🚯', '🚱',
+  '🚷', '📵', '🔞', '⛔', '✋', '☢️', '☣️', '⬆️'
+];
+
+const TREE_EMOJIS = ['🌲', '🌳', '🌴', '🎄', '🌵', '🎋', '🍀', '🌿', '🍃', '🍂', '🍁', '🌱'];
+const MOON_EMOJIS = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+
+const ANIMAL_EMOJIS = [
+  '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼',
+  '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔',
+  '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺',
+  '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞'
+];
+
+const FOOD_EMOJIS = [
+  '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓',
+  '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
+  '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑',
+  '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐'
+];
+
+const SPORTS_EMOJIS = [
+  '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉',
+  '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍',
+  '🏏', '🪃', '🥅', '⛳', '🪁', '🛷', '⛸️', '🥌',
+  '🎿', '⛷️', '🏂', '🤺', '🏋️', '🤼', '🤸', '⛹️'
+];
+
+const INSTRUMENT_EMOJIS = [
+  '🎹', '🎸', '🎺', '🎷', '🪗', '🎻', '🪕', '🎤',
+  '🎧', '🥁', '🪘', '📯', '🔔', '🎼', '🎵', '🎶'
+];
+
+const SPACE_EMOJIS = [
+  '🌍', '🌎', '🌏', '🌐', '🪐', '⭐', '🌟', '💫',
+  '✨', '☄️', '🌙', '🌛', '🌜', '🌝', '🌞', '🚀',
+  '🛸', '🌌', '🔭', '🌠', '👽', '🛰️', '☀️', '💥'
+];
+
+const OCEAN_EMOJIS = [
+  '🌊', '🐚', '🦀', '🦞', '🦐', '🦑', '🐙', '🦪',
+  '🐠', '🐟', '🐡', '🦈', '🐬', '🐳', '🐋', '🐢',
+  '🏝️', '⛵', '🚢', '⚓', '🪸', '🧜', '🏄', '🤿'
+];
+
+const CHESS_PIECES = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
+const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
+const MAHJONG_TILES = [
+  '🀀', '🀁', '🀂', '🀃', '🀄', '🀅', '🀆', '🀇',
+  '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏',
+  '🀐', '🀑', '🀒', '🀓', '🀔', '🀕', '🀖', '🀗',
+  '🀘', '🀙', '🀚', '🀛', '🀜', '🀝', '🀞', '🀟'
+];
+
+const HEXAGRAMS = [
+  '䷀', '䷁', '䷂', '䷃', '䷄', '䷅', '䷆', '䷇', '䷈', '䷉',
+  '䷊', '䷋', '䷌', '䷍', '䷎', '䷏', '䷐', '䷑', '䷒', '䷓',
+  '䷔', '䷕', '䷖', '䷗', '䷘', '䷙', '䷚', '䷛', '䷜', '䷝',
+  '䷞', '䷟', '䷠', '䷡', '䷢', '䷣', '䷤', '䷥', '䷦', '䷧',
+  '䷨', '䷩', '䷪', '䷫', '䷬', '䷭', '䷮', '䷯', '䷰', '䷱',
+  '䷲', '䷳', '䷴', '䷵', '䷶', '䷷', '䷸', '䷹', '䷺', '䷻',
+  '䷼', '䷽', '䷾', '䷿'
+];
+
+/**
+ * Minecraft Block Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Minecraft block pattern
+ */
+export const encodeMinecraft = createModuloEncoder(MINECRAFT_BLOCKS);
+
+/**
+ * Weather Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Weather emoji pattern
+ */
+export const encodeWeather = createModuloEncoder(WEATHER_EMOJIS);
+
+/**
+ * Domino Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Domino tile pattern
+ */
+export const encodeDomino = createModuloEncoder(DOMINO_TILES);
+
+/**
+ * Traffic Signs Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Traffic sign pattern
+ */
+export const encodeTrafficSigns = createModuloEncoder(TRAFFIC_SIGNS);
+
+/**
+ * Binary Tree/Leaf Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Tree emoji pattern
+ */
+export const encodeTreePattern = createModuloEncoder(TREE_EMOJIS);
+
+/**
+ * Moon Phases Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Moon phase pattern
+ */
+export const encodeMoonPhase = createModuloEncoder(MOON_EMOJIS);
+
+/**
+ * Animal Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Animal emoji pattern
+ */
+export const encodeAnimal = createModuloEncoder(ANIMAL_EMOJIS);
+
+/**
+ * Food/Fruit Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Food emoji pattern
+ */
+export const encodeFood = createModuloEncoder(FOOD_EMOJIS);
+
+/**
+ * Sports Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Sports emoji pattern
+ */
+export const encodeSports = createModuloEncoder(SPORTS_EMOJIS);
+
+/**
+ * Musical Instrument Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Instrument emoji pattern
+ */
+export const encodeInstruments = createModuloEncoder(INSTRUMENT_EMOJIS);
+
+/**
+ * Planet/Space Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Space emoji pattern
+ */
+export const encodeSpace = createModuloEncoder(SPACE_EMOJIS);
+
+/**
+ * Ocean/Sea Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Ocean emoji pattern
+ */
+export const encodeOcean = createModuloEncoder(OCEAN_EMOJIS);
+
+/**
+ * Chess Piece Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Chess piece pattern
+ */
+export const encodeChess = createModuloEncoder(CHESS_PIECES);
+
+/**
+ * Mahjong Tile Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - Mahjong tile pattern
+ */
+export const encodeMahjong = createModuloEncoder(MAHJONG_TILES);
+
+/**
+ * Hexagram (I Ching) Encoding using shared utility
+ * @param {string} text - The text to encode
+ * @returns {string} - I Ching hexagram pattern
+ */
+export const encodeHexagram = createModuloEncoder(HEXAGRAMS);
 
 /**
  * Recipe Cipher Encoding
@@ -282,206 +455,6 @@ export const encodeClockTime = (text) => {
 };
 
 /**
- * Weather Encoding
- * Encode text using weather emoji symbols
- */
-export const encodeWeather = (text) => {
-  const weather = [
-    '☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️', '🌧️', '⛈️',
-    '🌩️', '❄️', '🌨️', '💨', '🌪️', '🌫️', '🌈', '⚡'
-  ];
-
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += weather[code % weather.length];
-  }
-  return result;
-};
-
-/**
- * Domino Encoding
- * Encode text using domino tile patterns
- */
-export const encodeDomino = (text) => {
-  const dominoes = [
-    '🁣', '🁤', '🁥', '🁦', '🁧', '🁨', '🁩', '🁪',
-    '🁫', '🁬', '🁭', '🁮', '🁯', '🁰', '🁱', '🁲'
-  ];
-
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += dominoes[code % dominoes.length];
-  }
-  return result;
-};
-
-/**
- * Traffic Signs Encoding
- * Encode text using traffic sign emojis
- */
-export const encodeTrafficSigns = (text) => {
-  const signs = [
-    '🛑', '⚠️', '🚸', '🚫', '🚳', '🚭', '🚯', '🚱',
-    '🚷', '📵', '🔞', '⛔', '✋', '☢️', '☣️', '⬆️'
-  ];
-
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += signs[code % signs.length];
-  }
-  return result;
-};
-
-/**
- * Binary Tree/Leaf Encoding
- * Encode text as tree symbols
- */
-export const encodeTreePattern = (text) => {
-  const trees = ['🌲', '🌳', '🌴', '🎄', '🌵', '🎋', '🍀', '🌿', '🍃', '🍂', '🍁', '🌱'];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += trees[code % trees.length];
-  }
-  return result;
-};
-
-/**
- * Moon Phases Encoding
- * Encode text using moon phase emojis
- */
-export const encodeMoonPhase = (text) => {
-  const moons = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += moons[code % moons.length];
-  }
-  return result;
-};
-
-/**
- * Animal Encoding
- * Encode text using animal emojis
- */
-export const encodeAnimal = (text) => {
-  const animals = [
-    '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼',
-    '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔',
-    '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺',
-    '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += animals[code % animals.length];
-  }
-  return result;
-};
-
-/**
- * Food/Fruit Encoding
- * Encode text using food emojis
- */
-export const encodeFood = (text) => {
-  const food = [
-    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓',
-    '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
-    '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑',
-    '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += food[code % food.length];
-  }
-  return result;
-};
-
-/**
- * Sports Encoding
- * Encode text using sports emojis
- */
-export const encodeSports = (text) => {
-  const sports = [
-    '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉',
-    '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍',
-    '🏏', '🪃', '🥅', '⛳', '🪁', '🛷', '⛸️', '🥌',
-    '🎿', '⛷️', '🏂', '🤺', '🏋️', '🤼', '🤸', '⛹️'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += sports[code % sports.length];
-  }
-  return result;
-};
-
-/**
- * Musical Instrument Encoding
- * Encode text using instrument emojis
- */
-export const encodeInstruments = (text) => {
-  const instruments = [
-    '🎹', '🎸', '🎺', '🎷', '🪗', '🎻', '🪕', '🎤',
-    '🎧', '🥁', '🪘', '📯', '🔔', '🎼', '🎵', '🎶'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += instruments[code % instruments.length];
-  }
-  return result;
-};
-
-/**
- * Planet/Space Encoding
- * Encode text using space emojis
- */
-export const encodeSpace = (text) => {
-  const space = [
-    '🌍', '🌎', '🌏', '🌐', '🪐', '⭐', '🌟', '💫',
-    '✨', '☄️', '🌙', '🌛', '🌜', '🌝', '🌞', '🚀',
-    '🛸', '🌌', '🔭', '🌠', '👽', '🛰️', '☀️', '💥'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += space[code % space.length];
-  }
-  return result;
-};
-
-/**
- * Ocean/Sea Encoding
- * Encode text using ocean emojis
- */
-export const encodeOcean = (text) => {
-  const ocean = [
-    '🌊', '🐚', '🦀', '🦞', '🦐', '🦑', '🐙', '🦪',
-    '🐠', '🐟', '🐡', '🦈', '🐬', '🐳', '🐋', '🐢',
-    '🏝️', '⛵', '🚢', '⚓', '🪸', '🧜', '🏄', '🤿'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += ocean[code % ocean.length];
-  }
-  return result;
-};
-
-/**
  * Roman Numeral Encoding
  * Encode character codes as Roman numerals
  */
@@ -520,75 +493,15 @@ export const encodeNumberWords = (text) => {
 };
 
 /**
- * Hexagram (I Ching) Encoding
- * Encode text using I Ching hexagram symbols
- */
-export const encodeHexagram = (text) => {
-  const hexagrams = [
-    '䷀', '䷁', '䷂', '䷃', '䷄', '䷅', '䷆', '䷇', '䷈', '䷉',
-    '䷊', '䷋', '䷌', '䷍', '䷎', '䷏', '䷐', '䷑', '䷒', '䷓',
-    '䷔', '䷕', '䷖', '䷗', '䷘', '䷙', '䷚', '䷛', '䷜', '䷝',
-    '䷞', '䷟', '䷠', '䷡', '䷢', '䷣', '䷤', '䷥', '䷦', '䷧',
-    '䷨', '䷩', '䷪', '䷫', '䷬', '䷭', '䷮', '䷯', '䷰', '䷱',
-    '䷲', '䷳', '䷴', '䷵', '䷶', '䷷', '䷸', '䷹', '䷺', '䷻',
-    '䷼', '䷽', '䷾', '䷿'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += hexagrams[code % hexagrams.length];
-  }
-  return result;
-};
-
-/**
- * Chess Piece Encoding
- * Encode text using chess piece symbols
- */
-export const encodeChess = (text) => {
-  const pieces = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += pieces[code % pieces.length];
-  }
-  return result;
-};
-
-/**
  * Dice Encoding
  * Encode text using dice faces
  */
 export const encodeDice = (text) => {
-  const dice = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
-  
   let result = '';
   for (let char of text) {
     const code = char.charCodeAt(0);
     // Use two dice for each character (for more combinations)
-    result += dice[Math.floor(code / 6) % 6] + dice[code % 6] + ' ';
+    result += DICE_FACES[Math.floor(code / 6) % 6] + DICE_FACES[code % 6] + ' ';
   }
   return result.trim();
-};
-
-/**
- * Mahjong Tile Encoding
- * Encode text using Mahjong tiles
- */
-export const encodeMahjong = (text) => {
-  const tiles = [
-    '🀀', '🀁', '🀂', '🀃', '🀄', '🀅', '🀆', '🀇',
-    '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏',
-    '🀐', '🀑', '🀒', '🀓', '🀔', '🀕', '🀖', '🀗',
-    '🀘', '🀙', '🀚', '🀛', '🀜', '🀝', '🀞', '🀟'
-  ];
-  
-  let result = '';
-  for (let char of text) {
-    const code = char.charCodeAt(0);
-    result += tiles[code % tiles.length];
-  }
-  return result;
 };
