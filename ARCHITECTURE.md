@@ -5,7 +5,6 @@ This document explains key architectural decisions and design choices made in th
 ## Table of Contents
 
 - [Morse Code Maps in Classic vs Parameterized](#morse-code-maps-in-classic-vs-parameterized)
-- [CreativeTextEncoder Component](#creativetextencoder-component)
 - [Encoder Functions Not in Config](#encoder-functions-not-in-config)
 - [Similar Coding Patterns](#similar-coding-patterns)
 - [Shared Utilities](#shared-utilities)
@@ -64,51 +63,6 @@ If consolidation becomes necessary, consider:
 - Create a base map in `shared.js` with ASCII characters
 - Transform at runtime for Unicode display
 - Keep both exports for backward compatibility
-
----
-
-## CreativeTextEncoder Component
-
-### Status: Intentional - Used for Tests
-
-**File:** `src/components/CreativeTextEncoder.jsx`
-
-### Rationale
-
-While `CreativeTextEncoder` is **not used in the main application** (App.jsx uses `EnhancedTextEncoder`), it is intentionally kept in the codebase for the following reasons:
-
-1. **Test Coverage**: It has dedicated tests in `src/__tests__/CreativeTextEncoder.test.jsx` that validate encoding behavior independent of the main application UI
-2. **Reference Implementation**: It serves as a reference for how encoders integrate with React components
-3. **Standalone Demo**: Can be used as a simpler standalone encoder component for documentation or demos
-4. **Historical Context**: Preserves the original implementation approach for comparison
-
-### Usage in Tests
-
-```javascript
-// src/__tests__/CreativeTextEncoder.test.jsx
-describe('CreativeTextEncoder', () => {
-  it('renders the main heading', () => {
-    render(<CreativeTextEncoder />)
-    expect(screen.getByText(/Creative Text Encoder/i)).toBeInTheDocument()
-  })
-  // ... additional tests
-})
-```
-
-### App Architecture
-
-```
-App.jsx
-└── EnhancedTextEncoder (main production component)
-
-CreativeTextEncoder (standalone, used for tests)
-```
-
-### Future Considerations
-
-- Keep as long as tests depend on it
-- Consider converting to a Storybook story if implementing Storybook
-- Could be removed if tests are migrated to use EnhancedTextEncoder
 
 ---
 
@@ -174,7 +128,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md#adding-new-encoders) for instructions on
 
 ## Similar Coding Patterns
 
-### Status: Documented - Future Refactoring Candidates
+### Status: Refactoring Recommended
 
 **Observation:** Multiple encoder modules contain similar coding patterns.
 
@@ -231,14 +185,9 @@ export const POLYBIUS_ALPHABET = '...';
 export const EMOJI_SETS = { ... };
 ```
 
-### Why Patterns Aren't Fully Consolidated
+### Refactoring Plan
 
-1. **Incremental Development**: Encoders were added over time, patterns emerged naturally
-2. **Clarity Over DRYness**: Direct implementations are easier to understand and modify
-3. **Testing Isolation**: Each encoder is independently testable
-4. **Gradual Migration**: New encoders can use utilities, old ones work fine as-is
-
-### Future Refactoring Plan
+New encoders should use the utilities in `shared.js`. Existing encoders can be incrementally migrated to use these utilities to reduce code duplication and improve maintainability.
 
 When refactoring, prioritize:
 
@@ -321,9 +270,8 @@ export const encodeWithAnimals = createModuloEncoder(animals, { separator: '' })
 | Design Decision | Status | Rationale |
 |----------------|--------|-----------|
 | Duplicate Morse maps | Kept separate | Different styles (Unicode vs ASCII) |
-| CreativeTextEncoder unused | Kept | Used for tests |
 | 38+ functions not in config | Intentional | Decoder-only and utility functions |
-| Similar coding patterns | Documented | Utilities available for future refactoring |
+| Similar coding patterns | Refactoring recommended | Utilities available in shared.js |
 
 These decisions prioritize:
 - **Clarity** over premature optimization
