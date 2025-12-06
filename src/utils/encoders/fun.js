@@ -89,7 +89,7 @@ export const encodeBubble = createMapEncoder(BUBBLE_MAP, { lowercase: true });
 
 /**
  * Encodes text to upside down text
- * Note: This has custom reverse logic, so uses partial shared utility
+ * Uses createMapEncoder for character mapping, then reverses for upside-down effect
  * @param {string} text - The text to encode
  * @returns {string} - Upside down text
  */

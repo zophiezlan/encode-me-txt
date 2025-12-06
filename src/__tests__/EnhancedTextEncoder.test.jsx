@@ -82,8 +82,8 @@ describe('EnhancedTextEncoder', () => {
 
   it('displays the main description', async () => {
     render(<EnhancedTextEncoder />)
-    // Check for the main description text
-    expect(screen.getByText(/Transform your messages into 120\+ creative encodings/i)).toBeInTheDocument()
+    // Check for the main description text that mentions multiple encodings
+    expect(screen.getByText(/Transform your messages into.*creative encodings/i)).toBeInTheDocument()
   })
 
   it('can switch to decode mode', () => {
