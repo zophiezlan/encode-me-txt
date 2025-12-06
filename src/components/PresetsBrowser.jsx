@@ -144,14 +144,14 @@ const PresetsBrowser = ({ theme, onClose, onLoadPreset }) => {
                     {/* Encoder Chain Preview */}
                     <div className="flex gap-1 flex-wrap mb-2">
                       {preset.encoderIds.map((id, i) => (
-                        <React.Fragment key={id}>
+                        <span key={id} className="flex items-center gap-1">
                           <span className="text-xs bg-purple-500/30 px-2 py-1 rounded-full font-mono">
                             {id}
                           </span>
                           {i < preset.encoderIds.length - 1 && (
                             <span className="text-white/50">→</span>
                           )}
-                        </React.Fragment>
+                        </span>
                       ))}
                     </div>
 

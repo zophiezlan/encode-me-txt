@@ -11,14 +11,14 @@ import { encoderConfig } from '../encoderConfig';
  *
  * @param {string} text - Text to encode
  * @param {Array<string>} selectedEncoderIds - Array of encoder IDs to choose from
- * @returns {string} - Encoded text with metadata
+ * @returns {string} - Encoded text (just the result, no metadata)
  */
 export const encodeShuffle = (text, selectedEncoderIds = []) => {
   if (!text) return '';
 
   // Default to a few interesting encoders if none selected
   if (!selectedEncoderIds || selectedEncoderIds.length === 0) {
-    selectedEncoderIds = ['binary', 'morse', 'caesar', 'emoji', 'braille'];
+    selectedEncoderIds = ['binary-pro', 'morse-pro', 'caesar', 'emoji', 'braille'];
   }
 
   // Get encoder objects from IDs
@@ -76,62 +76,24 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
     }
   });
 
-  // Create result with metadata
-  const result = {
-    encoded: encodedParts.join('|'), // Use | as delimiter between characters
-    map: encodingMap,
-    selectedEncoders: selectedEncoderIds
-  };
-
-  // Return as formatted string with embedded metadata
-  return `🔀 SHUFFLE ENCODED 🔀\n${result.encoded}\n\n📊 Encoding Map:\n${
-    encodingMap.map(m => `[${m.position}] '${m.original}' → '${m.encoded}' (${m.encoderName})`).join('\n')
-  }`;
+  // Return just the encoded parts joined with delimiter
+  return encodedParts.join('|');
 };
 
 /**
  * Decodes shuffle-encoded text
- * Uses the encoding map to decode each character with the correct encoder
+ * Note: Shuffle encoding is not fully reversible without knowing which encoder was used for each character.
+ * This decoder returns the raw encoded parts without attempting to decode them.
  *
- * @param {string} encodedText - Encoded text with metadata
- * @returns {string} - Decoded text
+ * @param {string} encodedText - Encoded text (pipe-delimited parts)
+ * @returns {string} - Description that decoding is not supported
  */
 export const decodeShuffle = (encodedText) => {
   if (!encodedText) return '';
 
-  try {
-    // Extract the encoded part (between first line and encoding map)
-    const lines = encodedText.split('\n');
-    const encodedLine = lines.find(line => line && !line.includes('🔀') && !line.includes('📊'));
-
-    if (!encodedLine) {
-      return 'Error: Invalid shuffle-encoded format';
-    }
-
-    // Extract encoding map
-    const mapStartIndex = lines.findIndex(line => line.includes('📊 Encoding Map:'));
-    if (mapStartIndex === -1) {
-      return 'Error: Encoding map not found';
-    }
-
-    // Parse the map to get original characters in order
-    const originalChars = [];
-    for (let i = mapStartIndex + 1; i < lines.length; i++) {
-      const line = lines[i];
-      // Parse format: [position] 'original' → 'encoded' (encoderName)
-      const match = line.match(/\[(\d+)\] '(.)'/);
-      if (match) {
-        const position = parseInt(match[1]);
-        const original = match[2];
-        originalChars[position] = original;
-      }
-    }
-
-    return originalChars.join('');
-
-  } catch {
-    return 'Error: Failed to decode shuffle-encoded text';
-  }
+  // Shuffle encoding is not reversible without the encoding map
+  // Just return a message explaining this
+  return '[Shuffle decoding requires knowing which encoder was used for each character - not available]';
 };
 
 /**

@@ -122,10 +122,10 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-6 max-w-4xl w-full border-2 ${theme.cardBorder} shadow-2xl my-4 max-h-[90vh] overflow-y-auto`}>
+      <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-4 md:p-6 max-w-4xl w-full border-2 ${theme.cardBorder} shadow-2xl my-4 max-h-[90vh] overflow-y-auto overflow-x-hidden`}>
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+          <h2 className="text-xl md:text-3xl font-bold flex items-center gap-2">
             🔧 Custom Encoder Builder
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-lg">
@@ -189,47 +189,49 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
             </div>
 
             {/* Character Mapping */}
-            <div>
+            <div className="w-full overflow-hidden">
               <label className="block text-sm font-semibold mb-2">Character Mappings</label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={inputChar}
-                  onChange={(e) => setInputChar(e.target.value)}
-                  placeholder="Input (e.g., 'a')"
-                  className={`flex-1 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
-                  maxLength={1}
-                />
-                <span className="flex items-center text-2xl">→</span>
-                <input
-                  type="text"
-                  value={outputChar}
-                  onChange={(e) => setOutputChar(e.target.value)}
-                  placeholder="Output (e.g., '★')"
-                  className={`flex-1 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
-                />
-                <button
-                  onClick={addMapping}
-                  className="px-3 py-2 bg-green-500/30 hover:bg-green-500/50 rounded-lg"
-                >
-                  <Plus size={20} />
-                </button>
+              <div className="flex flex-col gap-2 mb-2">
+                <div className="grid grid-cols-[1fr_auto_1fr_auto] sm:flex sm:flex-nowrap items-center gap-2">
+                  <input
+                    type="text"
+                    value={inputChar}
+                    onChange={(e) => setInputChar(e.target.value)}
+                    placeholder="In"
+                    className={`w-full sm:flex-1 sm:min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                    maxLength={1}
+                  />
+                  <span className="flex items-center justify-center text-lg sm:text-2xl">→</span>
+                  <input
+                    type="text"
+                    value={outputChar}
+                    onChange={(e) => setOutputChar(e.target.value)}
+                    placeholder="Out"
+                    className={`w-full sm:flex-1 sm:min-w-[60px] px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                  />
+                  <button
+                    onClick={addMapping}
+                    className="px-3 py-2 bg-green-500/30 hover:bg-green-500/50 rounded-lg flex-shrink-0"
+                  >
+                    <Plus size={20} />
+                  </button>
+                </div>
               </div>
 
               {/* Mapping List */}
-              <div className="bg-black/30 rounded-lg p-3 max-h-40 overflow-y-auto">
+              <div className="bg-black/30 rounded-lg p-3 max-h-40 overflow-y-auto overflow-x-hidden">
                 {Object.keys(mapping).length === 0 ? (
                   <p className="text-white/50 text-sm text-center py-2">No mappings yet</p>
                 ) : (
                   <div className="space-y-1">
                     {Object.entries(mapping).map(([key, value]) => (
-                      <div key={key} className="flex items-center justify-between bg-white/10 px-3 py-2 rounded">
-                        <span className="font-mono text-sm">
+                      <div key={key} className="flex items-center justify-between bg-white/10 px-3 py-2 rounded gap-2">
+                        <span className="font-mono text-sm truncate min-w-0 flex-1">
                           '{key}' → '{value}'
                         </span>
                         <button
                           onClick={() => removeMapping(key)}
-                          className="text-red-400 hover:text-red-300"
+                          className="text-red-400 hover:text-red-300 flex-shrink-0"
                         >
                           <Trash2 size={16} />
                         </button>
