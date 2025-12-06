@@ -142,6 +142,7 @@ const EnhancedTextEncoder = () => {
 
   const searchInputRef = useRef(null);
   const keyboardShortcuts = useRef(null);
+  const shuffleEncoderRef = useRef(null);
   const theme = getTheme(currentTheme);
 
   // Memoized theme cycler for keyboard shortcuts
@@ -222,6 +223,16 @@ const EnhancedTextEncoder = () => {
   useEffect(() => {
     localStorage.setItem('shuffle-encoders', JSON.stringify(shuffleEncoders));
   }, [shuffleEncoders]);
+
+  // Scroll to shuffle encoder card when shuffle mode is enabled
+  useEffect(() => {
+    if (showShuffleMode && shuffleEncoderRef.current) {
+      // Small delay to ensure DOM is updated
+      setTimeout(() => {
+        shuffleEncoderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [showShuffleMode]);
 
   const updateEncoderParam = (encoderId, _paramName, value) => {
     setEncoderParams(prev => ({
@@ -1687,6 +1698,7 @@ const EnhancedTextEncoder = () => {
             return (
               <div
                 key={encoder.id}
+                ref={encoder.id === 'shuffle' ? shuffleEncoderRef : null}
                 className={`backdrop-blur-xl bg-white/5 rounded-2xl p-4 md:p-5 border transition-all w-full shadow-2xl hover:shadow-purple-500/10 hover:bg-white/10 ${
                   isDisabled
                     ? 'border-white/10 opacity-50'

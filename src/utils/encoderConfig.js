@@ -685,8 +685,7 @@ export const encoderConfig = [
     category: 'advanced',
     encode: encoders.encodeShuffle,
     decode: encoders.decodeShuffle,
-    reversible: true,
-    special: true,
+    reversible: false,
     hasSettings: true,
     tags: ['advanced', 'shuffle', 'random', 'mixed']
   },

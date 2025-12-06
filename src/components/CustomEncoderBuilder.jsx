@@ -191,26 +191,28 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
             {/* Character Mapping */}
             <div>
               <label className="block text-sm font-semibold mb-2">Character Mappings</label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={inputChar}
-                  onChange={(e) => setInputChar(e.target.value)}
-                  placeholder="Input (e.g., 'a')"
-                  className={`flex-1 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
-                  maxLength={1}
-                />
-                <span className="flex items-center text-2xl">→</span>
-                <input
-                  type="text"
-                  value={outputChar}
-                  onChange={(e) => setOutputChar(e.target.value)}
-                  placeholder="Output (e.g., '★')"
-                  className={`flex-1 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
-                />
+              <div className="flex flex-col sm:flex-row gap-2 mb-2">
+                <div className="flex gap-2 flex-1 min-w-0">
+                  <input
+                    type="text"
+                    value={inputChar}
+                    onChange={(e) => setInputChar(e.target.value)}
+                    placeholder="Input"
+                    className={`flex-1 min-w-0 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                    maxLength={1}
+                  />
+                  <span className="flex items-center text-2xl">→</span>
+                  <input
+                    type="text"
+                    value={outputChar}
+                    onChange={(e) => setOutputChar(e.target.value)}
+                    placeholder="Output"
+                    className={`flex-1 min-w-0 px-3 py-2 bg-white/20 border-2 border-white/30 rounded-lg ${theme.textPrimary} placeholder-white/50 text-sm`}
+                  />
+                </div>
                 <button
                   onClick={addMapping}
-                  className="px-3 py-2 bg-green-500/30 hover:bg-green-500/50 rounded-lg"
+                  className="px-3 py-2 bg-green-500/30 hover:bg-green-500/50 rounded-lg flex-shrink-0"
                 >
                   <Plus size={20} />
                 </button>
