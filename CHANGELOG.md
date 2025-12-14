@@ -7,6 +7,7 @@
 #### New Features
 
 ##### 🔀 Shuffle Encoding (v2.1.0)
+
 - **Shuffle Encoding Mode** - Select multiple encoders and have each character randomly encoded with one of them
 - Interactive encoder selection panel with visual feedback
 - Encoding map showing which encoder was used for each character
@@ -16,17 +17,20 @@
 - Prevents circular dependencies (shuffle encoder cannot be selected for shuffle)
 
 ##### 🎨 Visual Enhancements (v2.1.0)
+
 - **Animated Particle Background** - Beautiful tsParticles integration with glassmorphic UI
 - Smooth transitions and modern visual effects
 - Performance-optimized rendering
 
 ##### 🛠️ Next Evolution Features (v2.1.0)
+
 - **Custom Encoder Builder** - Create and save your own encoding schemes with custom character mappings
 - **Visual Encoding Flow** - Watch character-by-character transformations animate in real-time
 - **Preset System** - Save and load encoder combinations and configurations
 - **Daily Puzzles** - Interactive encoding challenges with hints and solutions
 
 ##### 🚀 Performance & UX Improvements (v2.1.0)
+
 - Optimized encoding performance with better state management
 - Fixed infinite re-encoding loop
 - Improved history saving reliability
@@ -44,6 +48,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 ### ✨ New Features
 
 #### 🌟 12 Unique Encoders (Not Found in Competitor Apps)
+
 - **DNA Sequence** 🧬 - Encode text as genetic base pairs (ATGC) - Reversible!
 - **Playing Cards** 🃏 - Express text through card deck symbols - Reversible!
 - **Chemistry Elements** ⚗️ - Periodic table element encoding
@@ -58,12 +63,14 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - **Traffic Signs** 🛑 - Road sign symbols
 
 #### 🔗 Functional Chain Encoding
+
 - Apply multiple encoders in sequence (finally implemented!)
 - See step-by-step transformation process
 - Check if chain is reversible
 - Visual feedback for chain sequences
 
 #### 🎨 6 Stunning Themes
+
 - **Dark Purple** - Original elegant theme
 - **Light** - Clean and bright
 - **Cyberpunk** - Neon pink and cyan
@@ -72,6 +79,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - **Matrix** - Iconic green on black
 
 #### 📜 Persistent History System
+
 - Automatically saves your encoding history
 - View up to 50 recent encodings
 - Timestamp tracking
@@ -79,12 +87,14 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Clear individual entries or all history
 
 #### 🔗 Shareable Links
+
 - Generate shareable URLs with encoded messages
 - Share via native share API or copy link
 - Automatically load shared encodings
 - Perfect for sending puzzles to friends
 
 #### 📊 Encoding Strength Analyzer
+
 - Real-time complexity analysis (0-100 score)
 - Visual strength meter
 - Detailed factor breakdown
@@ -92,6 +102,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Character frequency analysis
 
 #### ⌨️ Keyboard Shortcuts
+
 - `Ctrl+K` - Focus search
 - `Ctrl+Shift+E` - Toggle encode/decode mode
 - `Ctrl+Shift+C` - Toggle chain mode
@@ -101,6 +112,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - `Esc` - Close modals/panels
 
 #### 🔍 Advanced Search & Filter
+
 - Instant search across all encoders
 - Filter by category
 - Filter by favorites
@@ -108,18 +120,21 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Smart tag-based search
 
 #### 👁️ Comparison Mode
+
 - Compare up to 4 encodings side-by-side
 - Visual side-by-side comparison
 - Quick add/remove encoders
 - Perfect for choosing the best encoding
 
 #### 📱 Enhanced Mobile Experience
+
 - Fully responsive design
 - Touch-optimized controls
 - Collapsible panels
 - Mobile-friendly shortcuts
 
 #### 💡 Smart UI Improvements
+
 - Visual feedback for favorites
 - Chain sequence visualization
 - Category badges
@@ -129,6 +144,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Analysis badges on results
 
 ### 🚀 Performance Improvements
+
 - Modular utility system
 - Optimized rendering
 - Efficient state management
@@ -136,6 +152,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Reduced bundle size through code splitting
 
 ### 🎯 User Experience Enhancements
+
 - Cleaner, more organized interface
 - Better visual hierarchy
 - Improved color coding
@@ -144,6 +161,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - Professional glassmorphism design
 
 ### 🏗️ Architecture Improvements
+
 - Separated utilities into modules:
   - `themeSystem.js` - Theme management
   - `historyManager.js` - History persistence
@@ -156,6 +174,7 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - More maintainable codebase
 
 ### 📈 Statistics
+
 - **Total Encoders**: 37 (up from 25)
 - **Unique Encoders**: 12 (brand new!)
 - **Reversible Encoders**: 17 (up from 13)
@@ -164,13 +183,17 @@ This release transforms Creative Text Encoder from a simple encoding tool into a
 - **New Features**: 10 major features
 
 ### 🎨 Design Philosophy
+
 This update transforms the app from a simple utility to a **creative playground for encoding enthusiasts**. Every feature was designed to either:
+
 1. **Differentiate** from existing encoding tools
 2. **Delight** users with unexpected functionality
 3. **Empower** users with professional-grade features
 
 ### 🌟 What Makes This Version Unique
+
 Unlike other text encoders that simply list encoding methods, Creative Text Encoder v2.0 offers:
+
 - **Unique encoders** you won't find anywhere else (DNA, Playing Cards, Coordinates, etc.)
 - **Chain encoding** to create complex multi-step transformations
 - **Analysis tools** to understand encoding strength
@@ -181,6 +204,7 @@ Unlike other text encoders that simply list encoding methods, Creative Text Enco
 - **Comparison mode** to choose the best encoding
 
 ### 🔮 Future Enhancements
+
 - Visual encoding animations
 - Interactive tutorials for each encoder
 - Custom encoder builder
@@ -189,5 +213,6 @@ Unlike other text encoders that simply list encoding methods, Creative Text Enco
 - Mobile app version
 
 ### 🙏 Credits
+
 Massive redesign focused on market differentiation and user delight.
 All processing remains 100% client-side - your data never leaves your device!

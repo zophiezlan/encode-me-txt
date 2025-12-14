@@ -3,11 +3,11 @@
  * Manages encoding history with localStorage persistence
  */
 
-const HISTORY_KEY = 'encoder-history';
+const HISTORY_KEY = "encoder-history";
 const MAX_HISTORY = 50;
 
 export class HistoryManager {
-  static saveEntry(inputText, encoderId, encoderName, result, mode = 'encode') {
+  static saveEntry(inputText, encoderId, encoderName, result, mode = "encode") {
     const history = this.getHistory();
     const entry = {
       id: Date.now() + Math.random(),
@@ -16,7 +16,7 @@ export class HistoryManager {
       encoderId,
       encoderName,
       result: result.substring(0, 200), // Truncate for storage
-      mode
+      mode,
     };
 
     history.unshift(entry);
@@ -45,7 +45,7 @@ export class HistoryManager {
 
   static deleteEntry(entryId) {
     const history = this.getHistory();
-    const filtered = history.filter(entry => entry.id !== entryId);
+    const filtered = history.filter((entry) => entry.id !== entryId);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered));
   }
 
@@ -53,8 +53,9 @@ export class HistoryManager {
     const history = this.getHistory();
     const encoderCounts = {};
 
-    history.forEach(entry => {
-      encoderCounts[entry.encoderId] = (encoderCounts[entry.encoderId] || 0) + 1;
+    history.forEach((entry) => {
+      encoderCounts[entry.encoderId] =
+        (encoderCounts[entry.encoderId] || 0) + 1;
     });
 
     return Object.entries(encoderCounts)
@@ -78,36 +79,38 @@ export class HistoryManager {
    */
   static exportAsCSV() {
     const history = this.getHistory();
-    if (history.length === 0) return '';
+    if (history.length === 0) return "";
 
-    const headers = ['Date', 'Time', 'Encoder', 'Mode', 'Input', 'Result'];
-    const rows = history.map(entry => {
+    const headers = ["Date", "Time", "Encoder", "Mode", "Input", "Result"];
+    const rows = history.map((entry) => {
       const date = new Date(entry.timestamp);
       return [
         date.toLocaleDateString(),
         date.toLocaleTimeString(),
         entry.encoderName,
         entry.mode,
-        `"${(entry.inputText || '').replace(/"/g, '""')}"`,
-        `"${(entry.result || '').replace(/"/g, '""')}"`
-      ].join(',');
+        `"${(entry.inputText || "").replace(/"/g, '""')}"`,
+        `"${(entry.result || "").replace(/"/g, '""')}"`,
+      ].join(",");
     });
 
-    return [headers.join(','), ...rows].join('\n');
+    return [headers.join(","), ...rows].join("\n");
   }
 
   /**
    * Download history as a file
    * @param {string} format - 'json' or 'csv'
    */
-  static downloadHistory(format = 'json') {
-    const content = format === 'csv' ? this.exportAsCSV() : this.exportAsJSON();
-    const mimeType = format === 'csv' ? 'text/csv' : 'application/json';
-    const filename = `encoding-history-${new Date().toISOString().split('T')[0]}.${format}`;
+  static downloadHistory(format = "json") {
+    const content = format === "csv" ? this.exportAsCSV() : this.exportAsJSON();
+    const mimeType = format === "csv" ? "text/csv" : "application/json";
+    const filename = `encoding-history-${
+      new Date().toISOString().split("T")[0]
+    }.${format}`;
 
     const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
@@ -125,20 +128,22 @@ export class HistoryManager {
     const encoderCounts = {};
     const modeCounts = { encode: 0, decode: 0 };
 
-    history.forEach(entry => {
-      encoderCounts[entry.encoderName] = (encoderCounts[entry.encoderName] || 0) + 1;
+    history.forEach((entry) => {
+      encoderCounts[entry.encoderName] =
+        (encoderCounts[entry.encoderName] || 0) + 1;
       modeCounts[entry.mode] = (modeCounts[entry.mode] || 0) + 1;
     });
 
-    const sortedEncoders = Object.entries(encoderCounts)
-      .sort((a, b) => b[1] - a[1]);
+    const sortedEncoders = Object.entries(encoderCounts).sort(
+      (a, b) => b[1] - a[1]
+    );
 
     return {
       totalEncodings: history.length,
       encodeCount: modeCounts.encode,
       decodeCount: modeCounts.decode,
       topEncoders: sortedEncoders.slice(0, 5),
-      uniqueEncoders: sortedEncoders.length
+      uniqueEncoders: sortedEncoders.length,
     };
   }
 }

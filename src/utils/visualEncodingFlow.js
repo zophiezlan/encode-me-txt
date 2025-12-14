@@ -11,13 +11,13 @@ export class VisualEncodingFlow {
     if (!inputText || !encoder) return [];
 
     const steps = [];
-    const chars = inputText.split('');
+    const chars = inputText.split("");
 
     chars.forEach((char, index) => {
       // Encode single character
       let encoded;
       try {
-        if (encoder.id === 'caesar') {
+        if (encoder.id === "caesar") {
           encoded = encoder.encode(char, caesarShift);
         } else {
           encoded = encoder.encode(char);
@@ -31,7 +31,7 @@ export class VisualEncodingFlow {
         original: char,
         encoded,
         position: index,
-        isSpace: char === ' ',
+        isSpace: char === " ",
         isPunctuation: /[.,!?;:]/.test(char),
         isNumber: /\d/.test(char),
         isLetter: /[a-zA-Z]/.test(char),
@@ -47,10 +47,10 @@ export class VisualEncodingFlow {
   static generateComparisonFlow(inputText, encoders, caesarShift = 13) {
     if (!inputText || !encoders || encoders.length === 0) return [];
 
-    const chars = inputText.split('');
+    const chars = inputText.split("");
     const flows = {};
 
-    encoders.forEach(encoder => {
+    encoders.forEach((encoder) => {
       flows[encoder.id] = this.generateFlow(inputText, encoder, caesarShift);
     });
 
@@ -61,11 +61,11 @@ export class VisualEncodingFlow {
    * Get color for character type
    */
   static getCharTypeColor(step) {
-    if (step.isSpace) return 'bg-gray-500/30';
-    if (step.isPunctuation) return 'bg-purple-500/30';
-    if (step.isNumber) return 'bg-blue-500/30';
-    if (step.isLetter) return 'bg-green-500/30';
-    return 'bg-white/20';
+    if (step.isSpace) return "bg-gray-500/30";
+    if (step.isPunctuation) return "bg-purple-500/30";
+    if (step.isNumber) return "bg-blue-500/30";
+    if (step.isLetter) return "bg-green-500/30";
+    return "bg-white/20";
   }
 
   /**
@@ -111,7 +111,7 @@ export class VisualEncodingFlow {
       other: [],
     };
 
-    steps.forEach(step => {
+    steps.forEach((step) => {
       if (step.isLetter) groups.letters.push(step);
       else if (step.isNumber) groups.numbers.push(step);
       else if (step.isPunctuation) groups.punctuation.push(step);
@@ -128,7 +128,7 @@ export class VisualEncodingFlow {
   static getTransformationFrequency(steps) {
     const frequency = {};
 
-    steps.forEach(step => {
+    steps.forEach((step) => {
       const transform = `${step.original}→${step.encoded}`;
       frequency[transform] = (frequency[transform] || 0) + 1;
     });
@@ -142,15 +142,15 @@ export class VisualEncodingFlow {
    * Create encoding "pattern" visualization
    */
   static createPattern(encoded) {
-    const chars = encoded.split('');
-    const pattern = chars.map(char => {
+    const chars = encoded.split("");
+    const pattern = chars.map((char) => {
       // Categorize characters for visual pattern
-      if (/[a-zA-Z]/.test(char)) return 'L';
-      if (/\d/.test(char)) return 'N';
-      if (/[.,!?;:]/.test(char)) return 'P';
-      if (char === ' ') return '_';
-      if (/[\u{1F300}-\u{1F9FF}]/u.test(char)) return 'E'; // Emoji
-      return 'S'; // Symbol
+      if (/[a-zA-Z]/.test(char)) return "L";
+      if (/\d/.test(char)) return "N";
+      if (/[.,!?;:]/.test(char)) return "P";
+      if (char === " ") return "_";
+      if (/[\u{1F300}-\u{1F9FF}]/u.test(char)) return "E"; // Emoji
+      return "S"; // Symbol
     });
 
     return pattern;

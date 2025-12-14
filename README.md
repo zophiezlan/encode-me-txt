@@ -24,6 +24,7 @@ Creative Text Encoder is a powerful, privacy-focused web application that transf
 ### 🌟 What Makes This Different?
 
 Unlike other text encoders, Creative Text Encoder v3.0 offers:
+
 - **215+ NEW encoders** not found in any other app (Hieroglyphs, Cuneiform, Elvish, Aurebesh, Fibonacci, Quantum States, and more!)
 - **Shuffle encoding** - mix multiple encoders randomly for each character
 - **Custom encoder builder** - create your own encoding schemes
@@ -40,6 +41,7 @@ Unlike other text encoders, Creative Text Encoder v3.0 offers:
 - **Animated particle background** - beautiful glassmorphic UI
 
 Perfect for:
+
 - 🎓 **Learning** about cryptography and encoding systems
 - 🎨 **Creating** unique social media content
 - 🔒 **Sharing** messages in creative ways
@@ -88,15 +90,18 @@ Perfect for:
 ## 🎨 Encoding Categories
 
 ### 🔐 Secret (2)
+
 - **Zero-Width Steganography** 👻 - Hide messages in invisible Unicode characters (Reversible!)
 - **Whitespace Stego** 🌫️ - Hide data in spaces and tabs (Reversible!)
 
 ### 📻 Classic (3)
+
 - **Morse Code** 📡 - Dit-dah communication with audio playback (Reversible!)
 - **Braille Patterns** 🤚 - Touch-readable text encoding (Reversible!)
 - **NATO Phonetic** 🎖️ - Alpha-Bravo-Charlie spelling
 
 ### 💾 Computer Science (10)
+
 - **Binary** 💻 - Classic 0s and 1s (8-bit) (Reversible!)
 - **Hexadecimal** 🔢 - Base-16 number system (Reversible!)
 - **Base64** 📦 - Standard encoding for data transfer (Reversible!)
@@ -108,6 +113,7 @@ Perfect for:
 - **Brainfuck** 🤯 - Esoteric programming language (Reversible!)
 
 ### 🔑 Ciphers (18)
+
 - **Caesar Cipher** 🏛️ - Shift alphabet by N positions (adjustable) (Reversible!)
 - **ROT13** 🔄 - Caesar cipher with 13-letter shift (Reversible!)
 - **ROT47** 🔄 - Extended ASCII rotation cipher (Reversible!)
@@ -129,6 +135,7 @@ Perfect for:
 - **Bifid Cipher** 🔺 - Polybius-based fractionation (Reversible!)
 
 ### 🎉 Fun (10)
+
 - **Emoji Encoding** 😎 - Express text through emoji pairs (Reversible!)
 - **Bubble Text** ⭕ - Cute circled characters (ⓗⓔⓛⓛⓞ)
 - **Upside Down** 🙃 - Australian mode activated (oʃʃǝH)
@@ -141,6 +148,7 @@ Perfect for:
 - **Acrostic Generator** 📝 - First letters spell message
 
 ### 🎨 Artistic (5)
+
 - **Block Art** ◼️ - Geometric pattern encoding (█▓▒░)
 - **Musical Notes** 🎵 - Your text as a symphony (♪♫♬)
 - **Zalgo Chaos** 😈 - Ḩ̷̛e̶͝ ̸̕c̷̀o̶̎m̸̂e̵̊s̶̄
@@ -148,6 +156,7 @@ Perfect for:
 - **Ancient Runes** ⚔️ - Elder Futhark mysticism (ᚠᚢᚦᚨᚱᚲ)
 
 ### 🚀 Advanced (6)
+
 - **Shuffle Encoding** 🔀 - Each character encoded with a random encoder from selected options (Reversible!)
 - **QR Code Generator** 📱 - Generate scannable QR codes
 - **URL Encoding** 🔗 - Web-safe URL encoding (Reversible!)
@@ -156,7 +165,9 @@ Perfect for:
 - **Hash Generator** 🔐 - Generate unique fingerprint from text
 
 ### 🌟 Unique (20)
+
 These creative encoders are not found in any other encoding app:
+
 - **DNA Sequence** 🧬 - Encode as genetic base pairs (ATGC) (Reversible!)
 - **Playing Cards** 🃏 - Express text through card deck (Reversible!)
 - **Chemistry Elements** ⚗️ - Periodic table encoding
@@ -179,6 +190,7 @@ These creative encoders are not found in any other encoding app:
 - **Ocean Encoding** 🌊 - Marine sea life emojis
 
 ### 🌍 Linguistic (5) **NEW!**
+
 - **Greek Alphabet** Ω - Transliterate to Greek letters (Reversible!)
 - **Cyrillic Script** Д - Transliterate to Cyrillic letters (Reversible!)
 - **Hebrew Alefbet** א - Transliterate to Hebrew letters (Reversible!)
@@ -186,18 +198,21 @@ These creative encoders are not found in any other encoding app:
 - **IPA Transcription** 🗣️ - International Phonetic Alphabet
 
 ### 🧙 Fantasy (4) **NEW!**
+
 - **Aurebesh** ⭐ - Star Wars galaxy script (Reversible!)
 - **Circular Gallifreyan** 🌀 - Doctor Who Time Lord script (Reversible!)
 - **Elvish/Tengwar** 💍 - Lord of the Rings script (Reversible!)
 - **Klingon pIqaD** 🖖 - Star Trek Klingon script (Reversible!)
 
 ### 👁️ Visual (4) **NEW!**
+
 - **ASL Fingerspelling** 🤟 - American Sign Language hand signs
 - **7-Segment Display** 🧮 - Digital display encoding
 - **Dancing Men Cipher** 🕺 - Sherlock Holmes' Dancing Men (Reversible!)
 - **Pigpen Cipher** 🔳 - Geometric substitution cipher (Reversible!)
 
 ### 📟 Retro (5) **NEW!**
+
 - **Phone Keypad (T9)** 📱 - Old mobile phone multi-tap (Reversible!)
 - **Pager Code** 📟 - Classic pager numeric codes
 - **IBM Punch Card** 🎫 - Vintage punch card patterns
@@ -205,12 +220,14 @@ These creative encoders are not found in any other encoding app:
 - **Resistor Color Code** ⚡ - Electronics color bands
 
 ### 🏛️ Ancient (4) **NEW!**
+
 - **Ogham Script** 🎋 - Celtic tree alphabet (Reversible!)
 - **Egyptian Hieroglyphs** 🦅 - Ancient Egyptian writing (Reversible!)
 - **Sumerian Cuneiform** 🧱 - Ancient Mesopotamian script (Reversible!)
 - **Mayan Numerals** 🗿 - Ancient Mayan number system (Reversible!)
 
 ### ✨ Aesthetic (6) **NEW!**
+
 - **Ｆｕｌｌｗｉｄｔｈ Ｔｅｘｔ** ↔️ - Wide aesthetic characters (Reversible!)
 - **🅂🅀🅄🄰🅁🄴🄳 🅃🄴🅇🅃** 🔲 - Squared Unicode letters (Reversible!)
 - **⒫⒜⒭⒠⒩⒯⒣⒠⒮⒤⒵⒠⒟** ⒜ - Parenthesized letters (Reversible!)
@@ -219,7 +236,9 @@ These creative encoders are not found in any other encoding app:
 - **Mirror Text** 🪞 - Horizontally mirrored text
 
 ### 📊 Patterns (18) **NEW v3.0!**
+
 Mathematical and pattern-based encodings:
+
 - **Fibonacci Encoding** 🌀 - Fibonacci sequence mapping (Reversible!)
 - **Prime Number Encoding** 🔢 - Prime number positions (Reversible!)
 - **Golden Ratio Encoding** φ - Phi-based encoding (Reversible!)
@@ -233,7 +252,9 @@ Mathematical and pattern-based encodings:
 - And more...
 
 ### 🔍 Forensics (21) **NEW v3.0!**
+
 Digital forensics and security encodings:
+
 - **Unix Timestamp** ⏰ - Time-based encoding (Reversible!)
 - **MAC Address Format** 🔌 - Network address style
 - **IP Address Format** 🌐 - IPv4 encoding
@@ -247,7 +268,9 @@ Digital forensics and security encodings:
 - And more...
 
 ### 🔬 Scientific (22) **NEW v3.0!**
+
 Science and mathematics notation:
+
 - **Scientific Notation** 🔬 - Mantissa × 10^exp (Reversible!)
 - **Physics Constants** ⚛️ - Physical constant values
 - **Chemical Formula** ⚗️ - Compound notation
@@ -261,7 +284,9 @@ Science and mathematics notation:
 - And more...
 
 ### 📱 Modern Tech (26) **NEW v3.0!**
+
 Modern technology and social media:
+
 - **Code128 Barcode** ▐ - Barcode pattern
 - **DataMatrix** ⬛ - 2D barcode style
 - **Hashtag Encoding** #️⃣ - Social media hashtags
@@ -275,7 +300,9 @@ Modern technology and social media:
 - And more...
 
 ### 🌿 Nature (22) **NEW v3.0!**
+
 Nature, biology, and ecology:
+
 - **RNA Sequence** 🧬 - AUGC base encoding (Reversible!)
 - **Amino Acid Sequence** 🥩 - Protein encoding
 - **Codon Triplets** 🧪 - Genetic codons
@@ -289,7 +316,9 @@ Nature, biology, and ecology:
 - And more...
 
 ### 🎮 Games (23) **NEW v3.0!**
+
 Gaming and entertainment:
+
 - **Tetris Blocks** 🟦 - Tetromino encoding
 - **Poker Hand** ♠️ - Playing card hands (Reversible!)
 - **RPG Stats** ⚔️ - Character attributes
@@ -303,7 +332,9 @@ Gaming and entertainment:
 - And more...
 
 ### 🎖️ Military & Government (11) **NEW v3.5!**
+
 Serious military and government encoding standards:
+
 - **MGRS Coordinates** 🎯 - Military Grid Reference System (NATO) (Reversible!)
 - **STANAG 4439** 🛡️ - NATO classification system
 - **ACP 125 Prowords** 📻 - Military radio procedure words (Reversible!)
@@ -317,7 +348,9 @@ Serious military and government encoding standards:
 - **Weapon Designation** 🚀 - US military weapon system codes
 
 ### 🔐 Modern Cryptography (17) **NEW v3.5!**
+
 Modern cryptographic standards and formats:
+
 - **Bech32** ₿ - Bitcoin SegWit address format (Reversible!)
 - **Z-Base-32** 🔢 - Human-oriented base-32 encoding (Reversible!)
 - **Crockford Base32** 🔣 - Human-friendly base-32 encoding (Reversible!)
@@ -337,7 +370,9 @@ Modern cryptographic standards and formats:
 - **Multibase** 🌐 - Self-describing base encoding (IPFS) (Reversible!)
 
 ### ✍️ Digital Signatures (20) **NEW v3.5!**
+
 Digital signature and authentication formats:
+
 - **PGP Signature** ✍️ - ASCII-armored PGP/GPG signature
 - **PGP Clearsigned** 📝 - PGP clearsigned message format
 - **JWT Token** 🎫 - JSON Web Token with signature (Reversible!)
@@ -523,14 +558,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for testing guidelines.
 
 ## 🔧 Technology Stack
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| [React](https://reactjs.org/) | 18.3.1 | UI framework |
-| [Vite](https://vitejs.dev/) | 6.2.0 | Build tool & dev server |
-| [Tailwind CSS](https://tailwindcss.com/) | 3.4.14 | Styling |
-| [Lucide React](https://lucide.dev/) | 0.460.0 | Icon library |
-| [Vitest](https://vitest.dev/) | 3.0.5 | Testing framework |
-| [ESLint](https://eslint.org/) | 9.15.0 | Code linting |
+| Technology                               | Version | Purpose                 |
+| ---------------------------------------- | ------- | ----------------------- |
+| [React](https://reactjs.org/)            | 18.3.1  | UI framework            |
+| [Vite](https://vitejs.dev/)              | 6.2.0   | Build tool & dev server |
+| [Tailwind CSS](https://tailwindcss.com/) | 3.4.14  | Styling                 |
+| [Lucide React](https://lucide.dev/)      | 0.460.0 | Icon library            |
+| [Vitest](https://vitest.dev/)            | 3.0.5   | Testing framework       |
+| [ESLint](https://eslint.org/)            | 9.15.0  | Code linting            |
 
 **Production Bundle:** ~62KB gzipped (includes all new features!)
 

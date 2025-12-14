@@ -18,7 +18,7 @@ export class ChainEncoder {
     for (let encoder of encoders) {
       try {
         // Handle Caesar cipher with custom shift
-        if (encoder.id === 'caesar') {
+        if (encoder.id === "caesar") {
           current = encoder.encode(current, caesarShift);
         } else {
           current = encoder.encode(current);
@@ -27,14 +27,14 @@ export class ChainEncoder {
         steps.push({
           encoderId: encoder.id,
           encoderName: encoder.name,
-          result: current
+          result: current,
         });
       } catch (error) {
         steps.push({
           encoderId: encoder.id,
           encoderName: encoder.name,
           result: `[Encoding failed: ${error.message}]`,
-          error: true
+          error: true,
         });
         break;
       }
@@ -42,7 +42,7 @@ export class ChainEncoder {
 
     return {
       finalResult: current,
-      steps
+      steps,
     };
   }
 
@@ -66,14 +66,14 @@ export class ChainEncoder {
           encoderId: encoder.id,
           encoderName: encoder.name,
           result: `[${encoder.name} is not reversible]`,
-          error: true
+          error: true,
         });
         break;
       }
 
       try {
         // Handle Caesar cipher with custom shift
-        if (encoder.id === 'caesar') {
+        if (encoder.id === "caesar") {
           current = encoder.decode(current, caesarShift);
         } else {
           current = encoder.decode(current);
@@ -82,14 +82,14 @@ export class ChainEncoder {
         steps.push({
           encoderId: encoder.id,
           encoderName: encoder.name,
-          result: current
+          result: current,
         });
       } catch (error) {
         steps.push({
           encoderId: encoder.id,
           encoderName: encoder.name,
           result: `[Decoding failed: ${error.message}]`,
-          error: true
+          error: true,
         });
         break;
       }
@@ -97,7 +97,7 @@ export class ChainEncoder {
 
     return {
       finalResult: current,
-      steps
+      steps,
     };
   }
 
@@ -107,6 +107,6 @@ export class ChainEncoder {
    * @returns {boolean} - True if all encoders are reversible
    */
   static isChainReversible(encoders) {
-    return encoders.every(encoder => encoder.reversible);
+    return encoders.every((encoder) => encoder.reversible);
   }
 }

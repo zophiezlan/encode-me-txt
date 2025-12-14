@@ -11,12 +11,12 @@ export class ShareManager {
    * @param {string} mode - 'encode' or 'decode'
    * @returns {string} - Shareable URL
    */
-  static createShareableLink(text, encoderId, mode = 'encode') {
+  static createShareableLink(text, encoderId, mode = "encode") {
     const baseUrl = window.location.origin + window.location.pathname;
     const params = new URLSearchParams({
       t: this.compressText(text),
       e: encoderId,
-      m: mode
+      m: mode,
     });
 
     return `${baseUrl}?${params.toString()}`;
@@ -28,15 +28,15 @@ export class ShareManager {
    */
   static parseSharedLink() {
     const params = new URLSearchParams(window.location.search);
-    const text = params.get('t');
-    const encoderId = params.get('e');
-    const mode = params.get('m');
+    const text = params.get("t");
+    const encoderId = params.get("e");
+    const mode = params.get("m");
 
     if (text && encoderId) {
       return {
         text: this.decompressText(text),
         encoderId,
-        mode: mode || 'encode'
+        mode: mode || "encode",
       };
     }
 
@@ -89,12 +89,12 @@ export class ShareManager {
    * @param {string} title - Share title
    * @returns {Promise<boolean>} - Success status
    */
-  static async shareNative(url, title = 'Check out this encoded message!') {
+  static async shareNative(url, title = "Check out this encoded message!") {
     if (navigator.share) {
       try {
         await navigator.share({
           title,
-          url
+          url,
         });
         return true;
       } catch {

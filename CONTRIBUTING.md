@@ -29,11 +29,14 @@ This project adheres to a code of conduct that all contributors are expected to 
 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/encode-me-txt.git
    cd encode-me-txt
    ```
+
 3. **Add upstream remote**:
+
    ```bash
    git remote add upstream https://github.com/zophiezlan/encode-me-txt.git
    ```
@@ -130,6 +133,7 @@ encode-me-txt/
 ### Submitting Code
 
 1. Create a new branch:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -139,17 +143,20 @@ encode-me-txt/
 3. Write or update tests for your changes
 
 4. Run tests and linting:
+
    ```bash
    npm run test
    npm run lint
    ```
 
 5. Commit your changes:
+
    ```bash
    git commit -m "feat: add new encoder for X"
    ```
 
 6. Push to your fork:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -167,7 +174,7 @@ encode-me-txt/
 - Add JSDoc comments for all exported functions
 - Keep functions small and focused (single responsibility)
 
-### Example:
+### Example
 
 ```javascript
 /**
@@ -178,9 +185,10 @@ encode-me-txt/
  * encodeBinary('Hi') // Returns: '01001000 01101001'
  */
 export const encodeBinary = (text) => {
-  return text.split('').map(char =>
-    char.charCodeAt(0).toString(2).padStart(8, '0')
-  ).join(' ');
+  return text
+    .split("")
+    .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
+    .join(" ");
 };
 ```
 
@@ -205,22 +213,22 @@ export const encodeBinary = (text) => {
 All encoder functions should have corresponding tests:
 
 ```javascript
-import { describe, it, expect } from 'vitest';
-import { encodeBinary, decodeBinary } from '../utils/encoders/computer.js';
+import { describe, it, expect } from "vitest";
+import { encodeBinary, decodeBinary } from "../utils/encoders/computer.js";
 
-describe('Binary Encoder', () => {
-  it('should encode text to binary', () => {
-    const result = encodeBinary('Hi');
-    expect(result).toBe('01001000 01101001');
+describe("Binary Encoder", () => {
+  it("should encode text to binary", () => {
+    const result = encodeBinary("Hi");
+    expect(result).toBe("01001000 01101001");
   });
 
-  it('should decode binary to text', () => {
-    const result = decodeBinary('01001000 01101001');
-    expect(result).toBe('Hi');
+  it("should decode binary to text", () => {
+    const result = decodeBinary("01001000 01101001");
+    expect(result).toBe("Hi");
   });
 
-  it('should be reversible', () => {
-    const original = 'Hello World!';
+  it("should be reversible", () => {
+    const original = "Hello World!";
     const encoded = encodeBinary(original);
     const decoded = decodeBinary(encoded);
     expect(decoded).toBe(original);
@@ -260,6 +268,7 @@ footer (optional)
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -269,6 +278,7 @@ footer (optional)
 - `chore`: Maintenance tasks
 
 **Examples:**
+
 ```
 feat(encoder): add QR code generator
 fix(morse): correct decoding for special characters
@@ -312,7 +322,7 @@ export const decodeYourMethod = (text) => {
     // Implementation
     return decodedText;
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 ```
@@ -322,7 +332,7 @@ export const decodeYourMethod = (text) => {
 Add to `src/utils/encoders/index.js`:
 
 ```javascript
-export * from './your-category.js';
+export * from "./your-category.js";
 ```
 
 ### 3. Add to Encoder Config
@@ -348,12 +358,12 @@ Add entry to `src/utils/encoderConfig.js`:
 Create tests in `src/__tests__/`:
 
 ```javascript
-describe('Your Encoder', () => {
-  it('should encode correctly', () => {
+describe("Your Encoder", () => {
+  it("should encode correctly", () => {
     // Test implementation
   });
 
-  it('should decode correctly', () => {
+  it("should decode correctly", () => {
     // Test implementation
   });
 });
@@ -367,6 +377,7 @@ describe('Your Encoder', () => {
 ## Questions?
 
 Feel free to:
+
 - Open an [issue](https://github.com/zophiezlan/encode-me-txt/issues) for questions
 - Start a [discussion](https://github.com/zophiezlan/encode-me-txt/discussions)
 

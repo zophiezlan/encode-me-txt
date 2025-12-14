@@ -3,18 +3,18 @@
  * Gamification with daily encoding challenges
  */
 
-const STATS_KEY = 'puzzle-stats';
+const STATS_KEY = "puzzle-stats";
 
 export class DailyPuzzleSystem {
   /**
    * Generate a deterministic puzzle based on date
    */
   static getDailyPuzzle(date = new Date()) {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = date.toISOString().split("T")[0];
     const seed = this.hashCode(dateStr);
 
     // Use seed to select puzzle difficulty and encoder
-    const difficulty = ['easy', 'medium', 'hard', 'expert'][seed % 4];
+    const difficulty = ["easy", "medium", "hard", "expert"][seed % 4];
     const puzzleTypes = this.getPuzzleTypes();
     const puzzleType = puzzleTypes[seed % puzzleTypes.length];
 
@@ -40,40 +40,40 @@ export class DailyPuzzleSystem {
   static getPuzzleTypes() {
     return [
       {
-        type: 'decode',
-        title: 'Decode the Secret',
-        description: 'Decode the given message',
-        encoderId: 'morse',
-        hints: ['Look for dots and dashes', 'Each letter has a unique pattern'],
+        type: "decode",
+        title: "Decode the Secret",
+        description: "Decode the given message",
+        encoderId: "morse",
+        hints: ["Look for dots and dashes", "Each letter has a unique pattern"],
       },
       {
-        type: 'identify',
-        title: 'Identify the Encoder',
-        description: 'Figure out which encoder was used',
+        type: "identify",
+        title: "Identify the Encoder",
+        description: "Figure out which encoder was used",
         encoderId: null, // Random
-        hints: ['Check the character patterns', 'Look at the output format'],
+        hints: ["Check the character patterns", "Look at the output format"],
       },
       {
-        type: 'chain',
-        title: 'Unravel the Chain',
-        description: 'Decode a message encoded with multiple encoders',
-        encoderChain: ['binary', 'base64'],
-        hints: ['Work backwards', 'Try reversible encoders'],
+        type: "chain",
+        title: "Unravel the Chain",
+        description: "Decode a message encoded with multiple encoders",
+        encoderChain: ["binary", "base64"],
+        hints: ["Work backwards", "Try reversible encoders"],
       },
       {
-        type: 'match',
-        title: 'Perfect Match',
-        description: 'Match the original message by encoding',
-        encoderId: 'caesar',
-        hints: ['Try different parameters', 'The shift value matters'],
+        type: "match",
+        title: "Perfect Match",
+        description: "Match the original message by encoding",
+        encoderId: "caesar",
+        hints: ["Try different parameters", "The shift value matters"],
       },
       {
-        type: 'speed',
-        title: 'Speed Challenge',
-        description: 'Encode as many messages as possible in 60 seconds',
+        type: "speed",
+        title: "Speed Challenge",
+        description: "Encode as many messages as possible in 60 seconds",
         encoderId: null,
         timeLimit: 60,
-        hints: ['Use keyboard shortcuts', 'Copy quickly'],
+        hints: ["Use keyboard shortcuts", "Copy quickly"],
       },
     ];
   }
@@ -83,30 +83,24 @@ export class DailyPuzzleSystem {
    */
   static selectMessage(seed, difficulty) {
     const messages = {
-      easy: [
-        'Hello',
-        'Welcome',
-        'Good day',
-        'Thanks',
-        'Goodbye',
-      ],
+      easy: ["Hello", "Welcome", "Good day", "Thanks", "Goodbye"],
       medium: [
-        'The quick brown fox',
-        'Meet me at noon',
-        'Secret message',
-        'Password is secure',
-        'Encryption works',
+        "The quick brown fox",
+        "Meet me at noon",
+        "Secret message",
+        "Password is secure",
+        "Encryption works",
       ],
       hard: [
-        'The treasure is buried beneath the old oak tree',
-        'Agent Smith will arrive at midnight coordinates provided',
-        'Decode this message to unlock the next level',
-        'Only the wise can decipher ancient scripts',
+        "The treasure is buried beneath the old oak tree",
+        "Agent Smith will arrive at midnight coordinates provided",
+        "Decode this message to unlock the next level",
+        "Only the wise can decipher ancient scripts",
       ],
       expert: [
-        'In cryptography we trust but verify all transformations carefully',
-        'The complexity of modern encoding ensures data security across networks',
-        'Ancient ciphers meet cutting edge technology in this puzzle',
+        "In cryptography we trust but verify all transformations carefully",
+        "The complexity of modern encoding ensures data security across networks",
+        "Ancient ciphers meet cutting edge technology in this puzzle",
       ],
     };
 
@@ -135,7 +129,7 @@ export class DailyPuzzleSystem {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash;
     }
     return Math.abs(hash);
@@ -179,7 +173,7 @@ export class DailyPuzzleSystem {
         return JSON.parse(data);
       }
     } catch (error) {
-      console.error('Failed to load puzzle stats:', error);
+      console.error("Failed to load puzzle stats:", error);
     }
 
     return {
@@ -196,16 +190,20 @@ export class DailyPuzzleSystem {
    * Update daily streak
    */
   static updateStreak(stats) {
-    const today = new Date().toISOString().split('T')[0];
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
+    const yesterday = new Date(Date.now() - 86400000)
+      .toISOString()
+      .split("T")[0];
 
     // Get last completion date
     const lastCompletion = stats.completions
-      .filter(c => c.success)
+      .filter((c) => c.success)
       .sort((a, b) => b.completedAt - a.completedAt)[1]; // Second to last (we just added one)
 
     if (lastCompletion) {
-      const lastDate = new Date(lastCompletion.completedAt).toISOString().split('T')[0];
+      const lastDate = new Date(lastCompletion.completedAt)
+        .toISOString()
+        .split("T")[0];
 
       if (lastDate === yesterday) {
         stats.currentStreak++;
@@ -224,11 +222,11 @@ export class DailyPuzzleSystem {
    */
   static isTodayCompleted() {
     const stats = this.getStats();
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const todayPuzzleId = `daily-${today}`;
 
-    return stats.completions.some(c =>
-      c.puzzleId === todayPuzzleId && c.success
+    return stats.completions.some(
+      (c) => c.puzzleId === todayPuzzleId && c.success
     );
   }
 
@@ -245,60 +243,63 @@ export class DailyPuzzleSystem {
   static checkAchievements(stats) {
     const achievements = [
       {
-        id: 'first-solve',
-        name: 'First Victory',
-        description: 'Solve your first puzzle',
-        icon: '🏆',
+        id: "first-solve",
+        name: "First Victory",
+        description: "Solve your first puzzle",
+        icon: "🏆",
         condition: () => stats.solvedCount >= 1,
       },
       {
-        id: 'streak-7',
-        name: 'Week Warrior',
-        description: 'Maintain a 7-day streak',
-        icon: '🔥',
+        id: "streak-7",
+        name: "Week Warrior",
+        description: "Maintain a 7-day streak",
+        icon: "🔥",
         condition: () => stats.currentStreak >= 7,
       },
       {
-        id: 'streak-30',
-        name: 'Monthly Master',
-        description: 'Maintain a 30-day streak',
-        icon: '⭐',
+        id: "streak-30",
+        name: "Monthly Master",
+        description: "Maintain a 30-day streak",
+        icon: "⭐",
         condition: () => stats.currentStreak >= 30,
       },
       {
-        id: 'points-100',
-        name: 'Century Club',
-        description: 'Earn 100 total points',
-        icon: '💯',
+        id: "points-100",
+        name: "Century Club",
+        description: "Earn 100 total points",
+        icon: "💯",
         condition: () => stats.totalPoints >= 100,
       },
       {
-        id: 'points-500',
-        name: 'Point Master',
-        description: 'Earn 500 total points',
-        icon: '💎',
+        id: "points-500",
+        name: "Point Master",
+        description: "Earn 500 total points",
+        icon: "💎",
         condition: () => stats.totalPoints >= 500,
       },
       {
-        id: 'solved-10',
-        name: 'Decoder',
-        description: 'Solve 10 puzzles',
-        icon: '🔓',
+        id: "solved-10",
+        name: "Decoder",
+        description: "Solve 10 puzzles",
+        icon: "🔓",
         condition: () => stats.solvedCount >= 10,
       },
       {
-        id: 'solved-50',
-        name: 'Cryptographer',
-        description: 'Solve 50 puzzles',
-        icon: '🎓',
+        id: "solved-50",
+        name: "Cryptographer",
+        description: "Solve 50 puzzles",
+        icon: "🎓",
         condition: () => stats.solvedCount >= 50,
       },
     ];
 
     const newAchievements = [];
 
-    achievements.forEach(achievement => {
-      if (!stats.achievements.includes(achievement.id) && achievement.condition()) {
+    achievements.forEach((achievement) => {
+      if (
+        !stats.achievements.includes(achievement.id) &&
+        achievement.condition()
+      ) {
         stats.achievements.push(achievement.id);
         newAchievements.push(achievement);
       }
@@ -318,13 +319,55 @@ export class DailyPuzzleSystem {
     const stats = this.getStats();
 
     return [
-      { id: 'first-solve', name: 'First Victory', description: 'Solve your first puzzle', icon: '🏆', unlocked: stats.achievements.includes('first-solve') },
-      { id: 'streak-7', name: 'Week Warrior', description: 'Maintain a 7-day streak', icon: '🔥', unlocked: stats.achievements.includes('streak-7') },
-      { id: 'streak-30', name: 'Monthly Master', description: 'Maintain a 30-day streak', icon: '⭐', unlocked: stats.achievements.includes('streak-30') },
-      { id: 'points-100', name: 'Century Club', description: 'Earn 100 total points', icon: '💯', unlocked: stats.achievements.includes('points-100') },
-      { id: 'points-500', name: 'Point Master', description: 'Earn 500 total points', icon: '💎', unlocked: stats.achievements.includes('points-500') },
-      { id: 'solved-10', name: 'Decoder', description: 'Solve 10 puzzles', icon: '🔓', unlocked: stats.achievements.includes('solved-10') },
-      { id: 'solved-50', name: 'Cryptographer', description: 'Solve 50 puzzles', icon: '🎓', unlocked: stats.achievements.includes('solved-50') },
+      {
+        id: "first-solve",
+        name: "First Victory",
+        description: "Solve your first puzzle",
+        icon: "🏆",
+        unlocked: stats.achievements.includes("first-solve"),
+      },
+      {
+        id: "streak-7",
+        name: "Week Warrior",
+        description: "Maintain a 7-day streak",
+        icon: "🔥",
+        unlocked: stats.achievements.includes("streak-7"),
+      },
+      {
+        id: "streak-30",
+        name: "Monthly Master",
+        description: "Maintain a 30-day streak",
+        icon: "⭐",
+        unlocked: stats.achievements.includes("streak-30"),
+      },
+      {
+        id: "points-100",
+        name: "Century Club",
+        description: "Earn 100 total points",
+        icon: "💯",
+        unlocked: stats.achievements.includes("points-100"),
+      },
+      {
+        id: "points-500",
+        name: "Point Master",
+        description: "Earn 500 total points",
+        icon: "💎",
+        unlocked: stats.achievements.includes("points-500"),
+      },
+      {
+        id: "solved-10",
+        name: "Decoder",
+        description: "Solve 10 puzzles",
+        icon: "🔓",
+        unlocked: stats.achievements.includes("solved-10"),
+      },
+      {
+        id: "solved-50",
+        name: "Cryptographer",
+        description: "Solve 50 puzzles",
+        icon: "🎓",
+        unlocked: stats.achievements.includes("solved-50"),
+      },
     ];
   }
 
@@ -334,12 +377,12 @@ export class DailyPuzzleSystem {
   static getLeaderboardPosition(stats) {
     // Since this is client-side only, we'll provide milestone-based rankings
     const milestones = [
-      { points: 0, rank: 'Beginner', percentile: 0 },
-      { points: 50, rank: 'Novice', percentile: 25 },
-      { points: 100, rank: 'Apprentice', percentile: 50 },
-      { points: 250, rank: 'Expert', percentile: 75 },
-      { points: 500, rank: 'Master', percentile: 90 },
-      { points: 1000, rank: 'Grand Master', percentile: 95 },
+      { points: 0, rank: "Beginner", percentile: 0 },
+      { points: 50, rank: "Novice", percentile: 25 },
+      { points: 100, rank: "Apprentice", percentile: 50 },
+      { points: 250, rank: "Expert", percentile: 75 },
+      { points: 500, rank: "Master", percentile: 90 },
+      { points: 1000, rank: "Grand Master", percentile: 95 },
     ];
 
     for (let i = milestones.length - 1; i >= 0; i--) {

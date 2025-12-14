@@ -3,7 +3,7 @@
  * Handles creation, storage, and management of user-created custom encoders
  */
 
-const STORAGE_KEY = 'custom-encoders';
+const STORAGE_KEY = "custom-encoders";
 const MAX_CUSTOM_ENCODERS = 20;
 
 export class CustomEncoderManager {
@@ -20,11 +20,11 @@ export class CustomEncoderManager {
 
     // Validate encoder
     if (!encoder.id || !encoder.name || !encoder.mapping) {
-      throw new Error('Invalid encoder: missing required fields');
+      throw new Error("Invalid encoder: missing required fields");
     }
 
     // Check for duplicates
-    const existingIndex = encoders.findIndex(e => e.id === encoder.id);
+    const existingIndex = encoders.findIndex((e) => e.id === encoder.id);
     if (existingIndex >= 0) {
       encoders[existingIndex] = encoder;
     } else {
@@ -43,7 +43,7 @@ export class CustomEncoderManager {
       const data = localStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error('Failed to load custom encoders:', error);
+      console.error("Failed to load custom encoders:", error);
       return [];
     }
   }
@@ -53,7 +53,7 @@ export class CustomEncoderManager {
    */
   static getEncoder(id) {
     const encoders = this.getEncoders();
-    return encoders.find(e => e.id === id);
+    return encoders.find((e) => e.id === id);
   }
 
   /**
@@ -61,7 +61,7 @@ export class CustomEncoderManager {
    */
   static deleteEncoder(id) {
     const encoders = this.getEncoders();
-    const filtered = encoders.filter(e => e.id !== id);
+    const filtered = encoders.filter((e) => e.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
   }
 
@@ -76,31 +76,44 @@ export class CustomEncoderManager {
     });
 
     const encode = (text) => {
-      return text.split('').map(char => {
-        const lookupChar = caseSensitive ? char : char.toLowerCase();
-        const result = mapping[lookupChar];
+      return text
+        .split("")
+        .map((char) => {
+          const lookupChar = caseSensitive ? char : char.toLowerCase();
+          const result = mapping[lookupChar];
 
-        if (result !== undefined) {
-          // Preserve original case if not case sensitive
-          if (!caseSensitive && char !== char.toLowerCase() && result.length === 1) {
-            return result.toUpperCase();
+          if (result !== undefined) {
+            // Preserve original case if not case sensitive
+            if (
+              !caseSensitive &&
+              char !== char.toLowerCase() &&
+              result.length === 1
+            ) {
+              return result.toUpperCase();
+            }
+            return result;
           }
-          return result;
-        }
 
-        return char; // Keep unmapped characters as-is
-      }).join('');
+          return char; // Keep unmapped characters as-is
+        })
+        .join("");
     };
 
     const decode = (text) => {
-      let result = '';
+      let result = "";
       let i = 0;
 
       while (i < text.length) {
         let found = false;
 
         // Try to match longest possible sequence first
-        for (let len = Math.max(...Object.keys(reverseMapping).map(k => k.length)); len > 0; len--) {
+        for (
+          let len = Math.max(
+            ...Object.keys(reverseMapping).map((k) => k.length)
+          );
+          len > 0;
+          len--
+        ) {
           const substr = text.substr(i, len);
           const lookupStr = caseSensitive ? substr : substr.toLowerCase();
 
@@ -108,7 +121,11 @@ export class CustomEncoderManager {
             const originalChar = reverseMapping[lookupStr];
 
             // Preserve case if first char is uppercase
-            if (!caseSensitive && substr[0] !== substr[0].toLowerCase() && originalChar.length === 1) {
+            if (
+              !caseSensitive &&
+              substr[0] !== substr[0].toLowerCase() &&
+              originalChar.length === 1
+            ) {
               result += originalChar.toUpperCase();
             } else {
               result += originalChar;
@@ -144,10 +161,10 @@ export class CustomEncoderManager {
     return {
       id: customEncoder.id,
       name: customEncoder.name,
-      emoji: customEncoder.emoji || '🎨',
-      description: customEncoder.description || 'Custom user-created encoder',
-      category: 'custom',
-      tags: ['custom', ...(customEncoder.tags || [])],
+      emoji: customEncoder.emoji || "🎨",
+      description: customEncoder.description || "Custom user-created encoder",
+      category: "custom",
+      tags: ["custom", ...(customEncoder.tags || [])],
       reversible: true,
       encode,
       decode,
@@ -161,7 +178,7 @@ export class CustomEncoderManager {
    */
   static exportEncoder(encoder) {
     const data = {
-      version: '1.0',
+      version: "1.0",
       encoder: {
         name: encoder.name,
         emoji: encoder.emoji,
@@ -169,7 +186,7 @@ export class CustomEncoderManager {
         mapping: encoder.mapping,
         caseSensitive: encoder.caseSensitive,
         tags: encoder.tags,
-      }
+      },
     };
 
     return btoa(JSON.stringify(data));
@@ -182,8 +199,8 @@ export class CustomEncoderManager {
     try {
       const data = JSON.parse(atob(encodedData));
 
-      if (data.version !== '1.0') {
-        throw new Error('Unsupported encoder version');
+      if (data.version !== "1.0") {
+        throw new Error("Unsupported encoder version");
       }
 
       const encoder = {
@@ -194,7 +211,7 @@ export class CustomEncoderManager {
 
       return this.saveEncoder(encoder);
     } catch (error) {
-      throw new Error('Invalid encoder data: ' + error.message);
+      throw new Error("Invalid encoder data: " + error.message);
     }
   }
 
@@ -204,83 +221,168 @@ export class CustomEncoderManager {
   static getTemplates() {
     return [
       {
-        id: 'template-1337',
-        name: '1337 Speak Elite',
-        emoji: '💻',
-        description: 'Enhanced leetspeak with more substitutions',
+        id: "template-1337",
+        name: "1337 Speak Elite",
+        emoji: "💻",
+        description: "Enhanced leetspeak with more substitutions",
         mapping: {
-          'a': '4', 'e': '3', 'i': '1', 'o': '0', 's': '5',
-          't': '7', 'l': '1', 'g': '9', 'z': '2', 'b': '8'
+          a: "4",
+          e: "3",
+          i: "1",
+          o: "0",
+          s: "5",
+          t: "7",
+          l: "1",
+          g: "9",
+          z: "2",
+          b: "8",
         },
         caseSensitive: false,
-        tags: ['fun', 'gaming'],
+        tags: ["fun", "gaming"],
       },
       {
-        id: 'template-wingdings',
-        name: 'Symbol Speak',
-        emoji: '🔣',
-        description: 'Replace letters with symbols',
+        id: "template-wingdings",
+        name: "Symbol Speak",
+        emoji: "🔣",
+        description: "Replace letters with symbols",
         mapping: {
-          'a': '★', 'b': '♠', 'c': '♣', 'd': '♦', 'e': '♥',
-          'f': '✿', 'g': '☀', 'h': '☁', 'i': '⚡', 'j': '♪',
-          'k': '♫', 'l': '☎', 'm': '✉', 'n': '⌛', 'o': '⭐',
-          'p': '🌙', 'q': '☄', 'r': '☮', 's': '☯', 't': '✝',
-          'u': '☪', 'v': '✡', 'w': '☸', 'x': '✖', 'y': '☢',
-          'z': '⚠'
+          a: "★",
+          b: "♠",
+          c: "♣",
+          d: "♦",
+          e: "♥",
+          f: "✿",
+          g: "☀",
+          h: "☁",
+          i: "⚡",
+          j: "♪",
+          k: "♫",
+          l: "☎",
+          m: "✉",
+          n: "⌛",
+          o: "⭐",
+          p: "🌙",
+          q: "☄",
+          r: "☮",
+          s: "☯",
+          t: "✝",
+          u: "☪",
+          v: "✡",
+          w: "☸",
+          x: "✖",
+          y: "☢",
+          z: "⚠",
         },
         caseSensitive: false,
-        tags: ['artistic', 'symbols'],
+        tags: ["artistic", "symbols"],
       },
       {
-        id: 'template-arrows',
-        name: 'Arrow Code',
-        emoji: '➡️',
-        description: 'Directional arrows for each letter',
+        id: "template-arrows",
+        name: "Arrow Code",
+        emoji: "➡️",
+        description: "Directional arrows for each letter",
         mapping: {
-          'a': '→', 'b': '←', 'c': '↑', 'd': '↓', 'e': '↗',
-          'f': '↖', 'g': '↘', 'h': '↙', 'i': '⇒', 'j': '⇐',
-          'k': '⇑', 'l': '⇓', 'm': '⟹', 'n': '⟸', 'o': '⇨',
-          'p': '⇦', 'q': '⇧', 'r': '⇩', 's': '➔', 't': '➜',
-          'u': '➞', 'v': '➚', 'w': '➘', 'x': '✈', 'y': '⤴',
-          'z': '⤵'
+          a: "→",
+          b: "←",
+          c: "↑",
+          d: "↓",
+          e: "↗",
+          f: "↖",
+          g: "↘",
+          h: "↙",
+          i: "⇒",
+          j: "⇐",
+          k: "⇑",
+          l: "⇓",
+          m: "⟹",
+          n: "⟸",
+          o: "⇨",
+          p: "⇦",
+          q: "⇧",
+          r: "⇩",
+          s: "➔",
+          t: "➜",
+          u: "➞",
+          v: "➚",
+          w: "➘",
+          x: "✈",
+          y: "⤴",
+          z: "⤵",
         },
         caseSensitive: false,
-        tags: ['artistic', 'directional'],
+        tags: ["artistic", "directional"],
       },
       {
-        id: 'template-morse-alt',
-        name: 'Dots & Dashes',
-        emoji: '⚫',
-        description: 'Alternative visual morse code',
+        id: "template-morse-alt",
+        name: "Dots & Dashes",
+        emoji: "⚫",
+        description: "Alternative visual morse code",
         mapping: {
-          'a': '⚫⚪', 'b': '⚪⚫⚫⚫', 'c': '⚪⚫⚪⚫',
-          'd': '⚪⚫⚫', 'e': '⚫', 'f': '⚫⚫⚪⚫',
-          'g': '⚪⚪⚫', 'h': '⚫⚫⚫⚫', 'i': '⚫⚫',
-          'j': '⚫⚪⚪⚪', 'k': '⚪⚫⚪', 'l': '⚫⚪⚫⚫',
-          'm': '⚪⚪', 'n': '⚪⚫', 'o': '⚪⚪⚪',
-          'p': '⚫⚪⚪⚫', 'q': '⚪⚪⚫⚪', 'r': '⚫⚪⚫',
-          's': '⚫⚫⚫', 't': '⚪', 'u': '⚫⚫⚪',
-          'v': '⚫⚫⚫⚪', 'w': '⚫⚪⚪', 'x': '⚪⚫⚫⚪',
-          'y': '⚪⚫⚪⚪', 'z': '⚪⚪⚫⚫'
+          a: "⚫⚪",
+          b: "⚪⚫⚫⚫",
+          c: "⚪⚫⚪⚫",
+          d: "⚪⚫⚫",
+          e: "⚫",
+          f: "⚫⚫⚪⚫",
+          g: "⚪⚪⚫",
+          h: "⚫⚫⚫⚫",
+          i: "⚫⚫",
+          j: "⚫⚪⚪⚪",
+          k: "⚪⚫⚪",
+          l: "⚫⚪⚫⚫",
+          m: "⚪⚪",
+          n: "⚪⚫",
+          o: "⚪⚪⚪",
+          p: "⚫⚪⚪⚫",
+          q: "⚪⚪⚫⚪",
+          r: "⚫⚪⚫",
+          s: "⚫⚫⚫",
+          t: "⚪",
+          u: "⚫⚫⚪",
+          v: "⚫⚫⚫⚪",
+          w: "⚫⚪⚪",
+          x: "⚪⚫⚫⚪",
+          y: "⚪⚫⚪⚪",
+          z: "⚪⚪⚫⚫",
         },
         caseSensitive: false,
-        tags: ['classic', 'visual'],
+        tags: ["classic", "visual"],
       },
       {
-        id: 'template-emoji-faces',
-        name: 'Emoji Faces',
-        emoji: '😀',
-        description: 'Different emoji faces for each letter',
+        id: "template-emoji-faces",
+        name: "Emoji Faces",
+        emoji: "😀",
+        description: "Different emoji faces for each letter",
         mapping: {
-          'a': '😀', 'b': '😃', 'c': '😄', 'd': '😁', 'e': '😆',
-          'f': '😅', 'g': '🤣', 'h': '😂', 'i': '🙂', 'j': '🙃',
-          'k': '😉', 'l': '😊', 'm': '😇', 'n': '🥰', 'o': '😍',
-          'p': '🤩', 'q': '😘', 'r': '😗', 's': '😚', 't': '😋',
-          'u': '😛', 'v': '😜', 'w': '🤪', 'x': '😝', 'y': '🤑',
-          'z': '🤗'
+          a: "😀",
+          b: "😃",
+          c: "😄",
+          d: "😁",
+          e: "😆",
+          f: "😅",
+          g: "🤣",
+          h: "😂",
+          i: "🙂",
+          j: "🙃",
+          k: "😉",
+          l: "😊",
+          m: "😇",
+          n: "🥰",
+          o: "😍",
+          p: "🤩",
+          q: "😘",
+          r: "😗",
+          s: "😚",
+          t: "😋",
+          u: "😛",
+          v: "😜",
+          w: "🤪",
+          x: "😝",
+          y: "🤑",
+          z: "🤗",
         },
         caseSensitive: false,
-        tags: ['fun', 'emoji'],
+        tags: ["fun", "emoji"],
       },
     ];
   }

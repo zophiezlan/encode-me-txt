@@ -3,7 +3,7 @@
  * Save, load, and share favorite encoder configurations and chains
  */
 
-const PRESETS_KEY = 'encoding-presets';
+const PRESETS_KEY = "encoding-presets";
 const MAX_PRESETS = 50;
 
 export class EncodingPresetsManager {
@@ -18,9 +18,11 @@ export class EncodingPresetsManager {
     }
 
     const newPreset = {
-      id: preset.id || `preset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id:
+        preset.id ||
+        `preset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       name: preset.name,
-      description: preset.description || '',
+      description: preset.description || "",
       type: preset.type, // 'chain' or 'single'
       encoderIds: preset.encoderIds, // Array of encoder IDs
       params: preset.params || {}, // Encoder parameters (e.g., caesar shift)
@@ -30,7 +32,7 @@ export class EncodingPresetsManager {
     };
 
     // Check for duplicate
-    const existingIndex = presets.findIndex(p => p.id === newPreset.id);
+    const existingIndex = presets.findIndex((p) => p.id === newPreset.id);
     if (existingIndex >= 0) {
       presets[existingIndex] = { ...presets[existingIndex], ...newPreset };
     } else {
@@ -49,7 +51,7 @@ export class EncodingPresetsManager {
       const data = localStorage.getItem(PRESETS_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error('Failed to load presets:', error);
+      console.error("Failed to load presets:", error);
       return [];
     }
   }
@@ -59,7 +61,7 @@ export class EncodingPresetsManager {
    */
   static getPreset(id) {
     const presets = this.getPresets();
-    return presets.find(p => p.id === id);
+    return presets.find((p) => p.id === id);
   }
 
   /**
@@ -67,7 +69,7 @@ export class EncodingPresetsManager {
    */
   static deletePreset(id) {
     const presets = this.getPresets();
-    const filtered = presets.filter(p => p.id !== id);
+    const filtered = presets.filter((p) => p.id !== id);
     localStorage.setItem(PRESETS_KEY, JSON.stringify(filtered));
   }
 
@@ -76,7 +78,7 @@ export class EncodingPresetsManager {
    */
   static trackUsage(id) {
     const presets = this.getPresets();
-    const preset = presets.find(p => p.id === id);
+    const preset = presets.find((p) => p.id === id);
 
     if (preset) {
       preset.usageCount = (preset.usageCount || 0) + 1;
@@ -90,7 +92,7 @@ export class EncodingPresetsManager {
    */
   static exportPreset(preset) {
     const data = {
-      version: '1.0',
+      version: "1.0",
       preset: {
         name: preset.name,
         description: preset.description,
@@ -98,7 +100,7 @@ export class EncodingPresetsManager {
         encoderIds: preset.encoderIds,
         params: preset.params,
         tags: preset.tags,
-      }
+      },
     };
 
     return btoa(JSON.stringify(data));
@@ -111,8 +113,8 @@ export class EncodingPresetsManager {
     try {
       const data = JSON.parse(atob(encodedData));
 
-      if (data.version !== '1.0') {
-        throw new Error('Unsupported preset version');
+      if (data.version !== "1.0") {
+        throw new Error("Unsupported preset version");
       }
 
       const preset = {
@@ -124,7 +126,7 @@ export class EncodingPresetsManager {
 
       return this.savePreset(preset);
     } catch (error) {
-      throw new Error('Invalid preset data: ' + error.message);
+      throw new Error("Invalid preset data: " + error.message);
     }
   }
 
@@ -134,83 +136,83 @@ export class EncodingPresetsManager {
   static getBuiltInPresets() {
     return [
       {
-        id: 'builtin-ultra-secure',
-        name: 'Ultra Secure Chain',
-        description: 'Maximum security: Binary → Base64 → Caesar → Morse',
-        type: 'chain',
-        encoderIds: ['binary', 'base64', 'caesar', 'morse'],
+        id: "builtin-ultra-secure",
+        name: "Ultra Secure Chain",
+        description: "Maximum security: Binary → Base64 → Caesar → Morse",
+        type: "chain",
+        encoderIds: ["binary", "base64", "caesar", "morse"],
         params: { caesar: 17 },
-        tags: ['security', 'complex'],
+        tags: ["security", "complex"],
         builtin: true,
       },
       {
-        id: 'builtin-stealth-message',
-        name: 'Stealth Message',
-        description: 'Hidden communication: Zero-Width → Base64',
-        type: 'chain',
-        encoderIds: ['steganography', 'base64'],
+        id: "builtin-stealth-message",
+        name: "Stealth Message",
+        description: "Hidden communication: Zero-Width → Base64",
+        type: "chain",
+        encoderIds: ["steganography", "base64"],
         params: {},
-        tags: ['stealth', 'hidden'],
+        tags: ["stealth", "hidden"],
         builtin: true,
       },
       {
-        id: 'builtin-creative-text',
-        name: 'Creative Text Art',
-        description: 'Artistic: Bubble → Emoji → Color Blocks',
-        type: 'chain',
-        encoderIds: ['bubble', 'emoji', 'colorblocks'],
+        id: "builtin-creative-text",
+        name: "Creative Text Art",
+        description: "Artistic: Bubble → Emoji → Color Blocks",
+        type: "chain",
+        encoderIds: ["bubble", "emoji", "colorblocks"],
         params: {},
-        tags: ['fun', 'artistic'],
+        tags: ["fun", "artistic"],
         builtin: true,
       },
       {
-        id: 'builtin-classic-crypto',
-        name: 'Classic Cryptography',
-        description: 'Traditional: Caesar → ROT13 → Reverse',
-        type: 'chain',
-        encoderIds: ['caesar', 'rot13', 'reverse'],
+        id: "builtin-classic-crypto",
+        name: "Classic Cryptography",
+        description: "Traditional: Caesar → ROT13 → Reverse",
+        type: "chain",
+        encoderIds: ["caesar", "rot13", "reverse"],
         params: { caesar: 7 },
-        tags: ['classic', 'cipher'],
+        tags: ["classic", "cipher"],
         builtin: true,
       },
       {
-        id: 'builtin-communication',
-        name: 'Emergency Signals',
-        description: 'Communication codes: Morse → NATO Phonetic',
-        type: 'chain',
-        encoderIds: ['morse', 'nato'],
+        id: "builtin-communication",
+        name: "Emergency Signals",
+        description: "Communication codes: Morse → NATO Phonetic",
+        type: "chain",
+        encoderIds: ["morse", "nato"],
         params: {},
-        tags: ['communication', 'classic'],
+        tags: ["communication", "classic"],
         builtin: true,
       },
       {
-        id: 'builtin-gamer-speak',
-        name: 'Gamer Speak',
-        description: 'Gaming culture: Leetspeak → Upside Down',
-        type: 'chain',
-        encoderIds: ['leet', 'upsidedown'],
+        id: "builtin-gamer-speak",
+        name: "Gamer Speak",
+        description: "Gaming culture: Leetspeak → Upside Down",
+        type: "chain",
+        encoderIds: ["leet", "upsidedown"],
         params: {},
-        tags: ['fun', 'gaming'],
+        tags: ["fun", "gaming"],
         builtin: true,
       },
       {
-        id: 'builtin-scientific',
-        name: 'Scientific Code',
-        description: 'Science themed: DNA → Chemistry Elements',
-        type: 'chain',
-        encoderIds: ['dna', 'chemistry'],
+        id: "builtin-scientific",
+        name: "Scientific Code",
+        description: "Science themed: DNA → Chemistry Elements",
+        type: "chain",
+        encoderIds: ["dna", "chemistry"],
         params: {},
-        tags: ['unique', 'science'],
+        tags: ["unique", "science"],
         builtin: true,
       },
       {
-        id: 'builtin-party-message',
-        name: 'Party Message',
-        description: 'Fun celebrations: Emoji → Zalgo → Bubble',
-        type: 'chain',
-        encoderIds: ['emoji', 'zalgo', 'bubble'],
+        id: "builtin-party-message",
+        name: "Party Message",
+        description: "Fun celebrations: Emoji → Zalgo → Bubble",
+        type: "chain",
+        encoderIds: ["emoji", "zalgo", "bubble"],
         params: {},
-        tags: ['fun', 'party'],
+        tags: ["fun", "party"],
         builtin: true,
       },
     ];
@@ -226,10 +228,11 @@ export class EncodingPresetsManager {
 
     const lowerQuery = query.toLowerCase();
 
-    return allPresets.filter(preset =>
-      preset.name.toLowerCase().includes(lowerQuery) ||
-      preset.description.toLowerCase().includes(lowerQuery) ||
-      preset.tags?.some(tag => tag.toLowerCase().includes(lowerQuery))
+    return allPresets.filter(
+      (preset) =>
+        preset.name.toLowerCase().includes(lowerQuery) ||
+        preset.description.toLowerCase().includes(lowerQuery) ||
+        preset.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
     );
   }
 
@@ -239,7 +242,7 @@ export class EncodingPresetsManager {
   static getMostUsed(limit = 5) {
     const presets = this.getPresets();
     return presets
-      .filter(p => p.usageCount > 0)
+      .filter((p) => p.usageCount > 0)
       .sort((a, b) => b.usageCount - a.usageCount)
       .slice(0, limit);
   }

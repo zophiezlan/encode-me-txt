@@ -167,6 +167,7 @@ npm outdated
 
 **Risk**: Medium
 **Mitigation**:
+
 - React automatically escapes output
 - No `dangerouslySetInnerHTML` usage
 - Content Security Policy headers
@@ -175,6 +176,7 @@ npm outdated
 
 **Risk**: Low
 **Mitigation**:
+
 - Requires user interaction
 - Uses modern Clipboard API
 - No automatic clipboard access
@@ -183,6 +185,7 @@ npm outdated
 
 **Risk**: Low
 **Mitigation**:
+
 - Only stores non-sensitive preferences
 - Limited to favorites and UI state
 - Can be cleared by user
@@ -191,6 +194,7 @@ npm outdated
 
 **Risk**: Medium (QR Code API)
 **Mitigation**:
+
 - User is informed about external service
 - Only used when explicitly requested
 - All other features work offline

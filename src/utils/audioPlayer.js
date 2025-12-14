@@ -10,7 +10,7 @@
  */
 export const playMorseSound = async (morseCode) => {
   if (!window.AudioContext && !window.webkitAudioContext) {
-    console.warn('Web Audio API not supported');
+    console.warn("Web Audio API not supported");
     return;
   }
 
@@ -24,7 +24,7 @@ export const playMorseSound = async (morseCode) => {
   let currentTime = audioContext.currentTime;
 
   for (let char of morseCode) {
-    if (char === '•') {
+    if (char === "•") {
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
 
@@ -40,7 +40,7 @@ export const playMorseSound = async (morseCode) => {
       oscillator.start(currentTime);
       oscillator.stop(currentTime + dotDuration);
       currentTime += dotDuration + gapDuration;
-    } else if (char === '−') {
+    } else if (char === "−") {
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
 
@@ -56,14 +56,14 @@ export const playMorseSound = async (morseCode) => {
       oscillator.start(currentTime);
       oscillator.stop(currentTime + dashDuration);
       currentTime += dashDuration + gapDuration;
-    } else if (char === ' ') {
+    } else if (char === " ") {
       currentTime += gapDuration * 3;
-    } else if (char === '/') {
+    } else if (char === "/") {
       currentTime += gapDuration * 7; // Word separator
     }
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, (currentTime - audioContext.currentTime) * 1000);
   });
 };

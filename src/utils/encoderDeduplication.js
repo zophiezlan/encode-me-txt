@@ -10,72 +10,72 @@
  */
 export const encoderRelationships = {
   // Pro versions supersede regular versions
-  'leetspeak': {
-    supersededBy: 'leetspeak-pro',
-    reason: 'Pro version offers intensity control settings'
+  leetspeak: {
+    supersededBy: "leetspeak-pro",
+    reason: "Pro version offers intensity control settings",
   },
-  'uwu': {
-    supersededBy: 'uwu-pro',
-    reason: 'Pro version offers customizable intensity'
+  uwu: {
+    supersededBy: "uwu-pro",
+    reason: "Pro version offers customizable intensity",
   },
-  'spongebob': {
-    supersededBy: 'spongebob-pro',
-    reason: 'Pro version offers randomness control'
+  spongebob: {
+    supersededBy: "spongebob-pro",
+    reason: "Pro version offers randomness control",
   },
-  'emojipasta': {
-    supersededBy: 'emojipasta-pro',
-    reason: 'Pro version offers density control'
+  emojipasta: {
+    supersededBy: "emojipasta-pro",
+    reason: "Pro version offers density control",
   },
-  'binary': {
-    supersededBy: 'binary-pro',
-    reason: 'Pro version offers customizable bit grouping'
+  binary: {
+    supersededBy: "binary-pro",
+    reason: "Pro version offers customizable bit grouping",
   },
-  'morse': {
-    supersededBy: 'morse-pro',
-    reason: 'Pro version offers customizable delimiter styles'
+  morse: {
+    supersededBy: "morse-pro",
+    reason: "Pro version offers customizable delimiter styles",
   },
-  'tap-code': {
-    supersededBy: 'tap-code-pro',
-    reason: 'Pro version offers symbol options'
+  "tap-code": {
+    supersededBy: "tap-code-pro",
+    reason: "Pro version offers symbol options",
   },
-  'polybius': {
-    supersededBy: 'polybius-pro',
-    reason: 'Pro version offers 5x5 or 6x6 grid option'
+  polybius: {
+    supersededBy: "polybius-pro",
+    reason: "Pro version offers 5x5 or 6x6 grid option",
   },
-  'nato': {
-    supersededBy: 'nato-extended',
-    reason: 'Extended version supports NATO/Police/Western Union phonetics'
+  nato: {
+    supersededBy: "nato-extended",
+    reason: "Extended version supports NATO/Police/Western Union phonetics",
   },
-  'navy-flags': {
-    supersededBy: 'maritime-flags-pro',
-    reason: 'Pro version offers international maritime flags'
+  "navy-flags": {
+    supersededBy: "maritime-flags-pro",
+    reason: "Pro version offers international maritime flags",
   },
-  
+
   // Functionally similar encoders (aliases)
-  'vaporwave': {
-    aliasOf: 'fullwidth',
-    reason: 'Both produce full-width aesthetic characters'
+  vaporwave: {
+    aliasOf: "fullwidth",
+    reason: "Both produce full-width aesthetic characters",
   },
-  'medieval': {
-    aliasOf: 'math-fraktur',
-    reason: 'Both produce Gothic/Fraktur text'
+  medieval: {
+    aliasOf: "math-fraktur",
+    reason: "Both produce Gothic/Fraktur text",
   },
-  'zodiac-signs': {
-    aliasOf: 'zodiac',
-    reason: 'Both encode using zodiac symbols'
+  "zodiac-signs": {
+    aliasOf: "zodiac",
+    reason: "Both encode using zodiac symbols",
   },
-  'chess-pieces': {
-    aliasOf: 'chess',
-    reason: 'Both encode using chess piece symbols'
+  "chess-pieces": {
+    aliasOf: "chess",
+    reason: "Both encode using chess piece symbols",
   },
-  'weather-symbols': {
-    aliasOf: 'weather',
-    reason: 'Both encode using weather symbols'
+  "weather-symbols": {
+    aliasOf: "weather",
+    reason: "Both encode using weather symbols",
   },
-  'music-notes': {
-    aliasOf: 'musical',
-    reason: 'Both encode using musical notation'
-  }
+  "music-notes": {
+    aliasOf: "musical",
+    reason: "Both encode using musical notation",
+  },
 };
 
 /**
@@ -89,15 +89,15 @@ export const getPreferredEncoder = (encoderId) => {
   if (!relationship) {
     return encoderId;
   }
-  
+
   if (relationship.supersededBy) {
     return relationship.supersededBy;
   }
-  
+
   if (relationship.aliasOf) {
     return relationship.aliasOf;
   }
-  
+
   return encoderId;
 };
 
@@ -152,8 +152,8 @@ export const getRedundantEncoderIds = () => {
  * @returns {string[]} - Array of superseded encoder IDs
  */
 export const getSupersededEncoderIds = () => {
-  return Object.keys(encoderRelationships).filter(id => 
-    encoderRelationships[id].supersededBy !== undefined
+  return Object.keys(encoderRelationships).filter(
+    (id) => encoderRelationships[id].supersededBy !== undefined
   );
 };
 
@@ -162,8 +162,8 @@ export const getSupersededEncoderIds = () => {
  * @returns {string[]} - Array of alias encoder IDs
  */
 export const getAliasEncoderIds = () => {
-  return Object.keys(encoderRelationships).filter(id => 
-    encoderRelationships[id].aliasOf !== undefined
+  return Object.keys(encoderRelationships).filter(
+    (id) => encoderRelationships[id].aliasOf !== undefined
   );
 };
 
@@ -181,42 +181,42 @@ export const deduplicateEncoders = (encoders, options = {}) => {
   const {
     removeSuperseded = true,
     removeAliases = true,
-    markRedundant = false
+    markRedundant = false,
   } = options;
-  
+
   if (markRedundant) {
     // Mark redundant encoders instead of removing them
-    return encoders.map(encoder => {
+    return encoders.map((encoder) => {
       const relationship = encoderRelationships[encoder.id];
       if (!relationship) {
         return encoder;
       }
-      
+
       return {
         ...encoder,
         isRedundant: true,
         redundantReason: relationship.reason,
         preferredEncoder: relationship.supersededBy || relationship.aliasOf,
-        redundantType: relationship.supersededBy ? 'superseded' : 'alias'
+        redundantType: relationship.supersededBy ? "superseded" : "alias",
       };
     });
   }
-  
+
   // Filter out redundant encoders
-  return encoders.filter(encoder => {
+  return encoders.filter((encoder) => {
     const relationship = encoderRelationships[encoder.id];
     if (!relationship) {
       return true;
     }
-    
+
     if (removeSuperseded && relationship.supersededBy) {
       return false;
     }
-    
+
     if (removeAliases && relationship.aliasOf) {
       return false;
     }
-    
+
     return true;
   });
 };
@@ -230,7 +230,7 @@ export const getDeduplicationSummary = (encoders) => {
   const superseded = [];
   const aliases = [];
   const unique = [];
-  
+
   for (const encoder of encoders) {
     const relationship = encoderRelationships[encoder.id];
     if (!relationship) {
@@ -239,17 +239,17 @@ export const getDeduplicationSummary = (encoders) => {
       superseded.push({
         encoder,
         supersededBy: relationship.supersededBy,
-        reason: relationship.reason
+        reason: relationship.reason,
       });
     } else if (relationship.aliasOf) {
       aliases.push({
         encoder,
         aliasOf: relationship.aliasOf,
-        reason: relationship.reason
+        reason: relationship.reason,
       });
     }
   }
-  
+
   return {
     total: encoders.length,
     unique: unique.length,
@@ -257,7 +257,7 @@ export const getDeduplicationSummary = (encoders) => {
     aliases: aliases.length,
     supersededEncoders: superseded,
     aliasEncoders: aliases,
-    deduplicatedCount: unique.length
+    deduplicatedCount: unique.length,
   };
 };
 
@@ -269,16 +269,16 @@ export const getDeduplicationSummary = (encoders) => {
  */
 export const groupByPreferredEncoder = (encoders) => {
   const groups = new Map();
-  
+
   for (const encoder of encoders) {
     const preferredId = getPreferredEncoder(encoder.id);
-    
+
     if (!groups.has(preferredId)) {
       groups.set(preferredId, []);
     }
-    
+
     groups.get(preferredId).push(encoder);
   }
-  
+
   return groups;
 };

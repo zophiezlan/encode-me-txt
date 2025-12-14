@@ -1,7 +1,7 @@
 /**
  * Batch Encoder Utility
  * Process multiple inputs with multiple encoders at once
- * 
+ *
  * Unique Features:
  * - Process multiple texts simultaneously
  * - Apply multiple encoders to each input
@@ -9,7 +9,7 @@
  * - Export results in various formats
  */
 
-import { getEncoderById } from './encoderConfig.js';
+import { getEncoderById } from "./encoderConfig.js";
 
 /**
  * Batch encode multiple texts with a single encoder
@@ -20,14 +20,14 @@ import { getEncoderById } from './encoderConfig.js';
  */
 export const batchEncode = (texts, encoderId, options = {}) => {
   const encoder = getEncoderById(encoderId);
-  
+
   if (!encoder || !encoder.encode) {
-    return texts.map(text => ({
+    return texts.map((text) => ({
       input: text,
-      output: '[Encoder not found]',
+      output: "[Encoder not found]",
       encoderId,
       success: false,
-      error: 'Encoder not found'
+      error: "Encoder not found",
     }));
   }
 
@@ -36,7 +36,7 @@ export const batchEncode = (texts, encoderId, options = {}) => {
       const startTime = performance.now();
       const output = encoder.encode(text, options.param);
       const endTime = performance.now();
-      
+
       return {
         input: text,
         output,
@@ -47,17 +47,17 @@ export const batchEncode = (texts, encoderId, options = {}) => {
         processingTime: endTime - startTime,
         inputLength: text.length,
         outputLength: output.length,
-        expansionRatio: output.length / Math.max(text.length, 1)
+        expansionRatio: output.length / Math.max(text.length, 1),
       };
     } catch (error) {
       return {
         input: text,
-        output: '[Encode failed]',
+        output: "[Encode failed]",
         encoderId,
         encoderName: encoder.name,
         index,
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -72,14 +72,14 @@ export const batchEncode = (texts, encoderId, options = {}) => {
  */
 export const batchDecode = (texts, encoderId, options = {}) => {
   const encoder = getEncoderById(encoderId);
-  
+
   if (!encoder || !encoder.decode) {
-    return texts.map(text => ({
+    return texts.map((text) => ({
       input: text,
-      output: '[Decoder not found or encoder is not reversible]',
+      output: "[Decoder not found or encoder is not reversible]",
       encoderId,
       success: false,
-      error: 'Decoder not found'
+      error: "Decoder not found",
     }));
   }
 
@@ -88,7 +88,7 @@ export const batchDecode = (texts, encoderId, options = {}) => {
       const startTime = performance.now();
       const output = encoder.decode(text, options.param);
       const endTime = performance.now();
-      
+
       return {
         input: text,
         output,
@@ -98,17 +98,17 @@ export const batchDecode = (texts, encoderId, options = {}) => {
         success: true,
         processingTime: endTime - startTime,
         inputLength: text.length,
-        outputLength: output.length
+        outputLength: output.length,
       };
     } catch (error) {
       return {
         input: text,
-        output: '[Decode failed]',
+        output: "[Decode failed]",
         encoderId,
         encoderName: encoder.name,
         index,
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -123,17 +123,17 @@ export const batchDecode = (texts, encoderId, options = {}) => {
  * @returns {Object[]} - Array of results for each encoder
  */
 export const multiEncode = (text, encoderIds, options = {}) => {
-  return encoderIds.map(encoderId => {
+  return encoderIds.map((encoderId) => {
     const encoder = getEncoderById(encoderId);
-    
+
     if (!encoder || !encoder.encode) {
       return {
         encoderId,
         encoderName: null,
         input: text,
-        output: '[Encoder not found]',
+        output: "[Encoder not found]",
         success: false,
-        error: 'Encoder not found'
+        error: "Encoder not found",
       };
     }
 
@@ -142,7 +142,7 @@ export const multiEncode = (text, encoderIds, options = {}) => {
       const encoderOptions = options[encoderId] || {};
       const output = encoder.encode(text, encoderOptions.param);
       const endTime = performance.now();
-      
+
       return {
         encoderId,
         encoderName: encoder.name,
@@ -155,16 +155,16 @@ export const multiEncode = (text, encoderIds, options = {}) => {
         processingTime: endTime - startTime,
         inputLength: text.length,
         outputLength: output.length,
-        expansionRatio: output.length / Math.max(text.length, 1)
+        expansionRatio: output.length / Math.max(text.length, 1),
       };
     } catch (error) {
       return {
         encoderId,
         encoderName: encoder.name,
         input: text,
-        output: '[Encode failed]',
+        output: "[Encode failed]",
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   });
@@ -179,33 +179,33 @@ export const multiEncode = (text, encoderIds, options = {}) => {
 export const generateComparisonMatrix = (texts, encoderIds) => {
   const matrix = {
     texts,
-    encoders: encoderIds.map(id => getEncoderById(id)).filter(Boolean),
-    results: []
+    encoders: encoderIds.map((id) => getEncoderById(id)).filter(Boolean),
+    results: [],
   };
 
   for (const text of texts) {
     const row = {
       input: text,
-      encodings: {}
+      encodings: {},
     };
-    
+
     for (const encoderId of encoderIds) {
       const encoder = getEncoderById(encoderId);
       if (encoder && encoder.encode) {
         try {
           row.encodings[encoderId] = {
             output: encoder.encode(text),
-            success: true
+            success: true,
           };
         } catch {
           row.encodings[encoderId] = {
-            output: '[Failed]',
-            success: false
+            output: "[Failed]",
+            success: false,
           };
         }
       }
     }
-    
+
     matrix.results.push(row);
   }
 
@@ -226,13 +226,13 @@ export const chainEncode = (text, encoderIds, options = {}) => {
 
   for (const encoderId of encoderIds) {
     const encoder = getEncoderById(encoderId);
-    
+
     if (!encoder || !encoder.encode) {
       steps.push({
         encoderId,
         input: currentText,
-        output: '[Encoder not found]',
-        success: false
+        output: "[Encoder not found]",
+        success: false,
       });
       success = false;
       break;
@@ -246,7 +246,7 @@ export const chainEncode = (text, encoderIds, options = {}) => {
         encoderName: encoder.name,
         input: currentText,
         output,
-        success: true
+        success: true,
       });
       currentText = output;
     } catch (error) {
@@ -254,9 +254,9 @@ export const chainEncode = (text, encoderIds, options = {}) => {
         encoderId,
         encoderName: encoder.name,
         input: currentText,
-        output: '[Encode failed]',
+        output: "[Encode failed]",
         success: false,
-        error: error.message
+        error: error.message,
       });
       success = false;
       break;
@@ -269,7 +269,7 @@ export const chainEncode = (text, encoderIds, options = {}) => {
     steps,
     encoderChain: encoderIds,
     success,
-    totalExpansion: currentText.length / Math.max(text.length, 1)
+    totalExpansion: currentText.length / Math.max(text.length, 1),
   };
 };
 
@@ -288,13 +288,13 @@ export const chainDecode = (text, encoderIds, options = {}) => {
 
   for (const encoderId of reversedIds) {
     const encoder = getEncoderById(encoderId);
-    
+
     if (!encoder || !encoder.decode) {
       steps.push({
         encoderId,
         input: currentText,
-        output: '[Decoder not found]',
-        success: false
+        output: "[Decoder not found]",
+        success: false,
       });
       success = false;
       break;
@@ -308,7 +308,7 @@ export const chainDecode = (text, encoderIds, options = {}) => {
         encoderName: encoder.name,
         input: currentText,
         output,
-        success: true
+        success: true,
       });
       currentText = output;
     } catch (error) {
@@ -316,9 +316,9 @@ export const chainDecode = (text, encoderIds, options = {}) => {
         encoderId,
         encoderName: encoder.name,
         input: currentText,
-        output: '[Decode failed]',
+        output: "[Decode failed]",
         success: false,
-        error: error.message
+        error: error.message,
       });
       success = false;
       break;
@@ -330,7 +330,7 @@ export const chainDecode = (text, encoderIds, options = {}) => {
     finalOutput: currentText,
     steps,
     encoderChain: reversedIds,
-    success
+    success,
   };
 };
 
@@ -340,7 +340,7 @@ export const chainDecode = (text, encoderIds, options = {}) => {
  * @returns {string} - Escaped CSV value
  */
 const escapeCSV = (value) => {
-  if (value == null) return '';
+  if (value == null) return "";
   return `"${String(value).replace(/"/g, '""')}"`;
 };
 
@@ -350,28 +350,42 @@ const escapeCSV = (value) => {
  * @param {string} format - Export format ('json', 'csv', 'text')
  * @returns {string} - Formatted output
  */
-export const exportBatchResults = (results, format = 'json') => {
+export const exportBatchResults = (results, format = "json") => {
   switch (format) {
-    case 'csv': {
-      const headers = ['Index', 'Input', 'Output', 'Encoder', 'Success', 'Processing Time (ms)'];
-      const rows = results.map(r => [
-        r.index ?? '',
-        escapeCSV(r.input),
-        escapeCSV(r.output),
-        r.encoderName || r.encoderId || '',
-        r.success ? 'Yes' : 'No',
-        r.processingTime?.toFixed(2) ?? ''
-      ].join(','));
-      return [headers.join(','), ...rows].join('\n');
+    case "csv": {
+      const headers = [
+        "Index",
+        "Input",
+        "Output",
+        "Encoder",
+        "Success",
+        "Processing Time (ms)",
+      ];
+      const rows = results.map((r) =>
+        [
+          r.index ?? "",
+          escapeCSV(r.input),
+          escapeCSV(r.output),
+          r.encoderName || r.encoderId || "",
+          r.success ? "Yes" : "No",
+          r.processingTime?.toFixed(2) ?? "",
+        ].join(",")
+      );
+      return [headers.join(","), ...rows].join("\n");
     }
-    
-    case 'text': {
-      return results.map(r => 
-        `[${r.encoderName || r.encoderId}]\nInput: ${r.input}\nOutput: ${r.output}\n`
-      ).join('\n');
+
+    case "text": {
+      return results
+        .map(
+          (r) =>
+            `[${r.encoderName || r.encoderId}]\nInput: ${r.input}\nOutput: ${
+              r.output
+            }\n`
+        )
+        .join("\n");
     }
-    
-    case 'json':
+
+    case "json":
     default:
       return JSON.stringify(results, null, 2);
   }
@@ -385,31 +399,31 @@ export const exportBatchResults = (results, format = 'json') => {
  */
 export const validateEncoderChain = (encoderIds) => {
   const issues = [];
-  const encoders = encoderIds.map(id => getEncoderById(id));
-  
+  const encoders = encoderIds.map((id) => getEncoderById(id));
+
   for (let i = 0; i < encoders.length; i++) {
     const encoder = encoders[i];
     if (!encoder) {
       issues.push({
         index: i,
         encoderId: encoderIds[i],
-        issue: 'Encoder not found'
+        issue: "Encoder not found",
       });
     }
   }
 
   // Check if chain is reversible
-  const allReversible = encoders.every(e => e && e.reversible);
-  
+  const allReversible = encoders.every((e) => e && e.reversible);
+
   return {
     valid: issues.length === 0,
     issues,
     chainLength: encoderIds.length,
     reversible: allReversible,
-    encoders: encoders.filter(Boolean).map(e => ({
+    encoders: encoders.filter(Boolean).map((e) => ({
       id: e.id,
       name: e.name,
-      reversible: e.reversible
-    }))
+      reversible: e.reversible,
+    })),
   };
 };
