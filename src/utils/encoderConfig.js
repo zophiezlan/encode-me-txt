@@ -5318,6 +5318,194 @@ export const encoderConfig = [
     decode: encoders.decodeMultibase,
     reversible: true,
     tags: ['crypto', 'multibase', 'ipfs', 'multiformats']
+  },
+
+  // ✍️ Digital Signatures & Authentication
+  {
+    id: 'pgp-signature',
+    name: 'PGP Signature',
+    description: 'ASCII-armored PGP/GPG signature',
+    emoji: '✍️',
+    category: 'signatures',
+    encode: encoders.encodePGPSignature,
+    tags: ['signatures', 'pgp', 'gpg', 'encryption']
+  },
+  {
+    id: 'pgp-clearsign',
+    name: 'PGP Clearsigned',
+    description: 'PGP clearsigned message',
+    emoji: '📝',
+    category: 'signatures',
+    encode: encoders.encodePGPClearsign,
+    tags: ['signatures', 'pgp', 'email', 'signing']
+  },
+  {
+    id: 'jwt-signature',
+    name: 'JWT Token',
+    description: 'JSON Web Token with signature',
+    emoji: '🎫',
+    category: 'signatures',
+    encode: encoders.encodeJWTSignature,
+    decode: encoders.decodeJWTSignature,
+    reversible: true,
+    tags: ['signatures', 'jwt', 'authentication', 'web']
+  },
+  {
+    id: 'oauth-bearer',
+    name: 'OAuth Bearer Token',
+    description: 'OAuth 2.0 Bearer token format',
+    emoji: '🔑',
+    category: 'signatures',
+    encode: encoders.encodeOAuthBearer,
+    tags: ['signatures', 'oauth', 'authentication', 'api']
+  },
+  {
+    id: 'oauth-token',
+    name: 'OAuth Token Response',
+    description: 'OAuth 2.0 access token response',
+    emoji: '🎟️',
+    category: 'signatures',
+    encode: encoders.encodeOAuthToken,
+    tags: ['signatures', 'oauth', 'authentication', 'json']
+  },
+  {
+    id: 'webauthn',
+    name: 'WebAuthn Credential',
+    description: 'Passwordless authentication credential',
+    emoji: '🔐',
+    category: 'signatures',
+    encode: encoders.encodeWebAuthn,
+    tags: ['signatures', 'webauthn', 'fido2', 'passwordless']
+  },
+  {
+    id: 'fido2-assertion',
+    name: 'FIDO2 Assertion',
+    description: 'FIDO2 authentication assertion',
+    emoji: '🛡️',
+    category: 'signatures',
+    encode: encoders.encodeFIDO2Assertion,
+    tags: ['signatures', 'fido2', 'authentication', 'biometric']
+  },
+  {
+    id: 'ethereum-signature',
+    name: 'Ethereum Signature',
+    description: 'Ethereum signed message format',
+    emoji: '⟠',
+    category: 'signatures',
+    encode: encoders.encodeEthereumSignature,
+    tags: ['signatures', 'ethereum', 'blockchain', 'crypto']
+  },
+  {
+    id: 'bitcoin-signature',
+    name: 'Bitcoin Signature',
+    description: 'Bitcoin signed message format',
+    emoji: '₿',
+    category: 'signatures',
+    encode: encoders.encodeBitcoinSignature,
+    tags: ['signatures', 'bitcoin', 'blockchain', 'crypto']
+  },
+  {
+    id: 'multisig',
+    name: 'Multisig Signature',
+    description: 'Multi-signature format (M-of-N)',
+    emoji: '🔏',
+    category: 'signatures',
+    encode: encoders.encodeMultisig,
+    tags: ['signatures', 'multisig', 'blockchain', 'threshold']
+  },
+  {
+    id: 'xmldsig',
+    name: 'XML Digital Signature',
+    description: 'W3C XML signature format',
+    emoji: '📄',
+    category: 'signatures',
+    encode: encoders.encodeXMLDSig,
+    tags: ['signatures', 'xml', 'w3c', 'digital-signature']
+  },
+  {
+    id: 'saml-assertion',
+    name: 'SAML Assertion',
+    description: 'SAML security assertion',
+    emoji: '🎫',
+    category: 'signatures',
+    encode: encoders.encodeSAMLAssertion,
+    tags: ['signatures', 'saml', 'sso', 'authentication']
+  },
+  {
+    id: 'hmac-signature',
+    name: 'HMAC Signature',
+    description: 'Hash-based message authentication',
+    emoji: '🔐',
+    category: 'signatures',
+    encode: encoders.encodeHMACSignature,
+    tags: ['signatures', 'hmac', 'authentication', 'hash']
+  },
+  {
+    id: 'aws-signature',
+    name: 'AWS Signature V4',
+    description: 'Amazon Web Services signature',
+    emoji: '☁️',
+    category: 'signatures',
+    encode: encoders.encodeAWSSignature,
+    tags: ['signatures', 'aws', 'cloud', 'api']
+  },
+  {
+    id: 'stripe-signature',
+    name: 'Stripe Webhook Signature',
+    description: 'Stripe webhook verification',
+    emoji: '💳',
+    category: 'signatures',
+    encode: encoders.encodeStripeSignature,
+    decode: encoders.decodeStripeSignature,
+    reversible: true,
+    tags: ['signatures', 'stripe', 'webhook', 'payments']
+  },
+  {
+    id: 'authenticode',
+    name: 'Authenticode',
+    description: 'Windows code signing signature',
+    emoji: '🪟',
+    category: 'signatures',
+    encode: encoders.encodeAuthenticode,
+    tags: ['signatures', 'authenticode', 'windows', 'code-signing']
+  },
+  {
+    id: 'apple-codesign',
+    name: 'Apple Code Signature',
+    description: 'Apple code signing format',
+    emoji: '🍎',
+    category: 'signatures',
+    encode: encoders.encodeAppleCodeSign,
+    tags: ['signatures', 'apple', 'macos', 'code-signing']
+  },
+  {
+    id: 'timestamp-token',
+    name: 'RFC 3161 Timestamp',
+    description: 'Trusted timestamp token',
+    emoji: '⏱️',
+    category: 'signatures',
+    encode: encoders.encodeTimestampToken,
+    tags: ['signatures', 'timestamp', 'rfc3161', 'tsa']
+  },
+  {
+    id: 'signed-cookie',
+    name: 'Signed Cookie',
+    description: 'Cryptographically signed cookie',
+    emoji: '🍪',
+    category: 'signatures',
+    encode: encoders.encodeSignedCookie,
+    decode: encoders.decodeSignedCookie,
+    reversible: true,
+    tags: ['signatures', 'cookie', 'session', 'web']
+  },
+  {
+    id: 'kerberos-ticket',
+    name: 'Kerberos Ticket',
+    description: 'Kerberos authentication ticket',
+    emoji: '🎟️',
+    category: 'signatures',
+    encode: encoders.encodeKerberosTicket,
+    tags: ['signatures', 'kerberos', 'authentication', 'enterprise']
   }
 ];
 
