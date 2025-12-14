@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { encoderConfig } from '../utils/encoderConfig.js';
+import { describe, it, expect } from "vitest";
+import { encoderConfig } from "../utils/encoderConfig.js";
 
 /**
  * Encoder Code Similarity Test
@@ -15,35 +15,29 @@ import { encoderConfig } from '../utils/encoderConfig.js';
 
 // Test strings covering various character types and edge cases
 // Reduced set for performance with 500+ encoders
-const TEST_STRINGS = [
-  'Hello World',
-  'abc123',
-  'Test!',
-  'UPPER',
-  'lower'
-];
+const TEST_STRINGS = ["Hello World", "abc123", "Test!", "UPPER", "lower"];
 
 /**
  * Normalize function source code for comparison
  * Removes whitespace, comments, and standardizes formatting
  */
 const normalizeFunctionCode = (func) => {
-  if (!func) return '';
+  if (!func) return "";
 
   let code = func.toString();
 
   // Remove comments
-  code = code.replace(/\/\*[\s\S]*?\*\//g, ''); // Block comments
-  code = code.replace(/\/\/.*/g, ''); // Line comments
+  code = code.replace(/\/\*[\s\S]*?\*\//g, ""); // Block comments
+  code = code.replace(/\/\/.*/g, ""); // Line comments
 
   // Remove all whitespace and normalize
-  code = code.replace(/\s+/g, '');
+  code = code.replace(/\s+/g, "");
 
   // Normalize variable names (replace single-char vars with standard names)
   // This helps detect structurally identical code with different variable names
-  code = code.replace(/\btext\b/g, 'INPUT');
-  code = code.replace(/\bchar\b/g, 'CHAR');
-  code = code.replace(/\bcode\b/g, 'CODE');
+  code = code.replace(/\btext\b/g, "INPUT");
+  code = code.replace(/\bchar\b/g, "CHAR");
+  code = code.replace(/\bcode\b/g, "CODE");
 
   return code;
 };
@@ -89,8 +83,8 @@ const levenshteinDistance = (str1, str2) => {
       } else {
         matrix[i][j] = Math.min(
           matrix[i - 1][j - 1] + 1, // substitution
-          matrix[i][j - 1] + 1,     // insertion
-          matrix[i - 1][j] + 1      // deletion
+          matrix[i][j - 1] + 1, // insertion
+          matrix[i - 1][j] + 1 // deletion
         );
       }
     }
@@ -136,22 +130,22 @@ const analyzeCodePatterns = (func) => {
   const code = func.toString();
 
   return {
-    usesCharCodeAt: code.includes('charCodeAt'),
-    usesFromCharCode: code.includes('fromCharCode'),
-    usesSplit: code.includes('split'),
-    usesMap: code.includes('.map('),
-    usesReplace: code.includes('replace'),
-    usesToString: code.includes('toString('),
-    usesParseInt: code.includes('parseInt'),
-    usesBtoa: code.includes('btoa'),
-    usesAtob: code.includes('atob'),
-    usesModulo: code.includes('%'),
+    usesCharCodeAt: code.includes("charCodeAt"),
+    usesFromCharCode: code.includes("fromCharCode"),
+    usesSplit: code.includes("split"),
+    usesMap: code.includes(".map("),
+    usesReplace: code.includes("replace"),
+    usesToString: code.includes("toString("),
+    usesParseInt: code.includes("parseInt"),
+    usesBtoa: code.includes("btoa"),
+    usesAtob: code.includes("atob"),
+    usesModulo: code.includes("%"),
     usesShift: /[\+\-]\s*\d+/.test(code),
-    usesJoin: code.includes('join'),
-    usesNormalize: code.includes('normalize'),
-    usesToUpperCase: code.includes('toUpperCase'),
-    usesToLowerCase: code.includes('toLowerCase'),
-    linesOfCode: code.split('\n').length
+    usesJoin: code.includes("join"),
+    usesNormalize: code.includes("normalize"),
+    usesToUpperCase: code.includes("toUpperCase"),
+    usesToLowerCase: code.includes("toLowerCase"),
+    linesOfCode: code.split("\n").length,
   };
 };
 
@@ -159,7 +153,9 @@ const analyzeCodePatterns = (func) => {
  * Calculate pattern similarity between two encoders
  */
 const calculatePatternSimilarity = (patterns1, patterns2) => {
-  const keys = Object.keys(patterns1).filter(k => typeof patterns1[k] === 'boolean');
+  const keys = Object.keys(patterns1).filter(
+    (k) => typeof patterns1[k] === "boolean"
+  );
   let matchCount = 0;
 
   for (const key of keys) {
@@ -174,22 +170,24 @@ const calculatePatternSimilarity = (patterns1, patterns2) => {
 /**
  * Find all potential duplicate encoder pairs
  */
-const findDuplicateEncoders = (threshold = {
-  codeSimilarity: 0.9,      // 90% code similarity
-  behavioralMatch: 0.95,     // 95% identical outputs
-  patternSimilarity: 0.85    // 85% pattern match
-}) => {
+const findDuplicateEncoders = (
+  threshold = {
+    codeSimilarity: 0.9, // 90% code similarity
+    behavioralMatch: 0.95, // 95% identical outputs
+    patternSimilarity: 0.85, // 85% pattern match
+  }
+) => {
   const duplicates = [];
-  const encoders = encoderConfig.filter(e => e.encode);
+  const encoders = encoderConfig.filter((e) => e.encode);
 
   console.log(`Analyzing ${encoders.length} encoders for duplicates...`);
 
   // Pre-compute normalized code and patterns for all encoders
-  const encoderData = encoders.map(enc => ({
+  const encoderData = encoders.map((enc) => ({
     encoder: enc,
     normalizedCode: normalizeFunctionCode(enc.encode),
     codeLength: enc.encode.toString().length,
-    patterns: analyzeCodePatterns(enc.encode)
+    patterns: analyzeCodePatterns(enc.encode),
   }));
 
   let comparisons = 0;
@@ -203,7 +201,9 @@ const findDuplicateEncoders = (threshold = {
       // Progress logging every 10%
       const progress = Math.floor((comparisons / totalComparisons) * 100);
       if (progress >= lastProgress + 10) {
-        console.log(`Progress: ${progress}% (${comparisons}/${totalComparisons} comparisons)`);
+        console.log(
+          `Progress: ${progress}% (${comparisons}/${totalComparisons} comparisons)`
+        );
         lastProgress = progress;
       }
 
@@ -211,34 +211,47 @@ const findDuplicateEncoders = (threshold = {
       const data2 = encoderData[j];
 
       // Quick pre-filter: skip if code length differs by more than 50%
-      const lengthRatio = Math.min(data1.codeLength, data2.codeLength) / Math.max(data1.codeLength, data2.codeLength);
+      const lengthRatio =
+        Math.min(data1.codeLength, data2.codeLength) /
+        Math.max(data1.codeLength, data2.codeLength);
       if (lengthRatio < 0.5) continue;
 
       // Quick pre-filter: if normalized code is very different in length, skip
-      const normLengthRatio = Math.min(data1.normalizedCode.length, data2.normalizedCode.length) /
-                              Math.max(data1.normalizedCode.length, data2.normalizedCode.length);
+      const normLengthRatio =
+        Math.min(data1.normalizedCode.length, data2.normalizedCode.length) /
+        Math.max(data1.normalizedCode.length, data2.normalizedCode.length);
       if (normLengthRatio < 0.6) continue;
 
       // Calculate code similarity
-      const codeSimilarity = calculateSimilarity(data1.normalizedCode, data2.normalizedCode);
+      const codeSimilarity = calculateSimilarity(
+        data1.normalizedCode,
+        data2.normalizedCode
+      );
 
       // Early exit: if code similarity is very low, skip expensive behavioral test
       if (codeSimilarity < 0.5) continue;
 
       // Calculate pattern similarity
-      const patternSimilarity = calculatePatternSimilarity(data1.patterns, data2.patterns);
+      const patternSimilarity = calculatePatternSimilarity(
+        data1.patterns,
+        data2.patterns
+      );
 
       // Only do expensive behavioral test if code or pattern similarity is promising
       let behavioralMatch = 0;
       if (codeSimilarity >= 0.7 || patternSimilarity >= 0.8) {
-        behavioralMatch = testBehavioralEquivalence(data1.encoder, data2.encoder);
+        behavioralMatch = testBehavioralEquivalence(
+          data1.encoder,
+          data2.encoder
+        );
       }
 
       // Check if any threshold is exceeded
       const isDuplicate =
         codeSimilarity >= threshold.codeSimilarity ||
         behavioralMatch >= threshold.behavioralMatch ||
-        (codeSimilarity >= 0.7 && patternSimilarity >= threshold.patternSimilarity);
+        (codeSimilarity >= 0.7 &&
+          patternSimilarity >= threshold.patternSimilarity);
 
       if (isDuplicate) {
         duplicates.push({
@@ -252,13 +265,15 @@ const findDuplicateEncoders = (threshold = {
           category1: data1.encoder.category,
           category2: data2.encoder.category,
           patterns1: data1.patterns,
-          patterns2: data2.patterns
+          patterns2: data2.patterns,
         });
       }
     }
   }
 
-  console.log(`Completed ${comparisons} comparisons. Found ${duplicates.length} potential duplicates.`);
+  console.log(
+    `Completed ${comparisons} comparisons. Found ${duplicates.length} potential duplicates.`
+  );
   return duplicates;
 };
 
@@ -268,7 +283,7 @@ const findDuplicateEncoders = (threshold = {
  */
 const formatDuplicateReport = (duplicates) => {
   if (duplicates.length === 0) {
-    return 'No duplicate encoders detected.';
+    return "No duplicate encoders detected.";
   }
 
   // Sort by highest similarity score (combined metric)
@@ -281,10 +296,15 @@ const formatDuplicateReport = (duplicates) => {
   const topDuplicates = sorted.slice(0, 20);
 
   let report = `Found ${duplicates.length} potential duplicate encoder pair(s)\n`;
-  report += `Showing top ${Math.min(20, duplicates.length)} by similarity score:\n\n`;
+  report += `Showing top ${Math.min(
+    20,
+    duplicates.length
+  )} by similarity score:\n\n`;
 
   topDuplicates.forEach((dup, index) => {
-    report += `${index + 1}. ${dup.encoder1} (${dup.name1}) ↔ ${dup.encoder2} (${dup.name2})\n`;
+    report += `${index + 1}. ${dup.encoder1} (${dup.name1}) ↔ ${
+      dup.encoder2
+    } (${dup.name2})\n`;
     report += `   Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%\n`;
     report += `   Categories: ${dup.category1} / ${dup.category2}\n\n`;
   });
@@ -292,11 +312,13 @@ const formatDuplicateReport = (duplicates) => {
   return report;
 };
 
-describe('Encoder Code Similarity Analysis', () => {
-  describe('Function Normalization', () => {
-    it('should normalize function code correctly', () => {
-      const func1 = function(text) { return text.toUpperCase(); };
-      const func2 = function(  text  ) {
+describe("Encoder Code Similarity Analysis", () => {
+  describe("Function Normalization", () => {
+    it("should normalize function code correctly", () => {
+      const func1 = function (text) {
+        return text.toUpperCase();
+      };
+      const func2 = function (text) {
         return text.toUpperCase();
       };
 
@@ -306,55 +328,55 @@ describe('Encoder Code Similarity Analysis', () => {
       expect(norm1).toBe(norm2);
     });
 
-    it('should remove comments from function code', () => {
-      const funcWithComments = function(text) {
+    it("should remove comments from function code", () => {
+      const funcWithComments = function (text) {
         // This is a comment
         /* Block comment */
         return text;
       };
 
       const normalized = normalizeFunctionCode(funcWithComments);
-      expect(normalized).not.toContain('//');
-      expect(normalized).not.toContain('/*');
+      expect(normalized).not.toContain("//");
+      expect(normalized).not.toContain("/*");
     });
   });
 
-  describe('Similarity Calculation', () => {
-    it('should return 1.0 for identical strings', () => {
-      expect(calculateSimilarity('hello', 'hello')).toBe(1);
+  describe("Similarity Calculation", () => {
+    it("should return 1.0 for identical strings", () => {
+      expect(calculateSimilarity("hello", "hello")).toBe(1);
     });
 
-    it('should return 0 for completely different strings', () => {
-      const similarity = calculateSimilarity('abc', 'xyz');
+    it("should return 0 for completely different strings", () => {
+      const similarity = calculateSimilarity("abc", "xyz");
       expect(similarity).toBeLessThan(0.5);
     });
 
-    it('should return intermediate values for similar strings', () => {
-      const similarity = calculateSimilarity('hello', 'hallo');
+    it("should return intermediate values for similar strings", () => {
+      const similarity = calculateSimilarity("hello", "hallo");
       expect(similarity).toBeGreaterThan(0.7);
       expect(similarity).toBeLessThan(1.0);
     });
   });
 
-  describe('Behavioral Equivalence', () => {
-    it('should detect identical encoder behavior', () => {
+  describe("Behavioral Equivalence", () => {
+    it("should detect identical encoder behavior", () => {
       const encoder1 = {
-        encode: (text) => text.toUpperCase()
+        encode: (text) => text.toUpperCase(),
       };
       const encoder2 = {
-        encode: (text) => text.toUpperCase()
+        encode: (text) => text.toUpperCase(),
       };
 
       const match = testBehavioralEquivalence(encoder1, encoder2);
       expect(match).toBe(1); // 100% match
     });
 
-    it('should detect different encoder behavior', () => {
+    it("should detect different encoder behavior", () => {
       const encoder1 = {
-        encode: (text) => text.toUpperCase()
+        encode: (text) => text.toUpperCase(),
       };
       const encoder2 = {
-        encode: (text) => text.toLowerCase()
+        encode: (text) => text.toLowerCase(),
       };
 
       const match = testBehavioralEquivalence(encoder1, encoder2);
@@ -362,10 +384,13 @@ describe('Encoder Code Similarity Analysis', () => {
     });
   });
 
-  describe('Pattern Analysis', () => {
-    it('should detect code patterns correctly', () => {
-      const func = function(text) {
-        return text.split('').map(char => char.charCodeAt(0)).join(' ');
+  describe("Pattern Analysis", () => {
+    it("should detect code patterns correctly", () => {
+      const func = function (text) {
+        return text
+          .split("")
+          .map((char) => char.charCodeAt(0))
+          .join(" ");
       };
 
       const patterns = analyzeCodePatterns(func);
@@ -377,19 +402,19 @@ describe('Encoder Code Similarity Analysis', () => {
       expect(patterns.usesBtoa).toBe(false);
     });
 
-    it('should calculate pattern similarity correctly', () => {
+    it("should calculate pattern similarity correctly", () => {
       const patterns1 = {
         usesCharCodeAt: true,
         usesSplit: true,
         usesMap: true,
-        usesJoin: true
+        usesJoin: true,
       };
 
       const patterns2 = {
         usesCharCodeAt: true,
         usesSplit: true,
         usesMap: true,
-        usesJoin: false
+        usesJoin: false,
       };
 
       const similarity = calculatePatternSimilarity(patterns1, patterns2);
@@ -397,34 +422,36 @@ describe('Encoder Code Similarity Analysis', () => {
     });
   });
 
-  describe('Duplicate Detection on Real Encoders', () => {
-    it('should analyze all encoders without errors', () => {
+  describe("Duplicate Detection on Real Encoders", () => {
+    it("should analyze all encoders without errors", () => {
       expect(() => {
         findDuplicateEncoders();
       }).not.toThrow();
     });
 
-    it('should detect potential duplicates in the encoder set', () => {
+    it("should detect potential duplicates in the encoder set", () => {
       const duplicates = findDuplicateEncoders({
         codeSimilarity: 0.9,
         behavioralMatch: 0.95,
-        patternSimilarity: 0.85
+        patternSimilarity: 0.85,
       });
 
       // Log the report for manual review
       const report = formatDuplicateReport(duplicates);
-      console.log('\n' + '='.repeat(80));
-      console.log('ENCODER DUPLICATE DETECTION REPORT');
-      console.log('='.repeat(80));
+      console.log("\n" + "=".repeat(80));
+      console.log("ENCODER DUPLICATE DETECTION REPORT");
+      console.log("=".repeat(80));
       console.log(report);
-      console.log('='.repeat(80) + '\n');
+      console.log("=".repeat(80) + "\n");
 
       // Store duplicates for inspection
       if (duplicates.length > 0) {
-        console.log('Detailed duplicate analysis:');
-        duplicates.forEach(dup => {
+        console.log("Detailed duplicate analysis:");
+        duplicates.forEach((dup) => {
           console.log(`\n${dup.encoder1} vs ${dup.encoder2}:`);
-          console.log(`  Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%`);
+          console.log(
+            `  Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%`
+          );
         });
       }
 
@@ -436,24 +463,28 @@ describe('Encoder Code Similarity Analysis', () => {
       expect(Array.isArray(duplicates)).toBe(true);
     });
 
-    it('should not flag known different encoders as duplicates', () => {
+    it("should not flag known different encoders as duplicates", () => {
       const duplicates = findDuplicateEncoders();
 
       // These encoders should NOT be flagged as duplicates (they're clearly different)
       const knownDifferent = [
-        ['base64', 'hex'],
-        ['morse', 'braille'],
-        ['caesar', 'reverse']
+        ["base64", "hex"],
+        ["morse", "braille"],
+        ["caesar", "reverse"],
       ];
 
       for (const [id1, id2] of knownDifferent) {
-        const foundDup = duplicates.find(d =>
-          (d.encoder1 === id1 && d.encoder2 === id2) ||
-          (d.encoder1 === id2 && d.encoder2 === id1)
+        const foundDup = duplicates.find(
+          (d) =>
+            (d.encoder1 === id1 && d.encoder2 === id2) ||
+            (d.encoder1 === id2 && d.encoder2 === id1)
         );
 
         if (foundDup) {
-          console.warn(`Warning: ${id1} and ${id2} were flagged as similar:`, foundDup);
+          console.warn(
+            `Warning: ${id1} and ${id2} were flagged as similar:`,
+            foundDup
+          );
         }
 
         // These should not be highly similar
@@ -463,22 +494,24 @@ describe('Encoder Code Similarity Analysis', () => {
       }
     });
 
-    it('should detect exact code duplicates with 100% similarity', () => {
+    it("should detect exact code duplicates with 100% similarity", () => {
       const duplicates = findDuplicateEncoders({
         codeSimilarity: 0.99, // 99%+ code similarity
         behavioralMatch: 1.0,
-        patternSimilarity: 0.99
+        patternSimilarity: 0.99,
       });
 
-      const exactDuplicates = duplicates.filter(d =>
-        d.codeSimilarity >= 99 && d.behavioralMatch >= 99
+      const exactDuplicates = duplicates.filter(
+        (d) => d.codeSimilarity >= 99 && d.behavioralMatch >= 99
       );
 
       if (exactDuplicates.length > 0) {
-        console.log('\nEXACT DUPLICATES FOUND:');
-        exactDuplicates.forEach(dup => {
+        console.log("\nEXACT DUPLICATES FOUND:");
+        exactDuplicates.forEach((dup) => {
           console.log(`  - ${dup.encoder1} === ${dup.encoder2}`);
-          console.log(`    Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}%`);
+          console.log(
+            `    Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}%`
+          );
         });
 
         // Fail the test if exact duplicates are found (they should be consolidated)
@@ -486,14 +519,20 @@ describe('Encoder Code Similarity Analysis', () => {
       }
     });
 
-    it('should categorize duplicates by severity', () => {
+    it("should categorize duplicates by severity", () => {
       const duplicates = findDuplicateEncoders();
 
-      const critical = duplicates.filter(d => d.codeSimilarity >= 95 && d.behavioralMatch >= 95);
-      const high = duplicates.filter(d => d.codeSimilarity >= 85 || d.behavioralMatch >= 90);
-      const medium = duplicates.filter(d => d.codeSimilarity >= 70 || d.behavioralMatch >= 80);
+      const critical = duplicates.filter(
+        (d) => d.codeSimilarity >= 95 && d.behavioralMatch >= 95
+      );
+      const high = duplicates.filter(
+        (d) => d.codeSimilarity >= 85 || d.behavioralMatch >= 90
+      );
+      const medium = duplicates.filter(
+        (d) => d.codeSimilarity >= 70 || d.behavioralMatch >= 80
+      );
 
-      console.log('\nDuplicate Severity Breakdown:');
+      console.log("\nDuplicate Severity Breakdown:");
       console.log(`  Critical (95%+ code & behavior): ${critical.length}`);
       console.log(`  High (85%+ code OR 90%+ behavior): ${high.length}`);
       console.log(`  Medium (70%+ code OR 80%+ behavior): ${medium.length}`);
@@ -504,22 +543,24 @@ describe('Encoder Code Similarity Analysis', () => {
     });
   });
 
-  describe('Encoder Coverage', () => {
-    it('should test a significant portion of all encoders', () => {
+  describe("Encoder Coverage", () => {
+    it("should test a significant portion of all encoders", () => {
       const totalEncoders = encoderConfig.length;
-      const encodersWithEncode = encoderConfig.filter(e => e.encode).length;
+      const encodersWithEncode = encoderConfig.filter((e) => e.encode).length;
 
       console.log(`\nEncoder Coverage:`);
       console.log(`  Total encoders: ${totalEncoders}`);
       console.log(`  Encoders with encode function: ${encodersWithEncode}`);
-      console.log(`  Coverage: ${Math.round(encodersWithEncode / totalEncoders * 100)}%`);
+      console.log(
+        `  Coverage: ${Math.round((encodersWithEncode / totalEncoders) * 100)}%`
+      );
 
       // At least 90% of encoders should have an encode function
       expect(encodersWithEncode / totalEncoders).toBeGreaterThan(0.9);
     });
 
-    it('should test all encoders with the test strings', () => {
-      const encoders = encoderConfig.filter(e => e.encode);
+    it("should test all encoders with the test strings", () => {
+      const encoders = encoderConfig.filter((e) => e.encode);
       let successCount = 0;
       let errorCount = 0;
       const errors = [];
@@ -541,7 +582,10 @@ describe('Encoder Code Similarity Analysis', () => {
       console.log(`  Errors: ${errorCount}`);
 
       if (errors.length > 0 && errors.length < 10) {
-        console.log(`  Encoders with errors:`, errors.map(e => e.id).join(', '));
+        console.log(
+          `  Encoders with errors:`,
+          errors.map((e) => e.id).join(", ")
+        );
       }
 
       // Most encoders should work without errors

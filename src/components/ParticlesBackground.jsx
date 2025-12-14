@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import Particles from '@tsparticles/react';
-import { loadSlim } from '@tsparticles/slim';
+import { useCallback } from "react";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 const ParticlesBackground = () => {
   const particlesInit = useCallback(async (engine) => {
@@ -10,63 +10,63 @@ const ParticlesBackground = () => {
   const particlesConfig = {
     fullScreen: {
       enable: true,
-      zIndex: 0
+      zIndex: 0,
     },
     background: {
       color: {
-        value: 'transparent'
-      }
+        value: "transparent",
+      },
     },
     fpsLimit: 60,
     interactivity: {
       events: {
         onClick: {
           enable: true,
-          mode: 'push'
+          mode: "push",
         },
         onHover: {
           enable: true,
-          mode: 'repulse'
+          mode: "repulse",
         },
-        resize: true
+        resize: true,
       },
       modes: {
         push: {
-          quantity: 2
+          quantity: 2,
         },
         repulse: {
           distance: 100,
-          duration: 0.4
-        }
-      }
+          duration: 0.4,
+        },
+      },
     },
     particles: {
       color: {
-        value: ['#a78bfa', '#c084fc', '#e879f9', '#f472b6', '#fb7185']
+        value: ["#a78bfa", "#c084fc", "#e879f9", "#f472b6", "#fb7185"],
       },
       links: {
-        color: '#a78bfa',
+        color: "#a78bfa",
         distance: 150,
         enable: true,
         opacity: 0.15,
-        width: 1
+        width: 1,
       },
       move: {
-        direction: 'none',
+        direction: "none",
         enable: true,
         outModes: {
-          default: 'bounce'
+          default: "bounce",
         },
         random: false,
         speed: 0.5,
-        straight: false
+        straight: false,
       },
       number: {
         density: {
           enable: true,
-          area: 800
+          area: 800,
         },
-        value: 50
+        value: 50,
       },
       opacity: {
         value: 0.3,
@@ -75,11 +75,11 @@ const ParticlesBackground = () => {
           enable: true,
           speed: 0.5,
           opacity_min: 0.1,
-          sync: false
-        }
+          sync: false,
+        },
       },
       shape: {
-        type: 'circle'
+        type: "circle",
       },
       size: {
         value: { min: 1, max: 3 },
@@ -88,11 +88,11 @@ const ParticlesBackground = () => {
           enable: true,
           speed: 2,
           size_min: 0.5,
-          sync: false
-        }
-      }
+          sync: false,
+        },
+      },
     },
-    detectRetina: true
+    detectRetina: true,
   };
 
   return (
