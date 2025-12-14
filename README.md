@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 250+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 280+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **250+ different encoding formats** - from classic Binary and Morse Code to unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **280+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
@@ -50,7 +50,7 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **250+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic
+- **280+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
 - **Real-time Encoding/Decoding** - See results as you type
 - **75+ Reversible Encodings** - Methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
@@ -301,6 +301,40 @@ Gaming and entertainment:
 - **Skill Tree** 🌟 - Ability progression
 - **Combo Move** 💥 - Fighting game combos
 - And more...
+
+### 🎖️ Military & Government (11) **NEW v3.5!**
+Serious military and government encoding standards:
+- **MGRS Coordinates** 🎯 - Military Grid Reference System (NATO) (Reversible!)
+- **STANAG 4439** 🛡️ - NATO classification system
+- **ACP 125 Prowords** 📻 - Military radio procedure words (Reversible!)
+- **US Classification Markings** 🔒 - Government security classifications
+- **Zulu Time** ⏰ - Military UTC time format (Reversible!)
+- **Operation Code Names** 🎖️ - Military operation designations
+- **Tactical Call Signs** 📡 - Military unit identifiers (Reversible!)
+- **NATO Brevity Codes** ✈️ - Air combat communication codes (Reversible!)
+- **GEOREF** 🌍 - World Geographic Reference System (Reversible!)
+- **SIGINT Format** 📡 - Signals intelligence identifiers
+- **Weapon Designation** 🚀 - US military weapon system codes
+
+### 🔐 Modern Cryptography (17) **NEW v3.5!**
+Modern cryptographic standards and formats:
+- **Bech32** ₿ - Bitcoin SegWit address format (Reversible!)
+- **Z-Base-32** 🔢 - Human-oriented base-32 encoding (Reversible!)
+- **Crockford Base32** 🔣 - Human-friendly base-32 encoding (Reversible!)
+- **SHA-256 Style** 🔐 - Cryptographic hash representation
+- **Argon2 Format** 🛡️ - Modern password hash format
+- **BCrypt Format** 🔑 - Password hashing format
+- **PEM Key Format** 🔐 - RSA private key representation
+- **SSH Public Key** 🔑 - SSH key format
+- **TOTP (2FA)** ⏱️ - Time-based one-time password (Reversible!)
+- **API Key Format** 🔑 - Modern API authentication keys
+- **ULID** 🆔 - Sortable unique identifiers (Reversible!)
+- **Snowflake ID** ❄️ - Twitter/Discord distributed IDs (Reversible!)
+- **X.509 Serial Number** 📜 - Certificate serial numbers (Reversible!)
+- **Ethereum Address** ⟠ - Ethereum wallet addresses
+- **Bitcoin Address** ₿ - Bitcoin wallet addresses (Base58)
+- **Crypto Strength Indicator** 🔒 - Encryption algorithm strength
+- **Multibase** 🌐 - Self-describing base encoding (IPFS) (Reversible!)
 
 ## 🚀 Quick Start
 
@@ -570,6 +604,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [x] Modern tech encoders (Barcodes, Git, Docker, K8s, Social media) ✅ **NEW v3.0!**
 - [x] Nature & biology encoders (RNA, Amino acids, Taxonomy, etc.) ✅ **NEW v3.0!**
 - [x] Game & entertainment encoders (Tetris, Pokemon, RPG, etc.) ✅ **NEW v3.0!**
+- [x] Military & government encoders (MGRS, NATO, STANAG, classified markings) ✅ **NEW v3.5!**
+- [x] Modern cryptographic encoders (Bech32, TOTP, ULID, Snowflake, etc.) ✅ **NEW v3.5!**
 - [ ] Interactive tutorials for each encoder
 - [ ] Browser extension
 - [ ] Batch file processing
@@ -587,7 +623,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 Made with ❤️ by the Creative Text Encoder team
 
-**v3.0** - Now with 250+ encoders! The most feature-rich text encoder on the web!
+**v3.5** - Now with 280+ encoders including military & cryptographic standards! The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 
