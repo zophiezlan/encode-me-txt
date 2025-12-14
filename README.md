@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 280+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 300+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **280+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **300+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
@@ -50,7 +50,7 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **280+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
+- **300+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
 - **Real-time Encoding/Decoding** - See results as you type
 - **75+ Reversible Encodings** - Methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
@@ -336,6 +336,29 @@ Modern cryptographic standards and formats:
 - **Crypto Strength Indicator** 🔒 - Encryption algorithm strength
 - **Multibase** 🌐 - Self-describing base encoding (IPFS) (Reversible!)
 
+### ✍️ Digital Signatures (20) **NEW v3.5!**
+Digital signature and authentication formats:
+- **PGP Signature** ✍️ - ASCII-armored PGP/GPG signature
+- **PGP Clearsigned** 📝 - PGP clearsigned message format
+- **JWT Token** 🎫 - JSON Web Token with signature (Reversible!)
+- **OAuth Bearer Token** 🔑 - OAuth 2.0 Bearer token format
+- **OAuth Token Response** 🎟️ - OAuth 2.0 access token response
+- **WebAuthn Credential** 🔐 - Passwordless authentication
+- **FIDO2 Assertion** 🛡️ - FIDO2 authentication assertion
+- **Ethereum Signature** ⟠ - Ethereum signed message format
+- **Bitcoin Signature** ₿ - Bitcoin signed message format
+- **Multisig Signature** 🔏 - Multi-signature format (M-of-N)
+- **XML Digital Signature** 📄 - W3C XMLDSig format
+- **SAML Assertion** 🎫 - SAML security assertion
+- **HMAC Signature** 🔐 - Hash-based message authentication
+- **AWS Signature V4** ☁️ - Amazon Web Services signature
+- **Stripe Webhook Signature** 💳 - Stripe webhook verification (Reversible!)
+- **Authenticode** 🪟 - Windows code signing signature
+- **Apple Code Signature** 🍎 - Apple code signing format
+- **RFC 3161 Timestamp** ⏱️ - Trusted timestamp token
+- **Signed Cookie** 🍪 - Cryptographically signed cookie (Reversible!)
+- **Kerberos Ticket** 🎟️ - Kerberos authentication ticket
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -606,6 +629,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - [x] Game & entertainment encoders (Tetris, Pokemon, RPG, etc.) ✅ **NEW v3.0!**
 - [x] Military & government encoders (MGRS, NATO, STANAG, classified markings) ✅ **NEW v3.5!**
 - [x] Modern cryptographic encoders (Bech32, TOTP, ULID, Snowflake, etc.) ✅ **NEW v3.5!**
+- [x] Digital signature formats (PGP, JWT, OAuth, WebAuthn, SAML, etc.) ✅ **NEW v3.5!**
 - [ ] Interactive tutorials for each encoder
 - [ ] Browser extension
 - [ ] Batch file processing
@@ -623,7 +647,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 Made with ❤️ by the Creative Text Encoder team
 
-**v3.5** - Now with 280+ encoders including military & cryptographic standards! The most feature-rich text encoder on the web!
+**v3.5** - Now with 300+ encoders including military, cryptographic, and digital signature standards! The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 

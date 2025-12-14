@@ -50,3 +50,6 @@ export * from './military.js';
 
 // Modern Cryptographic encoders (v3.5)
 export * from './crypto.js';
+
+// Digital Signatures & Authentication (v3.5)
+export * from './signatures.js';
