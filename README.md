@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 300+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 500+ creative encodings with unique features not found anywhere else!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **300+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **500+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
@@ -50,7 +50,7 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **300+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
+- **500+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
 - **Real-time Encoding/Decoding** - See results as you type
 - **75+ Reversible Encodings** - Methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
@@ -647,7 +647,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 Made with ❤️ by the Creative Text Encoder team
 
-**v3.5** - Now with 300+ encoders including military, cryptographic, and digital signature standards! The most feature-rich text encoder on the web!
+**v3.5** - Now with 500+ encoders including military, cryptographic, and digital signature standards! The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 
