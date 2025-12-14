@@ -44,3 +44,9 @@ export * from './communication.js';
 
 // Creative text effects (v3.4)
 export * from './effects.js';
+
+// Military & Government encoders (v3.5)
+export * from './military.js';
+
+// Modern Cryptographic encoders (v3.5)
+export * from './crypto.js';
