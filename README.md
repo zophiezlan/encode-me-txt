@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 500+ creative encodings with unique features not found anywhere else!**
+**Transform your messages into 500+ creative encodings!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
