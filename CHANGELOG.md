@@ -1,8 +1,20 @@
 # Changelog
 
-## [3.5.0] - 2025-12-15
+## [3.5.0] - 2026-05-17
 
-### 🎖️ Military, Cryptographic & Signature Standards
+### 🧹 Cleanup release
+
+The first version where `package.json` actually reads 3.5.0 (it was stuck at 3.0.0 while the codebase grew to v3.5). A five-phase cleanup pass landed:
+
+- **Privacy**: QR encoder rewritten to generate matrices client-side instead of phoning home to api.qrserver.com. Shared encoder import flow now requires explicit confirmation with preview.
+- **Architecture**: Circular dep in `shuffle.js` broken. 33 parameterized encoders migrated to declarative `paramsResolver` descriptors. `EnhancedTextEncoder.jsx` decomposed from 3,443 LOC to 1,887. `encoderConfig.js` split from one 5,724-line file into 25 per-category files. `EncoderCard` extracted to its own component.
+- **Security**: New `utf8Base64` helper fixes Base64 encode/decode crashes on Unicode payloads (emoji, non-Latin). `alert`/`confirm` replaced with toast + proper modal in the custom encoder builder. Input textarea bounded at 50k chars with a 250 ms debounce.
+- **Dead code**: 1,179 LOC of unused exports/class members removed across 17 files.
+- **Hosting**: Migrated from Netlify + Vercel to Cloudflare Pages exclusively. `_headers` carries CSP/HSTS/Permissions-Policy; `_redirects` carries the SPA fallback. Bundle: 275 KB → 193 KB (-30%, -28 KB gzipped).
+- **Service worker**: Network-first for HTML so deploys reach users; cache-first for hashed assets. Cache name carries a per-build hash injected by a tiny vite plugin.
+- **Tests**: 391 → **506 passing**. Stale inline-reimplemented encoder tests rewired to test the real modules. New round-trip suite verifies every `reversible: true` encoder. **56 encoders previously flagged "reversible" failed round-trip and have been corrected to `reversible: false`** — the reversible count drops from a claimed 154 to a verified **97**.
+
+### 🎖️ Military, Cryptographic & Signature Standards (Original 3.5.0 entry below)
 
 #### New encoder modules (48 encoders)
 

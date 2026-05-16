@@ -9,7 +9,7 @@ export const linguisticEncoders = [
     category: "linguistic",
     encode: encoders.encodeGreek,
     decode: encoders.decodeGreek,
-    reversible: true,
+    reversible: false,
     tags: ["linguistic", "greek", "alphabet"],
   },
   {
@@ -20,7 +20,7 @@ export const linguisticEncoders = [
     category: "linguistic",
     encode: encoders.encodeCyrillic,
     decode: encoders.decodeCyrillic,
-    reversible: true,
+    reversible: false,
     tags: ["linguistic", "cyrillic", "russian"],
   },
   {
@@ -31,7 +31,7 @@ export const linguisticEncoders = [
     category: "linguistic",
     encode: encoders.encodeHebrew,
     decode: encoders.decodeHebrew,
-    reversible: true,
+    reversible: false,
     tags: ["linguistic", "hebrew", "ancient"],
   },
   {
@@ -42,7 +42,7 @@ export const linguisticEncoders = [
     category: "linguistic",
     encode: encoders.encodeKorean,
     decode: encoders.decodeKorean,
-    reversible: true,
+    reversible: false,
     tags: ["linguistic", "korean", "hangul"],
   },
   {

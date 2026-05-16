@@ -29,7 +29,7 @@ export const visualEncoders = [
     category: "visual",
     encode: encoders.encodeDancingMen,
     decode: encoders.decodeDancingMen,
-    reversible: true,
+    reversible: false,
     tags: ["visual", "cipher", "sherlock"],
   },
   {
@@ -40,7 +40,7 @@ export const visualEncoders = [
     category: "visual",
     encode: encoders.encodePigpen,
     decode: encoders.decodePigpen,
-    reversible: true,
+    reversible: false,
     tags: ["visual", "cipher", "geometric"],
   },
   {

@@ -79,7 +79,7 @@ export const modernEncoders = [
     category: "modern",
     encode: encoders.encodeGitCommit,
     decode: encoders.decodeGitCommit,
-    reversible: true,
+    reversible: false,
     tags: ["modern", "git", "commit"],
   },
   {

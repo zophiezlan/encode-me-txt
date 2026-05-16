@@ -29,7 +29,7 @@ export const militaryEncoders = [
     category: "military",
     encode: encoders.encodeProwords,
     decode: encoders.decodeProwords,
-    reversible: true,
+    reversible: false,
     tags: ["military", "radio", "communication", "nato"],
   },
   {
@@ -49,7 +49,7 @@ export const militaryEncoders = [
     category: "military",
     encode: encoders.encodeZuluTime,
     decode: encoders.decodeZuluTime,
-    reversible: true,
+    reversible: false,
     tags: ["military", "time", "utc", "aviation"],
   },
   {
@@ -69,7 +69,7 @@ export const militaryEncoders = [
     category: "military",
     encode: encoders.encodeTacticalCallSign,
     decode: encoders.decodeTacticalCallSign,
-    reversible: true,
+    reversible: false,
     tags: ["military", "radio", "tactical", "communications"],
   },
   {
@@ -80,7 +80,7 @@ export const militaryEncoders = [
     category: "military",
     encode: encoders.encodeBrevityCode,
     decode: encoders.decodeBrevityCode,
-    reversible: true,
+    reversible: false,
     tags: ["military", "aviation", "nato", "tactical"],
   },
   {
@@ -91,7 +91,7 @@ export const militaryEncoders = [
     category: "military",
     encode: encoders.encodeGEOREF,
     decode: encoders.decodeGEOREF,
-    reversible: true,
+    reversible: false,
     tags: ["military", "coordinates", "aviation", "navigation"],
   },
   {

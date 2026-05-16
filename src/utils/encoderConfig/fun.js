@@ -121,7 +121,7 @@ export const funEncoders = [
     category: "fun",
     encode: encoders.encodeKeyboardShift,
     decode: encoders.decodeKeyboardShift,
-    reversible: true,
+    reversible: false,
     tags: ["fun", "keyboard", "shift"],
   },
   {

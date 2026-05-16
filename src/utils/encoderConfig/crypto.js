@@ -109,7 +109,7 @@ export const cryptoEncoders = [
     category: "crypto",
     encode: encoders.encodeULID,
     decode: encoders.decodeULID,
-    reversible: true,
+    reversible: false,
     tags: ["crypto", "ulid", "uuid", "identifiers"],
   },
   {
@@ -120,7 +120,7 @@ export const cryptoEncoders = [
     category: "crypto",
     encode: encoders.encodeSnowflake,
     decode: encoders.decodeSnowflake,
-    reversible: true,
+    reversible: false,
     tags: ["crypto", "snowflake", "distributed", "ids"],
   },
   {
@@ -131,7 +131,7 @@ export const cryptoEncoders = [
     category: "crypto",
     encode: encoders.encodeX509Serial,
     decode: encoders.decodeX509Serial,
-    reversible: true,
+    reversible: false,
     tags: ["crypto", "x509", "certificates", "pki"],
   },
   {
@@ -169,7 +169,7 @@ export const cryptoEncoders = [
     category: "crypto",
     encode: encoders.encodeMultibase,
     decode: encoders.decodeMultibase,
-    reversible: true,
+    reversible: false,
     tags: ["crypto", "multibase", "ipfs", "multiformats"],
   },
 ];

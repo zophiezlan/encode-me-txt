@@ -9,7 +9,7 @@ export const patternsEncoders = [
     category: "patterns",
     encode: encoders.encodeFibonacci,
     decode: encoders.decodeFibonacci,
-    reversible: true,
+    reversible: false,
     tags: ["patterns", "mathematical", "fibonacci"],
   },
   {
@@ -31,7 +31,7 @@ export const patternsEncoders = [
     category: "patterns",
     encode: encoders.encodeGoldenRatio,
     decode: encoders.decodeGoldenRatio,
-    reversible: true,
+    reversible: false,
     tags: ["patterns", "mathematical", "golden"],
   },
   {

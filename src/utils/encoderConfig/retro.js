@@ -9,7 +9,7 @@ export const retroEncoders = [
     category: "retro",
     encode: encoders.encodePhoneKeypad,
     decode: encoders.decodePhoneKeypad,
-    reversible: true,
+    reversible: false,
     tags: ["retro", "phone", "t9"],
   },
   {
@@ -40,7 +40,7 @@ export const retroEncoders = [
     category: "retro",
     encode: encoders.encodeBaudot,
     decode: encoders.decodeBaudot,
-    reversible: true,
+    reversible: false,
     tags: ["retro", "teleprinter", "telegraph"],
   },
   {

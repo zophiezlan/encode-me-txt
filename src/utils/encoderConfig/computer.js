@@ -75,7 +75,7 @@ export const computerEncoders = [
     category: "computer",
     encode: encoders.encodeA1Z26,
     decode: encoders.decodeA1Z26,
-    reversible: true,
+    reversible: false,
     tags: ["computer", "simple", "numbers"],
   },
   {

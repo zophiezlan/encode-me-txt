@@ -376,7 +376,7 @@ export const scientificEncoders = [
     category: "scientific",
     encode: encoders.encodeFractalDimension,
     decode: encoders.decodeFractalDimension,
-    reversible: true,
+    reversible: false,
     hasSettings: true,
     tags: ["scientific", "fractal", "recursive", "mathematics"],
   },
@@ -399,7 +399,7 @@ export const scientificEncoders = [
     category: "scientific",
     encode: encoders.encodeSynaesthetic,
     decode: encoders.decodeSynaesthetic,
-    reversible: true,
+    reversible: false,
     tags: ["scientific", "synaesthesia", "sensory", "perception"],
   },
   {

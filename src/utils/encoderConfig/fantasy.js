@@ -31,7 +31,7 @@ export const fantasyEncoders = [
     category: "fantasy",
     encode: encoders.encodeElvish,
     decode: encoders.decodeElvish,
-    reversible: true,
+    reversible: false,
     tags: ["fantasy", "lotr", "tolkien"],
   },
   {
@@ -42,7 +42,7 @@ export const fantasyEncoders = [
     category: "fantasy",
     encode: encoders.encodeKlingon,
     decode: encoders.decodeKlingon,
-    reversible: true,
+    reversible: false,
     tags: ["fantasy", "startrek", "scifi"],
   },
 ];

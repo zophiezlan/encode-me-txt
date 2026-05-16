@@ -175,7 +175,7 @@ export const signaturesEncoders = [
     category: "signatures",
     encode: encoders.encodeSignedCookie,
     decode: encoders.decodeSignedCookie,
-    reversible: true,
+    reversible: false,
     tags: ["signatures", "cookie", "session", "web"],
   },
   {

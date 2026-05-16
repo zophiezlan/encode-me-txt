@@ -19,7 +19,7 @@ export const gamesEncoders = [
     category: "games",
     encode: encoders.encodePokerHand,
     decode: encoders.decodePokerHand,
-    reversible: true,
+    reversible: false,
     tags: ["games", "poker", "cards"],
   },
   {
@@ -120,7 +120,7 @@ export const gamesEncoders = [
     category: "games",
     encode: encoders.encodeRubiksCube,
     decode: encoders.decodeRubiksCube,
-    reversible: true,
+    reversible: false,
     tags: ["games", "rubiks", "puzzle"],
   },
   {

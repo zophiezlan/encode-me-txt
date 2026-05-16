@@ -20,7 +20,7 @@ export const aestheticEncoders = [
     category: "aesthetic",
     encode: encoders.encodeSquared,
     decode: encoders.decodeSquared,
-    reversible: true,
+    reversible: false,
     tags: ["aesthetic", "squared", "unicode"],
   },
   {
@@ -31,7 +31,7 @@ export const aestheticEncoders = [
     category: "aesthetic",
     encode: encoders.encodeParenthesized,
     decode: encoders.decodeParenthesized,
-    reversible: true,
+    reversible: false,
     tags: ["aesthetic", "parenthesized", "unicode"],
   },
   {

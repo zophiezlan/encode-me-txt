@@ -20,7 +20,7 @@ export const uniqueEncoders = [
     category: "unique",
     encode: encoders.encodePlayingCards,
     decode: encoders.decodePlayingCards,
-    reversible: true,
+    reversible: false,
     tags: ["unique", "cards", "games"],
   },
   {

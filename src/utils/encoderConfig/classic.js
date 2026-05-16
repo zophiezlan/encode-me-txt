@@ -9,7 +9,7 @@ export const classicEncoders = [
     category: "classic",
     encode: encoders.encodeBraille,
     decode: encoders.decodeBraille,
-    reversible: true,
+    reversible: false,
     tags: ["classic", "accessibility", "tactile"],
   },
   {
@@ -20,7 +20,7 @@ export const classicEncoders = [
     category: "classic",
     encode: encoders.encodeMorseParam,
     decode: encoders.decodeMorseParam,
-    reversible: true,
+    reversible: false,
     hasSettings: true,
     tags: ["classic", "morse", "delimiter", "settings"],
   },

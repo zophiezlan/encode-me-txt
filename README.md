@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **511 different encoding formats** (154 fully reversible) - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32-style and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **511 different encoding formats** (97 fully reversible) - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32-style and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
@@ -54,7 +54,7 @@ Perfect for:
 
 - **511 Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
 - **Real-time Encoding/Decoding** - See results as you type
-- **154 Reversible Encodings** - Methods support full decode back to original
+- **97 Reversible Encodings** - Methods support full round-trip decode (verified by automated round-trip tests)
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
 - **Custom Encoder Builder** - Create and save your own encoding schemes
 - **Visual Encoding Flow** - Watch character-by-character transformations animate

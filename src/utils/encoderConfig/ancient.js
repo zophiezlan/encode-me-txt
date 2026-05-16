@@ -9,7 +9,7 @@ export const ancientEncoders = [
     category: "ancient",
     encode: encoders.encodeOgham,
     decode: encoders.decodeOgham,
-    reversible: true,
+    reversible: false,
     tags: ["ancient", "celtic", "irish"],
   },
   {
@@ -20,7 +20,7 @@ export const ancientEncoders = [
     category: "ancient",
     encode: encoders.encodeHieroglyphs,
     decode: encoders.decodeHieroglyphs,
-    reversible: true,
+    reversible: false,
     tags: ["ancient", "egyptian", "hieroglyphs"],
   },
   {
@@ -31,7 +31,7 @@ export const ancientEncoders = [
     category: "ancient",
     encode: encoders.encodeCuneiform,
     decode: encoders.decodeCuneiform,
-    reversible: true,
+    reversible: false,
     tags: ["ancient", "sumerian", "mesopotamia"],
   },
   {
@@ -42,7 +42,7 @@ export const ancientEncoders = [
     category: "ancient",
     encode: encoders.encodeMayan,
     decode: encoders.decodeMayan,
-    reversible: true,
+    reversible: false,
     tags: ["ancient", "mayan", "numbers"],
   },
 ];
