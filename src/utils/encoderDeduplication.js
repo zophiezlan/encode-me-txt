@@ -153,7 +153,7 @@ export const getRedundantEncoderIds = () => {
  */
 export const getSupersededEncoderIds = () => {
   return Object.keys(encoderRelationships).filter(
-    (id) => encoderRelationships[id].supersededBy !== undefined
+    (id) => encoderRelationships[id].supersededBy !== undefined,
   );
 };
 
@@ -163,7 +163,7 @@ export const getSupersededEncoderIds = () => {
  */
 export const getAliasEncoderIds = () => {
   return Object.keys(encoderRelationships).filter(
-    (id) => encoderRelationships[id].aliasOf !== undefined
+    (id) => encoderRelationships[id].aliasOf !== undefined,
   );
 };
 

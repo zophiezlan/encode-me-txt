@@ -369,7 +369,7 @@ export const exportBatchResults = (results, format = "json") => {
           r.encoderName || r.encoderId || "",
           r.success ? "Yes" : "No",
           r.processingTime?.toFixed(2) ?? "",
-        ].join(",")
+        ].join(","),
       );
       return [headers.join(","), ...rows].join("\n");
     }
@@ -380,7 +380,7 @@ export const exportBatchResults = (results, format = "json") => {
           (r) =>
             `[${r.encoderName || r.encoderId}]\nInput: ${r.input}\nOutput: ${
               r.output
-            }\n`
+            }\n`,
         )
         .join("\n");
     }

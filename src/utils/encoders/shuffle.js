@@ -3,7 +3,7 @@
  * Creates a mixed encoding where different characters use different encoding methods
  */
 
-import { encoderConfig } from '../encoderConfig';
+import { encoderConfig } from "../encoderConfig";
 
 /**
  * Encodes text using a shuffle of selected encoders
@@ -14,20 +14,26 @@ import { encoderConfig } from '../encoderConfig';
  * @returns {string} - Encoded text (just the result, no metadata)
  */
 export const encodeShuffle = (text, selectedEncoderIds = []) => {
-  if (!text) return '';
+  if (!text) return "";
 
   // Default to a few interesting encoders if none selected
   if (!selectedEncoderIds || selectedEncoderIds.length === 0) {
-    selectedEncoderIds = ['binary-pro', 'morse-pro', 'caesar', 'emoji', 'braille'];
+    selectedEncoderIds = [
+      "binary-pro",
+      "morse-pro",
+      "caesar",
+      "emoji",
+      "braille",
+    ];
   }
 
   // Get encoder objects from IDs
   const selectedEncoders = selectedEncoderIds
-    .map(id => encoderConfig.find(enc => enc.id === id))
-    .filter(enc => enc && enc.encode); // Only include valid encoders with encode function
+    .map((id) => encoderConfig.find((enc) => enc.id === id))
+    .filter((enc) => enc && enc.encode); // Only include valid encoders with encode function
 
   if (selectedEncoders.length === 0) {
-    return 'Error: No valid encoders selected';
+    return "Error: No valid encoders selected";
   }
 
   // Track which encoder was used for each character (for potential decoding)
@@ -35,7 +41,7 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
   const encodedParts = [];
 
   // Process each character
-  text.split('').forEach((char, index) => {
+  text.split("").forEach((char, index) => {
     // Randomly select an encoder
     const randomIndex = Math.floor(Math.random() * selectedEncoders.length);
     const selectedEncoder = selectedEncoders[randomIndex];
@@ -45,7 +51,7 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
       let encodedChar;
 
       // Handle special cases for encoders that might need specific parameters
-      if (selectedEncoder.id === 'caesar') {
+      if (selectedEncoder.id === "caesar") {
         encodedChar = selectedEncoder.encode(char, 13); // Use default ROT13
       } else {
         encodedChar = selectedEncoder.encode(char);
@@ -57,27 +63,26 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
         encoded: encodedChar,
         encoderId: selectedEncoder.id,
         encoderName: selectedEncoder.name,
-        position: index
+        position: index,
       });
 
       // Add encoded character with delimiter
       encodedParts.push(encodedChar);
-
     } catch {
       // If encoding fails, keep original character
       encodedParts.push(char);
       encodingMap.push({
         original: char,
         encoded: char,
-        encoderId: 'none',
-        encoderName: 'Original',
-        position: index
+        encoderId: "none",
+        encoderName: "Original",
+        position: index,
       });
     }
   });
 
   // Return just the encoded parts joined with delimiter
-  return encodedParts.join('|');
+  return encodedParts.join("|");
 };
 
 /**
@@ -89,11 +94,11 @@ export const encodeShuffle = (text, selectedEncoderIds = []) => {
  * @returns {string} - Description that decoding is not supported
  */
 export const decodeShuffle = (encodedText) => {
-  if (!encodedText) return '';
+  if (!encodedText) return "";
 
   // Shuffle encoding is not reversible without the encoding map
   // Just return a message explaining this
-  return '[Shuffle decoding requires knowing which encoder was used for each character - not available]';
+  return "[Shuffle decoding requires knowing which encoder was used for each character - not available]";
 };
 
 /**
@@ -104,7 +109,7 @@ export const decodeShuffle = (encodedText) => {
  * @returns {string} - Visual representation
  */
 export const getShuffleVisualization = (text, selectedEncoderIds = []) => {
-  if (!text) return '';
+  if (!text) return "";
 
   const result = encodeShuffle(text, selectedEncoderIds);
   return result;

@@ -861,7 +861,7 @@ import { generateComparisonMatrix } from "./utils/batchEncoder.js";
 
 const matrix = generateComparisonMatrix(
   ["Hello", "World"],
-  ["hex", "base64", "rot13"]
+  ["hex", "base64", "rot13"],
 );
 
 console.log(matrix.results[0].encodings.hex.output);

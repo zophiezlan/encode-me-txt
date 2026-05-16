@@ -41,7 +41,7 @@ describe("Encoder Analytics Utility", () => {
 
     it("defaults to MEDIUM for unknown encoders", () => {
       expect(getEncoderDifficulty("unknown-encoder")).toBe(
-        difficultyLevels.MEDIUM
+        difficultyLevels.MEDIUM,
       );
     });
   });
@@ -90,7 +90,7 @@ describe("Encoder Analytics Utility", () => {
       const stats = getEncoderStatistics();
       const categoryTotal = Object.values(stats.byCategory).reduce(
         (a, b) => a + b,
-        0
+        0,
       );
       expect(categoryTotal).toBe(stats.total);
     });
@@ -131,7 +131,7 @@ describe("Encoder Analytics Utility", () => {
 
       for (let i = 1; i < analysis.length; i++) {
         expect(analysis[i - 1].totalEncoders).toBeGreaterThanOrEqual(
-          analysis[i].totalEncoders
+          analysis[i].totalEncoders,
         );
       }
     });
@@ -275,7 +275,7 @@ describe("Encoder Analytics Utility", () => {
       const complexComplexity = getEncodingComplexity("Test", "xyz", "shuffle");
 
       expect(complexComplexity.totalScore).toBeGreaterThan(
-        simpleComplexity.totalScore
+        simpleComplexity.totalScore,
       );
     });
   });
@@ -354,8 +354,8 @@ describe("Encoder Analytics Utility", () => {
         cipherTips.bestFor.some(
           (tip) =>
             tip.toLowerCase().includes("crypto") ||
-            tip.toLowerCase().includes("puzzle")
-        )
+            tip.toLowerCase().includes("puzzle"),
+        ),
       ).toBe(true);
     });
 
@@ -365,16 +365,16 @@ describe("Encoder Analytics Utility", () => {
 
       expect(
         reversibleTips.general.some((tip) =>
-          tip.toLowerCase().includes("decod")
-        )
+          tip.toLowerCase().includes("decod"),
+        ),
       ).toBe(true);
 
       expect(
         nonReversibleTips.limitations.some(
           (tip) =>
             tip.toLowerCase().includes("one-way") ||
-            tip.toLowerCase().includes("cannot")
-        )
+            tip.toLowerCase().includes("cannot"),
+        ),
       ).toBe(true);
     });
   });

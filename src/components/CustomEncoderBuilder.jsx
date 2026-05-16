@@ -14,7 +14,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
   const [testOutput, setTestOutput] = useState("");
   const [showTemplates, setShowTemplates] = useState(true);
   const [savedEncoders, setSavedEncoders] = useState(
-    CustomEncoderManager.getEncoders()
+    CustomEncoderManager.getEncoders(),
   );
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
@@ -39,7 +39,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
     if (testInput && Object.keys(mapping).length > 0) {
       const { encode } = CustomEncoderManager.createEncoderFunctions(
         mapping,
-        caseSensitive
+        caseSensitive,
       );
       setTestOutput(encode(testInput));
     }
@@ -116,7 +116,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
         window.history.replaceState(
           {},
           document.title,
-          window.location.pathname
+          window.location.pathname,
         );
       } catch (error) {
         alert("❌ Failed to import encoder: " + error.message);

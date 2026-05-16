@@ -226,7 +226,7 @@ export class DailyPuzzleSystem {
     const todayPuzzleId = `daily-${today}`;
 
     return stats.completions.some(
-      (c) => c.puzzleId === todayPuzzleId && c.success
+      (c) => c.puzzleId === todayPuzzleId && c.success,
     );
   }
 

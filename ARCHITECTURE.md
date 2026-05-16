@@ -178,7 +178,7 @@ export const encodeX = createMapEncoder(MAP, { lowercase: true });
 ```javascript
 // Before: Manual reverse map
 const reverseMap = Object.fromEntries(
-  Object.entries(forwardMap).map(([k, v]) => [v, k])
+  Object.entries(forwardMap).map(([k, v]) => [v, k]),
 );
 
 // After: Using shared utility

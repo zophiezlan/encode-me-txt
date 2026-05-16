@@ -1,50 +1,148 @@
 /**
  * Classic Encoders
  * Traditional encoding methods like Morse Code, Braille, and NATO Phonetic
- * 
+ *
  * NOTE: This module uses Unicode visual symbols (• and −) for better display.
  * For ASCII-compatible Morse or parameterized variants, see parameterized.js.
  * See ARCHITECTURE.md for design rationale on keeping these separate.
- * 
+ *
  * Refactored to use shared utilities from shared.js where applicable.
  */
 
-import { createMapEncoder, createMapDecoder } from './shared.js';
+import { createMapEncoder, createMapDecoder } from "./shared.js";
 
 // Morse Code lookup tables
 // Uses Unicode bullet (•) and minus sign (−) for visual clarity
 // For ASCII dots/dashes with configurable delimiters, see encodeMorseParam in parameterized.js
 const MORSE_CODE_MAP = {
-  'a': '•−', 'b': '−•••', 'c': '−•−•', 'd': '−••', 'e': '•', 'f': '••−•',
-  'g': '−−•', 'h': '••••', 'i': '••', 'j': '•−−−', 'k': '−•−', 'l': '•−••',
-  'm': '−−', 'n': '−•', 'o': '−−−', 'p': '•−−•', 'q': '−−•−', 'r': '•−•',
-  's': '•••', 't': '−', 'u': '••−', 'v': '•••−', 'w': '•−−', 'x': '−••−',
-  'y': '−•−−', 'z': '−−••', '0': '−−−−−', '1': '•−−−−', '2': '••−−−',
-  '3': '•••−−', '4': '••••−', '5': '•••••', '6': '−••••', '7': '−−•••',
-  '8': '−−−••', '9': '−−−−•', '.': '•−•−•−', ',': '−−••−−', '?': '••−−••',
-  '!': '−•−•−−', '/': '−••−•', ':': '−−−•••', ' ': '/'
+  a: "•−",
+  b: "−•••",
+  c: "−•−•",
+  d: "−••",
+  e: "•",
+  f: "••−•",
+  g: "−−•",
+  h: "••••",
+  i: "••",
+  j: "•−−−",
+  k: "−•−",
+  l: "•−••",
+  m: "−−",
+  n: "−•",
+  o: "−−−",
+  p: "•−−•",
+  q: "−−•−",
+  r: "•−•",
+  s: "•••",
+  t: "−",
+  u: "••−",
+  v: "•••−",
+  w: "•−−",
+  x: "−••−",
+  y: "−•−−",
+  z: "−−••",
+  0: "−−−−−",
+  1: "•−−−−",
+  2: "••−−−",
+  3: "•••−−",
+  4: "••••−",
+  5: "•••••",
+  6: "−••••",
+  7: "−−•••",
+  8: "−−−••",
+  9: "−−−−•",
+  ".": "•−•−•−",
+  ",": "−−••−−",
+  "?": "••−−••",
+  "!": "−•−•−−",
+  "/": "−••−•",
+  ":": "−−−•••",
+  " ": "/",
 };
 
 // Braille lookup tables
 const BRAILLE_MAP = {
-  'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑', 'f': '⠋', 'g': '⠛',
-  'h': '⠓', 'i': '⠊', 'j': '⠚', 'k': '⠅', 'l': '⠇', 'm': '⠍', 'n': '⠝',
-  'o': '⠕', 'p': '⠏', 'q': '⠟', 'r': '⠗', 's': '⠎', 't': '⠞', 'u': '⠥',
-  'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽', 'z': '⠵', ' ': '⠀',
-  '0': '⠚', '1': '⠁', '2': '⠃', '3': '⠉', '4': '⠙', '5': '⠑',
-  '6': '⠋', '7': '⠛', '8': '⠓', '9': '⠊', '.': '⠲', ',': '⠂',
-  '!': '⠖', '?': '⠦'
+  a: "⠁",
+  b: "⠃",
+  c: "⠉",
+  d: "⠙",
+  e: "⠑",
+  f: "⠋",
+  g: "⠛",
+  h: "⠓",
+  i: "⠊",
+  j: "⠚",
+  k: "⠅",
+  l: "⠇",
+  m: "⠍",
+  n: "⠝",
+  o: "⠕",
+  p: "⠏",
+  q: "⠟",
+  r: "⠗",
+  s: "⠎",
+  t: "⠞",
+  u: "⠥",
+  v: "⠧",
+  w: "⠺",
+  x: "⠭",
+  y: "⠽",
+  z: "⠵",
+  " ": "⠀",
+  0: "⠚",
+  1: "⠁",
+  2: "⠃",
+  3: "⠉",
+  4: "⠙",
+  5: "⠑",
+  6: "⠋",
+  7: "⠛",
+  8: "⠓",
+  9: "⠊",
+  ".": "⠲",
+  ",": "⠂",
+  "!": "⠖",
+  "?": "⠦",
 };
 
 // NATO Phonetic lookup table
 const NATO_MAP = {
-  'a': 'Alpha', 'b': 'Bravo', 'c': 'Charlie', 'd': 'Delta', 'e': 'Echo',
-  'f': 'Foxtrot', 'g': 'Golf', 'h': 'Hotel', 'i': 'India', 'j': 'Juliett',
-  'k': 'Kilo', 'l': 'Lima', 'm': 'Mike', 'n': 'November', 'o': 'Oscar',
-  'p': 'Papa', 'q': 'Quebec', 'r': 'Romeo', 's': 'Sierra', 't': 'Tango',
-  'u': 'Uniform', 'v': 'Victor', 'w': 'Whiskey', 'x': 'X-ray', 'y': 'Yankee',
-  'z': 'Zulu', '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four',
-  '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine'
+  a: "Alpha",
+  b: "Bravo",
+  c: "Charlie",
+  d: "Delta",
+  e: "Echo",
+  f: "Foxtrot",
+  g: "Golf",
+  h: "Hotel",
+  i: "India",
+  j: "Juliett",
+  k: "Kilo",
+  l: "Lima",
+  m: "Mike",
+  n: "November",
+  o: "Oscar",
+  p: "Papa",
+  q: "Quebec",
+  r: "Romeo",
+  s: "Sierra",
+  t: "Tango",
+  u: "Uniform",
+  v: "Victor",
+  w: "Whiskey",
+  x: "X-ray",
+  y: "Yankee",
+  z: "Zulu",
+  0: "Zero",
+  1: "One",
+  2: "Two",
+  3: "Three",
+  4: "Four",
+  5: "Five",
+  6: "Six",
+  7: "Seven",
+  8: "Eight",
+  9: "Nine",
 };
 
 /**
@@ -52,7 +150,10 @@ const NATO_MAP = {
  * @param {string} text - The text to encode
  * @returns {string} - Morse code representation
  */
-export const encodeMorse = createMapEncoder(MORSE_CODE_MAP, { lowercase: true, separator: ' ' });
+export const encodeMorse = createMapEncoder(MORSE_CODE_MAP, {
+  lowercase: true,
+  separator: " ",
+});
 
 /**
  * Decodes Morse code back to text using shared utility
@@ -61,10 +162,10 @@ export const encodeMorse = createMapEncoder(MORSE_CODE_MAP, { lowercase: true, s
  */
 export const decodeMorse = (text) => {
   try {
-    const decoder = createMapDecoder(MORSE_CODE_MAP, { separator: ' ' });
+    const decoder = createMapDecoder(MORSE_CODE_MAP, { separator: " " });
     return decoder(text);
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -85,7 +186,7 @@ export const decodeBraille = (text) => {
     const decoder = createMapDecoder(BRAILLE_MAP);
     return decoder(text);
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -94,4 +195,7 @@ export const decodeBraille = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - NATO phonetic representation
  */
-export const encodeNATO = createMapEncoder(NATO_MAP, { lowercase: true, separator: '-' });
+export const encodeNATO = createMapEncoder(NATO_MAP, {
+  lowercase: true,
+  separator: "-",
+});

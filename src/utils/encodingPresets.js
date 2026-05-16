@@ -232,7 +232,7 @@ export class EncodingPresetsManager {
       (preset) =>
         preset.name.toLowerCase().includes(lowerQuery) ||
         preset.description.toLowerCase().includes(lowerQuery) ||
-        preset.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery))
+        preset.tags?.some((tag) => tag.toLowerCase().includes(lowerQuery)),
     );
   }
 

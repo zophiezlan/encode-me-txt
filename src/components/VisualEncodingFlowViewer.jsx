@@ -28,7 +28,7 @@ const VisualEncodingFlowViewer = ({
       const generatedFlow = VisualEncodingFlow.generateFlow(
         inputText,
         encoder,
-        caesarShift
+        caesarShift,
       );
       setFlow(generatedFlow);
       setCurrentStep(0);
@@ -396,7 +396,7 @@ const VisualEncodingFlowViewer = ({
                       <span className="font-mono">
                         {flow.reduce(
                           (sum, step) => sum + step.encoded.length,
-                          0
+                          0,
                         )}{" "}
                         chars
                       </span>
@@ -407,7 +407,7 @@ const VisualEncodingFlowViewer = ({
                         className={`font-mono ${
                           flow.reduce(
                             (sum, step) => sum + step.encoded.length,
-                            0
+                            0,
                           ) > inputText.length
                             ? "text-yellow-400"
                             : "text-green-400"
@@ -415,13 +415,13 @@ const VisualEncodingFlowViewer = ({
                       >
                         {flow.reduce(
                           (sum, step) => sum + step.encoded.length,
-                          0
+                          0,
                         ) > inputText.length
                           ? "+"
                           : ""}
                         {flow.reduce(
                           (sum, step) => sum + step.encoded.length,
-                          0
+                          0,
                         ) - inputText.length}{" "}
                         chars
                       </span>
@@ -432,7 +432,7 @@ const VisualEncodingFlowViewer = ({
                         {(
                           flow.reduce(
                             (sum, step) => sum + step.encoded.length,
-                            0
+                            0,
                           ) / inputText.length
                         ).toFixed(2)}
                         x

@@ -84,7 +84,7 @@ const levenshteinDistance = (str1, str2) => {
         matrix[i][j] = Math.min(
           matrix[i - 1][j - 1] + 1, // substitution
           matrix[i][j - 1] + 1, // insertion
-          matrix[i - 1][j] + 1 // deletion
+          matrix[i - 1][j] + 1, // deletion
         );
       }
     }
@@ -140,7 +140,7 @@ const analyzeCodePatterns = (func) => {
     usesBtoa: code.includes("btoa"),
     usesAtob: code.includes("atob"),
     usesModulo: code.includes("%"),
-    usesShift: /[\+\-]\s*\d+/.test(code),
+    usesShift: /[+-]\s*\d+/.test(code),
     usesJoin: code.includes("join"),
     usesNormalize: code.includes("normalize"),
     usesToUpperCase: code.includes("toUpperCase"),
@@ -154,7 +154,7 @@ const analyzeCodePatterns = (func) => {
  */
 const calculatePatternSimilarity = (patterns1, patterns2) => {
   const keys = Object.keys(patterns1).filter(
-    (k) => typeof patterns1[k] === "boolean"
+    (k) => typeof patterns1[k] === "boolean",
   );
   let matchCount = 0;
 
@@ -175,7 +175,7 @@ const findDuplicateEncoders = (
     codeSimilarity: 0.9, // 90% code similarity
     behavioralMatch: 0.95, // 95% identical outputs
     patternSimilarity: 0.85, // 85% pattern match
-  }
+  },
 ) => {
   const duplicates = [];
   const encoders = encoderConfig.filter((e) => e.encode);
@@ -202,7 +202,7 @@ const findDuplicateEncoders = (
       const progress = Math.floor((comparisons / totalComparisons) * 100);
       if (progress >= lastProgress + 10) {
         console.log(
-          `Progress: ${progress}% (${comparisons}/${totalComparisons} comparisons)`
+          `Progress: ${progress}% (${comparisons}/${totalComparisons} comparisons)`,
         );
         lastProgress = progress;
       }
@@ -225,7 +225,7 @@ const findDuplicateEncoders = (
       // Calculate code similarity
       const codeSimilarity = calculateSimilarity(
         data1.normalizedCode,
-        data2.normalizedCode
+        data2.normalizedCode,
       );
 
       // Early exit: if code similarity is very low, skip expensive behavioral test
@@ -234,7 +234,7 @@ const findDuplicateEncoders = (
       // Calculate pattern similarity
       const patternSimilarity = calculatePatternSimilarity(
         data1.patterns,
-        data2.patterns
+        data2.patterns,
       );
 
       // Only do expensive behavioral test if code or pattern similarity is promising
@@ -242,7 +242,7 @@ const findDuplicateEncoders = (
       if (codeSimilarity >= 0.7 || patternSimilarity >= 0.8) {
         behavioralMatch = testBehavioralEquivalence(
           data1.encoder,
-          data2.encoder
+          data2.encoder,
         );
       }
 
@@ -272,7 +272,7 @@ const findDuplicateEncoders = (
   }
 
   console.log(
-    `Completed ${comparisons} comparisons. Found ${duplicates.length} potential duplicates.`
+    `Completed ${comparisons} comparisons. Found ${duplicates.length} potential duplicates.`,
   );
   return duplicates;
 };
@@ -298,7 +298,7 @@ const formatDuplicateReport = (duplicates) => {
   let report = `Found ${duplicates.length} potential duplicate encoder pair(s)\n`;
   report += `Showing top ${Math.min(
     20,
-    duplicates.length
+    duplicates.length,
   )} by similarity score:\n\n`;
 
   topDuplicates.forEach((dup, index) => {
@@ -450,7 +450,7 @@ describe("Encoder Code Similarity Analysis", () => {
         duplicates.forEach((dup) => {
           console.log(`\n${dup.encoder1} vs ${dup.encoder2}:`);
           console.log(
-            `  Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%`
+            `  Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%`,
           );
         });
       }
@@ -477,13 +477,13 @@ describe("Encoder Code Similarity Analysis", () => {
         const foundDup = duplicates.find(
           (d) =>
             (d.encoder1 === id1 && d.encoder2 === id2) ||
-            (d.encoder1 === id2 && d.encoder2 === id1)
+            (d.encoder1 === id2 && d.encoder2 === id1),
         );
 
         if (foundDup) {
           console.warn(
             `Warning: ${id1} and ${id2} were flagged as similar:`,
-            foundDup
+            foundDup,
           );
         }
 
@@ -502,7 +502,7 @@ describe("Encoder Code Similarity Analysis", () => {
       });
 
       const exactDuplicates = duplicates.filter(
-        (d) => d.codeSimilarity >= 99 && d.behavioralMatch >= 99
+        (d) => d.codeSimilarity >= 99 && d.behavioralMatch >= 99,
       );
 
       if (exactDuplicates.length > 0) {
@@ -510,7 +510,7 @@ describe("Encoder Code Similarity Analysis", () => {
         exactDuplicates.forEach((dup) => {
           console.log(`  - ${dup.encoder1} === ${dup.encoder2}`);
           console.log(
-            `    Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}%`
+            `    Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}%`,
           );
         });
 
@@ -523,13 +523,13 @@ describe("Encoder Code Similarity Analysis", () => {
       const duplicates = findDuplicateEncoders();
 
       const critical = duplicates.filter(
-        (d) => d.codeSimilarity >= 95 && d.behavioralMatch >= 95
+        (d) => d.codeSimilarity >= 95 && d.behavioralMatch >= 95,
       );
       const high = duplicates.filter(
-        (d) => d.codeSimilarity >= 85 || d.behavioralMatch >= 90
+        (d) => d.codeSimilarity >= 85 || d.behavioralMatch >= 90,
       );
       const medium = duplicates.filter(
-        (d) => d.codeSimilarity >= 70 || d.behavioralMatch >= 80
+        (d) => d.codeSimilarity >= 70 || d.behavioralMatch >= 80,
       );
 
       console.log("\nDuplicate Severity Breakdown:");
@@ -552,7 +552,7 @@ describe("Encoder Code Similarity Analysis", () => {
       console.log(`  Total encoders: ${totalEncoders}`);
       console.log(`  Encoders with encode function: ${encodersWithEncode}`);
       console.log(
-        `  Coverage: ${Math.round((encodersWithEncode / totalEncoders) * 100)}%`
+        `  Coverage: ${Math.round((encodersWithEncode / totalEncoders) * 100)}%`,
       );
 
       // At least 90% of encoders should have an encode function
@@ -584,7 +584,7 @@ describe("Encoder Code Similarity Analysis", () => {
       if (errors.length > 0 && errors.length < 10) {
         console.log(
           `  Encoders with errors:`,
-          errors.map((e) => e.id).join(", ")
+          errors.map((e) => e.id).join(", "),
         );
       }
 

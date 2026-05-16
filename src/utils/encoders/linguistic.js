@@ -1,18 +1,40 @@
 /**
  * Linguistic Encoders
  * Greek, Cyrillic, Hebrew, Korean, and IPA transcription
- * 
+ *
  * Refactored to use shared utilities from shared.js where applicable.
  */
 
-import { createMapEncoder, createMapDecoder } from './shared.js';
+import { createMapEncoder, createMapDecoder } from "./shared.js";
 
 // Greek alphabet mapping
 const GREEK_MAP = {
-  'a': 'α', 'b': 'β', 'c': 'ψ', 'd': 'δ', 'e': 'ε', 'f': 'φ', 'g': 'γ',
-  'h': 'η', 'i': 'ι', 'j': 'ξ', 'k': 'κ', 'l': 'λ', 'm': 'μ', 'n': 'ν',
-  'o': 'ο', 'p': 'π', 'q': 'θ', 'r': 'ρ', 's': 'σ', 't': 'τ', 'u': 'υ',
-  'v': 'ω', 'w': 'ς', 'x': 'χ', 'y': 'υ', 'z': 'ζ'
+  a: "α",
+  b: "β",
+  c: "ψ",
+  d: "δ",
+  e: "ε",
+  f: "φ",
+  g: "γ",
+  h: "η",
+  i: "ι",
+  j: "ξ",
+  k: "κ",
+  l: "λ",
+  m: "μ",
+  n: "ν",
+  o: "ο",
+  p: "π",
+  q: "θ",
+  r: "ρ",
+  s: "σ",
+  t: "τ",
+  u: "υ",
+  v: "ω",
+  w: "ς",
+  x: "χ",
+  y: "υ",
+  z: "ζ",
 };
 
 /**
@@ -31,10 +53,32 @@ export const decodeGreek = createMapDecoder(GREEK_MAP);
 
 // Cyrillic alphabet mapping
 const CYRILLIC_MAP = {
-  'a': 'а', 'b': 'б', 'c': 'ц', 'd': 'д', 'e': 'е', 'f': 'ф', 'g': 'г',
-  'h': 'х', 'i': 'и', 'j': 'й', 'k': 'к', 'l': 'л', 'm': 'м', 'n': 'н',
-  'o': 'о', 'p': 'п', 'q': 'к', 'r': 'р', 's': 'с', 't': 'т', 'u': 'у',
-  'v': 'в', 'w': 'в', 'x': 'кс', 'y': 'ы', 'z': 'з'
+  a: "а",
+  b: "б",
+  c: "ц",
+  d: "д",
+  e: "е",
+  f: "ф",
+  g: "г",
+  h: "х",
+  i: "и",
+  j: "й",
+  k: "к",
+  l: "л",
+  m: "м",
+  n: "н",
+  o: "о",
+  p: "п",
+  q: "к",
+  r: "р",
+  s: "с",
+  t: "т",
+  u: "у",
+  v: "в",
+  w: "в",
+  x: "кс",
+  y: "ы",
+  z: "з",
 };
 
 /**
@@ -42,7 +86,9 @@ const CYRILLIC_MAP = {
  * @param {string} text - The text to encode
  * @returns {string} - Cyrillic encoded text
  */
-export const encodeCyrillic = createMapEncoder(CYRILLIC_MAP, { lowercase: true });
+export const encodeCyrillic = createMapEncoder(CYRILLIC_MAP, {
+  lowercase: true,
+});
 
 /**
  * Decodes Cyrillic back to Latin using shared utility
@@ -53,10 +99,32 @@ export const decodeCyrillic = createMapDecoder(CYRILLIC_MAP);
 
 // Hebrew alphabet mapping
 const HEBREW_MAP = {
-  'a': 'א', 'b': 'ב', 'c': 'צ', 'd': 'ד', 'e': 'ע', 'f': 'פ', 'g': 'ג',
-  'h': 'ה', 'i': 'י', 'j': 'ג', 'k': 'כ', 'l': 'ל', 'm': 'מ', 'n': 'נ',
-  'o': 'ו', 'p': 'פ', 'q': 'ק', 'r': 'ר', 's': 'ס', 't': 'ת', 'u': 'ו',
-  'v': 'ו', 'w': 'ו', 'x': 'קס', 'y': 'י', 'z': 'ז'
+  a: "א",
+  b: "ב",
+  c: "צ",
+  d: "ד",
+  e: "ע",
+  f: "פ",
+  g: "ג",
+  h: "ה",
+  i: "י",
+  j: "ג",
+  k: "כ",
+  l: "ל",
+  m: "מ",
+  n: "נ",
+  o: "ו",
+  p: "פ",
+  q: "ק",
+  r: "ר",
+  s: "ס",
+  t: "ת",
+  u: "ו",
+  v: "ו",
+  w: "ו",
+  x: "קס",
+  y: "י",
+  z: "ז",
 };
 
 /**
@@ -75,10 +143,32 @@ export const decodeHebrew = createMapDecoder(HEBREW_MAP);
 
 // Korean Hangul mapping (basic consonant/vowel approximations)
 const KOREAN_MAP = {
-  'a': '아', 'b': '브', 'c': '츠', 'd': '드', 'e': '에', 'f': '프', 'g': '그',
-  'h': '흐', 'i': '이', 'j': '즈', 'k': '크', 'l': '을', 'm': '음', 'n': '은',
-  'o': '오', 'p': '프', 'q': '크', 'r': '르', 's': '스', 't': '트', 'u': '우',
-  'v': '브', 'w': '우', 'x': '크스', 'y': '이', 'z': '즈'
+  a: "아",
+  b: "브",
+  c: "츠",
+  d: "드",
+  e: "에",
+  f: "프",
+  g: "그",
+  h: "흐",
+  i: "이",
+  j: "즈",
+  k: "크",
+  l: "을",
+  m: "음",
+  n: "은",
+  o: "오",
+  p: "프",
+  q: "크",
+  r: "르",
+  s: "스",
+  t: "트",
+  u: "우",
+  v: "브",
+  w: "우",
+  x: "크스",
+  y: "이",
+  z: "즈",
 };
 
 /**
@@ -97,10 +187,32 @@ export const decodeKorean = createMapDecoder(KOREAN_MAP);
 
 // IPA (International Phonetic Alphabet) approximation
 const IPA_MAP = {
-  'a': 'æ', 'b': 'b', 'c': 'k', 'd': 'd', 'e': 'ɛ', 'f': 'f', 'g': 'g',
-  'h': 'h', 'i': 'ɪ', 'j': 'dʒ', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n',
-  'o': 'ɒ', 'p': 'p', 'q': 'kw', 'r': 'ɹ', 's': 's', 't': 't', 'u': 'ʌ',
-  'v': 'v', 'w': 'w', 'x': 'ks', 'y': 'j', 'z': 'z'
+  a: "æ",
+  b: "b",
+  c: "k",
+  d: "d",
+  e: "ɛ",
+  f: "f",
+  g: "g",
+  h: "h",
+  i: "ɪ",
+  j: "dʒ",
+  k: "k",
+  l: "l",
+  m: "m",
+  n: "n",
+  o: "ɒ",
+  p: "p",
+  q: "kw",
+  r: "ɹ",
+  s: "s",
+  t: "t",
+  u: "ʌ",
+  v: "v",
+  w: "w",
+  x: "ks",
+  y: "j",
+  z: "z",
 };
 
 /**
@@ -110,5 +222,5 @@ const IPA_MAP = {
  */
 export const encodeIPA = (text) => {
   const encoder = createMapEncoder(IPA_MAP, { lowercase: true });
-  return '/' + encoder(text) + '/';
+  return "/" + encoder(text) + "/";
 };

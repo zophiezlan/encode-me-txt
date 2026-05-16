@@ -102,7 +102,7 @@ export class KeyboardShortcuts {
       ([key, { description }]) => ({
         key,
         description,
-      })
+      }),
     );
   }
 }

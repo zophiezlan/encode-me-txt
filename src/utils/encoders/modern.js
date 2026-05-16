@@ -9,14 +9,18 @@
  * @returns {string} - Barcode pattern
  */
 export const encodeCode128 = (text) => {
-  const bars = ['▌', '▐', '█', '░'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const binary = code.toString(2).padStart(8, '0');
-    return binary.split('').map((b, i) => 
-      b === '1' ? bars[i % 2] : bars[2 + i % 2]
-    ).join('');
-  }).join('|');
+  const bars = ["▌", "▐", "█", "░"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const binary = code.toString(2).padStart(8, "0");
+      return binary
+        .split("")
+        .map((b, i) => (b === "1" ? bars[i % 2] : bars[2 + (i % 2)]))
+        .join("");
+    })
+    .join("|");
 };
 
 /**
@@ -25,18 +29,21 @@ export const encodeCode128 = (text) => {
  * @returns {string} - DataMatrix-like pattern
  */
 export const encodeDataMatrix = (text) => {
-  const blocks = ['⬛', '⬜'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const binary = code.toString(2).padStart(9, '0');
-    // Create 3x3 grid from 9 bits
-    let grid = '┌───┐\n│';
-    for (let i = 0; i < 9; i++) {
-      grid += blocks[binary[i] === '1' ? 0 : 1];
-    }
-    grid += '│\n└───┘';
-    return grid;
-  }).join('\n');
+  const blocks = ["⬛", "⬜"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const binary = code.toString(2).padStart(9, "0");
+      // Create 3x3 grid from 9 bits
+      let grid = "┌───┐\n│";
+      for (let i = 0; i < 9; i++) {
+        grid += blocks[binary[i] === "1" ? 0 : 1];
+      }
+      grid += "│\n└───┘";
+      return grid;
+    })
+    .join("\n");
 };
 
 /**
@@ -45,11 +52,14 @@ export const encodeDataMatrix = (text) => {
  * @returns {string} - PDF417 pattern
  */
 export const encodePDF417 = (text) => {
-  const patterns = ['▐▌', '▐█', '█▌', '██', '░▐', '░█', '▐░', '█░'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    return `[${patterns[code % patterns.length]}:${code.toString(16)}]`;
-  }).join('');
+  const patterns = ["▐▌", "▐█", "█▌", "██", "░▐", "░█", "▐░", "█░"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      return `[${patterns[code % patterns.length]}:${code.toString(16)}]`;
+    })
+    .join("");
 };
 
 /**
@@ -59,11 +69,13 @@ export const encodePDF417 = (text) => {
  */
 export const encodeHashtag = (text) => {
   const words = text.split(/\s+/);
-  return words.map(word => {
-    if (word.length === 0) return '';
-    const code = word.split('').reduce((sum, c) => sum + c.charCodeAt(0), 0);
-    return `#${word}${code}`;
-  }).join(' ');
+  return words
+    .map((word) => {
+      if (word.length === 0) return "";
+      const code = word.split("").reduce((sum, c) => sum + c.charCodeAt(0), 0);
+      return `#${word}${code}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -72,13 +84,32 @@ export const encodeHashtag = (text) => {
  * @returns {string} - Emoji reactions
  */
 export const encodeEmojiReaction = (text) => {
-  const reactions = ['👍', '❤️', '😂', '😮', '😢', '😡', '🎉', '💯', '🔥', '✨', '👀', '🙏', '💪', '🤔', '👏'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const count = (code % 5) + 1;
-    const emoji = reactions[code % reactions.length];
-    return `${emoji.repeat(count)}`;
-  }).join(' ');
+  const reactions = [
+    "👍",
+    "❤️",
+    "😂",
+    "😮",
+    "😢",
+    "😡",
+    "🎉",
+    "💯",
+    "🔥",
+    "✨",
+    "👀",
+    "🙏",
+    "💪",
+    "🤔",
+    "👏",
+  ];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const count = (code % 5) + 1;
+      const emoji = reactions[code % reactions.length];
+      return `${emoji.repeat(count)}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -87,10 +118,13 @@ export const encodeEmojiReaction = (text) => {
  * @returns {string} - Mention format
  */
 export const encodeMention = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    return `@user_${code.toString(16)}`;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      return `@user_${code.toString(16)}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -99,17 +133,21 @@ export const encodeMention = (text) => {
  * @returns {string} - Short URL format
  */
 export const encodeShortURL = (text) => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  return text.split('').map(c => {
-    const code = c.charCodeAt(0);
-    let short = '';
-    let n = code;
-    while (n > 0) {
-      short = chars[n % chars.length] + short;
-      n = Math.floor(n / chars.length);
-    }
-    return `bit.ly/${short || 'a'}`;
-  }).join(' | ');
+  const chars =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  return text
+    .split("")
+    .map((c) => {
+      const code = c.charCodeAt(0);
+      let short = "";
+      let n = code;
+      while (n > 0) {
+        short = chars[n % chars.length] + short;
+        n = Math.floor(n / chars.length);
+      }
+      return `bit.ly/${short || "a"}`;
+    })
+    .join(" | ");
 };
 
 /**
@@ -118,15 +156,18 @@ export const encodeShortURL = (text) => {
  * @returns {string} - Git commit style
  */
 export const encodeGitCommit = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    // Generate 7-char hash-like string
-    let hash = '';
-    for (let i = 0; i < 7; i++) {
-      hash += ((code * (i + 1) * 17) % 16).toString(16);
-    }
-    return hash;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      // Generate 7-char hash-like string
+      let hash = "";
+      for (let i = 0; i < 7; i++) {
+        hash += ((code * (i + 1) * 17) % 16).toString(16);
+      }
+      return hash;
+    })
+    .join(" ");
 };
 
 /**
@@ -134,13 +175,16 @@ export const encodeGitCommit = (text) => {
  */
 export const decodeGitCommit = (text) => {
   try {
-    return text.split(' ').map(hash => {
-      // Reverse the first digit
-      const code = parseInt(hash[0], 16) * 16 + parseInt(hash[1], 16);
-      return String.fromCharCode(code);
-    }).join('');
+    return text
+      .split(" ")
+      .map((hash) => {
+        // Reverse the first digit
+        const code = parseInt(hash[0], 16) * 16 + parseInt(hash[1], 16);
+        return String.fromCharCode(code);
+      })
+      .join("");
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -150,10 +194,13 @@ export const decodeGitCommit = (text) => {
  * @returns {string} - JSON path format
  */
 export const encodeJSONPath = (text) => {
-  return text.split('').map((char, i) => {
-    const code = char.charCodeAt(0);
-    return `$.data[${i}].char_${code}`;
-  }).join('\n');
+  return text
+    .split("")
+    .map((char, i) => {
+      const code = char.charCodeAt(0);
+      return `$.data[${i}].char_${code}`;
+    })
+    .join("\n");
 };
 
 /**
@@ -162,13 +209,16 @@ export const encodeJSONPath = (text) => {
  * @returns {string} - CSS color format
  */
 export const encodeCSSColor = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const r = (code * 2) % 256;
-    const g = (code * 3) % 256;
-    const b = (code * 5) % 256;
-    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const r = (code * 2) % 256;
+      const g = (code * 3) % 256;
+      const b = (code * 5) % 256;
+      return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -176,14 +226,17 @@ export const encodeCSSColor = (text) => {
  */
 export const decodeCSSColor = (text) => {
   try {
-    return text.split(' ').map(color => {
-      const hex = color.replace('#', '');
-      const r = parseInt(hex.slice(0, 2), 16);
-      // Reverse: code = r / 2
-      return String.fromCharCode(Math.round(r / 2));
-    }).join('');
+    return text
+      .split(" ")
+      .map((color) => {
+        const hex = color.replace("#", "");
+        const r = parseInt(hex.slice(0, 2), 16);
+        // Reverse: code = r / 2
+        return String.fromCharCode(Math.round(r / 2));
+      })
+      .join("");
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -193,12 +246,15 @@ export const decodeCSSColor = (text) => {
  * @returns {string} - Pixel coordinates
  */
 export const encodePixelCoord = (text) => {
-  return text.split('').map((char, i) => {
-    const code = char.charCodeAt(0);
-    const x = code % 100;
-    const y = Math.floor(code / 100) * 10 + i;
-    return `px(${x},${y})`;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char, i) => {
+      const code = char.charCodeAt(0);
+      const x = code % 100;
+      const y = Math.floor(code / 100) * 10 + i;
+      return `px(${x},${y})`;
+    })
+    .join(" ");
 };
 
 /**
@@ -207,12 +263,15 @@ export const encodePixelCoord = (text) => {
  * @returns {string} - API endpoint format
  */
 export const encodeAPIEndpoint = (text) => {
-  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
-  return text.split('').map((char, _i) => {
-    const code = char.charCodeAt(0);
-    const method = methods[code % methods.length];
-    return `${method} /api/v1/char/${code}`;
-  }).join('\n');
+  const methods = ["GET", "POST", "PUT", "DELETE", "PATCH"];
+  return text
+    .split("")
+    .map((char, _i) => {
+      const code = char.charCodeAt(0);
+      const method = methods[code % methods.length];
+      return `${method} /api/v1/char/${code}`;
+    })
+    .join("\n");
 };
 
 /**
@@ -221,15 +280,18 @@ export const encodeAPIEndpoint = (text) => {
  * @returns {string} - Cron format
  */
 export const encodeCron = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const minute = code % 60;
-    const hour = code % 24;
-    const day = (code % 28) + 1;
-    const month = (code % 12) + 1;
-    const dow = code % 7;
-    return `${minute} ${hour} ${day} ${month} ${dow}`;
-  }).join(' | ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const minute = code % 60;
+      const hour = code % 24;
+      const day = (code % 28) + 1;
+      const month = (code % 12) + 1;
+      const dow = code % 7;
+      return `${minute} ${hour} ${day} ${month} ${dow}`;
+    })
+    .join(" | ");
 };
 
 /**
@@ -238,13 +300,16 @@ export const encodeCron = (text) => {
  * @returns {string} - SemVer format
  */
 export const encodeVersion = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const major = Math.floor(code / 100);
-    const minor = Math.floor((code % 100) / 10);
-    const patch = code % 10;
-    return `v${major}.${minor}.${patch}`;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const major = Math.floor(code / 100);
+      const minor = Math.floor((code % 100) / 10);
+      const patch = code % 10;
+      return `v${major}.${minor}.${patch}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -252,14 +317,20 @@ export const encodeVersion = (text) => {
  */
 export const decodeVersion = (text) => {
   try {
-    return text.split(' ').map(ver => {
-      const match = ver.match(/v(\d+)\.(\d+)\.(\d+)/);
-      if (!match) return '?';
-      const code = parseInt(match[1]) * 100 + parseInt(match[2]) * 10 + parseInt(match[3]);
-      return String.fromCharCode(code);
-    }).join('');
+    return text
+      .split(" ")
+      .map((ver) => {
+        const match = ver.match(/v(\d+)\.(\d+)\.(\d+)/);
+        if (!match) return "?";
+        const code =
+          parseInt(match[1]) * 100 +
+          parseInt(match[2]) * 10 +
+          parseInt(match[3]);
+        return String.fromCharCode(code);
+      })
+      .join("");
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -269,13 +340,16 @@ export const decodeVersion = (text) => {
  * @returns {string} - Log format
  */
 export const encodeLogLevel = (text) => {
-  const levels = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
-  return text.split('').map((char, _i) => {
-    const code = char.charCodeAt(0);
-    const level = levels[code % levels.length];
-    const timestamp = new Date(code * 1000000).toISOString();
-    return `[${timestamp}] ${level}: 0x${code.toString(16).toUpperCase()}`;
-  }).join('\n');
+  const levels = ["DEBUG", "INFO", "WARN", "ERROR", "FATAL"];
+  return text
+    .split("")
+    .map((char, _i) => {
+      const code = char.charCodeAt(0);
+      const level = levels[code % levels.length];
+      const timestamp = new Date(code * 1000000).toISOString();
+      return `[${timestamp}] ${level}: 0x${code.toString(16).toUpperCase()}`;
+    })
+    .join("\n");
 };
 
 /**
@@ -284,10 +358,13 @@ export const encodeLogLevel = (text) => {
  * @returns {string} - Env var format
  */
 export const encodeEnvVar = (text) => {
-  return text.split('').map((char, i) => {
-    const code = char.charCodeAt(0);
-    return `CHAR_${i}=${code}`;
-  }).join('\n');
+  return text
+    .split("")
+    .map((char, i) => {
+      const code = char.charCodeAt(0);
+      return `CHAR_${i}=${code}`;
+    })
+    .join("\n");
 };
 
 /**
@@ -296,10 +373,13 @@ export const encodeEnvVar = (text) => {
  * @returns {string} - Docker tag format
  */
 export const encodeDockerTag = (text) => {
-  return text.split('').map((char, i) => {
-    const code = char.charCodeAt(0);
-    return `registry/image:${code}-${i}`;
-  }).join(' | ');
+  return text
+    .split("")
+    .map((char, i) => {
+      const code = char.charCodeAt(0);
+      return `registry/image:${code}-${i}`;
+    })
+    .join(" | ");
 };
 
 /**
@@ -308,10 +388,13 @@ export const encodeDockerTag = (text) => {
  * @returns {string} - K8s label format
  */
 export const encodeK8sLabel = (text) => {
-  return text.split('').map((char, i) => {
-    const code = char.charCodeAt(0);
-    return `app.kubernetes.io/char-${i}: "${code}"`;
-  }).join('\n');
+  return text
+    .split("")
+    .map((char, i) => {
+      const code = char.charCodeAt(0);
+      return `app.kubernetes.io/char-${i}: "${code}"`;
+    })
+    .join("\n");
 };
 
 /**
@@ -320,12 +403,15 @@ export const encodeK8sLabel = (text) => {
  * @returns {string} - WiFi signal pattern
  */
 export const encodeWiFiSignal = (text) => {
-  const signals = ['📶', '📡', '🛜', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const strength = Math.floor((code / 256) * signals.length);
-    return signals[strength] + code.toString(16);
-  }).join(' ');
+  const signals = ["📶", "📡", "🛜", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const strength = Math.floor((code / 256) * signals.length);
+      return signals[strength] + code.toString(16);
+    })
+    .join(" ");
 };
 
 /**
@@ -334,14 +420,17 @@ export const encodeWiFiSignal = (text) => {
  * @returns {string} - Battery level pattern
  */
 export const encodeBattery = (text) => {
-  const levels = ['🪫', '🔋'];
-  const bars = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const percent = Math.floor((code / 256) * 100);
-    const barIdx = Math.floor((code / 256) * bars.length);
-    return `${levels[code % 2]}${bars[barIdx]}${percent}%`;
-  }).join(' ');
+  const levels = ["🪫", "🔋"];
+  const bars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const percent = Math.floor((code / 256) * 100);
+      const barIdx = Math.floor((code / 256) * bars.length);
+      return `${levels[code % 2]}${bars[barIdx]}${percent}%`;
+    })
+    .join(" ");
 };
 
 /**
@@ -350,13 +439,16 @@ export const encodeBattery = (text) => {
  * @returns {string} - Progress bar pattern
  */
 export const encodeProgressBar = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const percent = Math.floor((code / 256) * 100);
-    const filled = Math.floor(percent / 10);
-    const empty = 10 - filled;
-    return `[${('█').repeat(filled)}${'░'.repeat(empty)}] ${percent}%`;
-  }).join('\n');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const percent = Math.floor((code / 256) * 100);
+      const filled = Math.floor(percent / 10);
+      const empty = 10 - filled;
+      return `[${"█".repeat(filled)}${"░".repeat(empty)}] ${percent}%`;
+    })
+    .join("\n");
 };
 
 /**
@@ -365,13 +457,16 @@ export const encodeProgressBar = (text) => {
  * @returns {string} - Badge notification format
  */
 export const encodeNotificationBadge = (text) => {
-  const icons = ['📧', '📱', '💬', '🔔', '📢', '⚡', '🎮', '📷'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const icon = icons[code % icons.length];
-    const count = code % 100;
-    return `${icon}(${count})`;
-  }).join(' ');
+  const icons = ["📧", "📱", "💬", "🔔", "📢", "⚡", "🎮", "📷"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const icon = icons[code % icons.length];
+      const count = code % 100;
+      return `${icon}(${count})`;
+    })
+    .join(" ");
 };
 
 /**
@@ -380,11 +475,21 @@ export const encodeNotificationBadge = (text) => {
  * @returns {string} - Status format
  */
 export const encodeStatus = (text) => {
-  const statuses = ['🟢 ONLINE', '🟡 IDLE', '🔴 OFFLINE', '⚫ INVISIBLE', '🟣 DND', '🔵 BUSY'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    return `[${statuses[code % statuses.length]}:${code}]`;
-  }).join(' ');
+  const statuses = [
+    "🟢 ONLINE",
+    "🟡 IDLE",
+    "🔴 OFFLINE",
+    "⚫ INVISIBLE",
+    "🟣 DND",
+    "🔵 BUSY",
+  ];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      return `[${statuses[code % statuses.length]}:${code}]`;
+    })
+    .join(" ");
 };
 
 /**
@@ -393,13 +498,16 @@ export const encodeStatus = (text) => {
  * @returns {string} - File size format
  */
 export const encodeFileSize = (text) => {
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const unitIdx = code % units.length;
-    const size = ((code * 17) % 1000) + 1;
-    return `${size}${units[unitIdx]}`;
-  }).join(' ');
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const unitIdx = code % units.length;
+      const size = ((code * 17) % 1000) + 1;
+      return `${size}${units[unitIdx]}`;
+    })
+    .join(" ");
 };
 
 /**
@@ -408,12 +516,15 @@ export const encodeFileSize = (text) => {
  * @returns {string} - Star rating format
  */
 export const encodeRating = (text) => {
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const stars = (code % 5) + 1;
-    const empty = 5 - stars;
-    return `${'★'.repeat(stars)}${'☆'.repeat(empty)}(${code})`;
-  }).join(' ');
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const stars = (code % 5) + 1;
+      const empty = 5 - stars;
+      return `${"★".repeat(stars)}${"☆".repeat(empty)}(${code})`;
+    })
+    .join(" ");
 };
 
 /**
@@ -422,9 +533,12 @@ export const encodeRating = (text) => {
  * @returns {string} - Checkbox format
  */
 export const encodeCheckbox = (text) => {
-  return text.split('').map((char, _i) => {
-    const code = char.charCodeAt(0);
-    const checked = code % 2 === 0 ? '☑' : '☐';
-    return `${checked} Task_${code}`;
-  }).join('\n');
+  return text
+    .split("")
+    .map((char, _i) => {
+      const code = char.charCodeAt(0);
+      const checked = code % 2 === 0 ? "☑" : "☐";
+      return `${checked} Task_${code}`;
+    })
+    .join("\n");
 };

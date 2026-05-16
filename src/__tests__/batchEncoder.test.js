@@ -125,7 +125,7 @@ describe("Batch Encoder Utility", () => {
     it("marks failed encodings", () => {
       const matrix = generateComparisonMatrix(
         ["Test"],
-        ["hex", "invalid-encoder"]
+        ["hex", "invalid-encoder"],
       );
 
       expect(matrix.results[0].encodings.hex.success).toBe(true);

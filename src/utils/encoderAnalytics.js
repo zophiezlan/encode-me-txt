@@ -278,7 +278,7 @@ export const getEncoderRecommendations = (criteria = {}) => {
     const targetDifficulty = difficultyMap[difficulty.toLowerCase()];
     if (targetDifficulty) {
       recommendations = recommendations.filter(
-        (e) => getEncoderDifficulty(e.id) === targetDifficulty
+        (e) => getEncoderDifficulty(e.id) === targetDifficulty,
       );
     }
   }
@@ -286,7 +286,7 @@ export const getEncoderRecommendations = (criteria = {}) => {
   // Filter by tags
   if (tags.length > 0) {
     recommendations = recommendations.filter(
-      (e) => e.tags && tags.some((t) => e.tags.includes(t))
+      (e) => e.tags && tags.some((t) => e.tags.includes(t)),
     );
   }
 
@@ -439,18 +439,18 @@ export const getEncodingComplexity = (input, output, encoderId) => {
       score < 25
         ? "Low"
         : score < 50
-        ? "Medium"
-        : score < 75
-        ? "High"
-        : "Very High",
+          ? "Medium"
+          : score < 75
+            ? "High"
+            : "Very High",
     recommendation:
       score < 25
         ? "Basic encoding for casual use"
         : score < 50
-        ? "Good for educational purposes"
-        : score < 75
-        ? "Suitable for moderate security needs"
-        : "Advanced encoding for privacy-conscious users",
+          ? "Good for educational purposes"
+          : score < 75
+            ? "Suitable for moderate security needs"
+            : "Advanced encoding for privacy-conscious users",
   };
 };
 

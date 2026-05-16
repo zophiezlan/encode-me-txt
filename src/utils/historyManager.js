@@ -135,7 +135,7 @@ export class HistoryManager {
     });
 
     const sortedEncoders = Object.entries(encoderCounts).sort(
-      (a, b) => b[1] - a[1]
+      (a, b) => b[1] - a[1],
     );
 
     return {

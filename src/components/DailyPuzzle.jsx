@@ -20,7 +20,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
   const [completed, setCompleted] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [achievements, setAchievements] = useState(
-    DailyPuzzleSystem.getAllAchievements()
+    DailyPuzzleSystem.getAllAchievements(),
   );
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
         puzzle.id,
         true,
         timeSpent,
-        attempts + 1
+        attempts + 1,
       );
 
       setStats(newStats);
@@ -58,7 +58,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
             newAchievements.length > 1 ? "s" : ""
           } Unlocked!\n${newAchievements
             .map((a) => `${a.icon} ${a.name}`)
-            .join("\n")}`
+            .join("\n")}`,
         );
       }
 
@@ -213,7 +213,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
                     <div className="flex items-center gap-2">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-bold border-2 ${getDifficultyBg(
-                          puzzle.difficulty
+                          puzzle.difficulty,
                         )}`}
                       >
                         {puzzle.difficulty.toUpperCase()}
@@ -357,7 +357,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
                       style={{
                         width: `${Math.min(
                           (stats.totalPoints / 1000) * 100,
-                          100
+                          100,
                         )}%`,
                       }}
                     />
@@ -377,7 +377,7 @@ const DailyPuzzle = ({ theme, onClose }) => {
                       style={{
                         width: `${Math.min(
                           (stats.solvedCount / 50) * 100,
-                          100
+                          100,
                         )}%`,
                       }}
                     />

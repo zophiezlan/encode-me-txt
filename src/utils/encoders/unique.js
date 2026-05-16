@@ -1,11 +1,11 @@
 /**
  * Unique Encoders
  * Creative and novel encoding methods not found in typical encoder apps
- * 
+ *
  * Refactored to use shared utilities from shared.js where applicable.
  */
 
-import { createModuloEncoder } from './shared.js';
+import { createModuloEncoder } from "./shared.js";
 
 /**
  * DNA Sequence Encoding
@@ -14,15 +14,15 @@ import { createModuloEncoder } from './shared.js';
  */
 export const encodeDNA = (text) => {
   const dnaMap = {
-    '00': 'A',
-    '01': 'T',
-    '10': 'G',
-    '11': 'C'
+    "00": "A",
+    "01": "T",
+    10: "G",
+    11: "C",
   };
 
-  let result = '';
+  let result = "";
   for (let char of text) {
-    const binary = char.charCodeAt(0).toString(2).padStart(8, '0');
+    const binary = char.charCodeAt(0).toString(2).padStart(8, "0");
     for (let i = 0; i < binary.length; i += 2) {
       const pair = binary.substr(i, 2);
       result += dnaMap[pair];
@@ -34,29 +34,29 @@ export const encodeDNA = (text) => {
 export const decodeDNA = (text) => {
   try {
     const reverseDNA = {
-      'A': '00',
-      'T': '01',
-      'G': '10',
-      'C': '11'
+      A: "00",
+      T: "01",
+      G: "10",
+      C: "11",
     };
 
-    let binary = '';
+    let binary = "";
     for (let base of text.toUpperCase()) {
       if (reverseDNA[base]) {
         binary += reverseDNA[base];
       }
     }
 
-    let result = '';
+    let result = "";
     for (let i = 0; i < binary.length; i += 8) {
       const byte = binary.substring(i, i + 8);
       if (byte.length === 8) {
         result += String.fromCharCode(parseInt(byte, 2));
       }
     }
-    return result || '[Invalid DNA sequence]';
+    return result || "[Invalid DNA sequence]";
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -65,27 +65,55 @@ export const decodeDNA = (text) => {
  * Encode text using playing card representations
  */
 export const encodePlayingCards = (text) => {
-  const suits = ['♠', '♥', '♦', '♣'];
-  const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const suits = ["♠", "♥", "♦", "♣"];
+  const ranks = [
+    "A",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "J",
+    "Q",
+    "K",
+  ];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
     const suit = suits[code % suits.length];
     const rank = ranks[Math.floor(code / suits.length) % ranks.length];
-    result += rank + suit + ' ';
+    result += rank + suit + " ";
   }
   return result.trim();
 };
 
 export const decodePlayingCards = (text) => {
   try {
-    const suits = ['♠', '♥', '♦', '♣'];
-    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+    const suits = ["♠", "♥", "♦", "♣"];
+    const ranks = [
+      "A",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "J",
+      "Q",
+      "K",
+    ];
 
     // Split by spaces and parse each card
     const cards = text.trim().split(/\s+/);
-    let result = '';
+    let result = "";
 
     for (let card of cards) {
       // Extract rank and suit
@@ -93,7 +121,7 @@ export const decodePlayingCards = (text) => {
       for (let s of suits) {
         if (card.includes(s)) {
           suit = s;
-          rank = card.replace(s, '');
+          rank = card.replace(s, "");
           break;
         }
       }
@@ -102,14 +130,14 @@ export const decodePlayingCards = (text) => {
         const suitIdx = suits.indexOf(suit);
         const rankIdx = ranks.indexOf(rank);
         if (suitIdx !== -1 && rankIdx !== -1) {
-          const code = (rankIdx * suits.length) + suitIdx;
+          const code = rankIdx * suits.length + suitIdx;
           result += String.fromCharCode(code);
         }
       }
     }
-    return result || '[Invalid card sequence]';
+    return result || "[Invalid card sequence]";
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -119,16 +147,52 @@ export const decodePlayingCards = (text) => {
  */
 export const encodeChemistry = (text) => {
   const elements = [
-    'H', 'He', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne',
-    'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca',
-    'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Cu', 'Zn',
-    'Ga', 'Ge', 'As', 'Se', 'Br', 'Kr', 'Rb', 'Sr', 'Y', 'Zr'
+    "H",
+    "He",
+    "Li",
+    "Be",
+    "B",
+    "C",
+    "N",
+    "O",
+    "F",
+    "Ne",
+    "Na",
+    "Mg",
+    "Al",
+    "Si",
+    "P",
+    "S",
+    "Cl",
+    "Ar",
+    "K",
+    "Ca",
+    "Sc",
+    "Ti",
+    "V",
+    "Cr",
+    "Mn",
+    "Fe",
+    "Co",
+    "Ni",
+    "Cu",
+    "Zn",
+    "Ga",
+    "Ge",
+    "As",
+    "Se",
+    "Br",
+    "Kr",
+    "Rb",
+    "Sr",
+    "Y",
+    "Zr",
   ];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
-    result += elements[code % elements.length] + '-';
+    result += elements[code % elements.length] + "-";
   }
   return result.slice(0, -1); // Remove trailing dash
 };
@@ -138,7 +202,7 @@ export const encodeChemistry = (text) => {
  * Encode text as lat/long coordinates
  */
 export const encodeCoordinates = (text) => {
-  let result = '';
+  let result = "";
   for (let i = 0; i < text.length; i++) {
     const code = text.charCodeAt(i);
     // Map to reasonable coordinate ranges
@@ -151,8 +215,8 @@ export const encodeCoordinates = (text) => {
 
 export const decodeCoordinates = (text) => {
   try {
-    const lines = text.trim().split('\n');
-    let result = '';
+    const lines = text.trim().split("\n");
+    let result = "";
 
     for (let line of lines) {
       // Parse coordinates
@@ -161,13 +225,13 @@ export const decodeCoordinates = (text) => {
         const lat = parseFloat(match[1]);
         const lng = parseFloat(match[2]);
         // Reverse the mapping
-        const code = Math.round(((lat + 90) + (lng + 180)) / 2);
+        const code = Math.round((lat + 90 + (lng + 180)) / 2);
         result += String.fromCharCode(code);
       }
     }
-    return result || '[Invalid coordinates]';
+    return result || "[Invalid coordinates]";
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -176,37 +240,63 @@ export const decodeCoordinates = (text) => {
  * Encode text using astrological symbols
  */
 export const encodeZodiac = (text) => {
-  const zodiac = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+  const zodiac = [
+    "♈",
+    "♉",
+    "♊",
+    "♋",
+    "♌",
+    "♍",
+    "♎",
+    "♏",
+    "♐",
+    "♑",
+    "♒",
+    "♓",
+  ];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
     const sign1 = zodiac[Math.floor(code / zodiac.length) % zodiac.length];
     const sign2 = zodiac[code % zodiac.length];
-    result += sign1 + sign2 + ' ';
+    result += sign1 + sign2 + " ";
   }
   return result.trim();
 };
 
 export const decodeZodiac = (text) => {
   try {
-    const zodiac = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
-    const signs = [...text.replace(/\s/g, '')];
-    let result = '';
+    const zodiac = [
+      "♈",
+      "♉",
+      "♊",
+      "♋",
+      "♌",
+      "♍",
+      "♎",
+      "♏",
+      "♐",
+      "♑",
+      "♒",
+      "♓",
+    ];
+    const signs = [...text.replace(/\s/g, "")];
+    let result = "";
 
     for (let i = 0; i < signs.length; i += 2) {
       if (i + 1 < signs.length) {
         const idx1 = zodiac.indexOf(signs[i]);
         const idx2 = zodiac.indexOf(signs[i + 1]);
         if (idx1 !== -1 && idx2 !== -1) {
-          const code = (idx1 * zodiac.length) + idx2;
+          const code = idx1 * zodiac.length + idx2;
           result += String.fromCharCode(code);
         }
       }
     }
-    return result || '[Invalid zodiac sequence]';
+    return result || "[Invalid zodiac sequence]";
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -215,99 +305,406 @@ export const decodeZodiac = (text) => {
  * Encode text as visual barcode-style bars
  */
 export const encodeBarcode = (text) => {
-  const bars = ['▏', '▎', '▍', '▌', '▋', '▊', '▉', '█'];
+  const bars = ["▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
-    const binary = char.charCodeAt(0).toString(2).padStart(8, '0');
+    const binary = char.charCodeAt(0).toString(2).padStart(8, "0");
     for (let bit of binary) {
-      result += bit === '1' ? bars[7] : bars[0];
+      result += bit === "1" ? bars[7] : bars[0];
     }
-    result += ' ';
+    result += " ";
   }
   return result.trim();
 };
 
 // Modulo-based encoder arrays
 const MINECRAFT_BLOCKS = [
-  '⛏️', '🟫', '🟩', '🟦', '🟥', '🟨', '⬜', '⬛',
-  '🔥', '💎', '⛰️', '🌳', '💧', '🔆', '🌙', '⭐'
+  "⛏️",
+  "🟫",
+  "🟩",
+  "🟦",
+  "🟥",
+  "🟨",
+  "⬜",
+  "⬛",
+  "🔥",
+  "💎",
+  "⛰️",
+  "🌳",
+  "💧",
+  "🔆",
+  "🌙",
+  "⭐",
 ];
 
 const WEATHER_EMOJIS = [
-  '☀️', '🌤️', '⛅', '🌥️', '☁️', '🌦️', '🌧️', '⛈️',
-  '🌩️', '❄️', '🌨️', '💨', '🌪️', '🌫️', '🌈', '⚡'
+  "☀️",
+  "🌤️",
+  "⛅",
+  "🌥️",
+  "☁️",
+  "🌦️",
+  "🌧️",
+  "⛈️",
+  "🌩️",
+  "❄️",
+  "🌨️",
+  "💨",
+  "🌪️",
+  "🌫️",
+  "🌈",
+  "⚡",
 ];
 
 const DOMINO_TILES = [
-  '🁣', '🁤', '🁥', '🁦', '🁧', '🁨', '🁩', '🁪',
-  '🁫', '🁬', '🁭', '🁮', '🁯', '🁰', '🁱', '🁲'
+  "🁣",
+  "🁤",
+  "🁥",
+  "🁦",
+  "🁧",
+  "🁨",
+  "🁩",
+  "🁪",
+  "🁫",
+  "🁬",
+  "🁭",
+  "🁮",
+  "🁯",
+  "🁰",
+  "🁱",
+  "🁲",
 ];
 
 const TRAFFIC_SIGNS = [
-  '🛑', '⚠️', '🚸', '🚫', '🚳', '🚭', '🚯', '🚱',
-  '🚷', '📵', '🔞', '⛔', '✋', '☢️', '☣️', '⬆️'
+  "🛑",
+  "⚠️",
+  "🚸",
+  "🚫",
+  "🚳",
+  "🚭",
+  "🚯",
+  "🚱",
+  "🚷",
+  "📵",
+  "🔞",
+  "⛔",
+  "✋",
+  "☢️",
+  "☣️",
+  "⬆️",
 ];
 
-const TREE_EMOJIS = ['🌲', '🌳', '🌴', '🎄', '🌵', '🎋', '🍀', '🌿', '🍃', '🍂', '🍁', '🌱'];
-const MOON_EMOJIS = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+const TREE_EMOJIS = [
+  "🌲",
+  "🌳",
+  "🌴",
+  "🎄",
+  "🌵",
+  "🎋",
+  "🍀",
+  "🌿",
+  "🍃",
+  "🍂",
+  "🍁",
+  "🌱",
+];
+const MOON_EMOJIS = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
 
 const ANIMAL_EMOJIS = [
-  '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼',
-  '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔',
-  '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺',
-  '🐗', '🐴', '🦄', '🐝', '🐛', '🦋', '🐌', '🐞'
+  "🐶",
+  "🐱",
+  "🐭",
+  "🐹",
+  "🐰",
+  "🦊",
+  "🐻",
+  "🐼",
+  "🐨",
+  "🐯",
+  "🦁",
+  "🐮",
+  "🐷",
+  "🐸",
+  "🐵",
+  "🐔",
+  "🐧",
+  "🐦",
+  "🐤",
+  "🦆",
+  "🦅",
+  "🦉",
+  "🦇",
+  "🐺",
+  "🐗",
+  "🐴",
+  "🦄",
+  "🐝",
+  "🐛",
+  "🦋",
+  "🐌",
+  "🐞",
 ];
 
 const FOOD_EMOJIS = [
-  '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓',
-  '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝',
-  '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶️', '🫑',
-  '🌽', '🥕', '🫒', '🧄', '🧅', '🥔', '🍠', '🥐'
+  "🍎",
+  "🍐",
+  "🍊",
+  "🍋",
+  "🍌",
+  "🍉",
+  "🍇",
+  "🍓",
+  "🫐",
+  "🍈",
+  "🍒",
+  "🍑",
+  "🥭",
+  "🍍",
+  "🥥",
+  "🥝",
+  "🍅",
+  "🍆",
+  "🥑",
+  "🥦",
+  "🥬",
+  "🥒",
+  "🌶️",
+  "🫑",
+  "🌽",
+  "🥕",
+  "🫒",
+  "🧄",
+  "🧅",
+  "🥔",
+  "🍠",
+  "🥐",
 ];
 
 const SPORTS_EMOJIS = [
-  '⚽', '🏀', '🏈', '⚾', '🥎', '🎾', '🏐', '🏉',
-  '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑', '🥍',
-  '🏏', '🪃', '🥅', '⛳', '🪁', '🛷', '⛸️', '🥌',
-  '🎿', '⛷️', '🏂', '🤺', '🏋️', '🤼', '🤸', '⛹️'
+  "⚽",
+  "🏀",
+  "🏈",
+  "⚾",
+  "🥎",
+  "🎾",
+  "🏐",
+  "🏉",
+  "🥏",
+  "🎱",
+  "🪀",
+  "🏓",
+  "🏸",
+  "🏒",
+  "🏑",
+  "🥍",
+  "🏏",
+  "🪃",
+  "🥅",
+  "⛳",
+  "🪁",
+  "🛷",
+  "⛸️",
+  "🥌",
+  "🎿",
+  "⛷️",
+  "🏂",
+  "🤺",
+  "🏋️",
+  "🤼",
+  "🤸",
+  "⛹️",
 ];
 
 const INSTRUMENT_EMOJIS = [
-  '🎹', '🎸', '🎺', '🎷', '🪗', '🎻', '🪕', '🎤',
-  '🎧', '🥁', '🪘', '📯', '🔔', '🎼', '🎵', '🎶'
+  "🎹",
+  "🎸",
+  "🎺",
+  "🎷",
+  "🪗",
+  "🎻",
+  "🪕",
+  "🎤",
+  "🎧",
+  "🥁",
+  "🪘",
+  "📯",
+  "🔔",
+  "🎼",
+  "🎵",
+  "🎶",
 ];
 
 const SPACE_EMOJIS = [
-  '🌍', '🌎', '🌏', '🌐', '🪐', '⭐', '🌟', '💫',
-  '✨', '☄️', '🌙', '🌛', '🌜', '🌝', '🌞', '🚀',
-  '🛸', '🌌', '🔭', '🌠', '👽', '🛰️', '☀️', '💥'
+  "🌍",
+  "🌎",
+  "🌏",
+  "🌐",
+  "🪐",
+  "⭐",
+  "🌟",
+  "💫",
+  "✨",
+  "☄️",
+  "🌙",
+  "🌛",
+  "🌜",
+  "🌝",
+  "🌞",
+  "🚀",
+  "🛸",
+  "🌌",
+  "🔭",
+  "🌠",
+  "👽",
+  "🛰️",
+  "☀️",
+  "💥",
 ];
 
 const OCEAN_EMOJIS = [
-  '🌊', '🐚', '🦀', '🦞', '🦐', '🦑', '🐙', '🦪',
-  '🐠', '🐟', '🐡', '🦈', '🐬', '🐳', '🐋', '🐢',
-  '🏝️', '⛵', '🚢', '⚓', '🪸', '🧜', '🏄', '🤿'
+  "🌊",
+  "🐚",
+  "🦀",
+  "🦞",
+  "🦐",
+  "🦑",
+  "🐙",
+  "🦪",
+  "🐠",
+  "🐟",
+  "🐡",
+  "🦈",
+  "🐬",
+  "🐳",
+  "🐋",
+  "🐢",
+  "🏝️",
+  "⛵",
+  "🚢",
+  "⚓",
+  "🪸",
+  "🧜",
+  "🏄",
+  "🤿",
 ];
 
-const CHESS_PIECES = ['♔', '♕', '♖', '♗', '♘', '♙', '♚', '♛', '♜', '♝', '♞', '♟'];
-const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+const CHESS_PIECES = [
+  "♔",
+  "♕",
+  "♖",
+  "♗",
+  "♘",
+  "♙",
+  "♚",
+  "♛",
+  "♜",
+  "♝",
+  "♞",
+  "♟",
+];
+const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
 const MAHJONG_TILES = [
-  '🀀', '🀁', '🀂', '🀃', '🀄', '🀅', '🀆', '🀇',
-  '🀈', '🀉', '🀊', '🀋', '🀌', '🀍', '🀎', '🀏',
-  '🀐', '🀑', '🀒', '🀓', '🀔', '🀕', '🀖', '🀗',
-  '🀘', '🀙', '🀚', '🀛', '🀜', '🀝', '🀞', '🀟'
+  "🀀",
+  "🀁",
+  "🀂",
+  "🀃",
+  "🀄",
+  "🀅",
+  "🀆",
+  "🀇",
+  "🀈",
+  "🀉",
+  "🀊",
+  "🀋",
+  "🀌",
+  "🀍",
+  "🀎",
+  "🀏",
+  "🀐",
+  "🀑",
+  "🀒",
+  "🀓",
+  "🀔",
+  "🀕",
+  "🀖",
+  "🀗",
+  "🀘",
+  "🀙",
+  "🀚",
+  "🀛",
+  "🀜",
+  "🀝",
+  "🀞",
+  "🀟",
 ];
 
 const HEXAGRAMS = [
-  '䷀', '䷁', '䷂', '䷃', '䷄', '䷅', '䷆', '䷇', '䷈', '䷉',
-  '䷊', '䷋', '䷌', '䷍', '䷎', '䷏', '䷐', '䷑', '䷒', '䷓',
-  '䷔', '䷕', '䷖', '䷗', '䷘', '䷙', '䷚', '䷛', '䷜', '䷝',
-  '䷞', '䷟', '䷠', '䷡', '䷢', '䷣', '䷤', '䷥', '䷦', '䷧',
-  '䷨', '䷩', '䷪', '䷫', '䷬', '䷭', '䷮', '䷯', '䷰', '䷱',
-  '䷲', '䷳', '䷴', '䷵', '䷶', '䷷', '䷸', '䷹', '䷺', '䷻',
-  '䷼', '䷽', '䷾', '䷿'
+  "䷀",
+  "䷁",
+  "䷂",
+  "䷃",
+  "䷄",
+  "䷅",
+  "䷆",
+  "䷇",
+  "䷈",
+  "䷉",
+  "䷊",
+  "䷋",
+  "䷌",
+  "䷍",
+  "䷎",
+  "䷏",
+  "䷐",
+  "䷑",
+  "䷒",
+  "䷓",
+  "䷔",
+  "䷕",
+  "䷖",
+  "䷗",
+  "䷘",
+  "䷙",
+  "䷚",
+  "䷛",
+  "䷜",
+  "䷝",
+  "䷞",
+  "䷟",
+  "䷠",
+  "䷡",
+  "䷢",
+  "䷣",
+  "䷤",
+  "䷥",
+  "䷦",
+  "䷧",
+  "䷨",
+  "䷩",
+  "䷪",
+  "䷫",
+  "䷬",
+  "䷭",
+  "䷮",
+  "䷯",
+  "䷰",
+  "䷱",
+  "䷲",
+  "䷳",
+  "䷴",
+  "䷵",
+  "䷶",
+  "䷷",
+  "䷸",
+  "䷹",
+  "䷺",
+  "䷻",
+  "䷼",
+  "䷽",
+  "䷾",
+  "䷿",
 ];
 
 /**
@@ -421,16 +818,32 @@ export const encodeHexagram = createModuloEncoder(HEXAGRAMS);
  */
 export const encodeRecipe = (text) => {
   const ingredients = [
-    '1 cup flour', '2 eggs', '1 tsp salt', '3 tbsp sugar', '1/2 cup milk',
-    '2 oz butter', '1 pinch pepper', '3 cloves garlic', '1 lb meat', '2 cups water',
-    '1 tbsp oil', '4 oz cheese', '1 tsp vanilla', '2 cups rice', '3 carrots',
-    '1 onion', '2 potatoes', '1 can tomatoes', '3 tbsp honey', '1 lemon'
+    "1 cup flour",
+    "2 eggs",
+    "1 tsp salt",
+    "3 tbsp sugar",
+    "1/2 cup milk",
+    "2 oz butter",
+    "1 pinch pepper",
+    "3 cloves garlic",
+    "1 lb meat",
+    "2 cups water",
+    "1 tbsp oil",
+    "4 oz cheese",
+    "1 tsp vanilla",
+    "2 cups rice",
+    "3 carrots",
+    "1 onion",
+    "2 potatoes",
+    "1 can tomatoes",
+    "3 tbsp honey",
+    "1 lemon",
   ];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
-    result += ingredients[code % ingredients.length] + '\n';
+    result += ingredients[code % ingredients.length] + "\n";
   }
   return result.trim();
 };
@@ -441,15 +854,26 @@ export const encodeRecipe = (text) => {
  */
 export const encodeClockTime = (text) => {
   const clocks = [
-    '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛'
+    "🕐",
+    "🕑",
+    "🕒",
+    "🕓",
+    "🕔",
+    "🕕",
+    "🕖",
+    "🕗",
+    "🕘",
+    "🕙",
+    "🕚",
+    "🕛",
   ];
 
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
     const hour = (code % 12) + 1;
     const minute = Math.floor((code / 12) % 60);
-    result += `${clocks[hour - 1]} ${hour}:${minute.toString().padStart(2, '0')} `;
+    result += `${clocks[hour - 1]} ${hour}:${minute.toString().padStart(2, "0")} `;
   }
   return result.trim();
 };
@@ -461,8 +885,22 @@ export const encodeClockTime = (text) => {
 export const encodeRomanNumeral = (text) => {
   const toRoman = (num) => {
     const values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-    const numerals = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
-    let result = '';
+    const numerals = [
+      "M",
+      "CM",
+      "D",
+      "CD",
+      "C",
+      "XC",
+      "L",
+      "XL",
+      "X",
+      "IX",
+      "V",
+      "IV",
+      "I",
+    ];
+    let result = "";
     for (let i = 0; i < values.length; i++) {
       while (num >= values[i]) {
         result += numerals[i];
@@ -471,11 +909,14 @@ export const encodeRomanNumeral = (text) => {
     }
     return result;
   };
-  
-  return text.split('').map(char => {
-    if (char === ' ') return ' ';
-    return toRoman(char.charCodeAt(0));
-  }).join('-');
+
+  return text
+    .split("")
+    .map((char) => {
+      if (char === " ") return " ";
+      return toRoman(char.charCodeAt(0));
+    })
+    .join("-");
 };
 
 /**
@@ -483,13 +924,31 @@ export const encodeRomanNumeral = (text) => {
  * Encode text as spelled-out numbers
  */
 export const encodeNumberWords = (text) => {
-  const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-  
-  return text.split('').map(char => {
-    if (char === ' ') return ' ';
-    const code = char.charCodeAt(0);
-    return code.toString().split('').map(d => words[parseInt(d)]).join('-');
-  }).join(' ');
+  const words = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+  ];
+
+  return text
+    .split("")
+    .map((char) => {
+      if (char === " ") return " ";
+      const code = char.charCodeAt(0);
+      return code
+        .toString()
+        .split("")
+        .map((d) => words[parseInt(d)])
+        .join("-");
+    })
+    .join(" ");
 };
 
 /**
@@ -497,11 +956,11 @@ export const encodeNumberWords = (text) => {
  * Encode text using dice faces
  */
 export const encodeDice = (text) => {
-  let result = '';
+  let result = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
     // Use two dice for each character (for more combinations)
-    result += DICE_FACES[Math.floor(code / 6) % 6] + DICE_FACES[code % 6] + ' ';
+    result += DICE_FACES[Math.floor(code / 6) % 6] + DICE_FACES[code % 6] + " ";
   }
   return result.trim();
 };

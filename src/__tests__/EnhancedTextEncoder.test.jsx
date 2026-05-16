@@ -84,7 +84,7 @@ describe("EnhancedTextEncoder", () => {
     render(<EnhancedTextEncoder />);
     // Check for the main description text that mentions multiple encodings
     expect(
-      screen.getByText(/Transform your messages into.*creative encodings/i)
+      screen.getByText(/Transform your messages into.*creative encodings/i),
     ).toBeInTheDocument();
   });
 

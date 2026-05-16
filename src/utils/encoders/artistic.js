@@ -1,72 +1,138 @@
 /**
  * Artistic Encoders
  * Creative visual encodings using blocks, music, zalgo, colors, runes, and ASCII art
- * 
+ *
  * Refactored to use shared utilities from shared.js where applicable.
  */
 
-import { createModuloEncoder } from './shared.js';
+import { createModuloEncoder } from "./shared.js";
 
 // Character sets for artistic encodings
-const BLOCKS = ['█', '▓', '▒', '░', '▀', '▄', '▌', '▐', '■', '▪', '▫', '◾', '◽', '▪️', '▫️'];
-const MUSICAL_NOTES = ['♪', '♫', '♬', '♩', '♭', '♮', '♯', '𝄞', '𝄢'];
-const COLOR_BLOCKS = ['🟥', '🟧', '🟨', '🟩', '🟦', '🟪', '🟫', '⬛', '⬜'];
+const BLOCKS = [
+  "█",
+  "▓",
+  "▒",
+  "░",
+  "▀",
+  "▄",
+  "▌",
+  "▐",
+  "■",
+  "▪",
+  "▫",
+  "◾",
+  "◽",
+  "▪️",
+  "▫️",
+];
+const MUSICAL_NOTES = ["♪", "♫", "♬", "♩", "♭", "♮", "♯", "𝄞", "𝄢"];
+const COLOR_BLOCKS = ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬛", "⬜"];
 const RUNES = [
-  'ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ', 'ᚺ', 'ᚾ', 'ᛁ', 'ᛃ',
-  'ᛇ', 'ᛈ', 'ᛉ', 'ᛊ', 'ᛏ', 'ᛒ', 'ᛖ', 'ᛗ', 'ᛚ', 'ᛜ', 'ᛞ', 'ᛟ'
+  "ᚠ",
+  "ᚢ",
+  "ᚦ",
+  "ᚨ",
+  "ᚱ",
+  "ᚲ",
+  "ᚷ",
+  "ᚹ",
+  "ᚺ",
+  "ᚾ",
+  "ᛁ",
+  "ᛃ",
+  "ᛇ",
+  "ᛈ",
+  "ᛉ",
+  "ᛊ",
+  "ᛏ",
+  "ᛒ",
+  "ᛖ",
+  "ᛗ",
+  "ᛚ",
+  "ᛜ",
+  "ᛞ",
+  "ᛟ",
 ];
 
 // Unicode combining diacritical marks for Zalgo text
 const COMBINING_MARKS = [
-  '\u0300', '\u0301', '\u0302', '\u0303', '\u0304', '\u0305', '\u0306', '\u0307',
-  '\u0308', '\u0309', '\u030A', '\u030B', '\u030C', '\u030D', '\u030E', '\u030F',
-  '\u0310', '\u0311', '\u0312', '\u0313', '\u0314', '\u0315', '\u0316', '\u0317',
-  '\u0318', '\u0319', '\u031A', '\u031B', '\u031C', '\u031D', '\u031E', '\u031F'
+  "\u0300",
+  "\u0301",
+  "\u0302",
+  "\u0303",
+  "\u0304",
+  "\u0305",
+  "\u0306",
+  "\u0307",
+  "\u0308",
+  "\u0309",
+  "\u030A",
+  "\u030B",
+  "\u030C",
+  "\u030D",
+  "\u030E",
+  "\u030F",
+  "\u0310",
+  "\u0311",
+  "\u0312",
+  "\u0313",
+  "\u0314",
+  "\u0315",
+  "\u0316",
+  "\u0317",
+  "\u0318",
+  "\u0319",
+  "\u031A",
+  "\u031B",
+  "\u031C",
+  "\u031D",
+  "\u031E",
+  "\u031F",
 ];
 
 // ASCII art letters (simplified 3-line format)
 const ASCII_LETTERS = {
-  'A': [' █ ', '█▀█', '▀ ▀'],
-  'B': ['██▄', '█▀█', '██▀'],
-  'C': ['▄██', '█  ', '▀██'],
-  'D': ['██▄', '█ █', '██▀'],
-  'E': ['███', '█▄ ', '███'],
-  'F': ['███', '█▄ ', '█  '],
-  'G': ['▄██', '█▄█', '▀██'],
-  'H': ['█ █', '███', '█ █'],
-  'I': ['███', ' █ ', '███'],
-  'J': ['███', '  █', '▀█▀'],
-  'K': ['█▄█', '██ ', '█ █'],
-  'L': ['█  ', '█  ', '███'],
-  'M': ['█▄█', '█▀█', '█ █'],
-  'N': ['█▄█', '█▀█', '█ █'],
-  'O': ['▄█▄', '█ █', '▀█▀'],
-  'P': ['██▄', '█▀▀', '█  '],
-  'Q': ['▄█▄', '█ █', '▀██'],
-  'R': ['██▄', '█▀█', '█ █'],
-  'S': ['▄██', ' █ ', '██▀'],
-  'T': ['███', ' █ ', ' █ '],
-  'U': ['█ █', '█ █', '▀█▀'],
-  'V': ['█ █', '█ █', ' ▀ '],
-  'W': ['█ █', '█▄█', '▀▀▀'],
-  'X': ['█ █', ' █ ', '█ █'],
-  'Y': ['█ █', ' █ ', ' █ '],
-  'Z': ['███', ' █ ', '███'],
-  '0': ['▄█▄', '█ █', '▀█▀'],
-  '1': [' █ ', ' █ ', ' █ '],
-  '2': ['▀█▄', ' █ ', '██▀'],
-  '3': ['▀█▄', ' █▄', '▀█▀'],
-  '4': ['█ █', '▀█▀', '  █'],
-  '5': ['██▄', '▀█ ', '██▀'],
-  '6': ['▄█▄', '██ ', '▀█▀'],
-  '7': ['███', '  █', '  █'],
-  '8': ['▄█▄', '▄█▄', '▀█▀'],
-  '9': ['▄█▄', '▀██', '▀█▀'],
-  ' ': ['   ', '   ', '   '],
-  '!': [' █ ', ' █ ', ' ▀ '],
-  '?': ['▀█▄', ' █ ', ' ▀ '],
-  '.': ['   ', '   ', ' ▀ '],
-  ',': ['   ', '   ', ' ▄ ']
+  A: [" █ ", "█▀█", "▀ ▀"],
+  B: ["██▄", "█▀█", "██▀"],
+  C: ["▄██", "█  ", "▀██"],
+  D: ["██▄", "█ █", "██▀"],
+  E: ["███", "█▄ ", "███"],
+  F: ["███", "█▄ ", "█  "],
+  G: ["▄██", "█▄█", "▀██"],
+  H: ["█ █", "███", "█ █"],
+  I: ["███", " █ ", "███"],
+  J: ["███", "  █", "▀█▀"],
+  K: ["█▄█", "██ ", "█ █"],
+  L: ["█  ", "█  ", "███"],
+  M: ["█▄█", "█▀█", "█ █"],
+  N: ["█▄█", "█▀█", "█ █"],
+  O: ["▄█▄", "█ █", "▀█▀"],
+  P: ["██▄", "█▀▀", "█  "],
+  Q: ["▄█▄", "█ █", "▀██"],
+  R: ["██▄", "█▀█", "█ █"],
+  S: ["▄██", " █ ", "██▀"],
+  T: ["███", " █ ", " █ "],
+  U: ["█ █", "█ █", "▀█▀"],
+  V: ["█ █", "█ █", " ▀ "],
+  W: ["█ █", "█▄█", "▀▀▀"],
+  X: ["█ █", " █ ", "█ █"],
+  Y: ["█ █", " █ ", " █ "],
+  Z: ["███", " █ ", "███"],
+  0: ["▄█▄", "█ █", "▀█▀"],
+  1: [" █ ", " █ ", " █ "],
+  2: ["▀█▄", " █ ", "██▀"],
+  3: ["▀█▄", " █▄", "▀█▀"],
+  4: ["█ █", "▀█▀", "  █"],
+  5: ["██▄", "▀█ ", "██▀"],
+  6: ["▄█▄", "██ ", "▀█▀"],
+  7: ["███", "  █", "  █"],
+  8: ["▄█▄", "▄█▄", "▀█▀"],
+  9: ["▄█▄", "▀██", "▀█▀"],
+  " ": ["   ", "   ", "   "],
+  "!": [" █ ", " █ ", " ▀ "],
+  "?": ["▀█▄", " █ ", " ▀ "],
+  ".": ["   ", "   ", " ▀ "],
+  ",": ["   ", "   ", " ▄ "],
 };
 
 /**
@@ -108,15 +174,20 @@ export const encodeZalgo = (text, intensity = 5) => {
   const level = Math.max(1, Math.min(10, intensity));
   const minMarks = Math.max(1, Math.floor(level / 2));
   const maxMarks = level;
-  
-  return text.split('').map(char => {
-    const numMarks = Math.floor(Math.random() * (maxMarks - minMarks + 1)) + minMarks;
-    let zalgoChar = char;
-    for (let i = 0; i < numMarks; i++) {
-      zalgoChar += COMBINING_MARKS[Math.floor(Math.random() * COMBINING_MARKS.length)];
-    }
-    return zalgoChar;
-  }).join('');
+
+  return text
+    .split("")
+    .map((char) => {
+      const numMarks =
+        Math.floor(Math.random() * (maxMarks - minMarks + 1)) + minMarks;
+      let zalgoChar = char;
+      for (let i = 0; i < numMarks; i++) {
+        zalgoChar +=
+          COMBINING_MARKS[Math.floor(Math.random() * COMBINING_MARKS.length)];
+      }
+      return zalgoChar;
+    })
+    .join("");
 };
 
 /**
@@ -127,16 +198,16 @@ export const encodeZalgo = (text, intensity = 5) => {
  */
 export const encodeAsciiArt = (text) => {
   const upperText = text.toUpperCase();
-  const lines = ['', '', ''];
-  
+  const lines = ["", "", ""];
+
   for (const char of upperText) {
-    const artChar = ASCII_LETTERS[char] || ASCII_LETTERS[' '];
-    lines[0] += artChar[0] + ' ';
-    lines[1] += artChar[1] + ' ';
-    lines[2] += artChar[2] + ' ';
+    const artChar = ASCII_LETTERS[char] || ASCII_LETTERS[" "];
+    lines[0] += artChar[0] + " ";
+    lines[1] += artChar[1] + " ";
+    lines[2] += artChar[2] + " ";
   }
-  
-  return lines.join('\n');
+
+  return lines.join("\n");
 };
 
 // ============================================
@@ -149,27 +220,34 @@ export const encodeAsciiArt = (text) => {
  * @returns {string} - Sonar encoding
  */
 export const encodeSonarPing = (text) => {
-  const pings = ['◌', '◍', '◎', '●', '◉', '⦿', '⊙', '⊚'];
-  
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const hex = code.toString(16).padStart(2, '0');
-    const ping = pings[code % pings.length];
-    const depth = code * 10;
-    const bearing = (code * 1.4) % 360;
-    const range = (code % 1000) + 100;
-    return `PING[${hex}]${ping}@${depth}m∠${bearing.toFixed(0)}°R${range}`;
-  }).join('〉〈');
+  const pings = ["◌", "◍", "◎", "●", "◉", "⦿", "⊙", "⊚"];
+
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const hex = code.toString(16).padStart(2, "0");
+      const ping = pings[code % pings.length];
+      const depth = code * 10;
+      const bearing = (code * 1.4) % 360;
+      const range = (code % 1000) + 100;
+      return `PING[${hex}]${ping}@${depth}m∠${bearing.toFixed(0)}°R${range}`;
+    })
+    .join("〉〈");
 };
 
 export const decodeSonarPing = (text) => {
   try {
     const matches = text.match(/PING\[([0-9a-f]{2})\]/gi) || [];
-    return matches.map(m => {
-      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
-      return String.fromCharCode(parseInt(hex, 16));
-    }).join('');
-  } catch { return '[Decode failed]'; }
+    return matches
+      .map((m) => {
+        const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+        return String.fromCharCode(parseInt(hex, 16));
+      })
+      .join("");
+  } catch {
+    return "[Decode failed]";
+  }
 };
 
 // ============================================
@@ -182,27 +260,51 @@ export const decodeSonarPing = (text) => {
  * @returns {string} - Kiln encoding
  */
 export const encodeKilnFiring = (text) => {
-  const cones = ['06', '05', '04', '03', '02', '01', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  const atmospheres = ['oxidation', 'reduction', 'neutral', 'heavy-reduction'];
-  
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const hex = code.toString(16).padStart(2, '0');
-    const cone = cones[code % cones.length];
-    const atm = atmospheres[(code >> 4) % atmospheres.length];
-    const temp = 600 + (code * 5);
-    return `KILN[${hex}]🔥Cone${cone}@${temp}°C(${atm})`;
-  }).join('⟹');
+  const cones = [
+    "06",
+    "05",
+    "04",
+    "03",
+    "02",
+    "01",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+  ];
+  const atmospheres = ["oxidation", "reduction", "neutral", "heavy-reduction"];
+
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const hex = code.toString(16).padStart(2, "0");
+      const cone = cones[code % cones.length];
+      const atm = atmospheres[(code >> 4) % atmospheres.length];
+      const temp = 600 + code * 5;
+      return `KILN[${hex}]🔥Cone${cone}@${temp}°C(${atm})`;
+    })
+    .join("⟹");
 };
 
 export const decodeKilnFiring = (text) => {
   try {
     const matches = text.match(/KILN\[([0-9a-f]{2})\]/gi) || [];
-    return matches.map(m => {
-      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
-      return String.fromCharCode(parseInt(hex, 16));
-    }).join('');
-  } catch { return '[Decode failed]'; }
+    return matches
+      .map((m) => {
+        const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+        return String.fromCharCode(parseInt(hex, 16));
+      })
+      .join("");
+  } catch {
+    return "[Decode failed]";
+  }
 };
 
 // ============================================
@@ -215,28 +317,37 @@ export const decodeKilnFiring = (text) => {
  * @returns {string} - Stained glass encoding
  */
 export const encodeStainedGlass = (text) => {
-  const glasses = ['🟥', '🟧', '🟨', '🟩', '🟦', '🟪', '⬜', '⬛'];
-  const leads = ['H', 'U', 'C', 'F', 'rounded', 'colonial', 'brass', 'zinc'];
-  
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const hex = code.toString(16).padStart(2, '0');
-    const glass = glasses[code % glasses.length];
-    const lead = leads[(code >> 3) % leads.length];
-    const opacity = (code % 100);
-    const texture = ['smooth', 'rippled', 'hammered', 'seedy'][(code >> 5) % 4];
-    return `GLASS[${hex}]${glass}{${lead}-lead:${texture}:${opacity}%}`;
-  }).join('◈');
+  const glasses = ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "⬜", "⬛"];
+  const leads = ["H", "U", "C", "F", "rounded", "colonial", "brass", "zinc"];
+
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const hex = code.toString(16).padStart(2, "0");
+      const glass = glasses[code % glasses.length];
+      const lead = leads[(code >> 3) % leads.length];
+      const opacity = code % 100;
+      const texture = ["smooth", "rippled", "hammered", "seedy"][
+        (code >> 5) % 4
+      ];
+      return `GLASS[${hex}]${glass}{${lead}-lead:${texture}:${opacity}%}`;
+    })
+    .join("◈");
 };
 
 export const decodeStainedGlass = (text) => {
   try {
     const matches = text.match(/GLASS\[([0-9a-f]{2})\]/gi) || [];
-    return matches.map(m => {
-      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
-      return String.fromCharCode(parseInt(hex, 16));
-    }).join('');
-  } catch { return '[Decode failed]'; }
+    return matches
+      .map((m) => {
+        const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+        return String.fromCharCode(parseInt(hex, 16));
+      })
+      .join("");
+  } catch {
+    return "[Decode failed]";
+  }
 };
 
 // ============================================
@@ -249,25 +360,43 @@ export const decodeStainedGlass = (text) => {
  * @returns {string} - Tessellation encoding
  */
 export const encodeTessellation = (text) => {
-  const tiles = ['⬡', '⬢', '◇', '◆', '△', '▽', '▷', '◁'];
-  const patterns = ['regular', 'semi-regular', 'demi-regular', 'monohedral', 'isohedral', 'anisohedral', 'penrose', 'aperiodic'];
-  
-  return text.split('').map(char => {
-    const code = char.charCodeAt(0);
-    const hex = code.toString(16).padStart(2, '0');
-    const tile = tiles[code % tiles.length];
-    const pattern = patterns[(code >> 3) % patterns.length];
-    const symmetry = ['p1', 'p2', 'pm', 'pg', 'cm', 'p2mm', 'p2mg', 'p2gg'][(code >> 4) % 8];
-    return `TESS[${hex}]${tile.repeat(3)}{${pattern}:${symmetry}}`;
-  }).join('⟠');
+  const tiles = ["⬡", "⬢", "◇", "◆", "△", "▽", "▷", "◁"];
+  const patterns = [
+    "regular",
+    "semi-regular",
+    "demi-regular",
+    "monohedral",
+    "isohedral",
+    "anisohedral",
+    "penrose",
+    "aperiodic",
+  ];
+
+  return text
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      const hex = code.toString(16).padStart(2, "0");
+      const tile = tiles[code % tiles.length];
+      const pattern = patterns[(code >> 3) % patterns.length];
+      const symmetry = ["p1", "p2", "pm", "pg", "cm", "p2mm", "p2mg", "p2gg"][
+        (code >> 4) % 8
+      ];
+      return `TESS[${hex}]${tile.repeat(3)}{${pattern}:${symmetry}}`;
+    })
+    .join("⟠");
 };
 
 export const decodeTessellation = (text) => {
   try {
     const matches = text.match(/TESS\[([0-9a-f]{2})\]/gi) || [];
-    return matches.map(m => {
-      const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
-      return String.fromCharCode(parseInt(hex, 16));
-    }).join('');
-  } catch { return '[Decode failed]'; }
+    return matches
+      .map((m) => {
+        const hex = m.match(/\[([0-9a-f]{2})\]/i)[1];
+        return String.fromCharCode(parseInt(hex, 16));
+      })
+      .join("");
+  } catch {
+    return "[Decode failed]";
+  }
 };

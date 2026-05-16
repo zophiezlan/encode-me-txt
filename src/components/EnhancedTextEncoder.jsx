@@ -56,8 +56,8 @@ import { CustomEncoderManager } from "../utils/customEncoderManager.js";
 
 // Lazy load modal components for better initial load performance
 const CustomEncoderBuilder = lazy(() => import("./CustomEncoderBuilder.jsx"));
-const VisualEncodingFlowViewer = lazy(() =>
-  import("./VisualEncodingFlowViewer.jsx")
+const VisualEncodingFlowViewer = lazy(
+  () => import("./VisualEncodingFlowViewer.jsx"),
 );
 const PresetsBrowser = lazy(() => import("./PresetsBrowser.jsx"));
 const DailyPuzzle = lazy(() => import("./DailyPuzzle.jsx"));
@@ -207,22 +207,22 @@ const EnhancedTextEncoder = () => {
     ks.register(
       "ctrl+k",
       () => searchInputRef.current?.focus(),
-      "Focus search"
+      "Focus search",
     );
     ks.register(
       "ctrl+shift+e",
       () => setMode((m) => (m === "encode" ? "decode" : "encode")),
-      "Toggle mode"
+      "Toggle mode",
     );
     ks.register(
       "ctrl+shift+h",
       () => setShowHistory((h) => !h),
-      "Toggle history"
+      "Toggle history",
     );
     ks.register(
       "ctrl+shift+c",
       () => setShowChainMode((c) => !c),
-      "Toggle chain mode"
+      "Toggle chain mode",
     );
     ks.register("ctrl+shift+t", cycleTheme, "Cycle theme");
     ks.register("ctrl+shift+?", () => setShowShortcuts(true), "Show shortcuts");
@@ -234,7 +234,7 @@ const EnhancedTextEncoder = () => {
         setShowShortcuts(false);
         setShowAnalysis(false);
       },
-      "Close panels"
+      "Close panels",
     );
 
     ks.start();
@@ -264,7 +264,7 @@ const EnhancedTextEncoder = () => {
 
     // Convert custom encoders to encoder config format
     const customConfigs = customs.map((ce) =>
-      CustomEncoderManager.toEncoderConfig(ce)
+      CustomEncoderManager.toEncoderConfig(ce),
     );
 
     // Merge with built-in encoders
@@ -320,7 +320,7 @@ const EnhancedTextEncoder = () => {
     text,
     id,
     encoderName = null,
-    encoderId = null
+    encoderId = null,
   ) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -403,7 +403,7 @@ const EnhancedTextEncoder = () => {
   const toggleComparison = (encoderId) => {
     if (comparisonEncoders.includes(encoderId)) {
       setComparisonEncoders(
-        comparisonEncoders.filter((id) => id !== encoderId)
+        comparisonEncoders.filter((id) => id !== encoderId),
       );
     } else if (comparisonEncoders.length < 4) {
       setComparisonEncoders([...comparisonEncoders, encoderId]);
@@ -494,13 +494,13 @@ const EnhancedTextEncoder = () => {
                 results[encoder.id] = encoder.decode(
                   inputText,
                   affineA,
-                  affineB
+                  affineB,
                 );
                 break;
               case "scytale":
                 results[encoder.id] = encoder.decode(
                   inputText,
-                  scytaleDiameter
+                  scytaleDiameter,
                 );
                 break;
               case "columnar":
@@ -537,7 +537,7 @@ const EnhancedTextEncoder = () => {
               case "keyword-cipher":
                 results[encoder.id] = encoder.decode(
                   inputText,
-                  keywordCipherKey
+                  keywordCipherKey,
                 );
                 break;
               case "running-key":
@@ -549,7 +549,7 @@ const EnhancedTextEncoder = () => {
               case "trithemius":
                 results[encoder.id] = encoder.decode(
                   inputText,
-                  trithemiusStart
+                  trithemiusStart,
                 );
                 break;
               case "porta":
@@ -571,14 +571,14 @@ const EnhancedTextEncoder = () => {
                 results[encoder.id] = encoder.decode(
                   inputText,
                   doubleTransKey1,
-                  doubleTransKey2
+                  doubleTransKey2,
                 );
                 break;
               case "four-square":
                 results[encoder.id] = encoder.decode(
                   inputText,
                   fourSquareKey1,
-                  fourSquareKey2
+                  fourSquareKey2,
                 );
                 break;
               case "straddling-checkerboard":
@@ -587,7 +587,7 @@ const EnhancedTextEncoder = () => {
               case "homophonic":
                 results[encoder.id] = encoder.decode(
                   inputText,
-                  homophonicComplexity
+                  homophonicComplexity,
                 );
                 break;
               default:
@@ -638,7 +638,7 @@ const EnhancedTextEncoder = () => {
             case "leetspeak-pro":
               results[encoder.id] = encoder.encode(
                 inputText,
-                leetspeakIntensity
+                leetspeakIntensity,
               );
               break;
             case "uwu-pro":
@@ -647,7 +647,7 @@ const EnhancedTextEncoder = () => {
             case "spongebob-pro":
               results[encoder.id] = encoder.encode(
                 inputText,
-                spongebobRandomness
+                spongebobRandomness,
               );
               break;
             case "emojipasta-pro":
@@ -702,14 +702,14 @@ const EnhancedTextEncoder = () => {
               results[encoder.id] = encoder.encode(
                 inputText,
                 doubleTransKey1,
-                doubleTransKey2
+                doubleTransKey2,
               );
               break;
             case "four-square":
               results[encoder.id] = encoder.encode(
                 inputText,
                 fourSquareKey1,
-                fourSquareKey2
+                fourSquareKey2,
               );
               break;
             case "straddling-checkerboard":
@@ -718,7 +718,7 @@ const EnhancedTextEncoder = () => {
             case "homophonic":
               results[encoder.id] = encoder.encode(
                 inputText,
-                homophonicComplexity
+                homophonicComplexity,
               );
               break;
             default:
@@ -800,7 +800,7 @@ const EnhancedTextEncoder = () => {
     const preset = getFilterPreset(presetId);
     setSearchQuery(preset.query || "");
     setSelectedCategory(
-      preset.categories?.length > 0 ? preset.categories[0] : "all"
+      preset.categories?.length > 0 ? preset.categories[0] : "all",
     );
     setSelectedTags(preset.tags || []);
     setExcludedTags(preset.excludeTags || []);
@@ -808,15 +808,15 @@ const EnhancedTextEncoder = () => {
       preset.reversible === true
         ? "reversible"
         : preset.reversible === false
-        ? "non-reversible"
-        : "all"
+          ? "non-reversible"
+          : "all",
     );
     setFilterHasSettings(
       preset.hasSettings === true
         ? "with-settings"
         : preset.hasSettings === false
-        ? "without-settings"
-        : "all"
+          ? "without-settings"
+          : "all",
     );
     setSortBy(preset.sortBy || "default");
     setSortOrder(preset.sortOrder || "asc");
@@ -1525,13 +1525,13 @@ const EnhancedTextEncoder = () => {
                       onClick={() => {
                         if (selectedTags.includes(tag)) {
                           setSelectedTags(
-                            selectedTags.filter((t) => t !== tag)
+                            selectedTags.filter((t) => t !== tag),
                           );
                         } else {
                           setSelectedTags([...selectedTags, tag]);
                           // Remove from excluded if present
                           setExcludedTags(
-                            excludedTags.filter((t) => t !== tag)
+                            excludedTags.filter((t) => t !== tag),
                           );
                         }
                       }}
@@ -1567,13 +1567,13 @@ const EnhancedTextEncoder = () => {
                       onClick={() => {
                         if (excludedTags.includes(tag)) {
                           setExcludedTags(
-                            excludedTags.filter((t) => t !== tag)
+                            excludedTags.filter((t) => t !== tag),
                           );
                         } else {
                           setExcludedTags([...excludedTags, tag]);
                           // Remove from included if present
                           setSelectedTags(
-                            selectedTags.filter((t) => t !== tag)
+                            selectedTags.filter((t) => t !== tag),
                           );
                         }
                       }}
@@ -1647,8 +1647,8 @@ const EnhancedTextEncoder = () => {
                 {chainSequence.length > 0 &&
                   ChainEncoder.isChainReversible(
                     chainSequence.map((id) =>
-                      encoderConfig.find((e) => e.id === id)
-                    )
+                      encoderConfig.find((e) => e.id === id),
+                    ),
                   ) && (
                     <span className="px-2 py-1 text-xs rounded-full bg-green-500/30">
                       Reversible
@@ -1709,7 +1709,7 @@ const EnhancedTextEncoder = () => {
                               onClick={() =>
                                 copyToClipboard(
                                   result.finalResult,
-                                  "chain-final"
+                                  "chain-final",
                                 )
                               }
                               className="px-3 py-1 mt-2 text-sm rounded-lg bg-green-500/30 hover:bg-green-500/50"
@@ -2134,12 +2134,12 @@ const EnhancedTextEncoder = () => {
                   isDisabled
                     ? "border-white/10 opacity-50"
                     : isFavorite
-                    ? "border-yellow-400/40 shadow-lg shadow-yellow-500/20 bg-yellow-500/5"
-                    : isInChain
-                    ? "border-green-400/40 shadow-lg shadow-green-500/20 bg-green-500/5"
-                    : isInComparison
-                    ? "border-blue-400/40 shadow-lg shadow-blue-500/20 bg-blue-500/5"
-                    : "border-white/20 hover:border-purple-400/30"
+                      ? "border-yellow-400/40 shadow-lg shadow-yellow-500/20 bg-yellow-500/5"
+                      : isInChain
+                        ? "border-green-400/40 shadow-lg shadow-green-500/20 bg-green-500/5"
+                        : isInComparison
+                          ? "border-blue-400/40 shadow-lg shadow-blue-500/20 bg-blue-500/5"
+                          : "border-white/20 hover:border-purple-400/30"
                 }`}
               >
                 <div className="flex items-start justify-between gap-2 mb-3">
@@ -2275,7 +2275,7 @@ const EnhancedTextEncoder = () => {
                               result,
                               encoder.id,
                               encoder.name,
-                              encoder.id
+                              encoder.id,
                             )
                           }
                           className="p-1.5 hover:bg-white/20 rounded-lg transition-all"
@@ -2366,7 +2366,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "caesar",
                           "shift",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2393,7 +2393,7 @@ const EnhancedTextEncoder = () => {
                           "vigenere",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "SECRET"
+                            "SECRET",
                         )
                       }
                       placeholder="Enter keyword"
@@ -2422,7 +2422,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "rail-fence",
                           "rails",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2503,7 +2503,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "scytale",
                           "diameter",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2529,7 +2529,7 @@ const EnhancedTextEncoder = () => {
                           "columnar",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "SECRET"
+                            "SECRET",
                         )
                       }
                       placeholder="Enter keyword"
@@ -2555,7 +2555,7 @@ const EnhancedTextEncoder = () => {
                           "autokey",
                           "key",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "KEY"
+                            "KEY",
                         )
                       }
                       placeholder="Enter primer key"
@@ -2581,7 +2581,7 @@ const EnhancedTextEncoder = () => {
                           "beaufort",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "SECRET"
+                            "SECRET",
                         )
                       }
                       placeholder="Enter keyword"
@@ -2607,7 +2607,7 @@ const EnhancedTextEncoder = () => {
                           "playfair",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "KEYWORD"
+                            "KEYWORD",
                         )
                       }
                       placeholder="Enter keyword"
@@ -2630,8 +2630,8 @@ const EnhancedTextEncoder = () => {
                         {(encoderParams.zalgo || 5) <= 3
                           ? "Mild"
                           : (encoderParams.zalgo || 5) <= 6
-                          ? "Medium"
-                          : "Chaos"}
+                            ? "Medium"
+                            : "Chaos"}
                       </span>
                     </div>
                     <input
@@ -2643,7 +2643,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "zalgo",
                           "intensity",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2671,7 +2671,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "redacted",
                           "percentage",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2680,8 +2680,8 @@ const EnhancedTextEncoder = () => {
                       {(encoderParams.redacted || 40) < 30
                         ? "Lightly classified"
                         : (encoderParams.redacted || 40) < 60
-                        ? "Partially classified"
-                        : "Heavily classified"}
+                          ? "Partially classified"
+                          : "Heavily classified"}
                     </p>
                   </div>
                 )}
@@ -2712,7 +2712,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "leetspeak-pro",
                           "intensity",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2721,8 +2721,8 @@ const EnhancedTextEncoder = () => {
                       {(encoderParams["leetspeak-pro"] || 1) === 1
                         ? "Simple substitutions (a→4, e→3)"
                         : (encoderParams["leetspeak-pro"] || 1) === 2
-                        ? "More substitutions (b→8, g→9)"
-                        : "Full h4ck3r mode (m→|\\/|)"}
+                          ? "More substitutions (b→8, g→9)"
+                          : "Full h4ck3r mode (m→|\\/|)"}
                     </p>
                   </div>
                 )}
@@ -2738,8 +2738,8 @@ const EnhancedTextEncoder = () => {
                         {(encoderParams["uwu-pro"] || 5) <= 3
                           ? "OwO"
                           : (encoderParams["uwu-pro"] || 5) <= 6
-                          ? "UwU"
-                          : ">w<"}
+                            ? "UwU"
+                            : ">w<"}
                       </span>
                     </div>
                     <input
@@ -2751,7 +2751,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "uwu-pro",
                           "intensity",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2779,7 +2779,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "spongebob-pro",
                           "randomness",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2788,8 +2788,8 @@ const EnhancedTextEncoder = () => {
                       {(encoderParams["spongebob-pro"] || 0) === 0
                         ? "Strict alternating pattern"
                         : (encoderParams["spongebob-pro"] || 0) < 50
-                        ? "Some randomness"
-                        : "Chaotic mocking"}
+                          ? "Some randomness"
+                          : "Chaotic mocking"}
                     </p>
                   </div>
                 )}
@@ -2811,7 +2811,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "emojipasta-pro",
                           "density",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2840,7 +2840,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "binary-pro",
                           "groupSize",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full px-2 py-1 text-xs text-white border rounded bg-white/20 border-white/30"
@@ -2866,7 +2866,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "morse-pro",
                           "style",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full px-2 py-1 text-xs text-white border rounded bg-white/20 border-white/30"
@@ -2899,7 +2899,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "rot-n",
                           "n",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2929,7 +2929,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "rot5",
                           "shift",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -2956,7 +2956,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "tap-code-pro",
                           "style",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full px-2 py-1 text-xs text-white border rounded bg-white/20 border-white/30"
@@ -2983,7 +2983,7 @@ const EnhancedTextEncoder = () => {
                           "keyword-cipher",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "KEYWORD"
+                            "KEYWORD",
                         )
                       }
                       placeholder="Enter keyword"
@@ -3012,7 +3012,7 @@ const EnhancedTextEncoder = () => {
                           "running-key",
                           "key",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "THEQUICKBROWNFOX"
+                            "THEQUICKBROWNFOX",
                         )
                       }
                       placeholder="Enter key text"
@@ -3037,7 +3037,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "gronsfeld",
                           "key",
-                          e.target.value.replace(/[^0-9]/g, "") || "31415"
+                          e.target.value.replace(/[^0-9]/g, "") || "31415",
                         )
                       }
                       placeholder="Enter numeric key"
@@ -3066,7 +3066,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "trithemius",
                           "start",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"
@@ -3093,7 +3093,7 @@ const EnhancedTextEncoder = () => {
                           "porta",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "SECRET"
+                            "SECRET",
                         )
                       }
                       placeholder="Enter keyword"
@@ -3119,7 +3119,7 @@ const EnhancedTextEncoder = () => {
                           "nihilist",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "ZEBRA"
+                            "ZEBRA",
                         )
                       }
                       placeholder="Enter keyword"
@@ -3143,7 +3143,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "polybius-pro",
                           "size",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full px-2 py-1 text-xs text-white border rounded bg-white/20 border-white/30"
@@ -3168,7 +3168,7 @@ const EnhancedTextEncoder = () => {
                           "adfgvx",
                           "keyword",
                           e.target.value.toUpperCase().replace(/[^A-Z]/g, "") ||
-                            "GERMAN"
+                            "GERMAN",
                         )
                       }
                       placeholder="Enter keyword"
@@ -3195,7 +3195,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "book-cipher",
                           "book",
-                          e.target.value || "The quick brown fox"
+                          e.target.value || "The quick brown fox",
                         )
                       }
                       placeholder="Enter reference text"
@@ -3341,7 +3341,7 @@ const EnhancedTextEncoder = () => {
                           e.target.value
                             .toUpperCase()
                             .replace(/[^A-Z]/g, "")
-                            .slice(0, 8) || "ESTONAI"
+                            .slice(0, 8) || "ESTONAI",
                         )
                       }
                       placeholder="Enter 8-letter keyword"
@@ -3371,7 +3371,7 @@ const EnhancedTextEncoder = () => {
                         updateEncoderParam(
                           "homophonic",
                           "complexity",
-                          parseInt(e.target.value)
+                          parseInt(e.target.value),
                         )
                       }
                       className="w-full h-2"

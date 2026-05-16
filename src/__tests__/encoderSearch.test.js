@@ -228,7 +228,7 @@ describe("getAllCategories", () => {
     // Should be sorted
     for (let i = 1; i < categories.length; i++) {
       expect(
-        categories[i].localeCompare(categories[i - 1])
+        categories[i].localeCompare(categories[i - 1]),
       ).toBeGreaterThanOrEqual(0);
     }
   });

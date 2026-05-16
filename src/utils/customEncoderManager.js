@@ -109,7 +109,7 @@ export class CustomEncoderManager {
         // Try to match longest possible sequence first
         for (
           let len = Math.max(
-            ...Object.keys(reverseMapping).map((k) => k.length)
+            ...Object.keys(reverseMapping).map((k) => k.length),
           );
           len > 0;
           len--
@@ -155,7 +155,7 @@ export class CustomEncoderManager {
   static toEncoderConfig(customEncoder) {
     const { encode, decode } = this.createEncoderFunctions(
       customEncoder.mapping,
-      customEncoder.caseSensitive
+      customEncoder.caseSensitive,
     );
 
     return {

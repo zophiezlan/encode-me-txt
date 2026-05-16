@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint ."
+    "test:analysis": "cross-env RUN_SIMILARITY_ANALYSIS=1 vitest run src/__tests__/encoderCodeSimilarity.test.js",
+    "lint": "eslint . --fix",
+    "format": "prettier --write .",
+    "fix": "npm run lint && npm run format"
   },
   "keywords": [
     "text-encoder",
@@ -28,16 +31,19 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.15.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^10.1.0",
     "eslint": "^9.15.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "globals": "^15.12.0",
     "jsdom": "^25.0.1",
     "postcss": "^8.4.47",
+    "prettier": "^3.8.3",
     "tailwindcss": "^3.4.14",
     "vite": "^6.2.0",
     "vitest": "^3.0.5"

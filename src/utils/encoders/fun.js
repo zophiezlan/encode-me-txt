@@ -1,42 +1,138 @@
 /**
  * Fun Encoders
  * Emoji, Bubble Text, Upside Down, Leetspeak, and Pig Latin
- * 
+ *
  * Refactored to use shared utilities from shared.js where applicable.
  */
 
-import { createMapEncoder } from './shared.js';
+import { createMapEncoder } from "./shared.js";
 
 // Emoji palette for encoding
 const EMOJI_PALETTE = [
-  '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃',
-  '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙',
-  '🥲', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫'
+  "😀",
+  "😃",
+  "😄",
+  "😁",
+  "😆",
+  "😅",
+  "🤣",
+  "😂",
+  "🙂",
+  "🙃",
+  "😉",
+  "😊",
+  "😇",
+  "🥰",
+  "😍",
+  "🤩",
+  "😘",
+  "😗",
+  "😚",
+  "😙",
+  "🥲",
+  "😋",
+  "😛",
+  "😜",
+  "🤪",
+  "😝",
+  "🤑",
+  "🤗",
+  "🤭",
+  "🤫",
 ];
 
 // Bubble text lookup
 const BUBBLE_MAP = {
-  'a': 'ⓐ', 'b': 'ⓑ', 'c': 'ⓒ', 'd': 'ⓓ', 'e': 'ⓔ', 'f': 'ⓕ', 'g': 'ⓖ',
-  'h': 'ⓗ', 'i': 'ⓘ', 'j': 'ⓙ', 'k': 'ⓚ', 'l': 'ⓛ', 'm': 'ⓜ', 'n': 'ⓝ',
-  'o': 'ⓞ', 'p': 'ⓟ', 'q': 'ⓠ', 'r': 'ⓡ', 's': 'ⓢ', 't': 'ⓣ', 'u': 'ⓤ',
-  'v': 'ⓥ', 'w': 'ⓦ', 'x': 'ⓧ', 'y': 'ⓨ', 'z': 'ⓩ',
-  '0': '⓪', '1': '①', '2': '②', '3': '③', '4': '④', '5': '⑤',
-  '6': '⑥', '7': '⑦', '8': '⑧', '9': '⑨'
+  a: "ⓐ",
+  b: "ⓑ",
+  c: "ⓒ",
+  d: "ⓓ",
+  e: "ⓔ",
+  f: "ⓕ",
+  g: "ⓖ",
+  h: "ⓗ",
+  i: "ⓘ",
+  j: "ⓙ",
+  k: "ⓚ",
+  l: "ⓛ",
+  m: "ⓜ",
+  n: "ⓝ",
+  o: "ⓞ",
+  p: "ⓟ",
+  q: "ⓠ",
+  r: "ⓡ",
+  s: "ⓢ",
+  t: "ⓣ",
+  u: "ⓤ",
+  v: "ⓥ",
+  w: "ⓦ",
+  x: "ⓧ",
+  y: "ⓨ",
+  z: "ⓩ",
+  0: "⓪",
+  1: "①",
+  2: "②",
+  3: "③",
+  4: "④",
+  5: "⑤",
+  6: "⑥",
+  7: "⑦",
+  8: "⑧",
+  9: "⑨",
 };
 
 // Upside down text lookup
 const UPSIDE_DOWN_MAP = {
-  'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ', 'g': 'ƃ',
-  'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ', 'k': 'ʞ', 'l': 'ʃ', 'm': 'ɯ', 'n': 'u',
-  'o': 'o', 'p': 'd', 'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ', 'u': 'n',
-  'v': 'ʌ', 'w': 'ʍ', 'x': 'x', 'y': 'ʎ', 'z': 'z',
-  '!': '¡', '?': '¿', '.': '˙', ',': '\'', '(': ')', ')': '('
+  a: "ɐ",
+  b: "q",
+  c: "ɔ",
+  d: "p",
+  e: "ǝ",
+  f: "ɟ",
+  g: "ƃ",
+  h: "ɥ",
+  i: "ᴉ",
+  j: "ɾ",
+  k: "ʞ",
+  l: "ʃ",
+  m: "ɯ",
+  n: "u",
+  o: "o",
+  p: "d",
+  q: "b",
+  r: "ɹ",
+  s: "s",
+  t: "ʇ",
+  u: "n",
+  v: "ʌ",
+  w: "ʍ",
+  x: "x",
+  y: "ʎ",
+  z: "z",
+  "!": "¡",
+  "?": "¿",
+  ".": "˙",
+  ",": "'",
+  "(": ")",
+  ")": "(",
 };
 
 // Leetspeak lookup
 const LEET_MAP = {
-  'a': '4', 'e': '3', 'i': '1', 'o': '0', 's': '5', 't': '7', 'l': '1',
-  'A': '4', 'E': '3', 'I': '1', 'O': '0', 'S': '5', 'T': '7', 'L': '1'
+  a: "4",
+  e: "3",
+  i: "1",
+  o: "0",
+  s: "5",
+  t: "7",
+  l: "1",
+  A: "4",
+  E: "3",
+  I: "1",
+  O: "0",
+  S: "5",
+  T: "7",
+  L: "1",
 };
 
 /**
@@ -45,7 +141,7 @@ const LEET_MAP = {
  * @returns {string} - Emoji representation
  */
 export const encodeEmoji = (text) => {
-  let encoded = '';
+  let encoded = "";
   for (let char of text) {
     const code = char.charCodeAt(0);
     const emoji1 = EMOJI_PALETTE[Math.floor(code / EMOJI_PALETTE.length)];
@@ -63,7 +159,7 @@ export const encodeEmoji = (text) => {
 export const decodeEmoji = (text) => {
   try {
     const emojiArray = [...text];
-    let decoded = '';
+    let decoded = "";
 
     for (let i = 0; i < emojiArray.length; i += 2) {
       if (i + 1 < emojiArray.length) {
@@ -74,9 +170,9 @@ export const decodeEmoji = (text) => {
         }
       }
     }
-    return decoded || '[Invalid emoji encoding]';
+    return decoded || "[Invalid emoji encoding]";
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -96,7 +192,7 @@ export const encodeBubble = createMapEncoder(BUBBLE_MAP, { lowercase: true });
 export const encodeUpsideDown = (text) => {
   const encoder = createMapEncoder(UPSIDE_DOWN_MAP, { lowercase: true });
   // Reverse the result for upside-down effect
-  return encoder(text).split('').reverse().join('');
+  return encoder(text).split("").reverse().join("");
 };
 
 /**
@@ -112,17 +208,24 @@ export const encodeLeetspeak = createMapEncoder(LEET_MAP);
  * @returns {string} - Pig Latin representation
  */
 export const encodePigLatin = (text) => {
-  return text.split(' ').map(word => {
-    if (word.length === 0) return word;
-    const vowels = 'aeiouAEIOU';
-    if (vowels.includes(word[0])) {
-      return word + 'way';
-    } else {
-      const firstVowelIndex = word.split('').findIndex(char => vowels.includes(char));
-      if (firstVowelIndex === -1) return word + 'ay';
-      return word.slice(firstVowelIndex) + word.slice(0, firstVowelIndex) + 'ay';
-    }
-  }).join(' ');
+  return text
+    .split(" ")
+    .map((word) => {
+      if (word.length === 0) return word;
+      const vowels = "aeiouAEIOU";
+      if (vowels.includes(word[0])) {
+        return word + "way";
+      } else {
+        const firstVowelIndex = word
+          .split("")
+          .findIndex((char) => vowels.includes(char));
+        if (firstVowelIndex === -1) return word + "ay";
+        return (
+          word.slice(firstVowelIndex) + word.slice(0, firstVowelIndex) + "ay"
+        );
+      }
+    })
+    .join(" ");
 };
 
 /**
@@ -132,20 +235,79 @@ export const encodePigLatin = (text) => {
  */
 export const encodeWingdings = (text) => {
   const wingdingsMap = {
-    'A': '✌', 'B': '👍', 'C': '👎', 'D': '☜', 'E': '☞', 'F': '☝', 'G': '☟',
-    'H': '✋', 'I': '☺', 'J': '😐', 'K': '☹', 'L': '💣', 'M': '☠', 'N': '⚐',
-    'O': '✈', 'P': '☀', 'Q': '❄', 'R': '✝', 'S': '✡', 'T': '☪', 'U': '☯',
-    'V': '♈', 'W': '♉', 'X': '♊', 'Y': '♋', 'Z': '♌',
-    'a': '♍', 'b': '♎', 'c': '♏', 'd': '♐', 'e': '♑', 'f': '♒', 'g': '♓',
-    'h': '⛎', 'i': '🔯', 'j': '🕎', 'k': '☸', 'l': '⚛', 'm': '✴',
-    'n': '✳', 'o': '❇', 'p': '✦', 'q': '✧', 'r': '★', 's': '☆', 't': '✪',
-    'u': '✫', 'v': '✬', 'w': '✭', 'x': '✮', 'y': '✯', 'z': '✰',
-    '0': '🔟', '1': '①', '2': '②', '3': '③', '4': '④',
-    '5': '⑤', '6': '⑥', '7': '⑦', '8': '⑧', '9': '⑨',
-    ' ': ' ', '.': '●', ',': '◆', '!': '⚡', '?': '❓'
+    A: "✌",
+    B: "👍",
+    C: "👎",
+    D: "☜",
+    E: "☞",
+    F: "☝",
+    G: "☟",
+    H: "✋",
+    I: "☺",
+    J: "😐",
+    K: "☹",
+    L: "💣",
+    M: "☠",
+    N: "⚐",
+    O: "✈",
+    P: "☀",
+    Q: "❄",
+    R: "✝",
+    S: "✡",
+    T: "☪",
+    U: "☯",
+    V: "♈",
+    W: "♉",
+    X: "♊",
+    Y: "♋",
+    Z: "♌",
+    a: "♍",
+    b: "♎",
+    c: "♏",
+    d: "♐",
+    e: "♑",
+    f: "♒",
+    g: "♓",
+    h: "⛎",
+    i: "🔯",
+    j: "🕎",
+    k: "☸",
+    l: "⚛",
+    m: "✴",
+    n: "✳",
+    o: "❇",
+    p: "✦",
+    q: "✧",
+    r: "★",
+    s: "☆",
+    t: "✪",
+    u: "✫",
+    v: "✬",
+    w: "✭",
+    x: "✮",
+    y: "✯",
+    z: "✰",
+    0: "🔟",
+    1: "①",
+    2: "②",
+    3: "③",
+    4: "④",
+    5: "⑤",
+    6: "⑥",
+    7: "⑦",
+    8: "⑧",
+    9: "⑨",
+    " ": " ",
+    ".": "●",
+    ",": "◆",
+    "!": "⚡",
+    "?": "❓",
   };
-  
-  return text.split('').map(char => wingdingsMap[char] || char).join('');
+
+  return text
+    .split("")
+    .map((char) => wingdingsMap[char] || char)
+    .join("");
 };
 
 /**
@@ -155,15 +317,40 @@ export const encodeWingdings = (text) => {
  */
 export const encodeSemaphore = (text) => {
   const semaphoreMap = {
-    'A': '🚩↙', 'B': '🚩←', 'C': '🚩↖', 'D': '🚩↑', 'E': '🚩↗',
-    'F': '🚩→', 'G': '🚩↘', 'H': '↙←', 'I': '↙↖', 'J': '→↑',
-    'K': '↙↑', 'L': '↙↗', 'M': '↙→', 'N': '↙↘', 'O': '←↖',
-    'P': '←↑', 'Q': '←↗', 'R': '←→', 'S': '←↘', 'T': '↖↑',
-    'U': '↖↗', 'V': '↑↘', 'W': '↗→', 'X': '↗↘', 'Y': '↖→',
-    'Z': '↘→', ' ': ' | '
+    A: "🚩↙",
+    B: "🚩←",
+    C: "🚩↖",
+    D: "🚩↑",
+    E: "🚩↗",
+    F: "🚩→",
+    G: "🚩↘",
+    H: "↙←",
+    I: "↙↖",
+    J: "→↑",
+    K: "↙↑",
+    L: "↙↗",
+    M: "↙→",
+    N: "↙↘",
+    O: "←↖",
+    P: "←↑",
+    Q: "←↗",
+    R: "←→",
+    S: "←↘",
+    T: "↖↑",
+    U: "↖↗",
+    V: "↑↘",
+    W: "↗→",
+    X: "↗↘",
+    Y: "↖→",
+    Z: "↘→",
+    " ": " | ",
   };
-  
-  return text.toUpperCase().split('').map(char => semaphoreMap[char] || char).join(' ');
+
+  return text
+    .toUpperCase()
+    .split("")
+    .map((char) => semaphoreMap[char] || char)
+    .join(" ");
 };
 
 /**
@@ -173,15 +360,40 @@ export const encodeSemaphore = (text) => {
  */
 export const encodeNavyFlags = (text) => {
   const flagMap = {
-    'A': '🔵⚪', 'B': '🔴🔴', 'C': '🔵⚪🔴⚪🔵', 'D': '🟡🔵', 'E': '🔴🔵',
-    'F': '⚪🔴◆', 'G': '🟡🔵🟡🔵🟡🔵', 'H': '⚪🔴⚪🔴', 'I': '🟡●', 'J': '🔵⚪🔵',
-    'K': '🟡🔵', 'L': '🟡⬛🟡⬛', 'M': '🔵⚪🔵⚪', 'N': '🔵⚪🔵⚪', 'O': '🔴🟡',
-    'P': '🔵⬜', 'Q': '🟡', 'R': '🔴🟡🔴', 'S': '⚪🔵', 'T': '🔴⚪🔴',
-    'U': '🔴⚪', 'V': '⚪🔴⚪🔴', 'W': '🔵⚪🔴', 'X': '⚪🔵⚪', 'Y': '🟡🔴',
-    'Z': '🔴🟡🔵🟡', ' ': ' '
+    A: "🔵⚪",
+    B: "🔴🔴",
+    C: "🔵⚪🔴⚪🔵",
+    D: "🟡🔵",
+    E: "🔴🔵",
+    F: "⚪🔴◆",
+    G: "🟡🔵🟡🔵🟡🔵",
+    H: "⚪🔴⚪🔴",
+    I: "🟡●",
+    J: "🔵⚪🔵",
+    K: "🟡🔵",
+    L: "🟡⬛🟡⬛",
+    M: "🔵⚪🔵⚪",
+    N: "🔵⚪🔵⚪",
+    O: "🔴🟡",
+    P: "🔵⬜",
+    Q: "🟡",
+    R: "🔴🟡🔴",
+    S: "⚪🔵",
+    T: "🔴⚪🔴",
+    U: "🔴⚪",
+    V: "⚪🔴⚪🔴",
+    W: "🔵⚪🔴",
+    X: "⚪🔵⚪",
+    Y: "🟡🔴",
+    Z: "🔴🟡🔵🟡",
+    " ": " ",
   };
-  
-  return text.toUpperCase().split('').map(char => flagMap[char] || char).join(' ');
+
+  return text
+    .toUpperCase()
+    .split("")
+    .map((char) => flagMap[char] || char)
+    .join(" ");
 };
 
 /**
@@ -191,13 +403,16 @@ export const encodeNavyFlags = (text) => {
  */
 export const encodeSpongebob = (text) => {
   let upper = false;
-  return text.split('').map(char => {
-    if (/[a-zA-Z]/.test(char)) {
-      upper = !upper;
-      return upper ? char.toUpperCase() : char.toLowerCase();
-    }
-    return char;
-  }).join('');
+  return text
+    .split("")
+    .map((char) => {
+      if (/[a-zA-Z]/.test(char)) {
+        upper = !upper;
+        return upper ? char.toUpperCase() : char.toLowerCase();
+      }
+      return char;
+    })
+    .join("");
 };
 
 /**
@@ -207,21 +422,21 @@ export const encodeSpongebob = (text) => {
  */
 export const encodeUwU = (text) => {
   let result = text
-    .replace(/[rl]/g, 'w')
-    .replace(/[RL]/g, 'W')
-    .replace(/n([aeiou])/g, 'ny$1')
-    .replace(/N([aeiou])/g, 'Ny$1')
-    .replace(/N([AEIOU])/g, 'NY$1')
-    .replace(/ove/g, 'uv')
-    .replace(/!+/g, '! OwO ')
-    .replace(/\?+/g, '? UwU ');
-  
+    .replace(/[rl]/g, "w")
+    .replace(/[RL]/g, "W")
+    .replace(/n([aeiou])/g, "ny$1")
+    .replace(/N([aeiou])/g, "Ny$1")
+    .replace(/N([AEIOU])/g, "NY$1")
+    .replace(/ove/g, "uv")
+    .replace(/!+/g, "! OwO ")
+    .replace(/\?+/g, "? UwU ");
+
   // Add occasional faces
-  const faces = ['UwU', 'OwO', '>w<', '^w^', 'uwu'];
+  const faces = ["UwU", "OwO", ">w<", "^w^", "uwu"];
   if (Math.random() > 0.5) {
-    result += ' ' + faces[Math.floor(Math.random() * faces.length)];
+    result += " " + faces[Math.floor(Math.random() * faces.length)];
   }
-  
+
   return result;
 };
 
@@ -232,20 +447,50 @@ export const encodeUwU = (text) => {
  */
 export const encodeMorseEmoji = (text) => {
   const morseMap = {
-    'A': '⚫➖', 'B': '➖⚫⚫⚫', 'C': '➖⚫➖⚫', 'D': '➖⚫⚫',
-    'E': '⚫', 'F': '⚫⚫➖⚫', 'G': '➖➖⚫', 'H': '⚫⚫⚫⚫',
-    'I': '⚫⚫', 'J': '⚫➖➖➖', 'K': '➖⚫➖', 'L': '⚫➖⚫⚫',
-    'M': '➖➖', 'N': '➖⚫', 'O': '➖➖➖', 'P': '⚫➖➖⚫',
-    'Q': '➖➖⚫➖', 'R': '⚫➖⚫', 'S': '⚫⚫⚫', 'T': '➖',
-    'U': '⚫⚫➖', 'V': '⚫⚫⚫➖', 'W': '⚫➖➖', 'X': '➖⚫⚫➖',
-    'Y': '➖⚫➖➖', 'Z': '➖➖⚫⚫',
-    '0': '➖➖➖➖➖', '1': '⚫➖➖➖➖', '2': '⚫⚫➖➖➖',
-    '3': '⚫⚫⚫➖➖', '4': '⚫⚫⚫⚫➖', '5': '⚫⚫⚫⚫⚫',
-    '6': '➖⚫⚫⚫⚫', '7': '➖➖⚫⚫⚫', '8': '➖➖➖⚫⚫',
-    '9': '➖➖➖➖⚫', ' ': '   '
+    A: "⚫➖",
+    B: "➖⚫⚫⚫",
+    C: "➖⚫➖⚫",
+    D: "➖⚫⚫",
+    E: "⚫",
+    F: "⚫⚫➖⚫",
+    G: "➖➖⚫",
+    H: "⚫⚫⚫⚫",
+    I: "⚫⚫",
+    J: "⚫➖➖➖",
+    K: "➖⚫➖",
+    L: "⚫➖⚫⚫",
+    M: "➖➖",
+    N: "➖⚫",
+    O: "➖➖➖",
+    P: "⚫➖➖⚫",
+    Q: "➖➖⚫➖",
+    R: "⚫➖⚫",
+    S: "⚫⚫⚫",
+    T: "➖",
+    U: "⚫⚫➖",
+    V: "⚫⚫⚫➖",
+    W: "⚫➖➖",
+    X: "➖⚫⚫➖",
+    Y: "➖⚫➖➖",
+    Z: "➖➖⚫⚫",
+    0: "➖➖➖➖➖",
+    1: "⚫➖➖➖➖",
+    2: "⚫⚫➖➖➖",
+    3: "⚫⚫⚫➖➖",
+    4: "⚫⚫⚫⚫➖",
+    5: "⚫⚫⚫⚫⚫",
+    6: "➖⚫⚫⚫⚫",
+    7: "➖➖⚫⚫⚫",
+    8: "➖➖➖⚫⚫",
+    9: "➖➖➖➖⚫",
+    " ": "   ",
   };
-  
-  return text.toUpperCase().split('').map(char => morseMap[char] || char).join(' ');
+
+  return text
+    .toUpperCase()
+    .split("")
+    .map((char) => morseMap[char] || char)
+    .join(" ");
 };
 
 // Note: encodeVaporwave was removed - use encodeFullwidth from aesthetic.js instead
@@ -258,19 +503,74 @@ export const encodeMorseEmoji = (text) => {
  */
 export const encodeTinyText = (text) => {
   const tinyMap = {
-    'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ', 'd': 'ᵈ', 'e': 'ᵉ', 'f': 'ᶠ', 'g': 'ᵍ',
-    'h': 'ʰ', 'i': 'ⁱ', 'j': 'ʲ', 'k': 'ᵏ', 'l': 'ˡ', 'm': 'ᵐ', 'n': 'ⁿ',
-    'o': 'ᵒ', 'p': 'ᵖ', 'q': 'q', 'r': 'ʳ', 's': 'ˢ', 't': 'ᵗ', 'u': 'ᵘ',
-    'v': 'ᵛ', 'w': 'ʷ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ',
-    'A': 'ᴬ', 'B': 'ᴮ', 'C': 'ᶜ', 'D': 'ᴰ', 'E': 'ᴱ', 'F': 'ᶠ', 'G': 'ᴳ',
-    'H': 'ᴴ', 'I': 'ᴵ', 'J': 'ᴶ', 'K': 'ᴷ', 'L': 'ᴸ', 'M': 'ᴹ', 'N': 'ᴺ',
-    'O': 'ᴼ', 'P': 'ᴾ', 'Q': 'Q', 'R': 'ᴿ', 'S': 'ˢ', 'T': 'ᵀ', 'U': 'ᵁ',
-    'V': 'ⱽ', 'W': 'ᵂ', 'X': 'ˣ', 'Y': 'ʸ', 'Z': 'ᶻ',
-    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
-    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹'
+    a: "ᵃ",
+    b: "ᵇ",
+    c: "ᶜ",
+    d: "ᵈ",
+    e: "ᵉ",
+    f: "ᶠ",
+    g: "ᵍ",
+    h: "ʰ",
+    i: "ⁱ",
+    j: "ʲ",
+    k: "ᵏ",
+    l: "ˡ",
+    m: "ᵐ",
+    n: "ⁿ",
+    o: "ᵒ",
+    p: "ᵖ",
+    q: "q",
+    r: "ʳ",
+    s: "ˢ",
+    t: "ᵗ",
+    u: "ᵘ",
+    v: "ᵛ",
+    w: "ʷ",
+    x: "ˣ",
+    y: "ʸ",
+    z: "ᶻ",
+    A: "ᴬ",
+    B: "ᴮ",
+    C: "ᶜ",
+    D: "ᴰ",
+    E: "ᴱ",
+    F: "ᶠ",
+    G: "ᴳ",
+    H: "ᴴ",
+    I: "ᴵ",
+    J: "ᴶ",
+    K: "ᴷ",
+    L: "ᴸ",
+    M: "ᴹ",
+    N: "ᴺ",
+    O: "ᴼ",
+    P: "ᴾ",
+    Q: "Q",
+    R: "ᴿ",
+    S: "ˢ",
+    T: "ᵀ",
+    U: "ᵁ",
+    V: "ⱽ",
+    W: "ᵂ",
+    X: "ˣ",
+    Y: "ʸ",
+    Z: "ᶻ",
+    0: "⁰",
+    1: "¹",
+    2: "²",
+    3: "³",
+    4: "⁴",
+    5: "⁵",
+    6: "⁶",
+    7: "⁷",
+    8: "⁸",
+    9: "⁹",
   };
-  
-  return text.split('').map(char => tinyMap[char] || char).join('');
+
+  return text
+    .split("")
+    .map((char) => tinyMap[char] || char)
+    .join("");
 };
 
 /**
@@ -280,17 +580,64 @@ export const encodeTinyText = (text) => {
  */
 export const encodeMedieval = (text) => {
   const medievalMap = {
-    'A': '𝔄', 'B': '𝔅', 'C': 'ℭ', 'D': '𝔇', 'E': '𝔈', 'F': '𝔉', 'G': '𝔊',
-    'H': 'ℌ', 'I': 'ℑ', 'J': '𝔍', 'K': '𝔎', 'L': '𝔏', 'M': '𝔐', 'N': '𝔑',
-    'O': '𝔒', 'P': '𝔓', 'Q': '𝔔', 'R': 'ℜ', 'S': '𝔖', 'T': '𝔗', 'U': '𝔘',
-    'V': '𝔙', 'W': '𝔚', 'X': '𝔛', 'Y': '𝔜', 'Z': 'ℨ',
-    'a': '𝔞', 'b': '𝔟', 'c': '𝔠', 'd': '𝔡', 'e': '𝔢', 'f': '𝔣', 'g': '𝔤',
-    'h': '𝔥', 'i': '𝔦', 'j': '𝔧', 'k': '𝔨', 'l': '𝔩', 'm': '𝔪', 'n': '𝔫',
-    'o': '𝔬', 'p': '𝔭', 'q': '𝔮', 'r': '𝔯', 's': '𝔰', 't': '𝔱', 'u': '𝔲',
-    'v': '𝔳', 'w': '𝔴', 'x': '𝔵', 'y': '𝔶', 'z': '𝔷'
+    A: "𝔄",
+    B: "𝔅",
+    C: "ℭ",
+    D: "𝔇",
+    E: "𝔈",
+    F: "𝔉",
+    G: "𝔊",
+    H: "ℌ",
+    I: "ℑ",
+    J: "𝔍",
+    K: "𝔎",
+    L: "𝔏",
+    M: "𝔐",
+    N: "𝔑",
+    O: "𝔒",
+    P: "𝔓",
+    Q: "𝔔",
+    R: "ℜ",
+    S: "𝔖",
+    T: "𝔗",
+    U: "𝔘",
+    V: "𝔙",
+    W: "𝔚",
+    X: "𝔛",
+    Y: "𝔜",
+    Z: "ℨ",
+    a: "𝔞",
+    b: "𝔟",
+    c: "𝔠",
+    d: "𝔡",
+    e: "𝔢",
+    f: "𝔣",
+    g: "𝔤",
+    h: "𝔥",
+    i: "𝔦",
+    j: "𝔧",
+    k: "𝔨",
+    l: "𝔩",
+    m: "𝔪",
+    n: "𝔫",
+    o: "𝔬",
+    p: "𝔭",
+    q: "𝔮",
+    r: "𝔯",
+    s: "𝔰",
+    t: "𝔱",
+    u: "𝔲",
+    v: "𝔳",
+    w: "𝔴",
+    x: "𝔵",
+    y: "𝔶",
+    z: "𝔷",
   };
-  
-  return text.split('').map(char => medievalMap[char] || char).join('');
+
+  return text
+    .split("")
+    .map((char) => medievalMap[char] || char)
+    .join("");
 };
 
 /**
@@ -299,7 +646,10 @@ export const encodeMedieval = (text) => {
  * @returns {string} - Strikethrough text
  */
 export const encodeStrikethrough = (text) => {
-  return text.split('').map(char => char + '\u0336').join('');
+  return text
+    .split("")
+    .map((char) => char + "\u0336")
+    .join("");
 };
 
 /**
@@ -308,7 +658,10 @@ export const encodeStrikethrough = (text) => {
  * @returns {string} - Underlined text
  */
 export const encodeUnderline = (text) => {
-  return text.split('').map(char => char + '\u0332').join('');
+  return text
+    .split("")
+    .map((char) => char + "\u0332")
+    .join("");
 };
 
 /**
@@ -319,10 +672,13 @@ export const encodeUnderline = (text) => {
  */
 export const encodeRedacted = (text, percentage = 40) => {
   const threshold = Math.max(0, Math.min(100, percentage)) / 100;
-  return text.split('').map(char => {
-    if (char === ' ') return ' ';
-    return Math.random() < threshold ? '█' : char;
-  }).join('');
+  return text
+    .split("")
+    .map((char) => {
+      if (char === " ") return " ";
+      return Math.random() < threshold ? "█" : char;
+    })
+    .join("");
 };
 
 /**
@@ -332,12 +688,38 @@ export const encodeRedacted = (text, percentage = 40) => {
  */
 export const encodeKeyboardShift = (text) => {
   const shiftMap = {
-    'a': 's', 'b': 'n', 'c': 'v', 'd': 'f', 'e': 'r', 'f': 'g', 'g': 'h',
-    'h': 'j', 'i': 'o', 'j': 'k', 'k': 'l', 'l': ';', 'm': ',', 'n': 'm',
-    'o': 'p', 'p': '[', 'q': 'w', 'r': 't', 's': 'd', 't': 'y', 'u': 'i',
-    'v': 'b', 'w': 'e', 'x': 'c', 'y': 'u', 'z': 'x'
+    a: "s",
+    b: "n",
+    c: "v",
+    d: "f",
+    e: "r",
+    f: "g",
+    g: "h",
+    h: "j",
+    i: "o",
+    j: "k",
+    k: "l",
+    l: ";",
+    m: ",",
+    n: "m",
+    o: "p",
+    p: "[",
+    q: "w",
+    r: "t",
+    s: "d",
+    t: "y",
+    u: "i",
+    v: "b",
+    w: "e",
+    x: "c",
+    y: "u",
+    z: "x",
   };
-  return text.toLowerCase().split('').map(char => shiftMap[char] || char).join('');
+  return text
+    .toLowerCase()
+    .split("")
+    .map((char) => shiftMap[char] || char)
+    .join("");
 };
 
 /**
@@ -345,12 +727,38 @@ export const encodeKeyboardShift = (text) => {
  */
 export const decodeKeyboardShift = (text) => {
   const reverseMap = {
-    's': 'a', 'n': 'b', 'v': 'c', 'f': 'd', 'r': 'e', 'g': 'f', 'h': 'g',
-    'j': 'h', 'o': 'i', 'k': 'j', 'l': 'k', ';': 'l', ',': 'm', 'm': 'n',
-    'p': 'o', '[': 'p', 'w': 'q', 't': 'r', 'd': 's', 'y': 't', 'i': 'u',
-    'b': 'v', 'e': 'w', 'c': 'x', 'u': 'y', 'x': 'z'
+    s: "a",
+    n: "b",
+    v: "c",
+    f: "d",
+    r: "e",
+    g: "f",
+    h: "g",
+    j: "h",
+    o: "i",
+    k: "j",
+    l: "k",
+    ";": "l",
+    ",": "m",
+    m: "n",
+    p: "o",
+    "[": "p",
+    w: "q",
+    t: "r",
+    d: "s",
+    y: "t",
+    i: "u",
+    b: "v",
+    e: "w",
+    c: "x",
+    u: "y",
+    x: "z",
   };
-  return text.toLowerCase().split('').map(char => reverseMap[char] || char).join('');
+  return text
+    .toLowerCase()
+    .split("")
+    .map((char) => reverseMap[char] || char)
+    .join("");
 };
 
 /**
@@ -359,14 +767,34 @@ export const decodeKeyboardShift = (text) => {
  * @returns {string} - Emojipasta text
  */
 export const encodeEmojipasta = (text) => {
-  const emojis = ['😂', '🔥', '💯', '👀', '😭', '💀', '🤣', '😍', '🥺', '✨', '💕', '🙏', '😤', '👏', '💪'];
-  return text.split(' ').map(word => {
-    const numEmojis = Math.floor(Math.random() * 3) + 1;
-    const randomEmojis = Array(numEmojis).fill(0).map(() => 
-      emojis[Math.floor(Math.random() * emojis.length)]
-    ).join('');
-    return word + ' ' + randomEmojis;
-  }).join(' ');
+  const emojis = [
+    "😂",
+    "🔥",
+    "💯",
+    "👀",
+    "😭",
+    "💀",
+    "🤣",
+    "😍",
+    "🥺",
+    "✨",
+    "💕",
+    "🙏",
+    "😤",
+    "👏",
+    "💪",
+  ];
+  return text
+    .split(" ")
+    .map((word) => {
+      const numEmojis = Math.floor(Math.random() * 3) + 1;
+      const randomEmojis = Array(numEmojis)
+        .fill(0)
+        .map(() => emojis[Math.floor(Math.random() * emojis.length)])
+        .join("");
+      return word + " " + randomEmojis;
+    })
+    .join(" ");
 };
 
 /**
@@ -375,16 +803,20 @@ export const encodeEmojipasta = (text) => {
  * @returns {string} - Tally marks representation
  */
 export const encodeTally = (text) => {
-  return text.toLowerCase().split('').map(char => {
-    if (/[a-z]/.test(char)) {
-      const num = char.charCodeAt(0) - 96;
-      const fives = Math.floor(num / 5);
-      const ones = num % 5;
-      return '卌'.repeat(fives) + '|'.repeat(ones);
-    }
-    if (char === ' ') return '  ';
-    return char;
-  }).join(' ');
+  return text
+    .toLowerCase()
+    .split("")
+    .map((char) => {
+      if (/[a-z]/.test(char)) {
+        const num = char.charCodeAt(0) - 96;
+        const fives = Math.floor(num / 5);
+        const ones = num % 5;
+        return "卌".repeat(fives) + "|".repeat(ones);
+      }
+      if (char === " ") return "  ";
+      return char;
+    })
+    .join(" ");
 };
 
 /**
@@ -393,10 +825,13 @@ export const encodeTally = (text) => {
  * @returns {string} - Whitespace encoded text
  */
 export const encodeWhitespace = (text) => {
-  return text.split('').map(char => {
-    const binary = char.charCodeAt(0).toString(2).padStart(8, '0');
-    return binary.replace(/0/g, ' ').replace(/1/g, '\t');
-  }).join('');
+  return text
+    .split("")
+    .map((char) => {
+      const binary = char.charCodeAt(0).toString(2).padStart(8, "0");
+      return binary.replace(/0/g, " ").replace(/1/g, "\t");
+    })
+    .join("");
 };
 
 /**
@@ -404,14 +839,14 @@ export const encodeWhitespace = (text) => {
  */
 export const decodeWhitespace = (text) => {
   try {
-    const binary = text.replace(/ /g, '0').replace(/\t/g, '1');
-    let result = '';
+    const binary = text.replace(/ /g, "0").replace(/\t/g, "1");
+    let result = "";
     for (let i = 0; i < binary.length; i += 8) {
       result += String.fromCharCode(parseInt(binary.slice(i, i + 8), 2));
     }
     return result;
   } catch {
-    return '[Decode failed]';
+    return "[Decode failed]";
   }
 };
 
@@ -422,14 +857,37 @@ export const decodeWhitespace = (text) => {
  */
 export const encodeAcrostic = (text) => {
   const words = {
-    'a': 'Amazing', 'b': 'Brilliant', 'c': 'Creative', 'd': 'Daring', 'e': 'Elegant',
-    'f': 'Fantastic', 'g': 'Graceful', 'h': 'Heroic', 'i': 'Incredible', 'j': 'Joyful',
-    'k': 'Kind', 'l': 'Lovely', 'm': 'Magical', 'n': 'Noble', 'o': 'Outstanding',
-    'p': 'Perfect', 'q': 'Quick', 'r': 'Radiant', 's': 'Stunning', 't': 'Terrific',
-    'u': 'Unique', 'v': 'Vibrant', 'w': 'Wonderful', 'x': 'Xtraordinary', 'y': 'Youthful',
-    'z': 'Zealous'
+    a: "Amazing",
+    b: "Brilliant",
+    c: "Creative",
+    d: "Daring",
+    e: "Elegant",
+    f: "Fantastic",
+    g: "Graceful",
+    h: "Heroic",
+    i: "Incredible",
+    j: "Joyful",
+    k: "Kind",
+    l: "Lovely",
+    m: "Magical",
+    n: "Noble",
+    o: "Outstanding",
+    p: "Perfect",
+    q: "Quick",
+    r: "Radiant",
+    s: "Stunning",
+    t: "Terrific",
+    u: "Unique",
+    v: "Vibrant",
+    w: "Wonderful",
+    x: "Xtraordinary",
+    y: "Youthful",
+    z: "Zealous",
   };
-  return text.toLowerCase().split('').filter(c => /[a-z]/.test(c)).map(char => 
-    words[char] || char.toUpperCase()
-  ).join('\n');
+  return text
+    .toLowerCase()
+    .split("")
+    .filter((c) => /[a-z]/.test(c))
+    .map((char) => words[char] || char.toUpperCase())
+    .join("\n");
 };

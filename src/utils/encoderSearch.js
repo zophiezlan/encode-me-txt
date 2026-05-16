@@ -60,7 +60,7 @@ const matchesQuery = (encoder, query) => {
   return searchTerms.every((term) => {
     const matchesName = normalizeText(encoder.name).includes(term);
     const matchesDescription = normalizeText(encoder.description).includes(
-      term
+      term,
     );
     const matchesId = normalizeText(encoder.id).includes(term);
     const matchesCategory = normalizeText(encoder.category).includes(term);
@@ -197,7 +197,7 @@ export const searchEncoders = (encoders, options = {}) => {
   // Sort results
   if (opts.sortBy !== "default") {
     results = [...results].sort((a, b) =>
-      compareEncoders(a, b, opts.sortBy, opts.sortOrder)
+      compareEncoders(a, b, opts.sortBy, opts.sortOrder),
     );
   }
 

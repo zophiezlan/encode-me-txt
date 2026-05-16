@@ -43,7 +43,7 @@ const PresetsBrowser = ({ theme, onClose, onLoadPreset }) => {
   const allPresets = selectedTab === "builtin" ? builtinPresets : presets;
   const filteredPresets = searchQuery
     ? EncodingPresetsManager.searchPresets(searchQuery).filter((p) =>
-        selectedTab === "builtin" ? p.builtin : !p.builtin
+        selectedTab === "builtin" ? p.builtin : !p.builtin,
       )
     : allPresets;
 

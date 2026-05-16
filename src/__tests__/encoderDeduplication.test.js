@@ -24,7 +24,7 @@ describe("Encoder Deduplication", () => {
     it("should have relationship data for Pro versions", () => {
       expect(encoderRelationships["leetspeak"]).toBeDefined();
       expect(encoderRelationships["leetspeak"].supersededBy).toBe(
-        "leetspeak-pro"
+        "leetspeak-pro",
       );
     });
 
