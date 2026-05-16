@@ -1,0 +1,48 @@
+import * as encoders from "../encoders/index.js";
+
+export const ancientEncoders = [
+  {
+    id: "ogham",
+    name: "Ogham Script",
+    description: "Celtic tree alphabet",
+    emoji: "🎋",
+    category: "ancient",
+    encode: encoders.encodeOgham,
+    decode: encoders.decodeOgham,
+    reversible: true,
+    tags: ["ancient", "celtic", "irish"],
+  },
+  {
+    id: "hieroglyphs",
+    name: "Egyptian Hieroglyphs",
+    description: "Ancient Egyptian writing",
+    emoji: "🦅",
+    category: "ancient",
+    encode: encoders.encodeHieroglyphs,
+    decode: encoders.decodeHieroglyphs,
+    reversible: true,
+    tags: ["ancient", "egyptian", "hieroglyphs"],
+  },
+  {
+    id: "cuneiform",
+    name: "Sumerian Cuneiform",
+    description: "Ancient Mesopotamian script",
+    emoji: "🧱",
+    category: "ancient",
+    encode: encoders.encodeCuneiform,
+    decode: encoders.decodeCuneiform,
+    reversible: true,
+    tags: ["ancient", "sumerian", "mesopotamia"],
+  },
+  {
+    id: "mayan",
+    name: "Mayan Numerals",
+    description: "Ancient Mayan number system",
+    emoji: "🗿",
+    category: "ancient",
+    encode: encoders.encodeMayan,
+    decode: encoders.decodeMayan,
+    reversible: true,
+    tags: ["ancient", "mayan", "numbers"],
+  },
+];

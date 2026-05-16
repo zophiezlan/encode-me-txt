@@ -1,0 +1,48 @@
+import * as encoders from "../encoders/index.js";
+
+export const fantasyEncoders = [
+  {
+    id: "aurebesh",
+    name: "Aurebesh",
+    description: "Star Wars galaxy script",
+    emoji: "⭐",
+    category: "fantasy",
+    encode: encoders.encodeAurebesh,
+    decode: encoders.decodeAurebesh,
+    reversible: true,
+    tags: ["fantasy", "starwars", "scifi"],
+  },
+  {
+    id: "gallifreyan",
+    name: "Circular Gallifreyan",
+    description: "Doctor Who Time Lord script",
+    emoji: "🌀",
+    category: "fantasy",
+    encode: encoders.encodeGallifreyan,
+    decode: encoders.decodeGallifreyan,
+    reversible: true,
+    tags: ["fantasy", "doctorwho", "scifi"],
+  },
+  {
+    id: "elvish",
+    name: "Elvish/Tengwar",
+    description: "Lord of the Rings script",
+    emoji: "💍",
+    category: "fantasy",
+    encode: encoders.encodeElvish,
+    decode: encoders.decodeElvish,
+    reversible: true,
+    tags: ["fantasy", "lotr", "tolkien"],
+  },
+  {
+    id: "klingon",
+    name: "Klingon pIqaD",
+    description: "Star Trek Klingon script (requires Klingon font)",
+    emoji: "🖖",
+    category: "fantasy",
+    encode: encoders.encodeKlingon,
+    decode: encoders.decodeKlingon,
+    reversible: true,
+    tags: ["fantasy", "startrek", "scifi"],
+  },
+];

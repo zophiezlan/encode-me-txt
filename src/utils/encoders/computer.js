@@ -350,6 +350,19 @@ export const encodeBrainfuck = (text) => {
   return result;
 };
 
+// Brainfuck bracket matching — extracted to keep decodeBrainfuck flat.
+// `open`/`close` are the +1 / -1 depth chars when walking in `step` direction.
+const findMatchingBracket = (code, fromIdx, step, open, close) => {
+  let depth = 1;
+  let i = fromIdx;
+  while (depth > 0) {
+    i += step;
+    if (code[i] === open) depth++;
+    else if (code[i] === close) depth--;
+  }
+  return i;
+};
+
 /**
  * Decodes Brainfuck back to text (executes the program)
  * @param {string} code - The Brainfuck code
@@ -384,22 +397,12 @@ export const decodeBrainfuck = (code) => {
           break;
         case "[":
           if (memory[pointer] === 0) {
-            let depth = 1;
-            while (depth > 0) {
-              i++;
-              if (code[i] === "[") depth++;
-              if (code[i] === "]") depth--;
-            }
+            i = findMatchingBracket(code, i, 1, "[", "]");
           }
           break;
         case "]":
           if (memory[pointer] !== 0) {
-            let depth = 1;
-            while (depth > 0) {
-              i--;
-              if (code[i] === "]") depth++;
-              if (code[i] === "[") depth--;
-            }
+            i = findMatchingBracket(code, i, -1, "]", "[");
           }
           break;
       }
