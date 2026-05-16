@@ -163,7 +163,7 @@ decodeBase64("SGVsbG8gV29ybGQh");
 #### Caesar Cipher
 
 ```javascript
-import { encodeCaesar, decodeCaesar } from "./utils/encoders/ciphers.js";
+import { encodeCaesar, decodeCaesar } from "./utils/encoders/cipher.js";
 
 // Encode with shift of 3
 encodeCaesar("ABC", 3);
@@ -182,7 +182,7 @@ decodeCaesar("DEF", 3);
 #### ROT13
 
 ```javascript
-import { encodeROT13, decodeROT13 } from "./utils/encoders/ciphers.js";
+import { encodeROT13, decodeROT13 } from "./utils/encoders/cipher.js";
 
 encodeROT13("Hello");
 // Returns: 'Uryyb'
@@ -196,7 +196,7 @@ decodeROT13("Uryyb");
 #### Reverse Text
 
 ```javascript
-import { encodeReverse, decodeReverse } from "./utils/encoders/ciphers.js";
+import { encodeReverse, decodeReverse } from "./utils/encoders/cipher.js";
 
 encodeReverse("Hello");
 // Returns: 'olleH'
@@ -1306,7 +1306,7 @@ import {
   decodeHill,
   encodeBifid,
   decodeBifid,
-} from "./utils/encoders/ciphers.js";
+} from "./utils/encoders/cipher.js";
 
 encodePlayfair("Hello World", "KEYWORD"); // Playfair cipher
 encodeColumnar("Hello World", "KEY"); // Columnar transposition

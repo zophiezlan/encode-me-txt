@@ -30,7 +30,7 @@ export default defineConfig({
           // Encoder modules grouped by domain so the index chunk stays lean.
           "encoders-core": [
             "./src/utils/encoders/computer.js",
-            "./src/utils/encoders/ciphers.js",
+            "./src/utils/encoders/cipher.js",
             "./src/utils/encoders/classic.js",
             "./src/utils/encoders/shared.js",
           ],

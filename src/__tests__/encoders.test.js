@@ -12,234 +12,42 @@ import {
   decodePolybius,
   encodeROT47,
   decodeROT47,
-} from "../utils/encoders/ciphers.js";
+  encodeROT13,
+  encodeCaesar,
+  decodeCaesar,
+  encodeReverse,
+} from "../utils/encoders/cipher.js";
+import {
+  encodeHex,
+  decodeHex,
+  encodeBase64,
+  decodeBase64,
+} from "../utils/encoders/computer.js";
+// Bare encodeBinary / encodeMorse were deleted in Phase 4 as dead code.
+// The registered encoders are binary-pro / morse-pro, backed by these
+// param variants in parameterized.js.
+import {
+  encodeBinaryParam,
+  decodeBinaryParam,
+  encodeMorseParam,
+  decodeMorseParam,
+} from "../utils/encoders/parameterized.js";
 
-// Re-implement the encoding functions for testing purposes
-// These are extracted from the component to test their logic
-
-// Binary encoding
-const encodeBinary = (text) => {
-  return text
-    .split("")
-    .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
-    .join(" ");
-};
-
-const decodeBinary = (text) => {
-  try {
-    return text
-      .split(" ")
-      .map((binary) => String.fromCharCode(parseInt(binary, 2)))
-      .join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
-// Hexadecimal encoding
-const encodeHex = (text) => {
-  return text
-    .split("")
-    .map((char) => char.charCodeAt(0).toString(16).padStart(2, "0"))
-    .join(" ");
-};
-
-const decodeHex = (text) => {
-  try {
-    return text
-      .split(" ")
-      .map((hex) => String.fromCharCode(parseInt(hex, 16)))
-      .join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
-// Base64 encoding
-const encodeBase64 = (text) => {
-  try {
-    // Modern approach for UTF-8 to Base64
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text);
-    let binary = "";
-    data.forEach((byte) => (binary += String.fromCharCode(byte)));
-    return btoa(binary);
-  } catch {
-    return "[Encode failed]";
-  }
-};
-
-const decodeBase64 = (text) => {
-  try {
-    // Modern approach for Base64 to UTF-8
-    const binary = atob(text);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) {
-      bytes[i] = binary.charCodeAt(i);
-    }
-    const decoder = new TextDecoder();
-    return decoder.decode(bytes);
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
-// ROT13 encoding
-const encodeROT13 = (text) => {
-  return text.replace(/[a-zA-Z]/g, (char) => {
-    const start = char <= "Z" ? 65 : 97;
-    return String.fromCharCode(
-      ((char.charCodeAt(0) - start + 13) % 26) + start,
-    );
-  });
-};
-
-// Caesar Cipher
-const encodeCaesar = (text, shift) => {
-  return text.replace(/[a-zA-Z]/g, (char) => {
-    const start = char <= "Z" ? 65 : 97;
-    return String.fromCharCode(
-      ((char.charCodeAt(0) - start + shift) % 26) + start,
-    );
-  });
-};
-
-const decodeCaesar = (text, shift) => {
-  return encodeCaesar(text, 26 - shift);
-};
-
-// Morse Code
-const encodeMorse = (text) => {
-  const morseCode = {
-    a: "•−",
-    b: "−•••",
-    c: "−•−•",
-    d: "−••",
-    e: "•",
-    f: "••−•",
-    g: "−−•",
-    h: "••••",
-    i: "••",
-    j: "•−−−",
-    k: "−•−",
-    l: "•−••",
-    m: "−−",
-    n: "−•",
-    o: "−−−",
-    p: "•−−•",
-    q: "−−•−",
-    r: "•−•",
-    s: "•••",
-    t: "−",
-    u: "••−",
-    v: "•••−",
-    w: "•−−",
-    x: "−••−",
-    y: "−•−−",
-    z: "−−••",
-    0: "−−−−−",
-    1: "•−−−−",
-    2: "••−−−",
-    3: "•••−−",
-    4: "••••−",
-    5: "•••••",
-    6: "−••••",
-    7: "−−•••",
-    8: "−−−••",
-    9: "−−−−•",
-    ".": "•−•−•−",
-    ",": "−−••−−",
-    "?": "••−−••",
-    "!": "−•−•−−",
-    "/": "−••−•",
-    ":": "−−−•••",
-    " ": "/",
-  };
-
-  return text
-    .toLowerCase()
-    .split("")
-    .map((char) => morseCode[char] || char)
-    .join(" ");
-};
-
-const decodeMorse = (text) => {
-  try {
-    const reverseMorse = {
-      "•−": "a",
-      "−•••": "b",
-      "−•−•": "c",
-      "−••": "d",
-      "•": "e",
-      "••−•": "f",
-      "−−•": "g",
-      "••••": "h",
-      "••": "i",
-      "•−−−": "j",
-      "−•−": "k",
-      "•−••": "l",
-      "−−": "m",
-      "−•": "n",
-      "−−−": "o",
-      "•−−•": "p",
-      "−−•−": "q",
-      "•−•": "r",
-      "•••": "s",
-      "−": "t",
-      "••−": "u",
-      "•••−": "v",
-      "•−−": "w",
-      "−••−": "x",
-      "−•−−": "y",
-      "−−••": "z",
-      "−−−−−": "0",
-      "•−−−−": "1",
-      "••−−−": "2",
-      "•••−−": "3",
-      "••••−": "4",
-      "•••••": "5",
-      "−••••": "6",
-      "−−•••": "7",
-      "−−−••": "8",
-      "−−−−•": "9",
-      "•−•−•−": ".",
-      "−−••−−": ",",
-      "••−−••": "?",
-      "−•−•−−": "!",
-      "−••−•": "/",
-      "−−−•••": ":",
-      "/": " ",
-    };
-
-    return text
-      .split(" ")
-      .map((code) => reverseMorse[code] || "")
-      .join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
-// Reverse Text
-const encodeReverse = (text) => {
-  return text.split("").reverse().join("");
-};
-
-describe("Binary encoding", () => {
-  it("encodes text to binary", () => {
-    expect(encodeBinary("A")).toBe("01000001");
-    expect(encodeBinary("Hi")).toBe("01001000 01101001");
+describe("Binary encoding (binary-pro)", () => {
+  it("encodes text to binary with default 8-bit grouping", () => {
+    expect(encodeBinaryParam("A")).toBe("01000001");
+    expect(encodeBinaryParam("Hi")).toBe("01001000 01101001");
   });
 
   it("decodes binary to text", () => {
-    expect(decodeBinary("01000001")).toBe("A");
-    expect(decodeBinary("01001000 01101001")).toBe("Hi");
+    expect(decodeBinaryParam("01000001")).toBe("A");
+    expect(decodeBinaryParam("01001000 01101001")).toBe("Hi");
   });
 
   it("is reversible", () => {
     const original = "Hello World!";
-    const encoded = encodeBinary(original);
-    const decoded = decodeBinary(encoded);
+    const encoded = encodeBinaryParam(original);
+    const decoded = decodeBinaryParam(encoded);
     expect(decoded).toBe(original);
   });
 });
@@ -328,20 +136,22 @@ describe("Caesar Cipher encoding", () => {
   });
 });
 
-describe("Morse Code encoding", () => {
-  it("encodes letters to morse", () => {
-    expect(encodeMorse("sos")).toBe("••• −−− •••");
+describe("Morse Code encoding (morse-pro)", () => {
+  it("encodes letters to morse using ASCII dots/dashes", () => {
+    // morse-pro uses ASCII . and - (not Unicode • −) and uppercases input
+    expect(encodeMorseParam("sos")).toBe("... --- ...");
   });
 
-  it("encodes spaces as /", () => {
-    expect(encodeMorse("a b")).toBe("•− / −•••");
+  it("encodes word separator as ' / '", () => {
+    expect(encodeMorseParam("a b")).toBe(".- / -...");
   });
 
   it("is reversible for letters", () => {
     const original = "hello world";
-    const encoded = encodeMorse(original);
-    const decoded = decodeMorse(encoded);
-    expect(decoded).toBe(original);
+    const encoded = encodeMorseParam(original);
+    const decoded = decodeMorseParam(encoded);
+    // morse-pro normalises to uppercase
+    expect(decoded.toLowerCase()).toBe(original);
   });
 });
 
@@ -469,7 +279,7 @@ import {
   decodePlayfair,
   encodeColumnar,
   decodeColumnar,
-} from "../utils/encoders/ciphers.js";
+} from "../utils/encoders/cipher.js";
 
 import {
   encodeBase32,

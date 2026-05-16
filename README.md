@@ -461,7 +461,7 @@ encode-me-txt/
 │   │   │   ├── steganography.js  # Zero-width, whitespace stego
 │   │   │   ├── classic.js        # Morse, Braille, NATO
 │   │   │   ├── computer.js       # Binary, Hex, Base64, Base32, Octal, ASCII85, etc.
-│   │   │   ├── ciphers.js        # Caesar, ROT13, Vigenère, Playfair, Hill, Bifid, etc.
+│   │   │   ├── cipher.js        # Caesar, ROT13, Vigenère, Playfair, Hill, Bifid, etc.
 │   │   │   ├── fun.js            # Emoji, Bubble, Leetspeak, Redacted, Emojipasta, etc.
 │   │   │   ├── artistic.js       # Block art, Musical, Zalgo, Runes, etc.
 │   │   │   ├── advanced.js       # QR Code, URL, HTML, Hash, etc.

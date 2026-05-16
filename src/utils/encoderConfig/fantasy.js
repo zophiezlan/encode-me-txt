@@ -9,7 +9,7 @@ export const fantasyEncoders = [
     category: "fantasy",
     encode: encoders.encodeAurebesh,
     decode: encoders.decodeAurebesh,
-    reversible: true,
+    reversible: false,
     tags: ["fantasy", "starwars", "scifi"],
   },
   {
@@ -20,7 +20,7 @@ export const fantasyEncoders = [
     category: "fantasy",
     encode: encoders.encodeGallifreyan,
     decode: encoders.decodeGallifreyan,
-    reversible: true,
+    reversible: false,
     tags: ["fantasy", "doctorwho", "scifi"],
   },
   {
