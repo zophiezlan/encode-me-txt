@@ -49,21 +49,6 @@ export class HistoryManager {
     localStorage.setItem(HISTORY_KEY, JSON.stringify(filtered));
   }
 
-  static getRecentEncoders(limit = 5) {
-    const history = this.getHistory();
-    const encoderCounts = {};
-
-    history.forEach((entry) => {
-      encoderCounts[entry.encoderId] =
-        (encoderCounts[entry.encoderId] || 0) + 1;
-    });
-
-    return Object.entries(encoderCounts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, limit)
-      .map(([id]) => id);
-  }
-
   /**
    * Export history as JSON
    * @returns {string} - JSON string of the history
@@ -119,31 +104,4 @@ export class HistoryManager {
     URL.revokeObjectURL(url);
   }
 
-  /**
-   * Get usage statistics
-   * @returns {Object} - Statistics about encoding history
-   */
-  static getStats() {
-    const history = this.getHistory();
-    const encoderCounts = {};
-    const modeCounts = { encode: 0, decode: 0 };
-
-    history.forEach((entry) => {
-      encoderCounts[entry.encoderName] =
-        (encoderCounts[entry.encoderName] || 0) + 1;
-      modeCounts[entry.mode] = (modeCounts[entry.mode] || 0) + 1;
-    });
-
-    const sortedEncoders = Object.entries(encoderCounts).sort(
-      (a, b) => b[1] - a[1],
-    );
-
-    return {
-      totalEncodings: history.length,
-      encodeCount: modeCounts.encode,
-      decodeCount: modeCounts.decode,
-      topEncoders: sortedEncoders.slice(0, 5),
-      uniqueEncoders: sortedEncoders.length,
-    };
-  }
 }

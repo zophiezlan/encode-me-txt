@@ -76,15 +76,6 @@ export const encoderConfig = _originalCategoryOrder.map((cat) => {
 });
 
 /**
- * Get encoders by category
- * @param {string} category - The category to filter by
- * @returns {Array} - Filtered encoder array
- */
-export const getEncodersByCategory = (category) => {
-  return encoderConfig.filter((encoder) => encoder.category === category);
-};
-
-/**
  * Get encoder by ID
  * @param {string} id - The encoder ID
  * @returns {Object|null} - Encoder object or null
@@ -93,41 +84,13 @@ export const getEncoderById = (id) => {
   return encoderConfig.find((encoder) => encoder.id === id) || null;
 };
 
-/**
- * Get all reversible encoders
- * @returns {Array} - Array of reversible encoders
- */
-export const getReversibleEncoders = () => {
-  return encoderConfig.filter((encoder) => encoder.reversible);
-};
-
-// Re-export deduplication utilities for convenience
-export {
-  encoderRelationships,
-  getPreferredEncoder,
-  isSuperseded,
-  isAlias,
-  isRedundant,
-  getEncoderRelationship,
-  getRedundantEncoderIds,
-  getSupersededEncoderIds,
-  getAliasEncoderIds,
-  deduplicateEncoders,
-  getDeduplicationSummary,
-  groupByPreferredEncoder,
-} from "../encoderDeduplication.js";
-
 // Re-export advanced search utilities
 export {
   searchEncoders,
   getAllTags,
-  getAllCategories,
   getEncoderStats,
-  findSimilarEncoders,
-  groupEncodersBy,
   getFilterPreset,
   filterPresets,
-  defaultSearchOptions,
 } from "../encoderSearch.js";
 
 import { deduplicateEncoders as dedupEncoders } from "../encoderDeduplication.js";

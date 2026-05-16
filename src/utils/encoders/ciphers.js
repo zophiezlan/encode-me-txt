@@ -384,50 +384,6 @@ export const encodeROT47 = (text) => {
 export const decodeROT47 = encodeROT47;
 
 /**
- * Tap Code (Prison Cipher) - Encodes using Polybius-like tap patterns
- * @param {string} text - The text to encode
- * @returns {string} - Encoded text as tap patterns
- */
-export const encodeTapCode = (text) => {
-  const grid = "ABCDEFGHIJLMNOPQRSTUVWXYZ"; // K=C
-
-  return text
-    .toUpperCase()
-    .replace(/K/g, "C")
-    .split("")
-    .map((char) => {
-      const idx = grid.indexOf(char);
-      if (idx === -1) return char === " " ? "/" : char;
-      const row = Math.floor(idx / 5) + 1;
-      const col = (idx % 5) + 1;
-      return "•".repeat(row) + " " + "•".repeat(col);
-    })
-    .join(" | ");
-};
-
-/**
- * Tap Code decoder
- */
-export const decodeTapCode = (text) => {
-  const grid = "ABCDEFGHIJLMNOPQRSTUVWXYZ";
-
-  return text
-    .split(" | ")
-    .map((code) => {
-      if (code === "/") return " ";
-      const parts = code.split(" ");
-      if (parts.length === 2) {
-        const row = parts[0].length - 1;
-        const col = parts[1].length - 1;
-        const idx = row * 5 + col;
-        return grid[idx] || code;
-      }
-      return code;
-    })
-    .join("");
-};
-
-/**
  * Substitution Cipher - Custom alphabet substitution
  * @param {string} text - The text to encode
  * @returns {string} - Encoded text

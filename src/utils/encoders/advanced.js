@@ -98,26 +98,6 @@ export const encodeSoundWave = (text) => {
 };
 
 /**
- * Encodes text to Punycode (for internationalized domain names)
- * @param {string} text - The text to encode
- * @returns {string} - Punycode representation
- */
-export const encodePunycode = (text) => {
-  try {
-    // Simple ASCII-safe encoding fallback
-    return (
-      "xn--" +
-      text
-        .split("")
-        .map((c) => c.charCodeAt(0).toString(36))
-        .join("")
-    );
-  } catch {
-    return "[Encode failed]";
-  }
-};
-
-/**
  * Creates a hash-like representation (not cryptographic)
  * @param {string} text - The text to hash
  * @returns {string} - Hash-like string

@@ -2748,111 +2748,6 @@ export const encodeSemanticTheme = (text, theme = "nature") => {
     .join("");
 };
 
-/**
- * Decode semantic theme encoding
- * @param {string} text - The semantic encoding
- * @param {string} theme - Theme used
- * @returns {string} - Decoded text
- */
-export const decodeSemanticTheme = (text, theme = "nature") => {
-  const themes = {
-    nature: [
-      "🌳",
-      "🌸",
-      "🌊",
-      "🌙",
-      "⭐",
-      "🌿",
-      "🍃",
-      "🌺",
-      "🦋",
-      "🐦",
-      "☀️",
-      "🌈",
-      "⛰️",
-      "🌻",
-      "🍀",
-      "🌴",
-    ],
-    tech: [
-      "💻",
-      "🖥️",
-      "⌨️",
-      "🖱️",
-      "📱",
-      "💾",
-      "🔌",
-      "⚡",
-      "🤖",
-      "🛸",
-      "📡",
-      "🔋",
-      "💡",
-      "🎮",
-      "📟",
-      "🔧",
-    ],
-    food: [
-      "🍕",
-      "🍔",
-      "🌮",
-      "🍣",
-      "🍜",
-      "🍩",
-      "🍪",
-      "🎂",
-      "🍰",
-      "🍦",
-      "🍫",
-      "🍿",
-      "🥗",
-      "🍱",
-      "🥐",
-      "🧁",
-    ],
-    space: [
-      "🚀",
-      "🛸",
-      "🌍",
-      "🌑",
-      "🌕",
-      "⭐",
-      "💫",
-      "☄️",
-      "🌌",
-      "👽",
-      "🛰️",
-      "🔭",
-      "🌟",
-      "✨",
-      "🪐",
-      "🌠",
-    ],
-  };
-
-  const symbols = themes[theme] || themes.nature;
-
-  try {
-    // Convert text to array of grapheme clusters
-    const graphemes = [...text];
-    const result = [];
-
-    for (let i = 0; i < graphemes.length; i += 2) {
-      const highSymbol = graphemes[i];
-      const lowSymbol = graphemes[i + 1];
-      const high = symbols.indexOf(highSymbol);
-      const low = symbols.indexOf(lowSymbol);
-      if (high >= 0 && low >= 0) {
-        result.push(String.fromCharCode((high << 4) | low));
-      }
-    }
-
-    return result.join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
 // ============================================
 // GENETIC ALGORITHM ENCODING
 // ============================================
@@ -3641,66 +3536,6 @@ export const encodeSonicFrequency = (text, format = "hz") => {
     .join(" ");
 };
 
-/**
- * Decode sonic frequency encoding
- * @param {string} text - The frequency text
- * @param {string} format - Format used
- * @returns {string} - Decoded text
- */
-export const decodeSonicFrequency = (text, format = "hz") => {
-  try {
-    const notes = [
-      "C",
-      "C#",
-      "D",
-      "D#",
-      "E",
-      "F",
-      "F#",
-      "G",
-      "G#",
-      "A",
-      "A#",
-      "B",
-    ];
-    const parts = text.split(" ");
-
-    return parts
-      .map((p) => {
-        switch (format) {
-          case "note": {
-            const match = p.match(/([A-G]#?)(-?\d+)/);
-            if (!match) return "";
-            const noteIdx = notes.indexOf(match[1]);
-            const octave = parseInt(match[2]);
-            return String.fromCharCode(noteIdx + (octave + 1) * 12);
-          }
-          case "waveform": {
-            const match = p.match(/~([0-9.]+)∠(\d+)°/);
-            if (!match) return "";
-            const amplitude = Math.round(parseFloat(match[1]) * 16);
-            const phase = Math.round((parseInt(match[2]) / 360) * 16);
-            return String.fromCharCode((amplitude << 4) | phase);
-          }
-          case "hz":
-          default: {
-            const match = p.match(/([0-9.]+)Hz/);
-            if (!match) return "";
-            const freq = parseFloat(match[1]);
-            const code = Math.min(
-              255,
-              Math.max(0, Math.round(12 * Math.log2(freq / 440) + 69)),
-            );
-            return String.fromCharCode(code);
-          }
-        }
-      })
-      .join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
 // ============================================
 // MNEMONIC ENCODING
 // ============================================
@@ -3976,28 +3811,6 @@ export const encodeMnemonic = (text) => {
     .join(" ");
 
   return `MNEMONIC[${hex}]:${words}`;
-};
-
-/**
- * Decode mnemonic encoding
- * @param {string} text - The mnemonic phrase
- * @returns {string} - Decoded text
- */
-export const decodeMnemonic = (text) => {
-  try {
-    // Extract hex from the mnemonic format
-    const hexMatch = text.match(/MNEMONIC\[([0-9a-f]+)\]/i);
-    if (!hexMatch) return "[Decode failed]";
-
-    const hex = hexMatch[1];
-    let result = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      result += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
-    }
-    return result;
-  } catch {
-    return "[Decode failed]";
-  }
 };
 
 // ============================================

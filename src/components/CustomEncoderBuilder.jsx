@@ -25,6 +25,13 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [importPreview, setImportPreview] = useState(null);
   const [importError, setImportError] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+
+  const showToast = (message, type = "info") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const addMapping = () => {
     if (inputChar && outputChar) {
@@ -56,7 +63,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
   const saveEncoder = () => {
     try {
       const encoder = {
-        id: `custom-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
         name: encoderName || "Custom Encoder",
         emoji: encoderEmoji,
         description: encoderDescription || "User-created encoder",
@@ -79,9 +86,9 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
       setMapping({});
       setTestInput("");
       setTestOutput("");
-      alert("✅ Custom encoder saved successfully!");
+      showToast("✅ Custom encoder saved", "success");
     } catch (error) {
-      alert("❌ Error saving encoder: " + error.message);
+      showToast("❌ Error saving encoder: " + error.message, "error");
     }
   };
 
@@ -95,11 +102,15 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
     setShowTemplates(false);
   };
 
-  const deleteEncoder = (id) => {
-    if (confirm("Are you sure you want to delete this custom encoder?")) {
-      CustomEncoderManager.deleteEncoder(id);
-      setSavedEncoders(CustomEncoderManager.getEncoders());
-    }
+  // Stage delete: the confirmation modal is rendered when pendingDeleteId is set.
+  const deleteEncoder = (id) => setPendingDeleteId(id);
+
+  const confirmDelete = () => {
+    if (!pendingDeleteId) return;
+    CustomEncoderManager.deleteEncoder(pendingDeleteId);
+    setSavedEncoders(CustomEncoderManager.getEncoders());
+    setPendingDeleteId(null);
+    showToast("🗑️ Encoder deleted", "info");
   };
 
   const exportEncoder = (encoder) => {
@@ -107,7 +118,7 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
     const url = `${window.location.origin}${window.location.pathname}?customEncoder=${encoded}`;
 
     navigator.clipboard.writeText(url);
-    alert("🔗 Shareable link copied to clipboard!");
+    showToast("🔗 Shareable link copied to clipboard", "success");
   };
 
   // Build a preview (no save) when the URL contains a shared encoder. The user
@@ -153,6 +164,58 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/70 backdrop-blur-md">
+      {toast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className={`fixed top-6 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-lg shadow-2xl text-sm font-semibold backdrop-blur-lg border-2 ${
+            toast.type === "success"
+              ? "bg-green-500/30 border-green-400/50 text-green-100"
+              : toast.type === "error"
+                ? "bg-red-500/30 border-red-400/50 text-red-100"
+                : "bg-white/20 border-white/40 text-white"
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
+      {pendingDeleteId && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-confirm-title"
+        >
+          <div
+            className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-5 md:p-6 max-w-md w-full border-2 ${theme.cardBorder} shadow-2xl`}
+          >
+            <h3
+              id="delete-confirm-title"
+              className="mb-3 text-lg font-bold md:text-xl"
+            >
+              🗑️ Delete this custom encoder?
+            </h3>
+            <p className="mb-4 text-sm opacity-80">
+              This action cannot be undone. The encoder will be removed from
+              local storage.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPendingDeleteId(null)}
+                className="flex-1 px-4 py-2 font-semibold rounded-lg bg-white/10 hover:bg-white/20"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 px-4 py-2 font-semibold rounded-lg bg-red-500/30 hover:bg-red-500/40 border-2 border-red-400/50"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {(importPreview || importError) && (
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"

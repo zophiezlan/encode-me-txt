@@ -3,6 +3,8 @@
  * Save, load, and share favorite encoder configurations and chains
  */
 
+import { utf8ToBase64 } from "./utf8Base64.js";
+
 const PRESETS_KEY = "encoding-presets";
 const MAX_PRESETS = 50;
 
@@ -20,7 +22,7 @@ export class EncodingPresetsManager {
     const newPreset = {
       id:
         preset.id ||
-        `preset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        `preset-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
       name: preset.name,
       description: preset.description || "",
       type: preset.type, // 'chain' or 'single'
@@ -54,14 +56,6 @@ export class EncodingPresetsManager {
       console.error("Failed to load presets:", error);
       return [];
     }
-  }
-
-  /**
-   * Get preset by ID
-   */
-  static getPreset(id) {
-    const presets = this.getPresets();
-    return presets.find((p) => p.id === id);
   }
 
   /**
@@ -103,31 +97,7 @@ export class EncodingPresetsManager {
       },
     };
 
-    return btoa(JSON.stringify(data));
-  }
-
-  /**
-   * Import preset from shareable format
-   */
-  static importPreset(encodedData) {
-    try {
-      const data = JSON.parse(atob(encodedData));
-
-      if (data.version !== "1.0") {
-        throw new Error("Unsupported preset version");
-      }
-
-      const preset = {
-        ...data.preset,
-        id: `preset-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        createdAt: Date.now(),
-        usageCount: 0,
-      };
-
-      return this.savePreset(preset);
-    } catch (error) {
-      throw new Error("Invalid preset data: " + error.message);
-    }
+    return utf8ToBase64(JSON.stringify(data));
   }
 
   /**

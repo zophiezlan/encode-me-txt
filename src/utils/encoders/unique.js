@@ -24,7 +24,7 @@ export const encodeDNA = (text) => {
   for (let char of text) {
     const binary = char.charCodeAt(0).toString(2).padStart(8, "0");
     for (let i = 0; i < binary.length; i += 2) {
-      const pair = binary.substr(i, 2);
+      const pair = binary.slice(i, i + 2);
       result += dnaMap[pair];
     }
   }

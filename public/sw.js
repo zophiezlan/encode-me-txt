@@ -1,63 +1,96 @@
 /**
  * Service Worker for Creative Text Encoder PWA
- * Enables offline functionality and caching
+ *
+ * Cache strategy:
+ * - HTML / navigation: NETWORK-FIRST (so new deploys reach the user; fall back
+ *   to cache offline).
+ * - Hashed /assets/* bundles: cache-first (immutable per build hash).
+ * - Everything else: pass through to the network.
+ *
+ * Cache name carries a build hash so each deploy gets its own bucket and old
+ * buckets are evicted on activate. In dev, the placeholder string remains
+ * literal — a single stable cache for the whole dev session, which is fine.
+ * The vite build plugin in vite.config.js replaces __BUILD_HASH__ in the
+ * emitted dist/sw.js with a per-build value.
  */
 
-const CACHE_NAME = "creative-text-encoder-v1";
-const STATIC_ASSETS = ["/", "/index.html", "/favicon.svg", "/manifest.json"];
+const CACHE_NAME = "creative-text-encoder-__BUILD_HASH__";
+const PRECACHE_ASSETS = [
+  "/",
+  "/index.html",
+  "/favicon.svg",
+  "/manifest.json",
+];
 
-// Install event - cache static assets
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    }),
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(PRECACHE_ASSETS)));
   self.skipWaiting();
 });
 
-// Activate event - clean up old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((name) => name !== CACHE_NAME)
-          .map((name) => caches.delete(name)),
-      );
-    }),
+    caches.keys().then((names) =>
+      Promise.all(
+        names
+          .filter((n) => n !== CACHE_NAME)
+          .map((n) => caches.delete(n)),
+      ),
+    ),
   );
   self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+const isNavigation = (request) =>
+  request.mode === "navigate" || request.destination === "document";
+
+const isHashedAsset = (url) =>
+  url.pathname.startsWith("/assets/") && /-[A-Za-z0-9_]{6,}\./.test(url.pathname);
+
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response;
-      }
+  const { request } = event;
+  if (request.method !== "GET") return;
 
-      return fetch(event.request).then((response) => {
-        // Don't cache non-successful responses
-        if (!response || response.status !== 200 || response.type !== "basic") {
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return; // never intercept cross-origin
+
+  if (isNavigation(request)) {
+    // Network-first for HTML so users get new deploys immediately.
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((c) => c.put(request, copy));
+          }
           return response;
-        }
+        })
+        .catch(() => caches.match(request).then((r) => r || caches.match("/"))),
+    );
+    return;
+  }
 
-        // Clone the response
-        const responseToCache = response.clone();
+  if (isHashedAsset(url)) {
+    // Hashed bundle filename changes on every build, so cache-first is safe.
+    event.respondWith(
+      caches.match(request).then(
+        (cached) =>
+          cached ||
+          fetch(request).then((response) => {
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE_NAME).then((c) => c.put(request, copy));
+            }
+            return response;
+          }),
+      ),
+    );
+    return;
+  }
 
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
-        return response;
-      });
-    }),
-  );
+  // Default: try cache, fall back to network without populating the cache.
+  event.respondWith(caches.match(request).then((r) => r || fetch(request)));
 });
 
-// Handle messages from clients
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();

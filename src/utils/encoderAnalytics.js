@@ -15,7 +15,7 @@ import { encoderConfig, getEncoderById, categories } from "./encoderConfig.js";
 /**
  * Category and tag constants for consistency
  */
-export const COMPLEXITY_CATEGORIES = {
+const COMPLEXITY_CATEGORIES = {
   SECRET: "secret",
   CIPHER: "cipher",
   COMPUTER: "computer",
@@ -23,7 +23,7 @@ export const COMPLEXITY_CATEGORIES = {
   VISUAL: "visual",
 };
 
-export const COMPLEXITY_TAGS = {
+const COMPLEXITY_TAGS = {
   STEGANOGRAPHY: "steganography",
   CRYPTOGRAPHY: "cryptography",
   PUZZLE: "puzzle",
@@ -45,7 +45,7 @@ export const difficultyLevels = {
  * Encoder difficulty ratings
  * Maps encoder IDs to difficulty levels
  */
-export const encoderDifficulty = {
+const encoderDifficulty = {
   // Beginner (Very Simple)
   reverse: difficultyLevels.BEGINNER,
   "upside-down": difficultyLevels.BEGINNER,

@@ -42,22 +42,6 @@ export class VisualEncodingFlow {
   }
 
   /**
-   * Generate comparison flow for multiple encoders
-   */
-  static generateComparisonFlow(inputText, encoders, caesarShift = 13) {
-    if (!inputText || !encoders || encoders.length === 0) return [];
-
-    const chars = inputText.split("");
-    const flows = {};
-
-    encoders.forEach((encoder) => {
-      flows[encoder.id] = this.generateFlow(inputText, encoder, caesarShift);
-    });
-
-    return { chars, flows };
-  }
-
-  /**
    * Get color for character type
    */
   static getCharTypeColor(step) {
@@ -66,37 +50,6 @@ export class VisualEncodingFlow {
     if (step.isNumber) return "bg-blue-500/30";
     if (step.isLetter) return "bg-green-500/30";
     return "bg-white/20";
-  }
-
-  /**
-   * Calculate transformation complexity
-   */
-  static analyzeTransformation(original, encoded) {
-    return {
-      lengthChange: encoded.length - original.length,
-      lengthRatio: encoded.length / original.length,
-      sizeIncrease: new Blob([encoded]).size - new Blob([original]).size,
-      charDiversity: new Set(encoded).size / new Set(original).size,
-      reversible: true, // Determined by encoder config
-    };
-  }
-
-  /**
-   * Generate animation timeline for encoding
-   */
-  static generateAnimationTimeline(steps, duration = 2000) {
-    const timeline = [];
-    const delayPerChar = duration / steps.length;
-
-    steps.forEach((step, index) => {
-      timeline.push({
-        ...step,
-        delay: index * delayPerChar,
-        duration: delayPerChar,
-      });
-    });
-
-    return timeline;
   }
 
   /**
@@ -138,21 +91,4 @@ export class VisualEncodingFlow {
       .sort((a, b) => b.count - a.count);
   }
 
-  /**
-   * Create encoding "pattern" visualization
-   */
-  static createPattern(encoded) {
-    const chars = encoded.split("");
-    const pattern = chars.map((char) => {
-      // Categorize characters for visual pattern
-      if (/[a-zA-Z]/.test(char)) return "L";
-      if (/\d/.test(char)) return "N";
-      if (/[.,!?;:]/.test(char)) return "P";
-      if (char === " ") return "_";
-      if (/[\u{1F300}-\u{1F9FF}]/u.test(char)) return "E"; // Emoji
-      return "S"; // Symbol
-    });
-
-    return pattern;
-  }
 }

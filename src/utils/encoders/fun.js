@@ -117,24 +117,6 @@ const UPSIDE_DOWN_MAP = {
   ")": "(",
 };
 
-// Leetspeak lookup
-const LEET_MAP = {
-  a: "4",
-  e: "3",
-  i: "1",
-  o: "0",
-  s: "5",
-  t: "7",
-  l: "1",
-  A: "4",
-  E: "3",
-  I: "1",
-  O: "0",
-  S: "5",
-  T: "7",
-  L: "1",
-};
-
 /**
  * Encodes text using emoji pairs
  * @param {string} text - The text to encode
@@ -194,13 +176,6 @@ export const encodeUpsideDown = (text) => {
   // Reverse the result for upside-down effect
   return encoder(text).split("").reverse().join("");
 };
-
-/**
- * Encodes text to leetspeak using shared utility
- * @param {string} text - The text to encode
- * @returns {string} - Leetspeak representation
- */
-export const encodeLeetspeak = createMapEncoder(LEET_MAP);
 
 /**
  * Encodes text to Pig Latin
@@ -354,93 +329,6 @@ export const encodeSemaphore = (text) => {
 };
 
 /**
- * Navy Signal Flags encoding
- * @param {string} text - The text to encode
- * @returns {string} - Signal flag representation
- */
-export const encodeNavyFlags = (text) => {
-  const flagMap = {
-    A: "🔵⚪",
-    B: "🔴🔴",
-    C: "🔵⚪🔴⚪🔵",
-    D: "🟡🔵",
-    E: "🔴🔵",
-    F: "⚪🔴◆",
-    G: "🟡🔵🟡🔵🟡🔵",
-    H: "⚪🔴⚪🔴",
-    I: "🟡●",
-    J: "🔵⚪🔵",
-    K: "🟡🔵",
-    L: "🟡⬛🟡⬛",
-    M: "🔵⚪🔵⚪",
-    N: "🔵⚪🔵⚪",
-    O: "🔴🟡",
-    P: "🔵⬜",
-    Q: "🟡",
-    R: "🔴🟡🔴",
-    S: "⚪🔵",
-    T: "🔴⚪🔴",
-    U: "🔴⚪",
-    V: "⚪🔴⚪🔴",
-    W: "🔵⚪🔴",
-    X: "⚪🔵⚪",
-    Y: "🟡🔴",
-    Z: "🔴🟡🔵🟡",
-    " ": " ",
-  };
-
-  return text
-    .toUpperCase()
-    .split("")
-    .map((char) => flagMap[char] || char)
-    .join(" ");
-};
-
-/**
- * SpOnGeBoB MoCkInG text encoding
- * @param {string} text - The text to encode
- * @returns {string} - Alternating case text
- */
-export const encodeSpongebob = (text) => {
-  let upper = false;
-  return text
-    .split("")
-    .map((char) => {
-      if (/[a-zA-Z]/.test(char)) {
-        upper = !upper;
-        return upper ? char.toUpperCase() : char.toLowerCase();
-      }
-      return char;
-    })
-    .join("");
-};
-
-/**
- * UwU-ify text encoding
- * @param {string} text - The text to encode
- * @returns {string} - UwU-ified text
- */
-export const encodeUwU = (text) => {
-  let result = text
-    .replace(/[rl]/g, "w")
-    .replace(/[RL]/g, "W")
-    .replace(/n([aeiou])/g, "ny$1")
-    .replace(/N([aeiou])/g, "Ny$1")
-    .replace(/N([AEIOU])/g, "NY$1")
-    .replace(/ove/g, "uv")
-    .replace(/!+/g, "! OwO ")
-    .replace(/\?+/g, "? UwU ");
-
-  // Add occasional faces
-  const faces = ["UwU", "OwO", ">w<", "^w^", "uwu"];
-  if (Math.random() > 0.5) {
-    result += " " + faces[Math.floor(Math.random() * faces.length)];
-  }
-
-  return result;
-};
-
-/**
  * Morse with emojis encoding
  * @param {string} text - The text to encode
  * @returns {string} - Morse with visual dots and dashes
@@ -574,73 +462,6 @@ export const encodeTinyText = (text) => {
 };
 
 /**
- * Medieval/Blackletter style encoding
- * @param {string} text - The text to encode
- * @returns {string} - Medieval style text
- */
-export const encodeMedieval = (text) => {
-  const medievalMap = {
-    A: "𝔄",
-    B: "𝔅",
-    C: "ℭ",
-    D: "𝔇",
-    E: "𝔈",
-    F: "𝔉",
-    G: "𝔊",
-    H: "ℌ",
-    I: "ℑ",
-    J: "𝔍",
-    K: "𝔎",
-    L: "𝔏",
-    M: "𝔐",
-    N: "𝔑",
-    O: "𝔒",
-    P: "𝔓",
-    Q: "𝔔",
-    R: "ℜ",
-    S: "𝔖",
-    T: "𝔗",
-    U: "𝔘",
-    V: "𝔙",
-    W: "𝔚",
-    X: "𝔛",
-    Y: "𝔜",
-    Z: "ℨ",
-    a: "𝔞",
-    b: "𝔟",
-    c: "𝔠",
-    d: "𝔡",
-    e: "𝔢",
-    f: "𝔣",
-    g: "𝔤",
-    h: "𝔥",
-    i: "𝔦",
-    j: "𝔧",
-    k: "𝔨",
-    l: "𝔩",
-    m: "𝔪",
-    n: "𝔫",
-    o: "𝔬",
-    p: "𝔭",
-    q: "𝔮",
-    r: "𝔯",
-    s: "𝔰",
-    t: "𝔱",
-    u: "𝔲",
-    v: "𝔳",
-    w: "𝔴",
-    x: "𝔵",
-    y: "𝔶",
-    z: "𝔷",
-  };
-
-  return text
-    .split("")
-    .map((char) => medievalMap[char] || char)
-    .join("");
-};
-
-/**
  * Strikethrough text encoding
  * @param {string} text - The text to encode
  * @returns {string} - Strikethrough text
@@ -759,42 +580,6 @@ export const decodeKeyboardShift = (text) => {
     .split("")
     .map((char) => reverseMap[char] || char)
     .join("");
-};
-
-/**
- * Emojipasta encoding - adds random emojis between words
- * @param {string} text - The text to encode
- * @returns {string} - Emojipasta text
- */
-export const encodeEmojipasta = (text) => {
-  const emojis = [
-    "😂",
-    "🔥",
-    "💯",
-    "👀",
-    "😭",
-    "💀",
-    "🤣",
-    "😍",
-    "🥺",
-    "✨",
-    "💕",
-    "🙏",
-    "😤",
-    "👏",
-    "💪",
-  ];
-  return text
-    .split(" ")
-    .map((word) => {
-      const numEmojis = Math.floor(Math.random() * 3) + 1;
-      const randomEmojis = Array(numEmojis)
-        .fill(0)
-        .map(() => emojis[Math.floor(Math.random() * emojis.length)])
-        .join("");
-      return word + " " + randomEmojis;
-    })
-    .join(" ");
 };
 
 /**

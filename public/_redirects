@@ -1,0 +1,4 @@
+# Cloudflare Pages SPA fallback — every unknown path serves index.html so the
+# React app can route client-side. The 200 status is the magic that turns this
+# into a rewrite (not a 30x redirect).
+/*  /index.html  200

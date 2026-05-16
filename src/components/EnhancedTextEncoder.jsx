@@ -73,6 +73,13 @@ const LoadingSpinner = () => (
 
 // Configuration constants
 const MAX_DISPLAYED_TAGS = 50;
+// Cap input at 50k chars — protects against O(n × 511 encoders) hangs on
+// pathological paste-bomb inputs. Most use cases are well under 10k.
+const MAX_INPUT_LENGTH = 50000;
+// Debounce window for the encoderResults memo. Each keystroke updates
+// `inputText` immediately (so the textarea stays responsive); the debounced
+// value drives encoding, so we re-run 511 encoders at most once per ~250 ms.
+const INPUT_DEBOUNCE_MS = 250;
 const DEFAULT_SHUFFLE_ENCODERS = [
   "binary-pro",
   "morse-pro",
@@ -84,6 +91,10 @@ const DEFAULT_SHUFFLE_ENCODERS = [
 const EnhancedTextEncoder = () => {
   // Core state
   const [inputText, setInputText] = useState("Hello World!");
+  // Debounced view of inputText that drives the heavy encoderResults memo.
+  // Keystrokes keep `inputText` snappy in the textarea; encoding runs at most
+  // once per INPUT_DEBOUNCE_MS window.
+  const [debouncedInputText, setDebouncedInputText] = useState("Hello World!");
   const [mode, setMode] = useState("encode");
   const [copiedId, setCopiedId] = useState(null);
   const [encoderParams, setEncoderParams] = useState(() => {
@@ -246,6 +257,15 @@ const EnhancedTextEncoder = () => {
   useEffect(() => {
     setHistory(HistoryManager.getHistory());
   }, []);
+
+  // Debounce inputText → debouncedInputText to throttle the 511-encoder sweep.
+  useEffect(() => {
+    const handle = setTimeout(
+      () => setDebouncedInputText(inputText),
+      INPUT_DEBOUNCE_MS,
+    );
+    return () => clearTimeout(handle);
+  }, [inputText]);
 
   // Check for shared links
   useEffect(() => {
@@ -427,9 +447,10 @@ const EnhancedTextEncoder = () => {
     completeOnboarding();
   };
 
-  // Memoize encoder results to avoid re-encoding on every render
+  // Memoize encoder results to avoid re-encoding on every render. Uses the
+  // debounced input so rapid typing doesn't re-run 511 encoders per keystroke.
   const encoderResults = useEncoderResults({
-    inputText,
+    inputText: debouncedInputText,
     mode,
     encoderParams,
     shuffleEncoders,
@@ -998,6 +1019,7 @@ const EnhancedTextEncoder = () => {
           <textarea
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
+            maxLength={MAX_INPUT_LENGTH}
             className={`w-full px-4 md:px-6 py-3 md:py-4 bg-white/10 backdrop-blur-md border-2 border-white/20 rounded-xl ${theme.textPrimary} placeholder-white/50 text-base md:text-lg focus:outline-none focus:border-purple-400/60 focus:bg-white/15 transition-all min-h-[100px] md:min-h-[120px] resize-y`}
             placeholder={
               mode === "encode"

@@ -3,6 +3,8 @@
  * Handles creation, storage, and management of user-created custom encoders
  */
 
+import { utf8ToBase64, base64ToUtf8 } from "./utf8Base64.js";
+
 const STORAGE_KEY = "custom-encoders";
 const MAX_CUSTOM_ENCODERS = 20;
 
@@ -46,14 +48,6 @@ export class CustomEncoderManager {
       console.error("Failed to load custom encoders:", error);
       return [];
     }
-  }
-
-  /**
-   * Get a specific custom encoder by ID
-   */
-  static getEncoder(id) {
-    const encoders = this.getEncoders();
-    return encoders.find((e) => e.id === id);
   }
 
   /**
@@ -114,7 +108,7 @@ export class CustomEncoderManager {
           len > 0;
           len--
         ) {
-          const substr = text.substr(i, len);
+          const substr = text.slice(i, i + len);
           const lookupStr = caseSensitive ? substr : substr.toLowerCase();
 
           if (reverseMapping[lookupStr] !== undefined) {
@@ -189,7 +183,7 @@ export class CustomEncoderManager {
       },
     };
 
-    return btoa(JSON.stringify(data));
+    return utf8ToBase64(JSON.stringify(data));
   }
 
   /**
@@ -199,7 +193,7 @@ export class CustomEncoderManager {
   static decodeEncoderPayload(encodedData) {
     let data;
     try {
-      data = JSON.parse(atob(encodedData));
+      data = JSON.parse(base64ToUtf8(encodedData));
     } catch (error) {
       throw new Error("Invalid encoder data: " + error.message);
     }
@@ -219,15 +213,6 @@ export class CustomEncoderManager {
       id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
       createdAt: Date.now(),
     };
-  }
-
-  /**
-   * Import custom encoder from shareable format.
-   * Prefer decodeEncoderPayload + saveEncoder for flows that need a preview step.
-   */
-  static importEncoder(encodedData) {
-    const encoder = this.decodeEncoderPayload(encodedData);
-    return this.saveEncoder(encoder);
   }
 
   /**

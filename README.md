@@ -11,7 +11,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![CI](https://github.com/zophiezlan/encode-me-txt/workflows/CI/badge.svg)](https://github.com/zophiezlan/encode-me-txt/actions)
 
-[Live Demo](https://encode-me-txt.vercel.app) · [Report Bug](https://github.com/zophiezlan/encode-me-txt/issues) · [Request Feature](https://github.com/zophiezlan/encode-me-txt/issues)
+[Live Demo](https://encode-me-txt.pages.dev) · [Report Bug](https://github.com/zophiezlan/encode-me-txt/issues) · [Request Feature](https://github.com/zophiezlan/encode-me-txt/issues)
 
 </div>
 
@@ -486,8 +486,9 @@ encode-me-txt/
 │   │   └── dailyPuzzles.js         # Daily challenges
 │   ├── __tests__/       # Test files
 │   └── main.jsx
-├── vercel.json         # Vercel deployment config
-├── netlify.toml        # Netlify deployment config
+├── public/
+│   ├── _headers        # Cloudflare Pages: security headers + CSP
+│   └── _redirects      # Cloudflare Pages: SPA fallback to index.html
 ├── vite.config.js
 ├── tailwind.config.js
 ├── API.md             # API documentation
@@ -498,30 +499,25 @@ encode-me-txt/
 
 ## 📦 Deployment
 
-### Automated Deployment
+### Cloudflare Pages (Primary)
 
-#### Vercel (Recommended)
+The project deploys to [Cloudflare Pages](https://pages.cloudflare.com/) via the
+Cloudflare dashboard's GitHub integration — no workflow file required. Hook up
+your repo once and every push to `main` is built and served from the global edge
+network.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/zophiezlan/encode-me-txt)
+**Build settings (in the Cloudflare dashboard):**
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node version: `24`
 
-```bash
-npm run build
-# Vercel auto-deploys from Git or use `vercel deploy`
-```
+Security headers (CSP, HSTS, X-Frame-Options, Referrer-Policy, etc.) and the
+SPA fallback are wired through `public/_headers` and `public/_redirects`,
+which Cloudflare reads from the build output.
 
-Configuration: `vercel.json` included with security headers.
+### GitHub Pages (Fallback)
 
-#### Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/zophiezlan/encode-me-txt)
-
-Configuration: `netlify.toml` included with security headers.
-
-#### GitHub Pages
-
-Automatic deployment via GitHub Actions on push to `main` branch.
-
-See `.github/workflows/deploy.yml` for configuration.
+A backup deployment runs on every push via `.github/workflows/deploy.yml`.
 
 ### Manual Deployment
 

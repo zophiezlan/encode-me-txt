@@ -4,34 +4,6 @@
  */
 
 /**
- * Encodes text to binary (8-bit)
- * @param {string} text - The text to encode
- * @returns {string} - Binary representation
- */
-export const encodeBinary = (text) => {
-  return text
-    .split("")
-    .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
-    .join(" ");
-};
-
-/**
- * Decodes binary back to text
- * @param {string} text - The binary to decode
- * @returns {string} - Decoded text or error message
- */
-export const decodeBinary = (text) => {
-  try {
-    return text
-      .split(" ")
-      .map((binary) => String.fromCharCode(parseInt(binary, 2)))
-      .join("");
-  } catch {
-    return "[Decode failed]";
-  }
-};
-
-/**
  * Encodes text to hexadecimal
  * @param {string} text - The text to encode
  * @returns {string} - Hexadecimal representation

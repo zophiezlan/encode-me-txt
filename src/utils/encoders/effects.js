@@ -565,64 +565,7 @@ const CURRENCIES = [
   "₢",
   "₯",
 ];
-const CHESS_PIECES = [
-  "♔",
-  "♕",
-  "♖",
-  "♗",
-  "♘",
-  "♙",
-  "♚",
-  "♛",
-  "♜",
-  "♝",
-  "♞",
-  "♟",
-];
 const CARD_SUITS = ["♠", "♣", "♥", "♦", "♤", "♧", "♡", "♢"];
-const MUSIC_NOTES = ["♩", "♪", "♫", "♬", "𝄞", "𝄢", "♭", "♮", "♯"];
-const WEATHER_SYMBOLS = [
-  "☀",
-  "☁",
-  "☂",
-  "☃",
-  "☄",
-  "★",
-  "☆",
-  "☇",
-  "☈",
-  "☉",
-  "☊",
-  "☋",
-  "⚡",
-  "❄",
-  "❅",
-  "❆",
-  "🌤",
-  "🌥",
-  "🌦",
-  "🌧",
-  "🌨",
-  "🌩",
-  "🌪",
-  "🌫",
-  "🌬",
-  "☔",
-];
-const ZODIAC_SIGNS = [
-  "♈",
-  "♉",
-  "♊",
-  "♋",
-  "♌",
-  "♍",
-  "♎",
-  "♏",
-  "♐",
-  "♑",
-  "♒",
-  "♓",
-];
 const PLANET_SYMBOLS = [
   "☿",
   "♀",
@@ -730,39 +673,11 @@ const DINGBATS = [
 export const encodeCurrencySymbols = createModuloEncoder(CURRENCIES);
 
 /**
- * Encode with chess pieces using shared utility
- * @param {string} text - The text to encode
- * @returns {string} - Text encoded with chess pieces
- */
-export const encodeChessPieces = createModuloEncoder(CHESS_PIECES);
-
-/**
  * Encode with card suits using shared utility
  * @param {string} text - The text to encode
  * @returns {string} - Text encoded with card suits
  */
 export const encodeCardSuits = createModuloEncoder(CARD_SUITS);
-
-/**
- * Encode with music notes using shared utility
- * @param {string} text - The text to encode
- * @returns {string} - Text encoded with music notes
- */
-export const encodeMusicNotes = createModuloEncoder(MUSIC_NOTES);
-
-/**
- * Encode with weather symbols using shared utility
- * @param {string} text - The text to encode
- * @returns {string} - Text encoded with weather symbols
- */
-export const encodeWeatherSymbols = createModuloEncoder(WEATHER_SYMBOLS);
-
-/**
- * Encode with zodiac signs using shared utility
- * @param {string} text - The text to encode
- * @returns {string} - Text encoded with zodiac signs
- */
-export const encodeZodiacSigns = createModuloEncoder(ZODIAC_SIGNS);
 
 /**
  * Encode with planets using shared utility

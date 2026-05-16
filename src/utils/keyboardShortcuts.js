@@ -106,16 +106,3 @@ export class KeyboardShortcuts {
     );
   }
 }
-
-// Default shortcuts configuration
-export const DEFAULT_SHORTCUTS = {
-  "ctrl+k": "Focus search",
-  "ctrl+shift+e": "Toggle encode/decode mode",
-  "ctrl+shift+a": "Encode all",
-  "ctrl+shift+c": "Toggle chain mode",
-  "ctrl+shift+h": "Toggle history panel",
-  "ctrl+shift+t": "Cycle theme",
-  "ctrl+shift+?": "Show keyboard shortcuts help",
-  escape: "Close modals/panels",
-  "ctrl+/": "Toggle favorites panel",
-};

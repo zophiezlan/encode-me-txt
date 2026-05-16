@@ -3,6 +3,8 @@
  * Various digital signature formats and authentication mechanisms
  */
 
+import { utf8ToBase64 } from "../utf8Base64.js";
+
 // ============================================
 // PGP/GPG SIGNATURES
 // ============================================
@@ -43,7 +45,7 @@ export const encodePGPSignature = (text) => {
  */
 export const encodePGPClearsign = (text) => {
   const hash = "SHA512";
-  const sigData = btoa(text).slice(0, 64);
+  const sigData = utf8ToBase64(text).slice(0, 64);
 
   return `-----BEGIN PGP SIGNED MESSAGE-----
 Hash: ${hash}
@@ -85,8 +87,11 @@ export const encodeJWTSignature = (text) => {
       };
 
       // Create JWT structure
-      const headerB64 = btoa(JSON.stringify(header)).replace(/=/g, "");
-      const payloadB64 = btoa(JSON.stringify(payload)).replace(/=/g, "");
+      const headerB64 = utf8ToBase64(JSON.stringify(header)).replace(/=/g, "");
+      const payloadB64 = utf8ToBase64(JSON.stringify(payload)).replace(
+        /=/g,
+        "",
+      );
 
       // Generate fake signature
       let signature = "";
