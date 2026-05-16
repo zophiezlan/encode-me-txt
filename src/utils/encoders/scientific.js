@@ -3,22 +3,271 @@
  * Physics, Chemistry, Mathematics, and scientific notation encodings
  */
 
+import { createCharEncoder } from "./shared.js";
+
+const PHYSICS_CONSTANTS = [
+  "c",
+  "ℏ",
+  "G",
+  "e",
+  "mₑ",
+  "mₚ",
+  "kB",
+  "NA",
+  "R",
+  "σ",
+  "α",
+  "μ₀",
+  "ε₀",
+  "Φ₀",
+  "h",
+];
+
+const PHYSICS_UNITS = [
+  "m/s",
+  "J·s",
+  "m³/kg·s²",
+  "C",
+  "kg",
+  "kg",
+  "J/K",
+  "mol⁻¹",
+  "J/mol·K",
+  "W/m²·K⁴",
+];
+
+const CHEMICAL_ELEMENTS = [
+  "H",
+  "He",
+  "Li",
+  "Be",
+  "B",
+  "C",
+  "N",
+  "O",
+  "F",
+  "Ne",
+  "Na",
+  "Mg",
+  "Al",
+  "Si",
+  "P",
+  "S",
+  "Cl",
+  "Ar",
+  "K",
+  "Ca",
+];
+
+const MOLECULAR_BONDS = ["-", "=", "≡", "⊃", "⊂", "○"];
+const MOLECULAR_GROUPS = ["CH₃", "OH", "NH₂", "COOH", "CO", "NO₂", "SO₃", "PO₄"];
+
+const CALCULUS_OPERATORS = ["∂", "∇", "∫", "∑", "∏", "lim", "d/dx", "∬", "∮"];
+const CALCULUS_FUNCTIONS = [
+  "f(x)",
+  "g(x)",
+  "sin(x)",
+  "cos(x)",
+  "e^x",
+  "ln(x)",
+  "x²",
+];
+
+const PERIODIC_ELEMENTS = [
+  "Hydrogen",
+  "Helium",
+  "Lithium",
+  "Beryllium",
+  "Boron",
+  "Carbon",
+  "Nitrogen",
+  "Oxygen",
+  "Fluorine",
+  "Neon",
+  "Sodium",
+  "Magnesium",
+  "Aluminum",
+  "Silicon",
+  "Phosphorus",
+  "Sulfur",
+  "Chlorine",
+  "Argon",
+  "Potassium",
+  "Calcium",
+  "Scandium",
+  "Titanium",
+  "Vanadium",
+  "Chromium",
+  "Manganese",
+  "Iron",
+  "Cobalt",
+  "Nickel",
+  "Copper",
+  "Zinc",
+  "Gallium",
+  "Germanium",
+];
+
+const SI_UNITS = [
+  "m",
+  "kg",
+  "s",
+  "A",
+  "K",
+  "mol",
+  "cd",
+  "Hz",
+  "N",
+  "Pa",
+  "J",
+  "W",
+  "C",
+  "V",
+  "Ω",
+];
+const SI_PREFIXES = ["", "k", "M", "G", "m", "μ", "n", "p"];
+
+const STATISTICS_SYMBOLS = ["μ", "σ", "σ²", "χ²", "z", "t", "F", "p", "n", "r"];
+
+const THERMO_VARS = ["ΔG", "ΔH", "ΔS", "T", "P", "V", "n", "U", "Q", "W"];
+
+const LOGIC_GATES = ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR"];
+
+const SET_SYMBOLS = [
+  "∈",
+  "∉",
+  "⊂",
+  "⊃",
+  "⊆",
+  "⊇",
+  "∪",
+  "∩",
+  "∅",
+  "ℕ",
+  "ℤ",
+  "ℚ",
+  "ℝ",
+  "ℂ",
+];
+
+const GEOMETRY_SHAPES = ["△", "□", "○", "◇", "☆", "⬠", "⬡", "▽"];
+const GEOMETRY_RELATIONS = ["≅", "∼", "⊥", "∥", "∦"];
+
+const FLUID_FLOWS = ["≋", "≈", "∿", "〰", "⌇", "⏦", "☵", "☲"];
+const FLUID_REGIMES = ["laminar", "turbulent", "transitional", "creeping"];
+
+const CRYSTAL_SYSTEMS = [
+  "cubic",
+  "tetragonal",
+  "orthorhombic",
+  "hexagonal",
+  "trigonal",
+  "monoclinic",
+  "triclinic",
+];
+const CRYSTAL_LATTICES = ["P", "I", "F", "C", "A", "B", "R"];
+
+const SEISMIC_WAVES = ["P", "S", "L", "R"]; // Primary, Secondary, Love, Rayleigh
+const SEISMIC_INTENSITIES = [
+  "I",
+  "II",
+  "III",
+  "IV",
+  "V",
+  "VI",
+  "VII",
+  "VIII",
+  "IX",
+  "X",
+  "XI",
+  "XII",
+];
+
+const MAGNETIC_POLES = ["N⟶S", "S⟶N", "N⟷N", "S⟷S"];
+const MAGNETIC_FIELDS = ["⟵⟶", "⟷", "↝↜", "⇌", "⥊⥋", "⥎⥏", "⥂⥃", "⇶"];
+
+const SUPERNOVA_TYPES = ["Ia", "Ib", "Ic", "II-P", "II-L", "IIn", "IIb"];
+const SUPERNOVA_PHASES = ["free-expansion", "Sedov-Taylor", "snow-plow", "fade"];
+
+const CIRCADIAN_PHASES = ["🌅", "☀️", "🌤️", "⛅", "🌥️", "🌙", "🌑", "💤"];
+const CIRCADIAN_HORMONES = ["melatonin", "cortisol", "serotonin", "dopamine"];
+
+const HOLO_PATTERNS = ["▓▒░", "░▒▓", "▒▓░", "▓░▒", "░▓▒", "▒░▓", "█▓▒", "▒▓█"];
+const HOLO_LASERS = [
+  "He-Ne",
+  "Ar",
+  "Kr",
+  "Nd:YAG",
+  "diode",
+  "ruby",
+  "CO2",
+  "excimer",
+];
+
+const FERMENTATION_ORGANISMS = [
+  "S.cerevisiae",
+  "L.bulgaricus",
+  "B.subtilis",
+  "A.niger",
+  "K.marxianus",
+  "L.plantarum",
+  "S.thermophilus",
+  "P.roqueforti",
+];
+const FERMENTATION_PRODUCTS = [
+  "ethanol",
+  "lactate",
+  "acetate",
+  "CO2",
+  "citrate",
+  "butyrate",
+  "propionate",
+  "succinate",
+];
+
+const NEURO_TRANSMITTERS = [
+  "dopamine",
+  "serotonin",
+  "norepinephrine",
+  "GABA",
+  "glutamate",
+  "acetylcholine",
+  "endorphin",
+  "histamine",
+];
+const NEURO_RECEPTORS = ["D1", "D2", "5-HT", "α", "β", "NMDA", "AMPA", "mAChR"];
+
+const MANTLE_CELLS = [
+  "whole-mantle",
+  "layered",
+  "plume",
+  "slab-driven",
+  "thermal",
+  "compositional",
+  "thermo-chemical",
+  "stagnant-lid",
+];
+const MANTLE_VISCOSITIES = [
+  "1e18",
+  "1e19",
+  "1e20",
+  "1e21",
+  "1e22",
+  "1e23",
+  "1e24",
+  "1e25",
+];
+
 /**
  * Scientific notation encoding
  * @param {string} text - The text to encode
  * @returns {string} - Scientific notation format
  */
-export const encodeScientific = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const exp = Math.floor(Math.log10(code)) || 0;
-      const mantissa = (code / Math.pow(10, exp)).toFixed(4);
-      return `${mantissa}×10^${exp}`;
-    })
-    .join(" ");
-};
+export const encodeScientific = createCharEncoder((code) => {
+  const exp = Math.floor(Math.log10(code)) || 0;
+  const mantissa = (code / Math.pow(10, exp)).toFixed(4);
+  return `${mantissa}×10^${exp}`;
+}, " ");
 
 /**
  * Decode Scientific notation
@@ -45,109 +294,35 @@ export const decodeScientific = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Physics symbols
  */
-export const encodePhysicsConstants = (text) => {
-  const constants = [
-    "c",
-    "ℏ",
-    "G",
-    "e",
-    "mₑ",
-    "mₚ",
-    "kB",
-    "NA",
-    "R",
-    "σ",
-    "α",
-    "μ₀",
-    "ε₀",
-    "Φ₀",
-    "h",
-  ];
-  const units = [
-    "m/s",
-    "J·s",
-    "m³/kg·s²",
-    "C",
-    "kg",
-    "kg",
-    "J/K",
-    "mol⁻¹",
-    "J/mol·K",
-    "W/m²·K⁴",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const constIdx = code % constants.length;
-      const unitIdx = code % units.length;
-      return `${constants[constIdx]}=${code}${units[unitIdx]}`;
-    })
-    .join(" | ");
-};
+export const encodePhysicsConstants = createCharEncoder((code) => {
+  const constIdx = code % PHYSICS_CONSTANTS.length;
+  const unitIdx = code % PHYSICS_UNITS.length;
+  return `${PHYSICS_CONSTANTS[constIdx]}=${code}${PHYSICS_UNITS[unitIdx]}`;
+}, " | ");
 
 /**
  * Chemical formula encoding
  * @param {string} text - The text to encode
  * @returns {string} - Chemical formula format
  */
-export const encodeChemicalFormula = (text) => {
-  const elements = [
-    "H",
-    "He",
-    "Li",
-    "Be",
-    "B",
-    "C",
-    "N",
-    "O",
-    "F",
-    "Ne",
-    "Na",
-    "Mg",
-    "Al",
-    "Si",
-    "P",
-    "S",
-    "Cl",
-    "Ar",
-    "K",
-    "Ca",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const elem1 = elements[code % elements.length];
-      const subscript = Math.floor(code / elements.length) % 10;
-      const superscript = code % 4;
-      const charges = ["", "⁺", "²⁺", "⁻"];
-      return `${elem1}${subscript > 1 ? "₀₁₂₃₄₅₆₇₈₉"[subscript] : ""}${charges[superscript]}`;
-    })
-    .join("");
-};
+export const encodeChemicalFormula = createCharEncoder((code) => {
+  const elem1 = CHEMICAL_ELEMENTS[code % CHEMICAL_ELEMENTS.length];
+  const subscript = Math.floor(code / CHEMICAL_ELEMENTS.length) % 10;
+  const superscript = code % 4;
+  const charges = ["", "⁺", "²⁺", "⁻"];
+  return `${elem1}${subscript > 1 ? "₀₁₂₃₄₅₆₇₈₉"[subscript] : ""}${charges[superscript]}`;
+});
 
 /**
  * Molecular structure encoding
  * @param {string} text - The text to encode
  * @returns {string} - Molecular structure
  */
-export const encodeMolecular = (text) => {
-  const bonds = ["-", "=", "≡", "⊃", "⊂", "○"];
-  const groups = ["CH₃", "OH", "NH₂", "COOH", "CO", "NO₂", "SO₃", "PO₄"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const bondIdx = code % bonds.length;
-      const groupIdx = code % groups.length;
-      return `${groups[groupIdx]}${bonds[bondIdx]}`;
-    })
-    .join("");
-};
+export const encodeMolecular = createCharEncoder((code) => {
+  const bondIdx = code % MOLECULAR_BONDS.length;
+  const groupIdx = code % MOLECULAR_GROUPS.length;
+  return `${MOLECULAR_GROUPS[groupIdx]}${MOLECULAR_BONDS[bondIdx]}`;
+});
 
 /**
  * Electron configuration encoding
@@ -187,40 +362,25 @@ export const encodeElectronConfig = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Quantum notation
  */
-export const encodeQuantumState = (text) => {
-  return text
+export const encodeQuantumState = createCharEncoder((code) => {
+  const binary = code.toString(2).padStart(8, "0");
+  const qubits = binary
     .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const binary = code.toString(2).padStart(8, "0");
-      const qubits = binary
-        .split("")
-        .map((b) => (b === "0" ? "|0⟩" : "|1⟩"))
-        .join("");
-      return `⟨ψ|${qubits}`;
-    })
-    .join(" ⊗ ");
-};
+    .map((b) => (b === "0" ? "|0⟩" : "|1⟩"))
+    .join("");
+  return `⟨ψ|${qubits}`;
+}, " ⊗ ");
 
 /**
  * Calculus notation encoding
  * @param {string} text - The text to encode
  * @returns {string} - Calculus notation
  */
-export const encodeCalculus = (text) => {
-  const operators = ["∂", "∇", "∫", "∑", "∏", "lim", "d/dx", "∬", "∮"];
-  const functions = ["f(x)", "g(x)", "sin(x)", "cos(x)", "e^x", "ln(x)", "x²"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const op = operators[code % operators.length];
-      const func = functions[code % functions.length];
-      return `${op}[${func}]=${code}`;
-    })
-    .join(" + ");
-};
+export const encodeCalculus = createCharEncoder((code) => {
+  const op = CALCULUS_OPERATORS[code % CALCULUS_OPERATORS.length];
+  const func = CALCULUS_FUNCTIONS[code % CALCULUS_FUNCTIONS.length];
+  return `${op}[${func}]=${code}`;
+}, " + ");
 
 /**
  * Matrix notation encoding
@@ -244,18 +404,12 @@ export const encodeMatrix = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Vector format
  */
-export const encodeVector = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const x = code % 16;
-      const y = Math.floor(code / 16) % 16;
-      const z = Math.floor(code / 256);
-      return `⟨${x}, ${y}, ${z}⟩`;
-    })
-    .join(" ");
-};
+export const encodeVector = createCharEncoder((code) => {
+  const x = code % 16;
+  const y = Math.floor(code / 16) % 16;
+  const z = Math.floor(code / 256);
+  return `⟨${x}, ${y}, ${z}⟩`;
+}, " ");
 
 /**
  * Decode Vector notation
@@ -284,17 +438,11 @@ export const decodeVector = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Complex numbers
  */
-export const encodeComplex = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const real = code % 100;
-      const imag = Math.floor(code / 100);
-      return `${real}${imag >= 0 ? "+" : ""}${imag}i`;
-    })
-    .join(" ");
-};
+export const encodeComplex = createCharEncoder((code) => {
+  const real = code % 100;
+  const imag = Math.floor(code / 100);
+  return `${real}${imag >= 0 ? "+" : ""}${imag}i`;
+}, " ");
 
 /**
  * Decode Complex numbers
@@ -321,269 +469,122 @@ export const decodeComplex = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Polar coordinates
  */
-export const encodePolar = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const r = code;
-      const theta = ((code * Math.PI) / 128).toFixed(2);
-      return `(r=${r}, θ=${theta}rad)`;
-    })
-    .join(" ");
-};
+export const encodePolar = createCharEncoder((code) => {
+  const r = code;
+  const theta = ((code * Math.PI) / 128).toFixed(2);
+  return `(r=${r}, θ=${theta}rad)`;
+}, " ");
 
 /**
  * Periodic table encoding (full element names)
  * @param {string} text - The text to encode
  * @returns {string} - Element names
  */
-export const encodePeriodicTable = (text) => {
-  const elements = [
-    "Hydrogen",
-    "Helium",
-    "Lithium",
-    "Beryllium",
-    "Boron",
-    "Carbon",
-    "Nitrogen",
-    "Oxygen",
-    "Fluorine",
-    "Neon",
-    "Sodium",
-    "Magnesium",
-    "Aluminum",
-    "Silicon",
-    "Phosphorus",
-    "Sulfur",
-    "Chlorine",
-    "Argon",
-    "Potassium",
-    "Calcium",
-    "Scandium",
-    "Titanium",
-    "Vanadium",
-    "Chromium",
-    "Manganese",
-    "Iron",
-    "Cobalt",
-    "Nickel",
-    "Copper",
-    "Zinc",
-    "Gallium",
-    "Germanium",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const elem = elements[code % elements.length];
-      const isotope = code % 10;
-      return `${elem}-${isotope}`;
-    })
-    .join(" · ");
-};
+export const encodePeriodicTable = createCharEncoder((code) => {
+  const elem = PERIODIC_ELEMENTS[code % PERIODIC_ELEMENTS.length];
+  const isotope = code % 10;
+  return `${elem}-${isotope}`;
+}, " · ");
 
 /**
  * SI units encoding
  * @param {string} text - The text to encode
  * @returns {string} - SI unit format
  */
-export const encodeSIUnits = (text) => {
-  const units = [
-    "m",
-    "kg",
-    "s",
-    "A",
-    "K",
-    "mol",
-    "cd",
-    "Hz",
-    "N",
-    "Pa",
-    "J",
-    "W",
-    "C",
-    "V",
-    "Ω",
-  ];
-  const prefixes = ["", "k", "M", "G", "m", "μ", "n", "p"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const unit = units[code % units.length];
-      const prefix =
-        prefixes[Math.floor(code / units.length) % prefixes.length];
-      return `${code}${prefix}${unit}`;
-    })
-    .join(" ");
-};
+export const encodeSIUnits = createCharEncoder((code) => {
+  const unit = SI_UNITS[code % SI_UNITS.length];
+  const prefix = SI_PREFIXES[Math.floor(code / SI_UNITS.length) % SI_PREFIXES.length];
+  return `${code}${prefix}${unit}`;
+}, " ");
 
 /**
  * Astronomical coordinate encoding
  * @param {string} text - The text to encode
  * @returns {string} - Astronomical coordinates
  */
-export const encodeAstronomical = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const ra = ((code * 24) / 256).toFixed(2);
-      const dec = (((code - 128) * 90) / 128).toFixed(2);
-      return `RA:${ra}h DEC:${dec >= 0 ? "+" : ""}${dec}°`;
-    })
-    .join(" | ");
-};
+export const encodeAstronomical = createCharEncoder((code) => {
+  const ra = ((code * 24) / 256).toFixed(2);
+  const dec = (((code - 128) * 90) / 128).toFixed(2);
+  return `RA:${ra}h DEC:${dec >= 0 ? "+" : ""}${dec}°`;
+}, " | ");
 
 /**
  * Wave function encoding
  * @param {string} text - The text to encode
  * @returns {string} - Wave function notation
  */
-export const encodeWaveFunction = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const amplitude = (code / 255).toFixed(3);
-      const frequency = code % 10;
-      const phase = (((code * Math.PI) / 128) % (2 * Math.PI)).toFixed(2);
-      return `Ψ=${amplitude}·sin(${frequency}ωt+${phase})`;
-    })
-    .join(" + ");
-};
+export const encodeWaveFunction = createCharEncoder((code) => {
+  const amplitude = (code / 255).toFixed(3);
+  const frequency = code % 10;
+  const phase = (((code * Math.PI) / 128) % (2 * Math.PI)).toFixed(2);
+  return `Ψ=${amplitude}·sin(${frequency}ωt+${phase})`;
+}, " + ");
 
 /**
  * Statistical notation encoding
  * @param {string} text - The text to encode
  * @returns {string} - Statistical notation
  */
-export const encodeStatistics = (text) => {
-  const symbols = ["μ", "σ", "σ²", "χ²", "z", "t", "F", "p", "n", "r"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const symbol = symbols[code % symbols.length];
-      const value = (code / 10).toFixed(2);
-      return `${symbol}=${value}`;
-    })
-    .join(", ");
-};
+export const encodeStatistics = createCharEncoder((code) => {
+  const symbol = STATISTICS_SYMBOLS[code % STATISTICS_SYMBOLS.length];
+  const value = (code / 10).toFixed(2);
+  return `${symbol}=${value}`;
+}, ", ");
 
 /**
  * Thermodynamic encoding
  * @param {string} text - The text to encode
  * @returns {string} - Thermodynamic notation
  */
-export const encodeThermodynamic = (text) => {
-  const vars = ["ΔG", "ΔH", "ΔS", "T", "P", "V", "n", "U", "Q", "W"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const variable = vars[code % vars.length];
-      const value = code;
-      return `${variable}=${value}`;
-    })
-    .join(" → ");
-};
+export const encodeThermodynamic = createCharEncoder((code) => {
+  const variable = THERMO_VARS[code % THERMO_VARS.length];
+  const value = code;
+  return `${variable}=${value}`;
+}, " → ");
 
 /**
  * Logic gate encoding
  * @param {string} text - The text to encode
  * @returns {string} - Logic gate representation
  */
-export const encodeLogicGates = (text) => {
-  const gates = ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const binary = code.toString(2).padStart(8, "0");
-      const gateIdx = code % gates.length;
-      return `${gates[gateIdx]}(${binary.slice(0, 4)}, ${binary.slice(4)})`;
-    })
-    .join(" | ");
-};
+export const encodeLogicGates = createCharEncoder((code) => {
+  const binary = code.toString(2).padStart(8, "0");
+  const gateIdx = code % LOGIC_GATES.length;
+  return `${LOGIC_GATES[gateIdx]}(${binary.slice(0, 4)}, ${binary.slice(4)})`;
+}, " | ");
 
 /**
  * Tensor notation encoding
  * @param {string} text - The text to encode
  * @returns {string} - Tensor notation
  */
-export const encodeTensor = (text) => {
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const i = code % 4;
-      const j = Math.floor(code / 4) % 4;
-      const k = Math.floor(code / 16) % 4;
-      return `T^${i}_{${j}${k}}`;
-    })
-    .join(" ⊗ ");
-};
+export const encodeTensor = createCharEncoder((code) => {
+  const i = code % 4;
+  const j = Math.floor(code / 4) % 4;
+  const k = Math.floor(code / 16) % 4;
+  return `T^${i}_{${j}${k}}`;
+}, " ⊗ ");
 
 /**
  * Set theory encoding
  * @param {string} text - The text to encode
  * @returns {string} - Set notation
  */
-export const encodeSetTheory = (text) => {
-  const symbols = [
-    "∈",
-    "∉",
-    "⊂",
-    "⊃",
-    "⊆",
-    "⊇",
-    "∪",
-    "∩",
-    "∅",
-    "ℕ",
-    "ℤ",
-    "ℚ",
-    "ℝ",
-    "ℂ",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const symbol = symbols[code % symbols.length];
-      return `{${code}} ${symbol} ${symbols[(code + 1) % symbols.length]}`;
-    })
-    .join(" ");
-};
+export const encodeSetTheory = createCharEncoder((code) => {
+  const symbol = SET_SYMBOLS[code % SET_SYMBOLS.length];
+  return `{${code}} ${symbol} ${SET_SYMBOLS[(code + 1) % SET_SYMBOLS.length]}`;
+}, " ");
 
 /**
  * Geometry encoding
  * @param {string} text - The text to encode
  * @returns {string} - Geometry notation
  */
-export const encodeGeometry = (text) => {
-  const shapes = ["△", "□", "○", "◇", "☆", "⬠", "⬡", "▽"];
-  const relations = ["≅", "∼", "⊥", "∥", "∦"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const shape = shapes[code % shapes.length];
-      const relation = relations[code % relations.length];
-      return `${shape}${code}${relation}`;
-    })
-    .join(" ");
-};
+export const encodeGeometry = createCharEncoder((code) => {
+  const shape = GEOMETRY_SHAPES[code % GEOMETRY_SHAPES.length];
+  const relation = GEOMETRY_RELATIONS[code % GEOMETRY_RELATIONS.length];
+  return `${shape}${code}${relation}`;
+}, " ");
 
 /**
  * Number theory encoding
@@ -613,22 +614,13 @@ export const encodeNumberTheory = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Fluid dynamics encoding
  */
-export const encodeFluidDynamics = (text) => {
-  const flows = ["≋", "≈", "∿", "〰", "⌇", "⏦", "☵", "☲"];
-  const regimes = ["laminar", "turbulent", "transitional", "creeping"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const flow = flows[code % flows.length];
-      const regime = regimes[(code >> 4) % regimes.length];
-      const reynolds = code * 100;
-      return `FLOW[${hex}]{${flow}Re=${reynolds}:${regime}}`;
-    })
-    .join("→");
-};
+export const encodeFluidDynamics = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const flow = FLUID_FLOWS[code % FLUID_FLOWS.length];
+  const regime = FLUID_REGIMES[(code >> 4) % FLUID_REGIMES.length];
+  const reynolds = code * 100;
+  return `FLOW[${hex}]{${flow}Re=${reynolds}:${regime}}`;
+}, "→");
 
 export const decodeFluidDynamics = (text) => {
   try {
@@ -653,32 +645,15 @@ export const decodeFluidDynamics = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Crystal encoding
  */
-export const encodeCrystallography = (text) => {
-  const systems = [
-    "cubic",
-    "tetragonal",
-    "orthorhombic",
-    "hexagonal",
-    "trigonal",
-    "monoclinic",
-    "triclinic",
-  ];
-  const lattices = ["P", "I", "F", "C", "A", "B", "R"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const system = systems[code % systems.length];
-      const lattice = lattices[(code >> 3) % lattices.length];
-      const a = ((code % 10) + 2).toFixed(2);
-      const b = (((code >> 2) % 10) + 2).toFixed(2);
-      const c = (((code >> 4) % 10) + 2).toFixed(2);
-      return `⬡${lattice}[${hex}]{${system}:a=${a}Å,b=${b}Å,c=${c}Å}`;
-    })
-    .join("⟷");
-};
+export const encodeCrystallography = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const system = CRYSTAL_SYSTEMS[code % CRYSTAL_SYSTEMS.length];
+  const lattice = CRYSTAL_LATTICES[(code >> 3) % CRYSTAL_LATTICES.length];
+  const a = ((code % 10) + 2).toFixed(2);
+  const b = (((code >> 2) % 10) + 2).toFixed(2);
+  const c = (((code >> 4) % 10) + 2).toFixed(2);
+  return `⬡${lattice}[${hex}]{${system}:a=${a}Å,b=${b}Å,c=${c}Å}`;
+}, "⟷");
 
 export const decodeCrystallography = (text) => {
   try {
@@ -703,36 +678,14 @@ export const decodeCrystallography = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Seismic encoding
  */
-export const encodeSeismograph = (text) => {
-  const waves = ["P", "S", "L", "R"]; // Primary, Secondary, Love, Rayleigh
-  const intensities = [
-    "I",
-    "II",
-    "III",
-    "IV",
-    "V",
-    "VI",
-    "VII",
-    "VIII",
-    "IX",
-    "X",
-    "XI",
-    "XII",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const wave = waves[code % waves.length];
-      const intensity = intensities[code % intensities.length];
-      const magnitude = (code / 25.5).toFixed(1);
-      const amplitude = "∿".repeat((code % 5) + 1);
-      return `SEISMIC[${hex}]${wave}-wave:M${magnitude}(${intensity})${amplitude}`;
-    })
-    .join("⚡");
-};
+export const encodeSeismograph = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const wave = SEISMIC_WAVES[code % SEISMIC_WAVES.length];
+  const intensity = SEISMIC_INTENSITIES[code % SEISMIC_INTENSITIES.length];
+  const magnitude = (code / 25.5).toFixed(1);
+  const amplitude = "∿".repeat((code % 5) + 1);
+  return `SEISMIC[${hex}]${wave}-wave:M${magnitude}(${intensity})${amplitude}`;
+}, "⚡");
 
 export const decodeSeismograph = (text) => {
   try {
@@ -757,23 +710,14 @@ export const decodeSeismograph = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Magnetic encoding
  */
-export const encodeMagneticField = (text) => {
-  const poles = ["N⟶S", "S⟶N", "N⟷N", "S⟷S"];
-  const fields = ["⟵⟶", "⟷", "↝↜", "⇌", "⥊⥋", "⥎⥏", "⥂⥃", "⇶"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const pole = poles[code % poles.length];
-      const field = fields[(code >> 2) % fields.length];
-      const tesla = (code / 1000).toFixed(4);
-      const gauss = (code / 10).toFixed(1);
-      return `MAG[${hex}]${field}{${pole}:${tesla}T/${gauss}G}`;
-    })
-    .join("⊗");
-};
+export const encodeMagneticField = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const pole = MAGNETIC_POLES[code % MAGNETIC_POLES.length];
+  const field = MAGNETIC_FIELDS[(code >> 2) % MAGNETIC_FIELDS.length];
+  const tesla = (code / 1000).toFixed(4);
+  const gauss = (code / 10).toFixed(1);
+  return `MAG[${hex}]${field}{${pole}:${tesla}T/${gauss}G}`;
+}, "⊗");
 
 export const decodeMagneticField = (text) => {
   try {
@@ -798,23 +742,14 @@ export const decodeMagneticField = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Supernova encoding
  */
-export const encodeSupernovaRemnant = (text) => {
-  const types = ["Ia", "Ib", "Ic", "II-P", "II-L", "IIn", "IIb"];
-  const phases = ["free-expansion", "Sedov-Taylor", "snow-plow", "fade"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const type = types[code % types.length];
-      const phase = phases[(code >> 4) % phases.length];
-      const age = code * 100;
-      const radius = (code / 10).toFixed(1);
-      return `SN[${hex}]💥Type-${type}(${age}yr,${radius}pc,${phase})`;
-    })
-    .join("✴");
-};
+export const encodeSupernovaRemnant = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const type = SUPERNOVA_TYPES[code % SUPERNOVA_TYPES.length];
+  const phase = SUPERNOVA_PHASES[(code >> 4) % SUPERNOVA_PHASES.length];
+  const age = code * 100;
+  const radius = (code / 10).toFixed(1);
+  return `SN[${hex}]💥Type-${type}(${age}yr,${radius}pc,${phase})`;
+}, "✴");
 
 export const decodeSupernovaRemnant = (text) => {
   try {
@@ -839,23 +774,14 @@ export const decodeSupernovaRemnant = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Circadian encoding
  */
-export const encodeCircadianRhythm = (text) => {
-  const phases = ["🌅", "☀️", "🌤️", "⛅", "🌥️", "🌙", "🌑", "💤"];
-  const hormones = ["melatonin", "cortisol", "serotonin", "dopamine"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const phase = phases[code % phases.length];
-      const hormone = hormones[(code >> 4) % hormones.length];
-      const hour = code % 24;
-      const level = ((code % 100) + 1).toString().padStart(3, "0");
-      return `CIRCA[${hex}]${phase}@${hour.toString().padStart(2, "0")}:00(${hormone}:${level}%)`;
-    })
-    .join("→");
-};
+export const encodeCircadianRhythm = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const phase = CIRCADIAN_PHASES[code % CIRCADIAN_PHASES.length];
+  const hormone = CIRCADIAN_HORMONES[(code >> 4) % CIRCADIAN_HORMONES.length];
+  const hour = code % 24;
+  const level = ((code % 100) + 1).toString().padStart(3, "0");
+  return `CIRCA[${hex}]${phase}@${hour.toString().padStart(2, "0")}:00(${hormone}:${level}%)`;
+}, "→");
 
 export const decodeCircadianRhythm = (text) => {
   try {
@@ -880,32 +806,14 @@ export const decodeCircadianRhythm = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Holographic encoding
  */
-export const encodeHolographicInterference = (text) => {
-  const patterns = ["▓▒░", "░▒▓", "▒▓░", "▓░▒", "░▓▒", "▒░▓", "█▓▒", "▒▓█"];
-  const lasers = [
-    "He-Ne",
-    "Ar",
-    "Kr",
-    "Nd:YAG",
-    "diode",
-    "ruby",
-    "CO2",
-    "excimer",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const pattern = patterns[code % patterns.length];
-      const laser = lasers[(code >> 3) % lasers.length];
-      const wavelength = 400 + (code % 300);
-      const fringe = (code % 50) + 10;
-      return `HOLO[${hex}]${pattern}{${laser}:λ${wavelength}nm:${fringe}fringes}`;
-    })
-    .join("⟡");
-};
+export const encodeHolographicInterference = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const pattern = HOLO_PATTERNS[code % HOLO_PATTERNS.length];
+  const laser = HOLO_LASERS[(code >> 3) % HOLO_LASERS.length];
+  const wavelength = 400 + (code % 300);
+  const fringe = (code % 50) + 10;
+  return `HOLO[${hex}]${pattern}{${laser}:λ${wavelength}nm:${fringe}fringes}`;
+}, "⟡");
 
 export const decodeHolographicInterference = (text) => {
   try {
@@ -930,41 +838,14 @@ export const decodeHolographicInterference = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Fermentation encoding
  */
-export const encodeFermentation = (text) => {
-  const organisms = [
-    "S.cerevisiae",
-    "L.bulgaricus",
-    "B.subtilis",
-    "A.niger",
-    "K.marxianus",
-    "L.plantarum",
-    "S.thermophilus",
-    "P.roqueforti",
-  ];
-  const products = [
-    "ethanol",
-    "lactate",
-    "acetate",
-    "CO2",
-    "citrate",
-    "butyrate",
-    "propionate",
-    "succinate",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const org = organisms[code % organisms.length];
-      const prod = products[(code >> 3) % products.length];
-      const ph = (3 + (code % 5)).toFixed(1);
-      const temp = 20 + (code % 25);
-      return `FERM[${hex}]🧫{${org}→${prod}@${temp}°C,pH${ph}}`;
-    })
-    .join("⇝");
-};
+export const encodeFermentation = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const org = FERMENTATION_ORGANISMS[code % FERMENTATION_ORGANISMS.length];
+  const prod = FERMENTATION_PRODUCTS[(code >> 3) % FERMENTATION_PRODUCTS.length];
+  const ph = (3 + (code % 5)).toFixed(1);
+  const temp = 20 + (code % 25);
+  return `FERM[${hex}]🧫{${org}→${prod}@${temp}°C,pH${ph}}`;
+}, "⇝");
 
 export const decodeFermentation = (text) => {
   try {
@@ -989,32 +870,14 @@ export const decodeFermentation = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Neurotransmitter encoding
  */
-export const encodeNeurotransmitter = (text) => {
-  const transmitters = [
-    "dopamine",
-    "serotonin",
-    "norepinephrine",
-    "GABA",
-    "glutamate",
-    "acetylcholine",
-    "endorphin",
-    "histamine",
-  ];
-  const receptors = ["D1", "D2", "5-HT", "α", "β", "NMDA", "AMPA", "mAChR"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const nt = transmitters[code % transmitters.length];
-      const rec = receptors[(code >> 3) % receptors.length];
-      const conc = (code / 10).toFixed(1);
-      const action = ["excitatory", "inhibitory"][(code >> 7) % 2];
-      return `NEURO[${hex}]🧠{${nt}→${rec}:${conc}nM:${action}}`;
-    })
-    .join("⚡");
-};
+export const encodeNeurotransmitter = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const nt = NEURO_TRANSMITTERS[code % NEURO_TRANSMITTERS.length];
+  const rec = NEURO_RECEPTORS[(code >> 3) % NEURO_RECEPTORS.length];
+  const conc = (code / 10).toFixed(1);
+  const action = ["excitatory", "inhibitory"][(code >> 7) % 2];
+  return `NEURO[${hex}]🧠{${nt}→${rec}:${conc}nM:${action}}`;
+}, "⚡");
 
 export const decodeNeurotransmitter = (text) => {
   try {
@@ -1039,41 +902,14 @@ export const decodeNeurotransmitter = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Mantle convection encoding
  */
-export const encodeMantleConvection = (text) => {
-  const cells = [
-    "whole-mantle",
-    "layered",
-    "plume",
-    "slab-driven",
-    "thermal",
-    "compositional",
-    "thermo-chemical",
-    "stagnant-lid",
-  ];
-  const viscosities = [
-    "1e18",
-    "1e19",
-    "1e20",
-    "1e21",
-    "1e22",
-    "1e23",
-    "1e24",
-    "1e25",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const cell = cells[code % cells.length];
-      const visc = viscosities[(code >> 3) % viscosities.length];
-      const depth = 100 + code * 10;
-      const temp = 1000 + code * 10;
-      return `MANTLE[${hex}]🌋{${cell}:η${visc}Pa·s@${depth}km:${temp}K}`;
-    })
-    .join("↻");
-};
+export const encodeMantleConvection = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const cell = MANTLE_CELLS[code % MANTLE_CELLS.length];
+  const visc = MANTLE_VISCOSITIES[(code >> 3) % MANTLE_VISCOSITIES.length];
+  const depth = 100 + code * 10;
+  const temp = 1000 + code * 10;
+  return `MANTLE[${hex}]🌋{${cell}:η${visc}Pa·s@${depth}km:${temp}K}`;
+}, "↻");
 
 export const decodeMantleConvection = (text) => {
   try {

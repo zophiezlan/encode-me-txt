@@ -3,6 +3,408 @@
  * Natural patterns, biological sequences, and ecological encodings
  */
 
+import { createCharEncoder } from "./shared.js";
+
+const AMINO_ACIDS = [
+  "Ala",
+  "Arg",
+  "Asn",
+  "Asp",
+  "Cys",
+  "Gln",
+  "Glu",
+  "Gly",
+  "His",
+  "Ile",
+  "Leu",
+  "Lys",
+  "Met",
+  "Phe",
+  "Pro",
+  "Ser",
+  "Thr",
+  "Trp",
+  "Tyr",
+  "Val",
+];
+
+const CODON_BASES = ["A", "U", "G", "C"];
+
+const PLANT_GENERA = [
+  "Rosa",
+  "Quercus",
+  "Acer",
+  "Pinus",
+  "Ficus",
+  "Bambusa",
+  "Orchis",
+  "Lilium",
+];
+const PLANT_SPECIES = [
+  "alba",
+  "rubra",
+  "viridis",
+  "major",
+  "minor",
+  "elegans",
+  "grandiflora",
+  "sylvestris",
+];
+
+const ANIMAL_GENERA = [
+  "Canis",
+  "Felis",
+  "Ursus",
+  "Panthera",
+  "Aquila",
+  "Corvus",
+  "Delphinus",
+  "Equus",
+];
+const ANIMAL_SPECIES = [
+  "familiaris",
+  "catus",
+  "arctos",
+  "leo",
+  "chrysaetos",
+  "corax",
+  "delphis",
+  "caballus",
+];
+
+const CONSTELLATIONS = [
+  "⭐Orion",
+  "⭐Ursa Major",
+  "⭐Cassiopeia",
+  "⭐Scorpius",
+  "⭐Cygnus",
+  "⭐Leo",
+  "⭐Virgo",
+  "⭐Aquarius",
+];
+const CONSTELLATION_STARS = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ"];
+
+const MINERALS = [
+  "Quartz",
+  "Feldspar",
+  "Mica",
+  "Olivine",
+  "Pyroxene",
+  "Amphibole",
+  "Calcite",
+  "Dolomite",
+  "Gypsum",
+  "Halite",
+  "Magnetite",
+  "Hematite",
+];
+const MINERAL_FORMS = [
+  "Crystal",
+  "Aggregate",
+  "Massive",
+  "Fibrous",
+  "Prismatic",
+  "Tabular",
+];
+
+const GEOLOGICAL_ERAS = [
+  "Cenozoic",
+  "Mesozoic",
+  "Paleozoic",
+  "Proterozoic",
+  "Archean",
+  "Hadean",
+];
+const GEOLOGICAL_PERIODS = [
+  "Quaternary",
+  "Neogene",
+  "Paleogene",
+  "Cretaceous",
+  "Jurassic",
+  "Triassic",
+  "Permian",
+  "Carboniferous",
+];
+
+const FLOWERS = [
+  "🌸 Cherry",
+  "🌹 Rose",
+  "🌷 Tulip",
+  "🌻 Sunflower",
+  "🌺 Hibiscus",
+  "💐 Bouquet",
+  "🏵️ Rosette",
+  "💮 White Flower",
+  "🌼 Daisy",
+  "🥀 Wilted",
+];
+
+const BUTTERFLY_PATTERNS = ["◐◑", "◓◒", "◔◕", "◖◗", "●○", "◍◎", "◉◌"];
+
+const SEASHELLS = ["🐚", "🦪", "🐌"];
+const SEASHELL_PATTERNS = ["spiral", "conical", "bivalve", "chambered", "ridged"];
+
+const CLOUDS = [
+  "☁️Cirrus",
+  "⛅Cumulus",
+  "🌥️Stratus",
+  "🌦️Nimbus",
+  "☁️Cumulonimbus",
+  "⛈️Stratocumulus",
+  "🌫️Altocumulus",
+  "☁️Cirrostratus",
+];
+
+const TERRAINS = [
+  "🏔️ Mountain",
+  "🌋 Volcano",
+  "🏝️ Island",
+  "🏜️ Desert",
+  "🌲 Forest",
+  "🌊 Ocean",
+  "❄️ Glacier",
+  "🌾 Prairie",
+];
+
+const ECOSYSTEMS = [
+  "🌲Taiga",
+  "🌴Tropical",
+  "🏜️Arid",
+  "🌊Marine",
+  "🌿Grassland",
+  "🌳Deciduous",
+  "❄️Tundra",
+  "🌾Savanna",
+];
+const BIOMES = ["forest", "reef", "desert", "wetland", "prairie", "alpine"];
+
+const BIRD_CALLS = [
+  "🐦♪tweet",
+  "🦜♫squawk",
+  "🦉♬hoot",
+  "🦅♪screech",
+  "🐧♫honk",
+  "🦆♬quack",
+  "🦚♪call",
+  "🦢♫trumpet",
+];
+
+const PAWS = ["🐾", "🦶", "👣", "🐿️"];
+
+const LEAVES = ["🍃", "🍂", "🍁", "🌿", "☘️", "🌱", "🪴", "🌴"];
+
+const CRYSTAL_SYSTEMS = [
+  "Cubic",
+  "Tetragonal",
+  "Orthorhombic",
+  "Hexagonal",
+  "Trigonal",
+  "Monoclinic",
+  "Triclinic",
+];
+const CRYSTAL_SHAPES = ["💎", "🔷", "🔶", "📐", "⬡", "⬢"];
+
+const OCEAN_ZONES = [
+  "🌊Epipelagic",
+  "🌑Mesopelagic",
+  "🦑Bathypelagic",
+  "🐙Abyssopelagic",
+  "⬛Hadopelagic",
+];
+
+const INSECTS = ["🐜", "🐝", "🦋", "🐛", "🦗", "🦟", "🐞", "🦠"];
+const INSECT_BEHAVIORS = ["crawl", "fly", "hop", "buzz", "flutter"];
+
+const VOLCANO_TYPES = ["🌋Active", "🗻Dormant", "⛰️Extinct", "💨Fumarole"];
+const VOLCANO_ACTIVITIES = [
+  "erupting",
+  "smoking",
+  "quiet",
+  "bubbling",
+  "rumbling",
+];
+
+const ORGANELLES = [
+  "🔴Nucleus",
+  "🟢Mitochondria",
+  "🟡Ribosome",
+  "🔵ER",
+  "🟣Golgi",
+  "⚪Vacuole",
+  "🟤Lysosome",
+  "⚫Chloroplast",
+];
+
+const ORIGAMI_FOLDS = ["╱", "╲", "─", "│", "┼", "╳", "◢", "◣"];
+
+const CONSTELLATION_MAP_STARS = ["✦", "✧", "★", "☆", "✯", "✰", "⋆", "✵"];
+const CONSTELLATION_MAGNITUDES = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ"];
+
+const TECTONIC_MOVEMENTS = [
+  "↗↙",
+  "↘↖",
+  "→←",
+  "↑↓",
+  "⤢⤡",
+  "⇄⇅",
+  "↻↺",
+  "⟳⟲",
+];
+const TECTONIC_BOUNDARIES = [
+  "convergent",
+  "divergent",
+  "transform",
+  "subduction",
+];
+
+const MYCELIUM_NODES = ["◉", "◎", "●", "○", "◐", "◑", "◒", "◓"];
+const MYCELIUM_CONNECTIONS = ["╌", "┄", "┈", "╎", "┆", "┊", "╏", "║"];
+const MYCELIUM_NUTRIENTS = ["N", "P", "K", "C"];
+
+const BIOLUM_GLOWS = ["💫", "✨", "🌟", "⭐", "🔆", "💡", "🌠", "☀️"];
+// Wavelengths in nanometers (nm) - typical bioluminescence range
+const BIOLUM_WAVELENGTHS = [460, 480, 500, 520, 540, 560, 580, 600];
+
+const AURORA_COLORS = ["🟢", "🟣", "🔵", "🟡", "🟠", "🔴", "⚪", "🟤"];
+const AURORA_FORMS = [
+  "arc",
+  "band",
+  "ray",
+  "corona",
+  "veil",
+  "patch",
+  "glow",
+  "flaming",
+];
+
+const WAGGLE_PATTERNS = ["∿", "≋", "⌇", "〰", "⏦", "∾", "≀", "⁓"];
+
+const GLACIER_LAYERS = ["❄", "🧊", "⛄", "❆", "❅", "✻", "✼", "❉"];
+const GLACIER_EPOCHS = ["Holocene", "Pleistocene", "Pliocene", "Miocene"];
+
+const WIND_DIRECTIONS = [
+  "N",
+  "NNE",
+  "NE",
+  "ENE",
+  "E",
+  "ESE",
+  "SE",
+  "SSE",
+  "S",
+  "SSW",
+  "SW",
+  "WSW",
+  "W",
+  "WNW",
+  "NW",
+  "NNW",
+];
+const WIND_BEAUFORT = [
+  "calm",
+  "light-air",
+  "light-breeze",
+  "gentle-breeze",
+  "moderate",
+  "fresh",
+  "strong",
+  "near-gale",
+  "gale",
+  "strong-gale",
+  "storm",
+  "violent-storm",
+  "hurricane",
+];
+
+const TREE_RINGS = ["◯", "◎", "⊚", "⊛", "⦾", "⦿", "⊙", "⊕"];
+const TREE_CONDITIONS = [
+  "wet",
+  "dry",
+  "normal",
+  "fire",
+  "frost",
+  "optimal",
+  "stress",
+  "recovery",
+];
+
+const CORALS = ["🪸", "🐚", "🦪", "🐙", "🦑", "🦐", "🦞", "🦀"];
+const CORAL_SPECIES = [
+  "staghorn",
+  "brain",
+  "elkhorn",
+  "pillar",
+  "star",
+  "mushroom",
+  "finger",
+  "table",
+];
+
+const MIGRATION_FORMATIONS = [
+  "V",
+  "J",
+  "line",
+  "cluster",
+  "echelon",
+  "column",
+  "extended",
+  "compressed",
+];
+const MIGRATION_BIRDS = ["🦅", "🦆", "🦢", "🦩", "🕊️", "🦜", "🐦", "🦉"];
+
+const EROSION_TYPES = [
+  "fluvial",
+  "aeolian",
+  "glacial",
+  "coastal",
+  "karst",
+  "mass-wasting",
+  "biological",
+  "chemical",
+];
+const EROSION_FEATURES = [
+  "canyon",
+  "arch",
+  "hoodoo",
+  "mesa",
+  "butte",
+  "pillar",
+  "cave",
+  "sinkhole",
+];
+
+const AUSTRALIS_ZONES = ["auroral-oval", "polar-cap", "sub-auroral", "diffuse"];
+const AUSTRALIS_EMISSIONS = [
+  "557.7nm-green",
+  "630.0nm-red",
+  "427.8nm-blue",
+  "391.4nm-violet",
+];
+
+const SNOWFLAKE_TYPES = [
+  "stellar-dendrite",
+  "plate",
+  "column",
+  "needle",
+  "capped-column",
+  "spatial-dendrite",
+  "irregular",
+  "rime",
+];
+const SNOWFLAKE_BRANCHES = ["✻", "❅", "❆", "❄", "✼", "✽", "✾", "✿"];
+
+const BONSAI_STYLES = [
+  "formal-upright",
+  "informal-upright",
+  "slanting",
+  "cascade",
+  "semi-cascade",
+  "literati",
+  "windswept",
+  "forest",
+];
+const BONSAI_TREES = ["🌳", "🌲", "🌴", "🎋", "🎍", "🌿", "🍃", "🌱"];
+
 /**
  * RNA sequence encoding
  * @param {string} text - The text to encode
@@ -51,582 +453,230 @@ export const decodeRNA = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Amino acid sequence
  */
-export const encodeAminoAcid = (text) => {
-  const aminoAcids = [
-    "Ala",
-    "Arg",
-    "Asn",
-    "Asp",
-    "Cys",
-    "Gln",
-    "Glu",
-    "Gly",
-    "His",
-    "Ile",
-    "Leu",
-    "Lys",
-    "Met",
-    "Phe",
-    "Pro",
-    "Ser",
-    "Thr",
-    "Trp",
-    "Tyr",
-    "Val",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const aa1 = aminoAcids[code % aminoAcids.length];
-      const aa2 =
-        aminoAcids[Math.floor(code / aminoAcids.length) % aminoAcids.length];
-      return `${aa1}-${aa2}`;
-    })
-    .join(" ");
-};
+export const encodeAminoAcid = createCharEncoder((code) => {
+  const aa1 = AMINO_ACIDS[code % AMINO_ACIDS.length];
+  const aa2 = AMINO_ACIDS[Math.floor(code / AMINO_ACIDS.length) % AMINO_ACIDS.length];
+  return `${aa1}-${aa2}`;
+}, " ");
 
 /**
  * Codon encoding (triplet genetic code)
  * @param {string} text - The text to encode
  * @returns {string} - Codon sequence
  */
-export const encodeCodon = (text) => {
-  const bases = ["A", "U", "G", "C"];
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const b1 = bases[code % 4];
-      const b2 = bases[Math.floor(code / 4) % 4];
-      const b3 = bases[Math.floor(code / 16) % 4];
-      const b4 = bases[Math.floor(code / 64) % 4];
-      return `${b1}${b2}${b3}-${b4}${bases[(code + 1) % 4]}${bases[(code + 2) % 4]}`;
-    })
-    .join(" ");
-};
+export const encodeCodon = createCharEncoder((code) => {
+  const b1 = CODON_BASES[code % 4];
+  const b2 = CODON_BASES[Math.floor(code / 4) % 4];
+  const b3 = CODON_BASES[Math.floor(code / 16) % 4];
+  const b4 = CODON_BASES[Math.floor(code / 64) % 4];
+  return `${b1}${b2}${b3}-${b4}${CODON_BASES[(code + 1) % 4]}${CODON_BASES[(code + 2) % 4]}`;
+}, " ");
 
 /**
  * Plant taxonomy encoding
  * @param {string} text - The text to encode
  * @returns {string} - Plant species names
  */
-export const encodePlantTaxonomy = (text) => {
-  const genera = [
-    "Rosa",
-    "Quercus",
-    "Acer",
-    "Pinus",
-    "Ficus",
-    "Bambusa",
-    "Orchis",
-    "Lilium",
-  ];
-  const species = [
-    "alba",
-    "rubra",
-    "viridis",
-    "major",
-    "minor",
-    "elegans",
-    "grandiflora",
-    "sylvestris",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const genus = genera[code % genera.length];
-      const sp = species[Math.floor(code / genera.length) % species.length];
-      return `${genus} ${sp}`;
-    })
-    .join(", ");
-};
+export const encodePlantTaxonomy = createCharEncoder((code) => {
+  const genus = PLANT_GENERA[code % PLANT_GENERA.length];
+  const sp = PLANT_SPECIES[Math.floor(code / PLANT_GENERA.length) % PLANT_SPECIES.length];
+  return `${genus} ${sp}`;
+}, ", ");
 
 /**
  * Animal taxonomy encoding
  * @param {string} text - The text to encode
  * @returns {string} - Animal species names
  */
-export const encodeAnimalTaxonomy = (text) => {
-  const genera = [
-    "Canis",
-    "Felis",
-    "Ursus",
-    "Panthera",
-    "Aquila",
-    "Corvus",
-    "Delphinus",
-    "Equus",
-  ];
-  const species = [
-    "familiaris",
-    "catus",
-    "arctos",
-    "leo",
-    "chrysaetos",
-    "corax",
-    "delphis",
-    "caballus",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const genus = genera[code % genera.length];
-      const sp = species[Math.floor(code / genera.length) % species.length];
-      return `${genus} ${sp}`;
-    })
-    .join(", ");
-};
+export const encodeAnimalTaxonomy = createCharEncoder((code) => {
+  const genus = ANIMAL_GENERA[code % ANIMAL_GENERA.length];
+  const sp = ANIMAL_SPECIES[Math.floor(code / ANIMAL_GENERA.length) % ANIMAL_SPECIES.length];
+  return `${genus} ${sp}`;
+}, ", ");
 
 /**
  * Constellation encoding
  * @param {string} text - The text to encode
  * @returns {string} - Constellation patterns
  */
-export const encodeConstellation = (text) => {
-  const constellations = [
-    "⭐Orion",
-    "⭐Ursa Major",
-    "⭐Cassiopeia",
-    "⭐Scorpius",
-    "⭐Cygnus",
-    "⭐Leo",
-    "⭐Virgo",
-    "⭐Aquarius",
-  ];
-  const stars = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const constellation = constellations[code % constellations.length];
-      const star =
-        stars[Math.floor(code / constellations.length) % stars.length];
-      return `${star} ${constellation}`;
-    })
-    .join(" | ");
-};
+export const encodeConstellation = createCharEncoder((code) => {
+  const constellation = CONSTELLATIONS[code % CONSTELLATIONS.length];
+  const star = CONSTELLATION_STARS[Math.floor(code / CONSTELLATIONS.length) % CONSTELLATION_STARS.length];
+  return `${star} ${constellation}`;
+}, " | ");
 
 /**
  * Mineral encoding
  * @param {string} text - The text to encode
  * @returns {string} - Mineral names
  */
-export const encodeMineral = (text) => {
-  const minerals = [
-    "Quartz",
-    "Feldspar",
-    "Mica",
-    "Olivine",
-    "Pyroxene",
-    "Amphibole",
-    "Calcite",
-    "Dolomite",
-    "Gypsum",
-    "Halite",
-    "Magnetite",
-    "Hematite",
-  ];
-  const forms = [
-    "Crystal",
-    "Aggregate",
-    "Massive",
-    "Fibrous",
-    "Prismatic",
-    "Tabular",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const mineral = minerals[code % minerals.length];
-      const form = forms[Math.floor(code / minerals.length) % forms.length];
-      return `${mineral}(${form})`;
-    })
-    .join(" + ");
-};
+export const encodeMineral = createCharEncoder((code) => {
+  const mineral = MINERALS[code % MINERALS.length];
+  const form = MINERAL_FORMS[Math.floor(code / MINERALS.length) % MINERAL_FORMS.length];
+  return `${mineral}(${form})`;
+}, " + ");
 
 /**
  * Geological era encoding
  * @param {string} text - The text to encode
  * @returns {string} - Geological time periods
  */
-export const encodeGeologicalEra = (text) => {
-  const eras = [
-    "Cenozoic",
-    "Mesozoic",
-    "Paleozoic",
-    "Proterozoic",
-    "Archean",
-    "Hadean",
-  ];
-  const periods = [
-    "Quaternary",
-    "Neogene",
-    "Paleogene",
-    "Cretaceous",
-    "Jurassic",
-    "Triassic",
-    "Permian",
-    "Carboniferous",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const era = eras[code % eras.length];
-      const period = periods[code % periods.length];
-      const mya = code + 10;
-      return `${era}:${period}(${mya}Ma)`;
-    })
-    .join(" → ");
-};
+export const encodeGeologicalEra = createCharEncoder((code) => {
+  const era = GEOLOGICAL_ERAS[code % GEOLOGICAL_ERAS.length];
+  const period = GEOLOGICAL_PERIODS[code % GEOLOGICAL_PERIODS.length];
+  const mya = code + 10;
+  return `${era}:${period}(${mya}Ma)`;
+}, " → ");
 
 /**
  * Flower encoding
  * @param {string} text - The text to encode
  * @returns {string} - Flower emojis and names
  */
-export const encodeFlower = (text) => {
-  const flowers = [
-    "🌸 Cherry",
-    "🌹 Rose",
-    "🌷 Tulip",
-    "🌻 Sunflower",
-    "🌺 Hibiscus",
-    "💐 Bouquet",
-    "🏵️ Rosette",
-    "💮 White Flower",
-    "🌼 Daisy",
-    "🥀 Wilted",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      return flowers[code % flowers.length];
-    })
-    .join(" ");
-};
+export const encodeFlower = createCharEncoder((code) => {
+  return FLOWERS[code % FLOWERS.length];
+}, " ");
 
 /**
  * Butterfly wing pattern encoding
  * @param {string} text - The text to encode
  * @returns {string} - Butterfly pattern
  */
-export const encodeButterflyWing = (text) => {
-  const patterns = ["◐◑", "◓◒", "◔◕", "◖◗", "●○", "◍◎", "◉◌"];
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const pattern = patterns[code % patterns.length];
-      return `🦋[${pattern.repeat(2)}]`;
-    })
-    .join(" ");
-};
+export const encodeButterflyWing = createCharEncoder((code) => {
+  const pattern = BUTTERFLY_PATTERNS[code % BUTTERFLY_PATTERNS.length];
+  return `🦋[${pattern.repeat(2)}]`;
+}, " ");
 
 /**
  * Seashell encoding
  * @param {string} text - The text to encode
  * @returns {string} - Seashell patterns
  */
-export const encodeSeashell = (text) => {
-  const shells = ["🐚", "🦪", "🐌"];
-  const patterns = ["spiral", "conical", "bivalve", "chambered", "ridged"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const shell = shells[code % shells.length];
-      const pattern =
-        patterns[Math.floor(code / shells.length) % patterns.length];
-      return `${shell}(${pattern}:${code})`;
-    })
-    .join(" ");
-};
+export const encodeSeashell = createCharEncoder((code) => {
+  const shell = SEASHELLS[code % SEASHELLS.length];
+  const pattern = SEASHELL_PATTERNS[Math.floor(code / SEASHELLS.length) % SEASHELL_PATTERNS.length];
+  return `${shell}(${pattern}:${code})`;
+}, " ");
 
 /**
  * Cloud type encoding
  * @param {string} text - The text to encode
  * @returns {string} - Cloud type names
  */
-export const encodeCloudType = (text) => {
-  const clouds = [
-    "☁️Cirrus",
-    "⛅Cumulus",
-    "🌥️Stratus",
-    "🌦️Nimbus",
-    "☁️Cumulonimbus",
-    "⛈️Stratocumulus",
-    "🌫️Altocumulus",
-    "☁️Cirrostratus",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const cloud = clouds[code % clouds.length];
-      const altitude = (code * 100) % 10000;
-      return `${cloud}@${altitude}m`;
-    })
-    .join(" | ");
-};
+export const encodeCloudType = createCharEncoder((code) => {
+  const cloud = CLOUDS[code % CLOUDS.length];
+  const altitude = (code * 100) % 10000;
+  return `${cloud}@${altitude}m`;
+}, " | ");
 
 /**
  * Terrain encoding
  * @param {string} text - The text to encode
  * @returns {string} - Terrain features
  */
-export const encodeTerrain = (text) => {
-  const terrains = [
-    "🏔️ Mountain",
-    "🌋 Volcano",
-    "🏝️ Island",
-    "🏜️ Desert",
-    "🌲 Forest",
-    "🌊 Ocean",
-    "❄️ Glacier",
-    "🌾 Prairie",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const terrain = terrains[code % terrains.length];
-      const elevation = code * 10 - 500;
-      return `${terrain}(${elevation >= 0 ? "+" : ""}${elevation}m)`;
-    })
-    .join(" ");
-};
+export const encodeTerrain = createCharEncoder((code) => {
+  const terrain = TERRAINS[code % TERRAINS.length];
+  const elevation = code * 10 - 500;
+  return `${terrain}(${elevation >= 0 ? "+" : ""}${elevation}m)`;
+}, " ");
 
 /**
  * Ecosystem encoding
  * @param {string} text - The text to encode
  * @returns {string} - Ecosystem description
  */
-export const encodeEcosystem = (text) => {
-  const ecosystems = [
-    "🌲Taiga",
-    "🌴Tropical",
-    "🏜️Arid",
-    "🌊Marine",
-    "🌿Grassland",
-    "🌳Deciduous",
-    "❄️Tundra",
-    "🌾Savanna",
-  ];
-  const biomes = ["forest", "reef", "desert", "wetland", "prairie", "alpine"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const eco = ecosystems[code % ecosystems.length];
-      const biome =
-        biomes[Math.floor(code / ecosystems.length) % biomes.length];
-      return `${eco}/${biome}`;
-    })
-    .join(" → ");
-};
+export const encodeEcosystem = createCharEncoder((code) => {
+  const eco = ECOSYSTEMS[code % ECOSYSTEMS.length];
+  const biome = BIOMES[Math.floor(code / ECOSYSTEMS.length) % BIOMES.length];
+  return `${eco}/${biome}`;
+}, " → ");
 
 /**
  * Bird call encoding
  * @param {string} text - The text to encode
  * @returns {string} - Bird call representations
  */
-export const encodeBirdCall = (text) => {
-  const calls = [
-    "🐦♪tweet",
-    "🦜♫squawk",
-    "🦉♬hoot",
-    "🦅♪screech",
-    "🐧♫honk",
-    "🦆♬quack",
-    "🦚♪call",
-    "🦢♫trumpet",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const call = calls[code % calls.length];
-      const count = (code % 3) + 1;
-      return `${call}`.repeat(count);
-    })
-    .join(" ");
-};
+export const encodeBirdCall = createCharEncoder((code) => {
+  const call = BIRD_CALLS[code % BIRD_CALLS.length];
+  const count = (code % 3) + 1;
+  return `${call}`.repeat(count);
+}, " ");
 
 /**
  * Paw print pattern encoding
  * @param {string} text - The text to encode
  * @returns {string} - Paw print pattern
  */
-export const encodePawPrint = (text) => {
-  const paws = ["🐾", "🦶", "👣", "🐿️"];
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const paw = paws[code % paws.length];
-      const steps = (code % 4) + 2;
-      return paw.repeat(steps);
-    })
-    .join(" ");
-};
+export const encodePawPrint = createCharEncoder((code) => {
+  const paw = PAWS[code % PAWS.length];
+  const steps = (code % 4) + 2;
+  return paw.repeat(steps);
+}, " ");
 
 /**
  * Leaf pattern encoding
  * @param {string} text - The text to encode
  * @returns {string} - Leaf patterns
  */
-export const encodeLeafPattern = (text) => {
-  const leaves = ["🍃", "🍂", "🍁", "🌿", "☘️", "🌱", "🪴", "🌴"];
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const leaf = leaves[code % leaves.length];
-      return `${leaf}${code.toString(16)}`;
-    })
-    .join(" ");
-};
+export const encodeLeafPattern = createCharEncoder((code) => {
+  const leaf = LEAVES[code % LEAVES.length];
+  return `${leaf}${code.toString(16)}`;
+}, " ");
 
 /**
  * Crystal structure encoding
  * @param {string} text - The text to encode
  * @returns {string} - Crystal structure notation
  */
-export const encodeCrystalStructure = (text) => {
-  const systems = [
-    "Cubic",
-    "Tetragonal",
-    "Orthorhombic",
-    "Hexagonal",
-    "Trigonal",
-    "Monoclinic",
-    "Triclinic",
-  ];
-  const shapes = ["💎", "🔷", "🔶", "📐", "⬡", "⬢"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const system = systems[code % systems.length];
-      const shape = shapes[code % shapes.length];
-      return `${shape}${system}[${code}]`;
-    })
-    .join(" ");
-};
+export const encodeCrystalStructure = createCharEncoder((code) => {
+  const system = CRYSTAL_SYSTEMS[code % CRYSTAL_SYSTEMS.length];
+  const shape = CRYSTAL_SHAPES[code % CRYSTAL_SHAPES.length];
+  return `${shape}${system}[${code}]`;
+}, " ");
 
 /**
  * Ocean depth encoding
  * @param {string} text - The text to encode
  * @returns {string} - Ocean depth zones
  */
-export const encodeOceanDepth = (text) => {
-  const zones = [
-    "🌊Epipelagic",
-    "🌑Mesopelagic",
-    "🦑Bathypelagic",
-    "🐙Abyssopelagic",
-    "⬛Hadopelagic",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const zone = zones[code % zones.length];
-      const depth = code * 50;
-      return `${zone}(-${depth}m)`;
-    })
-    .join(" ");
-};
+export const encodeOceanDepth = createCharEncoder((code) => {
+  const zone = OCEAN_ZONES[code % OCEAN_ZONES.length];
+  const depth = code * 50;
+  return `${zone}(-${depth}m)`;
+}, " ");
 
 /**
  * Insect encoding
  * @param {string} text - The text to encode
  * @returns {string} - Insect patterns
  */
-export const encodeInsect = (text) => {
-  const insects = ["🐜", "🐝", "🦋", "🐛", "🦗", "🦟", "🐞", "🦠"];
-  const behaviors = ["crawl", "fly", "hop", "buzz", "flutter"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const insect = insects[code % insects.length];
-      const behavior =
-        behaviors[Math.floor(code / insects.length) % behaviors.length];
-      return `${insect}${behavior}`;
-    })
-    .join(" ");
-};
+export const encodeInsect = createCharEncoder((code) => {
+  const insect = INSECTS[code % INSECTS.length];
+  const behavior = INSECT_BEHAVIORS[Math.floor(code / INSECTS.length) % INSECT_BEHAVIORS.length];
+  return `${insect}${behavior}`;
+}, " ");
 
 /**
  * Volcano encoding
  * @param {string} text - The text to encode
  * @returns {string} - Volcano activity patterns
  */
-export const encodeVolcano = (text) => {
-  const types = ["🌋Active", "🗻Dormant", "⛰️Extinct", "💨Fumarole"];
-  const activities = ["erupting", "smoking", "quiet", "bubbling", "rumbling"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const type = types[code % types.length];
-      const activity =
-        activities[Math.floor(code / types.length) % activities.length];
-      return `${type}(${activity}:${code}VEI)`;
-    })
-    .join(" ");
-};
+export const encodeVolcano = createCharEncoder((code) => {
+  const type = VOLCANO_TYPES[code % VOLCANO_TYPES.length];
+  const activity = VOLCANO_ACTIVITIES[Math.floor(code / VOLCANO_TYPES.length) % VOLCANO_ACTIVITIES.length];
+  return `${type}(${activity}:${code}VEI)`;
+}, " ");
 
 /**
  * Cell organelle encoding
  * @param {string} text - The text to encode
  * @returns {string} - Cell structure
  */
-export const encodeCellOrganelle = (text) => {
-  const organelles = [
-    "🔴Nucleus",
-    "🟢Mitochondria",
-    "🟡Ribosome",
-    "🔵ER",
-    "🟣Golgi",
-    "⚪Vacuole",
-    "🟤Lysosome",
-    "⚫Chloroplast",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const organelle = organelles[code % organelles.length];
-      const count = (code % 10) + 1;
-      return `${organelle}×${count}`;
-    })
-    .join(" ");
-};
+export const encodeCellOrganelle = createCharEncoder((code) => {
+  const organelle = ORGANELLES[code % ORGANELLES.length];
+  const count = (code % 10) + 1;
+  return `${organelle}×${count}`;
+}, " ");
 
 // ============================================
 // ORIGAMI CREASE PATTERN ENCODING
@@ -637,23 +687,16 @@ export const encodeCellOrganelle = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Crease pattern encoding
  */
-export const encodeOrigamiCrease = (text) => {
-  const folds = ["╱", "╲", "─", "│", "┼", "╳", "◢", "◣"];
-  return text
+export const encodeOrigamiCrease = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const pattern = code
+    .toString(2)
+    .padStart(8, "0")
     .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const pattern = code
-        .toString(2)
-        .padStart(8, "0")
-        .split("")
-        .map((b) => folds[(parseInt(b) * 4 + (code % 4)) % folds.length])
-        .join("");
-      return `[${hex}]${pattern}`;
-    })
+    .map((b) => ORIGAMI_FOLDS[(parseInt(b) * 4 + (code % 4)) % ORIGAMI_FOLDS.length])
     .join("");
-};
+  return `[${hex}]${pattern}`;
+});
 
 export const decodeOrigamiCrease = (text) => {
   try {
@@ -675,23 +718,14 @@ export const decodeOrigamiCrease = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Constellation encoding
  */
-export const encodeConstellationMap = (text) => {
-  const stars = ["✦", "✧", "★", "☆", "✯", "✰", "⋆", "✵"];
-  const magnitudes = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const star = stars[code % stars.length];
-      const mag = magnitudes[(code >> 3) % magnitudes.length];
-      const ra = ((code * 15) % 360).toString().padStart(3, "0");
-      const dec = ((code % 180) - 90).toString();
-      return `${mag}${star}(${ra}°,${dec}°)[${hex}]`;
-    })
-    .join(" ");
-};
+export const encodeConstellationMap = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const star = CONSTELLATION_MAP_STARS[code % CONSTELLATION_MAP_STARS.length];
+  const mag = CONSTELLATION_MAGNITUDES[(code >> 3) % CONSTELLATION_MAGNITUDES.length];
+  const ra = ((code * 15) % 360).toString().padStart(3, "0");
+  const dec = ((code % 180) - 90).toString();
+  return `${mag}${star}(${ra}°,${dec}°)[${hex}]`;
+}, " ");
 
 export const decodeConstellationMap = (text) => {
   try {
@@ -713,22 +747,13 @@ export const decodeConstellationMap = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Tectonic encoding
  */
-export const encodeTectonicPlate = (text) => {
-  const movements = ["↗↙", "↘↖", "→←", "↑↓", "⤢⤡", "⇄⇅", "↻↺", "⟳⟲"];
-  const boundaries = ["convergent", "divergent", "transform", "subduction"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const move = movements[code % movements.length];
-      const boundary = boundaries[(code >> 4) % boundaries.length];
-      const rate = ((code % 15) + 1).toFixed(1);
-      return `PLATE[${hex}]{${boundary}:${move}@${rate}cm/yr}`;
-    })
-    .join("⚏");
-};
+export const encodeTectonicPlate = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const move = TECTONIC_MOVEMENTS[code % TECTONIC_MOVEMENTS.length];
+  const boundary = TECTONIC_BOUNDARIES[(code >> 4) % TECTONIC_BOUNDARIES.length];
+  const rate = ((code % 15) + 1).toFixed(1);
+  return `PLATE[${hex}]{${boundary}:${move}@${rate}cm/yr}`;
+}, "⚏");
 
 export const decodeTectonicPlate = (text) => {
   try {
@@ -753,22 +778,13 @@ export const decodeTectonicPlate = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Mycelium encoding
  */
-export const encodeMyceliumNetwork = (text) => {
-  const nodes = ["◉", "◎", "●", "○", "◐", "◑", "◒", "◓"];
-  const connections = ["╌", "┄", "┈", "╎", "┆", "┊", "╏", "║"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const node = nodes[code % nodes.length];
-      const conn = connections[(code >> 3) % connections.length];
-      const nutrients = ["N", "P", "K", "C"][(code >> 5) % 4];
-      return `${node}${conn}[${hex}:${nutrients}]${conn}`;
-    })
-    .join("⌇");
-};
+export const encodeMyceliumNetwork = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const node = MYCELIUM_NODES[code % MYCELIUM_NODES.length];
+  const conn = MYCELIUM_CONNECTIONS[(code >> 3) % MYCELIUM_CONNECTIONS.length];
+  const nutrients = MYCELIUM_NUTRIENTS[(code >> 5) % 4];
+  return `${node}${conn}[${hex}:${nutrients}]${conn}`;
+}, "⌇");
 
 export const decodeMyceliumNetwork = (text) => {
   try {
@@ -793,23 +809,13 @@ export const decodeMyceliumNetwork = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Bioluminescence encoding
  */
-export const encodeBioluminescence = (text) => {
-  const glows = ["💫", "✨", "🌟", "⭐", "🔆", "💡", "🌠", "☀️"];
-  // Wavelengths in nanometers (nm) - typical bioluminescence range
-  const wavelengths = [460, 480, 500, 520, 540, 560, 580, 600];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const glow = glows[code % glows.length];
-      const wl = wavelengths[(code >> 3) % wavelengths.length];
-      const intensity = ((code % 100) + 1).toString().padStart(3, "0");
-      return `${glow}λ${wl}nm:I${intensity}[${hex}]`;
-    })
-    .join("~");
-};
+export const encodeBioluminescence = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const glow = BIOLUM_GLOWS[code % BIOLUM_GLOWS.length];
+  const wl = BIOLUM_WAVELENGTHS[(code >> 3) % BIOLUM_WAVELENGTHS.length];
+  const intensity = ((code % 100) + 1).toString().padStart(3, "0");
+  return `${glow}λ${wl}nm:I${intensity}[${hex}]`;
+}, "~");
 
 export const decodeBioluminescence = (text) => {
   try {
@@ -831,32 +837,14 @@ export const decodeBioluminescence = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Aurora encoding
  */
-export const encodeAuroraBorealis = (text) => {
-  const colors = ["🟢", "🟣", "🔵", "🟡", "🟠", "🔴", "⚪", "🟤"];
-  const forms = [
-    "arc",
-    "band",
-    "ray",
-    "corona",
-    "veil",
-    "patch",
-    "glow",
-    "flaming",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const color = colors[code % colors.length];
-      const form = forms[(code >> 3) % forms.length];
-      const altitude = 100 + (code % 200);
-      const kp = (code % 9) + 1;
-      return `AURORA[${hex}]${color}{${form}:${altitude}km,Kp${kp}}`;
-    })
-    .join("🌌");
-};
+export const encodeAuroraBorealis = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const color = AURORA_COLORS[code % AURORA_COLORS.length];
+  const form = AURORA_FORMS[(code >> 3) % AURORA_FORMS.length];
+  const altitude = 100 + (code % 200);
+  const kp = (code % 9) + 1;
+  return `AURORA[${hex}]${color}{${form}:${altitude}km,Kp${kp}}`;
+}, "🌌");
 
 export const decodeAuroraBorealis = (text) => {
   try {
@@ -881,22 +869,14 @@ export const decodeAuroraBorealis = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Waggle dance encoding
  */
-export const encodeWaggleDance = (text) => {
-  const waggles = ["∿", "≋", "⌇", "〰", "⏦", "∾", "≀", "⁓"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const waggle = waggles[code % waggles.length];
-      const angle = (code * 1.4) % 360;
-      const duration = (code % 5) + 1;
-      const distance = code * 10;
-      return `🐝[${hex}]${waggle.repeat(duration)}∠${angle.toFixed(0)}°→${distance}m`;
-    })
-    .join(" ");
-};
+export const encodeWaggleDance = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const waggle = WAGGLE_PATTERNS[code % WAGGLE_PATTERNS.length];
+  const angle = (code * 1.4) % 360;
+  const duration = (code % 5) + 1;
+  const distance = code * 10;
+  return `🐝[${hex}]${waggle.repeat(duration)}∠${angle.toFixed(0)}°→${distance}m`;
+}, " ");
 
 export const decodeWaggleDance = (text) => {
   try {
@@ -921,23 +901,14 @@ export const decodeWaggleDance = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Glacier encoding
  */
-export const encodeGlacierStratigraphy = (text) => {
-  const layers = ["❄", "🧊", "⛄", "❆", "❅", "✻", "✼", "❉"];
-  const epochs = ["Holocene", "Pleistocene", "Pliocene", "Miocene"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const layer = layers[code % layers.length];
-      const epoch = epochs[(code >> 4) % epochs.length];
-      const depth = code * 10;
-      const age = code * 1000;
-      return `ICE[${hex}]${layer}@${depth}m(${epoch}:${age}BP)`;
-    })
-    .join("═");
-};
+export const encodeGlacierStratigraphy = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const layer = GLACIER_LAYERS[code % GLACIER_LAYERS.length];
+  const epoch = GLACIER_EPOCHS[(code >> 4) % GLACIER_EPOCHS.length];
+  const depth = code * 10;
+  const age = code * 1000;
+  return `ICE[${hex}]${layer}@${depth}m(${epoch}:${age}BP)`;
+}, "═");
 
 export const decodeGlacierStratigraphy = (text) => {
   try {
@@ -962,53 +933,13 @@ export const decodeGlacierStratigraphy = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Wind rose encoding
  */
-export const encodeWindRose = (text) => {
-  const directions = [
-    "N",
-    "NNE",
-    "NE",
-    "ENE",
-    "E",
-    "ESE",
-    "SE",
-    "SSE",
-    "S",
-    "SSW",
-    "SW",
-    "WSW",
-    "W",
-    "WNW",
-    "NW",
-    "NNW",
-  ];
-  const beaufort = [
-    "calm",
-    "light-air",
-    "light-breeze",
-    "gentle-breeze",
-    "moderate",
-    "fresh",
-    "strong",
-    "near-gale",
-    "gale",
-    "strong-gale",
-    "storm",
-    "violent-storm",
-    "hurricane",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const dir = directions[code % directions.length];
-      const bft = beaufort[code % beaufort.length];
-      const speed = code % 100;
-      return `🌬️[${hex}]${dir}@${speed}kts(${bft})`;
-    })
-    .join("↺");
-};
+export const encodeWindRose = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const dir = WIND_DIRECTIONS[code % WIND_DIRECTIONS.length];
+  const bft = WIND_BEAUFORT[code % WIND_BEAUFORT.length];
+  const speed = code % 100;
+  return `🌬️[${hex}]${dir}@${speed}kts(${bft})`;
+}, "↺");
 
 export const decodeWindRose = (text) => {
   try {
@@ -1033,32 +964,14 @@ export const decodeWindRose = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Tree ring encoding
  */
-export const encodeDendrochronology = (text) => {
-  const rings = ["◯", "◎", "⊚", "⊛", "⦾", "⦿", "⊙", "⊕"];
-  const conditions = [
-    "wet",
-    "dry",
-    "normal",
-    "fire",
-    "frost",
-    "optimal",
-    "stress",
-    "recovery",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const ring = rings[code % rings.length];
-      const condition = conditions[(code >> 3) % conditions.length];
-      const width = ((code % 10) / 10 + 0.1).toFixed(2);
-      const year = 2024 - (code % 200);
-      return `🌳[${hex}]${ring}(${year}:${width}mm:${condition})`;
-    })
-    .join("≡");
-};
+export const encodeDendrochronology = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const ring = TREE_RINGS[code % TREE_RINGS.length];
+  const condition = TREE_CONDITIONS[(code >> 3) % TREE_CONDITIONS.length];
+  const width = ((code % 10) / 10 + 0.1).toFixed(2);
+  const year = 2024 - (code % 200);
+  return `🌳[${hex}]${ring}(${year}:${width}mm:${condition})`;
+}, "≡");
 
 export const decodeDendrochronology = (text) => {
   try {
@@ -1083,32 +996,14 @@ export const decodeDendrochronology = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Coral encoding
  */
-export const encodeCoralReef = (text) => {
-  const corals = ["🪸", "🐚", "🦪", "🐙", "🦑", "🦐", "🦞", "🦀"];
-  const species = [
-    "staghorn",
-    "brain",
-    "elkhorn",
-    "pillar",
-    "star",
-    "mushroom",
-    "finger",
-    "table",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const coral = corals[code % corals.length];
-      const sp = species[(code >> 3) % species.length];
-      const depth = (code % 50) + 5;
-      const bleaching = code % 100;
-      return `CORAL[${hex}]${coral}{${sp}@${depth}m:${bleaching}%health}`;
-    })
-    .join("🌊");
-};
+export const encodeCoralReef = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const coral = CORALS[code % CORALS.length];
+  const sp = CORAL_SPECIES[(code >> 3) % CORAL_SPECIES.length];
+  const depth = (code % 50) + 5;
+  const bleaching = code % 100;
+  return `CORAL[${hex}]${coral}{${sp}@${depth}m:${bleaching}%health}`;
+}, "🌊");
 
 export const decodeCoralReef = (text) => {
   try {
@@ -1133,32 +1028,14 @@ export const decodeCoralReef = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Migration encoding
  */
-export const encodeBirdMigration = (text) => {
-  const formations = [
-    "V",
-    "J",
-    "line",
-    "cluster",
-    "echelon",
-    "column",
-    "extended",
-    "compressed",
-  ];
-  const birds = ["🦅", "🦆", "🦢", "🦩", "🕊️", "🦜", "🐦", "🦉"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const bird = birds[code % birds.length];
-      const formation = formations[(code >> 3) % formations.length];
-      const altitude = code * 50 + 500;
-      const heading = (code * 1.4) % 360;
-      return `MIGRATE[${hex}]${bird}{${formation}@${altitude}ft→${heading.toFixed(0)}°}`;
-    })
-    .join("➤");
-};
+export const encodeBirdMigration = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const bird = MIGRATION_BIRDS[code % MIGRATION_BIRDS.length];
+  const formation = MIGRATION_FORMATIONS[(code >> 3) % MIGRATION_FORMATIONS.length];
+  const altitude = code * 50 + 500;
+  const heading = (code * 1.4) % 360;
+  return `MIGRATE[${hex}]${bird}{${formation}@${altitude}ft→${heading.toFixed(0)}°}`;
+}, "➤");
 
 export const decodeBirdMigration = (text) => {
   try {
@@ -1183,40 +1060,13 @@ export const decodeBirdMigration = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Erosion encoding
  */
-export const encodeErosionPattern = (text) => {
-  const types = [
-    "fluvial",
-    "aeolian",
-    "glacial",
-    "coastal",
-    "karst",
-    "mass-wasting",
-    "biological",
-    "chemical",
-  ];
-  const features = [
-    "canyon",
-    "arch",
-    "hoodoo",
-    "mesa",
-    "butte",
-    "pillar",
-    "cave",
-    "sinkhole",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const type = types[code % types.length];
-      const feature = features[(code >> 3) % features.length];
-      const rate = ((code % 100) / 10).toFixed(1);
-      return `ERODE[${hex}]🏜️{${type}:${feature}@${rate}mm/yr}`;
-    })
-    .join("≈");
-};
+export const encodeErosionPattern = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const type = EROSION_TYPES[code % EROSION_TYPES.length];
+  const feature = EROSION_FEATURES[(code >> 3) % EROSION_FEATURES.length];
+  const rate = ((code % 100) / 10).toFixed(1);
+  return `ERODE[${hex}]🏜️{${type}:${feature}@${rate}mm/yr}`;
+}, "≈");
 
 export const decodeErosionPattern = (text) => {
   try {
@@ -1241,28 +1091,14 @@ export const decodeErosionPattern = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Aurora Australis encoding
  */
-export const encodeAuroraAustralis = (text) => {
-  const zones = ["auroral-oval", "polar-cap", "sub-auroral", "diffuse"];
-  const emissions = [
-    "557.7nm-green",
-    "630.0nm-red",
-    "427.8nm-blue",
-    "391.4nm-violet",
-  ];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const zone = zones[code % zones.length];
-      const emission = emissions[(code >> 4) % emissions.length];
-      const lat = -90 + (code % 30);
-      const intensity = code % 100;
-      return `SOUTH[${hex}]🌌{${zone}:${emission}@${lat}°S:I${intensity}}`;
-    })
-    .join("✧");
-};
+export const encodeAuroraAustralis = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const zone = AUSTRALIS_ZONES[code % AUSTRALIS_ZONES.length];
+  const emission = AUSTRALIS_EMISSIONS[(code >> 4) % AUSTRALIS_EMISSIONS.length];
+  const lat = -90 + (code % 30);
+  const intensity = code % 100;
+  return `SOUTH[${hex}]🌌{${zone}:${emission}@${lat}°S:I${intensity}}`;
+}, "✧");
 
 export const decodeAuroraAustralis = (text) => {
   try {
@@ -1287,32 +1123,14 @@ export const decodeAuroraAustralis = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Snowflake encoding
  */
-export const encodeSnowflakeCrystal = (text) => {
-  const types = [
-    "stellar-dendrite",
-    "plate",
-    "column",
-    "needle",
-    "capped-column",
-    "spatial-dendrite",
-    "irregular",
-    "rime",
-  ];
-  const branches = ["✻", "❅", "❆", "❄", "✼", "✽", "✾", "✿"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const type = types[code % types.length];
-      const branch = branches[(code >> 3) % branches.length];
-      const temp = -40 + (code % 35);
-      const size = ((code % 50) / 10).toFixed(1);
-      return `SNOW[${hex}]${branch}{${type}:${temp}°C:${size}mm}`;
-    })
-    .join("·");
-};
+export const encodeSnowflakeCrystal = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const type = SNOWFLAKE_TYPES[code % SNOWFLAKE_TYPES.length];
+  const branch = SNOWFLAKE_BRANCHES[(code >> 3) % SNOWFLAKE_BRANCHES.length];
+  const temp = -40 + (code % 35);
+  const size = ((code % 50) / 10).toFixed(1);
+  return `SNOW[${hex}]${branch}{${type}:${temp}°C:${size}mm}`;
+}, "·");
 
 export const decodeSnowflakeCrystal = (text) => {
   try {
@@ -1337,33 +1155,15 @@ export const decodeSnowflakeCrystal = (text) => {
  * @param {string} text - The text to encode
  * @returns {string} - Bonsai encoding
  */
-export const encodeBonsaiGrowth = (text) => {
-  const styles = [
-    "formal-upright",
-    "informal-upright",
-    "slanting",
-    "cascade",
-    "semi-cascade",
-    "literati",
-    "windswept",
-    "forest",
-  ];
-  const trees = ["🌳", "🌲", "🌴", "🎋", "🎍", "🌿", "🍃", "🌱"];
-
-  return text
-    .split("")
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      const hex = code.toString(16).padStart(2, "0");
-      const style = styles[code % styles.length];
-      const tree = trees[(code >> 3) % trees.length];
-      const age = code + 5;
-      const height = (code % 80) + 10;
-      const branchCount = (code % 12) + 3;
-      return `BONSAI[${hex}]${tree}{${style}:${age}yr:${height}cm:${branchCount}branches}`;
-    })
-    .join("✿");
-};
+export const encodeBonsaiGrowth = createCharEncoder((code) => {
+  const hex = code.toString(16).padStart(2, "0");
+  const style = BONSAI_STYLES[code % BONSAI_STYLES.length];
+  const tree = BONSAI_TREES[(code >> 3) % BONSAI_TREES.length];
+  const age = code + 5;
+  const height = (code % 80) + 10;
+  const branchCount = (code % 12) + 3;
+  return `BONSAI[${hex}]${tree}{${style}:${age}yr:${height}cm:${branchCount}branches}`;
+}, "✿");
 
 export const decodeBonsaiGrowth = (text) => {
   try {

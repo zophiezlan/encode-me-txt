@@ -72,6 +72,7 @@ export const encoderConfig = [
     decode: encoders.decodeCaesar,
     reversible: true,
     hasSettings: true,
+    paramsResolver: (p) => [p.caesar || 13],
     tags: ["cipher", "cryptography", "ancient"],
   },
   {
@@ -117,6 +118,7 @@ export const encoderConfig = [
     decode: encoders.decodeVigenere,
     reversible: true,
     hasSettings: true,
+    paramsResolver: (p) => [p.vigenere || "SECRET"],
     tags: ["cipher", "cryptography", "polyalphabetic"],
   },
   {
@@ -129,6 +131,7 @@ export const encoderConfig = [
     decode: encoders.decodeRailFence,
     reversible: true,
     hasSettings: true,
+    paramsResolver: (p) => [p["rail-fence"] || 3],
     tags: ["cipher", "transposition", "zigzag"],
   },
   {
@@ -152,6 +155,7 @@ export const encoderConfig = [
     decode: encoders.decodeAffine,
     reversible: true,
     hasSettings: true,
+    paramsResolver: (p) => [p.affine?.a || 5, p.affine?.b || 8],
     tags: ["cipher", "mathematical", "substitution"],
   },
   {
@@ -1161,6 +1165,7 @@ export const encoderConfig = [
     decode: encoders.decodeScytale,
     reversible: true,
     hasSettings: true,
+    paramsResolver: (p) => [p.scytale || 4],
     tags: ["cipher", "ancient", "spartan"],
   },
   {

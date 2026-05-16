@@ -49,6 +49,7 @@ import {
 } from "../utils/themeSystem.js";
 import { HistoryManager } from "../utils/historyManager.js";
 import { ChainEncoder } from "../utils/chainEncoder.js";
+import { playMorseSound } from "../utils/audioPlayer.js";
 import { EncodingAnalyzer } from "../utils/encodingAnalyzer.js";
 import { ShareManager } from "../utils/shareManager.js";
 import { KeyboardShortcuts } from "../utils/keyboardShortcuts.js";
@@ -432,12 +433,9 @@ const EnhancedTextEncoder = () => {
     if (!inputText) return {};
 
     const results = {};
-    const caesarShift = encoderParams.caesar || 13;
-    const vigenereKey = encoderParams.vigenere || "SECRET";
-    const railFenceRails = encoderParams["rail-fence"] || 3;
-    const affineA = encoderParams.affine?.a || 5;
-    const affineB = encoderParams.affine?.b || 8;
-    const scytaleDiameter = encoderParams.scytale || 4;
+    // caesar/vigenere/rail-fence/affine/scytale are migrated to paramsResolver
+    // on their encoderConfig entries (Phase 2 pilot). The rest still flow
+    // through the explicit switch below until Phase 3 finishes the migration.
     const columnarKey = encoderParams.columnar || "SECRET";
     const autokeyKey = encoderParams.autokey || "KEY";
     const beaufortKey = encoderParams.beaufort || "SECRET";
@@ -478,31 +476,24 @@ const EnhancedTextEncoder = () => {
 
     allEncoders.forEach((encoder) => {
       try {
+        // Descriptor path: encoders that declare paramsResolver own their own
+        // arg list and don't need a hand-rolled switch case. Phase 2 pilot:
+        // caesar, vigenere, rail-fence, affine, scytale.
+        if (encoder.paramsResolver) {
+          const args = encoder.paramsResolver(encoderParams);
+          if (mode === "decode") {
+            results[encoder.id] = encoder.reversible
+              ? encoder.decode(inputText, ...args)
+              : "[Not reversible]";
+          } else {
+            results[encoder.id] = encoder.encode(inputText, ...args);
+          }
+          return;
+        }
+
         if (mode === "decode") {
           if (encoder.reversible) {
             switch (encoder.id) {
-              case "caesar":
-                results[encoder.id] = encoder.decode(inputText, caesarShift);
-                break;
-              case "vigenere":
-                results[encoder.id] = encoder.decode(inputText, vigenereKey);
-                break;
-              case "rail-fence":
-                results[encoder.id] = encoder.decode(inputText, railFenceRails);
-                break;
-              case "affine":
-                results[encoder.id] = encoder.decode(
-                  inputText,
-                  affineA,
-                  affineB,
-                );
-                break;
-              case "scytale":
-                results[encoder.id] = encoder.decode(
-                  inputText,
-                  scytaleDiameter,
-                );
-                break;
               case "columnar":
                 results[encoder.id] = encoder.decode(inputText, columnarKey);
                 break;
@@ -598,21 +589,6 @@ const EnhancedTextEncoder = () => {
           }
         } else {
           switch (encoder.id) {
-            case "caesar":
-              results[encoder.id] = encoder.encode(inputText, caesarShift);
-              break;
-            case "vigenere":
-              results[encoder.id] = encoder.encode(inputText, vigenereKey);
-              break;
-            case "rail-fence":
-              results[encoder.id] = encoder.encode(inputText, railFenceRails);
-              break;
-            case "affine":
-              results[encoder.id] = encoder.encode(inputText, affineA, affineB);
-              break;
-            case "scytale":
-              results[encoder.id] = encoder.encode(inputText, scytaleDiameter);
-              break;
             case "columnar":
               results[encoder.id] = encoder.encode(inputText, columnarKey);
               break;
@@ -631,9 +607,15 @@ const EnhancedTextEncoder = () => {
             case "redacted":
               results[encoder.id] = encoder.encode(inputText, redactedPercent);
               break;
-            case "shuffle":
-              results[encoder.id] = encoder.encode(inputText, shuffleEncoders);
+            case "shuffle": {
+              // Resolve IDs → encoder objects here so shuffle.js stays free
+              // of any dependency on encoderConfig (breaks circular import).
+              const shuffleTargets = shuffleEncoders
+                .map((id) => allEncoders.find((e) => e.id === id))
+                .filter((e) => e && e.id !== "shuffle");
+              results[encoder.id] = encoder.encode(inputText, shuffleTargets);
               break;
+            }
             // New parameterized encoders (v3.1)
             case "leetspeak-pro":
               results[encoder.id] = encoder.encode(
@@ -835,37 +817,6 @@ const EnhancedTextEncoder = () => {
     setSortOrder("asc");
     setActiveFilterPreset("all");
   }, []);
-
-  const playMorseSound = async (morseCode) => {
-    if (!window.AudioContext) return;
-
-    const audioContext = new AudioContext();
-    const dotDuration = 0.08;
-    const dashDuration = dotDuration * 3;
-    const gapDuration = dotDuration;
-
-    let currentTime = audioContext.currentTime;
-
-    for (let char of morseCode) {
-      if (char === "•") {
-        const oscillator = audioContext.createOscillator();
-        oscillator.frequency.value = 600;
-        oscillator.connect(audioContext.destination);
-        oscillator.start(currentTime);
-        oscillator.stop(currentTime + dotDuration);
-        currentTime += dotDuration + gapDuration;
-      } else if (char === "−") {
-        const oscillator = audioContext.createOscillator();
-        oscillator.frequency.value = 600;
-        oscillator.connect(audioContext.destination);
-        oscillator.start(currentTime);
-        oscillator.stop(currentTime + dashDuration);
-        currentTime += dashDuration + gapDuration;
-      } else if (char === " ") {
-        currentTime += gapDuration * 3;
-      }
-    }
-  };
 
   return (
     <div

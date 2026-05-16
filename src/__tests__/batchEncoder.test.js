@@ -8,11 +8,14 @@ import {
   batchDecode,
   multiEncode,
   generateComparisonMatrix,
-  chainEncode,
-  chainDecode,
   exportBatchResults,
   validateEncoderChain,
 } from "../utils/batchEncoder.js";
+import { ChainEncoder } from "../utils/chainEncoder.js";
+import { encoderConfig } from "../utils/encoderConfig.js";
+
+const resolveEncoders = (ids) =>
+  ids.map((id) => encoderConfig.find((e) => e.id === id)).filter(Boolean);
 
 describe("Batch Encoder Utility", () => {
   // ============================================
@@ -133,61 +136,86 @@ describe("Batch Encoder Utility", () => {
   });
 
   // ============================================
-  // CHAIN ENCODE TESTS
+  // CHAIN ENCODE TESTS (via ChainEncoder class — production code path)
   // ============================================
-  describe("chainEncode", () => {
+  describe("ChainEncoder.encode", () => {
     it("applies encoders in sequence", () => {
-      const result = chainEncode("Hello", ["base64", "hex"]);
+      const result = ChainEncoder.encode(
+        "Hello",
+        resolveEncoders(["base64", "hex"]),
+      );
 
-      expect(result.success).toBe(true);
       expect(result.steps).toHaveLength(2);
-      expect(result.originalInput).toBe("Hello");
-      expect(result.finalOutput).not.toBe("Hello");
+      expect(result.finalResult).not.toBe("Hello");
+      expect(result.steps[0].error).toBeUndefined();
+      expect(result.steps[1].error).toBeUndefined();
     });
 
     it("tracks intermediate steps", () => {
-      const result = chainEncode("Test", ["base64", "hex"]);
+      const result = ChainEncoder.encode(
+        "Test",
+        resolveEncoders(["base64", "hex"]),
+      );
 
-      expect(result.steps[0].input).toBe("Test");
-      expect(result.steps[1].input).toBe(result.steps[0].output);
+      // Step 0 is base64(Test); step 1 is hex(step 0 result)
+      expect(result.steps[0].result).not.toBe("Test");
+      expect(result.steps[0].result).not.toBe(result.steps[1].result);
     });
 
-    it("stops on first failure", () => {
-      const result = chainEncode("Test", ["hex", "invalid", "base64"]);
+    it("stops when an encoder throws", () => {
+      const bad = {
+        id: "bad",
+        name: "Bad",
+        encode: () => {
+          throw new Error("boom");
+        },
+      };
+      const result = ChainEncoder.encode("Test", [
+        ...resolveEncoders(["hex"]),
+        bad,
+        ...resolveEncoders(["base64"]),
+      ]);
 
-      expect(result.success).toBe(false);
-      expect(result.steps).toHaveLength(2); // hex succeeds, invalid fails
-    });
-
-    it("calculates total expansion", () => {
-      const result = chainEncode("Hi", ["hex", "base64"]);
-
-      expect(result).toHaveProperty("totalExpansion");
-      expect(result.totalExpansion).toBeGreaterThan(1);
+      expect(result.steps).toHaveLength(2); // hex ok, bad errors and breaks the chain
+      expect(result.steps[1].error).toBe(true);
     });
   });
 
   // ============================================
   // CHAIN DECODE TESTS
   // ============================================
-  describe("chainDecode", () => {
-    it("reverses a chain encoding", () => {
-      // First encode
-      const encoded = chainEncode("Hello", ["base64"]);
+  describe("ChainEncoder.decode", () => {
+    it("round-trips an encoded chain", () => {
+      const encoders = resolveEncoders(["base64"]);
+      const encoded = ChainEncoder.encode("Hello", encoders);
+      const decoded = ChainEncoder.decode(encoded.finalResult, encoders);
 
-      // Then decode
-      const decoded = chainDecode(encoded.finalOutput, ["base64"]);
-
-      expect(decoded.success).toBe(true);
-      expect(decoded.finalOutput).toBe("Hello");
+      expect(decoded.finalResult).toBe("Hello");
+      expect(decoded.steps[0].error).toBeUndefined();
     });
 
-    it("applies decoders in reverse order", () => {
-      const decoded = chainDecode("test", ["hex", "base64"]);
+    it("rejects non-reversible encoders in chain", () => {
+      const irreversible = {
+        id: "fake-irreversible",
+        name: "Fake",
+        reversible: false,
+        decode: () => "should not reach",
+      };
+      const result = ChainEncoder.decode("anything", [irreversible]);
+      expect(result.steps[0].error).toBe(true);
+      expect(result.steps[0].result).toContain("not reversible");
+    });
 
-      // First decoder in chain should be base64 (last encoder)
-      expect(decoded.encoderChain[0]).toBe("base64");
-      expect(decoded.encoderChain[1]).toBe("hex");
+    it("isChainReversible reflects whether all encoders are reversible", () => {
+      expect(
+        ChainEncoder.isChainReversible(resolveEncoders(["base64", "hex"])),
+      ).toBe(true);
+      expect(
+        ChainEncoder.isChainReversible([
+          ...resolveEncoders(["base64"]),
+          { id: "x", name: "x", reversible: false },
+        ]),
+      ).toBe(false);
     });
   });
 

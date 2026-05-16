@@ -57,23 +57,42 @@ export const createMapDecoder = (map, options = {}) => {
 };
 
 /**
- * Creates an encoder that maps characters to array elements using modulo
+ * Creates an encoder that maps characters to array elements using modulo.
+ * The simple case (no per-char formatting beyond array lookup).
+ *
  * @param {Array} array - Array of output elements
  * @param {Object} options - Configuration options
- * @param {string} options.separator - Join character (default '')
- * @returns {function} Encoder function
+ * @param {string} [options.separator] - Join character (default '')
+ * @returns {(text: string) => string}
  */
 export const createModuloEncoder = (array, options = {}) => {
   const { separator = "" } = options;
-  return (text) => {
-    return text
+  return (text) =>
+    text
       .split("")
-      .map((char) => {
-        const code = char.charCodeAt(0);
-        return array[code % array.length];
-      })
+      .map((char) => array[char.charCodeAt(0) % array.length])
       .join(separator);
-  };
+};
+
+/**
+ * Creates an encoder whose body is a per-character render function. Lets a
+ * caller skip the .split('').map(charCode → ...).join(sep) boilerplate that
+ * appears identically in hundreds of "stylized" encoders.
+ *
+ * Use this when the per-char output depends on `code` (or `char`) in any way
+ * beyond a single array lookup — for simple `arr[code % N]` lookups prefer
+ * createModuloEncoder.
+ *
+ * @param {(code: number, char: string) => string} renderChar - Renders one input char
+ * @param {string} [separator] - Join string between rendered chars (default '')
+ * @returns {(text: string) => string}
+ */
+export const createCharEncoder = (renderChar, separator = "") => {
+  return (text) =>
+    text
+      .split("")
+      .map((char) => renderChar(char.charCodeAt(0), char))
+      .join(separator);
 };
 
 /**
