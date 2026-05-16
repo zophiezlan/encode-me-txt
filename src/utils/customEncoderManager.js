@@ -193,26 +193,41 @@ export class CustomEncoderManager {
   }
 
   /**
-   * Import custom encoder from shareable format
+   * Decode a shared encoder payload WITHOUT persisting it. Used by the import
+   * preview flow so the user can confirm before saving anything to localStorage.
    */
-  static importEncoder(encodedData) {
+  static decodeEncoderPayload(encodedData) {
+    let data;
     try {
-      const data = JSON.parse(atob(encodedData));
-
-      if (data.version !== "1.0") {
-        throw new Error("Unsupported encoder version");
-      }
-
-      const encoder = {
-        ...data.encoder,
-        id: `custom-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        createdAt: Date.now(),
-      };
-
-      return this.saveEncoder(encoder);
+      data = JSON.parse(atob(encodedData));
     } catch (error) {
       throw new Error("Invalid encoder data: " + error.message);
     }
+
+    if (data.version !== "1.0") {
+      throw new Error("Unsupported encoder version");
+    }
+    if (!data.encoder || typeof data.encoder !== "object") {
+      throw new Error("Invalid encoder data: missing encoder payload");
+    }
+    if (!data.encoder.name || !data.encoder.mapping) {
+      throw new Error("Invalid encoder data: missing name or mapping");
+    }
+
+    return {
+      ...data.encoder,
+      id: `custom-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+      createdAt: Date.now(),
+    };
+  }
+
+  /**
+   * Import custom encoder from shareable format.
+   * Prefer decodeEncoderPayload + saveEncoder for flows that need a preview step.
+   */
+  static importEncoder(encodedData) {
+    const encoder = this.decodeEncoderPayload(encodedData);
+    return this.saveEncoder(encoder);
   }
 
   /**

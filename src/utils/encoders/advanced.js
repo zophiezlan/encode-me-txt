@@ -3,17 +3,33 @@
  * QR Code, URL encoding, and other advanced transformations
  */
 
-/**
- * Generates a data URL for a QR code (using a simple QR code generation approach)
- * @param {string} text - The text to encode in QR
- * @returns {string} - Description with instructions
- */
+import QRCode from "qrcode";
+
+// Renders QR matrix as Unicode half-block ASCII art — 100% client-side, no
+// external requests, scannable in monospace fonts.
 export const encodeQRCode = (text) => {
-  // Using Google Charts API for QR code generation (simple, no dependencies)
-  const size = "200x200";
-  const encoded = encodeURIComponent(text);
-  const url = `https://api.qrserver.com/v1/create-qr-code/?size=${size}&data=${encoded}`;
-  return `QR Code URL: ${url}\n\n(Paste this URL in browser to see QR code)`;
+  if (!text) return "";
+  try {
+    const qr = QRCode.create(String(text), { errorCorrectionLevel: "M" });
+    const { size, data } = qr.modules;
+    const get = (x, y) => data[y * size + x] === 1;
+
+    const quiet = " ".repeat(size + 4);
+    const lines = [quiet];
+    for (let y = 0; y < size; y += 2) {
+      let line = "  ";
+      for (let x = 0; x < size; x++) {
+        const top = get(x, y);
+        const bot = y + 1 < size ? get(x, y + 1) : false;
+        line += top && bot ? "█" : top ? "▀" : bot ? "▄" : " ";
+      }
+      lines.push(line + "  ");
+    }
+    lines.push(quiet);
+    return lines.join("\n");
+  } catch (e) {
+    return `[QR generation failed: ${e?.message || "unknown error"}]`;
+  }
 };
 
 /**

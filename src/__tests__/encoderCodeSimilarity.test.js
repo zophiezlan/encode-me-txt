@@ -1,5 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
 import { encoderConfig } from "../utils/encoderConfig.js";
+
+// The duplicate-detection block is an O(n²) Levenshtein sweep over 500+ encoders
+// — it's an analysis tool, not a unit test. Skipped by default. Opt in via
+// `RUN_SIMILARITY_ANALYSIS=1 npm test` (or `npm run test:analysis`).
+const runSimilarityAnalysis = process.env.RUN_SIMILARITY_ANALYSIS === "1";
 
 /**
  * Encoder Code Similarity Test
@@ -422,126 +427,71 @@ describe("Encoder Code Similarity Analysis", () => {
     });
   });
 
-  describe("Duplicate Detection on Real Encoders", () => {
-    it("should analyze all encoders without errors", () => {
-      expect(() => {
-        findDuplicateEncoders();
-      }).not.toThrow();
-    });
+  describe.skipIf(!runSimilarityAnalysis)(
+    "Duplicate Detection on Real Encoders",
+    () => {
+      // O(n²) over 500+ encoders. Compute once, reuse across tests.
+      let defaultDuplicates;
 
-    it("should detect potential duplicates in the encoder set", () => {
-      const duplicates = findDuplicateEncoders({
-        codeSimilarity: 0.9,
-        behavioralMatch: 0.95,
-        patternSimilarity: 0.85,
+      beforeAll(() => {
+        defaultDuplicates = findDuplicateEncoders();
       });
 
-      // Log the report for manual review
-      const report = formatDuplicateReport(duplicates);
-      console.log("\n" + "=".repeat(80));
-      console.log("ENCODER DUPLICATE DETECTION REPORT");
-      console.log("=".repeat(80));
-      console.log(report);
-      console.log("=".repeat(80) + "\n");
+      it("should analyze all encoders without errors", () => {
+        expect(defaultDuplicates).toBeDefined();
+        expect(Array.isArray(defaultDuplicates)).toBe(true);
+      });
 
-      // Store duplicates for inspection
-      if (duplicates.length > 0) {
-        console.log("Detailed duplicate analysis:");
-        duplicates.forEach((dup) => {
-          console.log(`\n${dup.encoder1} vs ${dup.encoder2}:`);
-          console.log(
-            `  Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}% | Pattern: ${dup.patternSimilarity}%`,
+      it("should detect potential duplicates in the encoder set", () => {
+        const report = formatDuplicateReport(defaultDuplicates);
+        console.log("\n" + "=".repeat(80));
+        console.log("ENCODER DUPLICATE DETECTION REPORT");
+        console.log("=".repeat(80));
+        console.log(report);
+        console.log("=".repeat(80) + "\n");
+      });
+
+      it("should not flag known different encoders as duplicates", () => {
+        const knownDifferent = [
+          ["base64", "hex"],
+          ["morse", "braille"],
+          ["caesar", "reverse"],
+        ];
+
+        for (const [id1, id2] of knownDifferent) {
+          const foundDup = defaultDuplicates.find(
+            (d) =>
+              (d.encoder1 === id1 && d.encoder2 === id2) ||
+              (d.encoder1 === id2 && d.encoder2 === id1),
           );
-        });
-      }
+          if (foundDup) {
+            expect(foundDup.codeSimilarity).toBeLessThan(80);
+          }
+        }
+      });
 
-      // This test passes regardless, but logs duplicates for review
-      // If you want the test to fail when duplicates are found, uncomment:
-      // expect(duplicates.length).toBe(0);
-
-      expect(duplicates).toBeDefined();
-      expect(Array.isArray(duplicates)).toBe(true);
-    });
-
-    it("should not flag known different encoders as duplicates", () => {
-      const duplicates = findDuplicateEncoders();
-
-      // These encoders should NOT be flagged as duplicates (they're clearly different)
-      const knownDifferent = [
-        ["base64", "hex"],
-        ["morse", "braille"],
-        ["caesar", "reverse"],
-      ];
-
-      for (const [id1, id2] of knownDifferent) {
-        const foundDup = duplicates.find(
-          (d) =>
-            (d.encoder1 === id1 && d.encoder2 === id2) ||
-            (d.encoder1 === id2 && d.encoder2 === id1),
+      it("should have no critical-severity duplicates", () => {
+        // Critical = 95%+ code AND 95%+ behavior. These should be consolidated.
+        const critical = defaultDuplicates.filter(
+          (d) => d.codeSimilarity >= 95 && d.behavioralMatch >= 95,
+        );
+        const high = defaultDuplicates.filter(
+          (d) => d.codeSimilarity >= 85 || d.behavioralMatch >= 90,
+        );
+        const medium = defaultDuplicates.filter(
+          (d) => d.codeSimilarity >= 70 || d.behavioralMatch >= 80,
         );
 
-        if (foundDup) {
-          console.warn(
-            `Warning: ${id1} and ${id2} were flagged as similar:`,
-            foundDup,
-          );
-        }
+        console.log("\nDuplicate Severity Breakdown:");
+        console.log(`  Critical (95%+ code & behavior): ${critical.length}`);
+        console.log(`  High (85%+ code OR 90%+ behavior): ${high.length}`);
+        console.log(`  Medium (70%+ code OR 80%+ behavior): ${medium.length}`);
+        console.log(`  Total potential duplicates: ${defaultDuplicates.length}`);
 
-        // These should not be highly similar
-        if (foundDup) {
-          expect(foundDup.codeSimilarity).toBeLessThan(80);
-        }
-      }
-    });
-
-    it("should detect exact code duplicates with 100% similarity", () => {
-      const duplicates = findDuplicateEncoders({
-        codeSimilarity: 0.99, // 99%+ code similarity
-        behavioralMatch: 1.0,
-        patternSimilarity: 0.99,
+        expect(critical.length).toBe(0);
       });
-
-      const exactDuplicates = duplicates.filter(
-        (d) => d.codeSimilarity >= 99 && d.behavioralMatch >= 99,
-      );
-
-      if (exactDuplicates.length > 0) {
-        console.log("\nEXACT DUPLICATES FOUND:");
-        exactDuplicates.forEach((dup) => {
-          console.log(`  - ${dup.encoder1} === ${dup.encoder2}`);
-          console.log(
-            `    Code: ${dup.codeSimilarity}% | Behavior: ${dup.behavioralMatch}%`,
-          );
-        });
-
-        // Fail the test if exact duplicates are found (they should be consolidated)
-        expect(exactDuplicates.length).toBe(0);
-      }
-    });
-
-    it("should categorize duplicates by severity", () => {
-      const duplicates = findDuplicateEncoders();
-
-      const critical = duplicates.filter(
-        (d) => d.codeSimilarity >= 95 && d.behavioralMatch >= 95,
-      );
-      const high = duplicates.filter(
-        (d) => d.codeSimilarity >= 85 || d.behavioralMatch >= 90,
-      );
-      const medium = duplicates.filter(
-        (d) => d.codeSimilarity >= 70 || d.behavioralMatch >= 80,
-      );
-
-      console.log("\nDuplicate Severity Breakdown:");
-      console.log(`  Critical (95%+ code & behavior): ${critical.length}`);
-      console.log(`  High (85%+ code OR 90%+ behavior): ${high.length}`);
-      console.log(`  Medium (70%+ code OR 80%+ behavior): ${medium.length}`);
-      console.log(`  Total potential duplicates: ${duplicates.length}`);
-
-      // Critical duplicates should be zero (exact duplicates should be removed)
-      expect(critical.length).toBe(0);
-    });
-  });
+    },
+  );
 
   describe("Encoder Coverage", () => {
     it("should test a significant portion of all encoders", () => {

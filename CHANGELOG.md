@@ -1,5 +1,78 @@
 # Changelog
 
+## [3.5.0] - 2025-12-15
+
+### 🎖️ Military, Cryptographic & Signature Standards
+
+#### New encoder modules (48 encoders)
+
+- **`military.js`** (11) - MGRS Coordinates, STANAG 4439, ACP 125 Prowords, US Classification Markings, Zulu Time, Operation Code Names, Tactical Call Signs, NATO Brevity Codes, GEOREF, SIGINT Format, Weapon Designation
+- **`crypto.js`** (17) - Bech32-style, Z-Base-32-style, Crockford Base32, SHA-256 Style, Argon2 Format, BCrypt Format, PEM Key Format, SSH Public Key, TOTP (2FA), API Key Format, ULID, Snowflake ID, X.509 Serial Number, Ethereum/Bitcoin Address, Crypto Strength Indicator, Multibase
+- **`signatures.js`** (20) - PGP Signature, PGP Clearsigned, JWT Token, OAuth Bearer/Response, WebAuthn Credential, FIDO2 Assertion, Ethereum/Bitcoin Signature, Multisig, XML DSig, SAML Assertion, HMAC, AWS Signature V4, Stripe Webhook, Authenticode, Apple Code Signature, RFC 3161 Timestamp, Signed Cookie, Kerberos Ticket
+
+> Note: Bech32 and Z-Base-32 are character-mapping approximations only; they do not implement the real algorithms (no BCH checksum, no bitstream packing).
+
+---
+
+## [3.4.0] - 2025-12-08
+
+### ✨ Creative Text Effects
+
+- **`effects.js`** (61) - Stylized text effects, decorative encoders, and creative typography transformations.
+
+---
+
+## [3.3.0] - 2025-12-07
+
+### 📡 Communication & Signaling
+
+- **`communication.js`** (45) - Communication protocol and signaling-style encodings (radio, semaphore-adjacent, telegraphy).
+
+---
+
+## [3.2.0] - 2025-12-07
+
+### 🌍 Cultural & Script Encoders
+
+- **`cultural.js`** (59) - Additional cultural scripts and writing-system transliterations.
+
+---
+
+## [3.1.0] - 2025-12-05
+
+### 🎛️ Parameterized Encoders
+
+- **`parameterized.js`** (55) - Encoders that accept user parameters (keys, shifts, modes) for richer configuration.
+- Per-encoder settings panels in the UI for parameterized methods.
+
+---
+
+## [3.0.0] - 2025-12-05
+
+### 🚀 Massive Encoder Library Expansion (158 new encoders)
+
+#### New encoder modules
+
+- **`patterns.js`** (18) - Fibonacci, Prime, Golden Ratio, Triangle/Pascal numbers, Binary Tree, Gray Code, Manchester, Hamming (7,4), Rule 30, and more
+- **`forensics.js`** (21) - Unix Timestamp, MAC/IP Address, UUID, Hex Dump, Base58 (Bitcoin), Homoglyph/Unicode Tag Steganography, JWT Style, Regex Pattern, and more
+- **`scientific.js`** (32) - Scientific Notation, Physics Constants, Chemical Formula, Electron Configuration, Quantum State, Vector/Matrix/Tensor Notation, Calculus, Complex Numbers, and more
+- **`modern.js`** (26) - Code128/DataMatrix, Hashtag, Git Commit Hash, CSS Color, SemVer, Docker Tags, Kubernetes Labels, Progress Bar, Star Rating, and more
+- **`nature.js`** (38) - RNA, Amino Acids, Codons, Plant/Animal Taxonomy, Constellation, Minerals, Cloud Types, Ocean Depth Zones, Cell Organelle, and more
+- **`games.js`** (23) - Tetris, Poker Hand, RPG Stats, Rubik's Cube, Pokemon Types, Health Bar, Dungeon Map, Trading Card, Skill Tree, Combo Move, and more
+
+#### Architecture
+
+- Modular encoder structure under `src/utils/encoders/` (one file per category)
+- Centralized export aggregator at `encoders/index.js`
+- Shared utility helpers in `encoders/shared.js`
+
+#### Breaking changes
+
+- `package.json` major version bumped to 3.0
+- Some encoder IDs in `encoderConfig.js` were renamed for consistency
+
+---
+
 ## [2.1.0] - 2025-12-01
 
 ### 🔀 Shuffle Encoding & Next-Gen Features

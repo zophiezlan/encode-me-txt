@@ -2,7 +2,7 @@
 
 # ✨ Creative Text Encoder v3.0
 
-**Transform your messages into 500+ creative encodings!**
+**Transform your messages into 511 creative encodings!**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://reactjs.org/)
@@ -19,13 +19,13 @@
 
 ## 🎯 Overview
 
-Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **500+ different encoding formats** - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32 and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
+Creative Text Encoder is a powerful, privacy-focused web application that transforms your text into **511 different encoding formats** (154 fully reversible) - from classic Binary and Morse Code to military standards like MGRS and NATO codes, modern cryptographic formats like Bech32-style and TOTP, digital signatures like PGP and JWT, unique DNA sequences, Playing Cards, ancient scripts like Hieroglyphs and Cuneiform, fantasy scripts like Elvish and Aurebesh, scientific notations, forensic patterns, gaming encodings, and much more! All processing happens **100% in your browser** - your data never leaves your device.
 
 ### 🌟 What Makes This Different?
 
 Unlike other text encoders, Creative Text Encoder v3.0 offers:
 
-- **215+ NEW encoders** not found in any other app (Hieroglyphs, Cuneiform, Elvish, Aurebesh, Fibonacci, Quantum States, and more!)
+- **474 NEW encoders** beyond the original 37 in v2 (Hieroglyphs, Cuneiform, Elvish, Aurebesh, Fibonacci, Quantum States, and more!)
 - **Shuffle encoding** - mix multiple encoders randomly for each character
 - **Custom encoder builder** - create your own encoding schemes
 - **Visual flow viewer** - watch character transformations in real-time
@@ -52,9 +52,9 @@ Perfect for:
 
 ### 🚀 Core Features
 
-- **500+ Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
+- **511 Encoding Methods** - Comprehensive collection from technical to artistic, ancient to futuristic, military to cryptographic
 - **Real-time Encoding/Decoding** - See results as you type
-- **75+ Reversible Encodings** - Methods support full decode back to original
+- **154 Reversible Encodings** - Methods support full decode back to original
 - **Shuffle Encoding** - Mix multiple encoders randomly per character
 - **Custom Encoder Builder** - Create and save your own encoding schemes
 - **Visual Encoding Flow** - Watch character-by-character transformations animate
@@ -77,7 +77,7 @@ Perfect for:
 - **Responsive Design** - Beautiful UI on desktop, tablet, and mobile
 - **Glassmorphism UI** - Modern, professional design with animated particles
 - **Offline PWA Support** - Works without internet
-- **Zero Dependencies** - Lightweight and fast (only 3 production deps)
+- **Lightweight** - 7 production dependencies, ~62KB gzipped bundle
 
 ### 🔐 Privacy & Security
 
@@ -351,8 +351,8 @@ Serious military and government encoding standards:
 
 Modern cryptographic standards and formats:
 
-- **Bech32** ₿ - Bitcoin SegWit address format (Reversible!)
-- **Z-Base-32** 🔢 - Human-oriented base-32 encoding (Reversible!)
+- **Bech32-style** ₿ - SegWit-inspired character mapping (not a real Bech32 — no BCH checksum) (Reversible!)
+- **Z-Base-32-style** 🔢 - Z-Base-32-inspired character mapping (not RFC-compliant) (Reversible!)
 - **Crockford Base32** 🔣 - Human-friendly base-32 encoding (Reversible!)
 - **SHA-256 Style** 🔐 - Cryptographic hash representation
 - **Argon2 Format** 🛡️ - Modern password hash format
@@ -457,7 +457,7 @@ encode-me-txt/
 │   │   ├── DailyPuzzle.jsx
 │   │   └── ParticlesBackground.jsx
 │   ├── utils/
-│   │   ├── encoders/   # Modular encoder functions (120+ encoders)
+│   │   ├── encoders/   # Modular encoder functions (511 encoders across 25 modules)
 │   │   │   ├── steganography.js  # Zero-width, whitespace stego
 │   │   │   ├── classic.js        # Morse, Braille, NATO
 │   │   │   ├── computer.js       # Binary, Hex, Base64, Base32, Octal, ASCII85, etc.
@@ -682,7 +682,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 Made with ❤️ by the Creative Text Encoder team
 
-**v3.5** - Now with 500+ encoders including military, cryptographic, and digital signature standards! The most feature-rich text encoder on the web!
+**v3.5** - Now with 511 encoders including military, Bech32-style cryptographic, and digital signature standards! The most feature-rich text encoder on the web!
 
 **Star ⭐ this repository if you find it helpful!**
 

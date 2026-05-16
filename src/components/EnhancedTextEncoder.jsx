@@ -2319,7 +2319,12 @@ const EnhancedTextEncoder = () => {
 
                 <div
                   className={`
-                  bg-black/30 rounded-lg p-2 md:p-3 font-mono text-xs break-all min-h-[50px] flex items-center w-full overflow-x-auto
+                  bg-black/30 rounded-lg p-2 md:p-3 font-mono text-xs min-h-[50px] flex items-center w-full overflow-x-auto
+                  ${
+                    encoder.id === "qr-code"
+                      ? "whitespace-pre leading-none text-[8px] md:text-[10px] justify-center"
+                      : "break-all"
+                  }
                   ${
                     encoder.id === "zalgo"
                       ? "overflow-hidden leading-relaxed"

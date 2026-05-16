@@ -359,12 +359,11 @@ export const encoderConfig = [
   {
     id: "qr-code",
     name: "QR Code Generator",
-    description: "Generate scannable QR codes",
+    description: "Generate scannable QR codes (client-side ASCII art)",
     emoji: "📱",
     category: "advanced",
     encode: encoders.encodeQRCode,
     reversible: false,
-    special: true,
     tags: ["advanced", "qr", "mobile"],
   },
   {
@@ -5153,8 +5152,9 @@ export const encoderConfig = [
   // 🔐 Modern Cryptographic Encoders
   {
     id: "bech32",
-    name: "Bech32",
-    description: "Bitcoin SegWit address format",
+    name: "Bech32-style",
+    description:
+      "Bitcoin SegWit-inspired character mapping (not a real Bech32 implementation; no BCH checksum)",
     emoji: "₿",
     category: "crypto",
     encode: encoders.encodeBech32,
@@ -5164,8 +5164,9 @@ export const encoderConfig = [
   },
   {
     id: "z-base32",
-    name: "Z-Base-32",
-    description: "Human-oriented base-32 encoding",
+    name: "Z-Base-32-style",
+    description:
+      "Z-Base-32-inspired character mapping (not RFC-compliant bitstream packing)",
     emoji: "🔢",
     category: "crypto",
     encode: encoders.encodeZBase32,

@@ -1,7 +1,7 @@
 {
   "name": "encode-me-txt",
   "version": "3.0.0",
-  "description": "Transform your messages into 250+ creative encodings",
+  "description": "Transform your messages into 511 creative encodings",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -27,6 +27,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
     "lucide-react": "^0.460.0",
+    "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

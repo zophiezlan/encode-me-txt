@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import { X, Plus, Trash2, Save, Check, Sparkles, Upload } from "lucide-react";
 import { CustomEncoderManager } from "../utils/customEncoderManager.js";
 
+const clearCustomEncoderParam = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("customEncoder");
+  window.history.replaceState({}, document.title, url.pathname + url.search);
+};
+
 const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
   const [encoderName, setEncoderName] = useState("");
   const [encoderEmoji, setEncoderEmoji] = useState("🎨");
@@ -17,6 +23,8 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
     CustomEncoderManager.getEncoders(),
   );
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [importPreview, setImportPreview] = useState(null);
+  const [importError, setImportError] = useState(null);
 
   const addMapping = () => {
     if (inputChar && outputChar) {
@@ -102,35 +110,126 @@ const CustomEncoderBuilder = ({ theme, onClose, onSave }) => {
     alert("🔗 Shareable link copied to clipboard!");
   };
 
-  const importFromUrl = () => {
+  // Build a preview (no save) when the URL contains a shared encoder. The user
+  // must confirm via the modal before anything is persisted to localStorage.
+  const stageImportFromUrl = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedData = urlParams.get("customEncoder");
+    if (!encodedData) return;
 
-    if (encodedData) {
-      try {
-        CustomEncoderManager.importEncoder(encodedData);
-        setSavedEncoders(CustomEncoderManager.getEncoders());
-        alert("✅ Custom encoder imported successfully!");
-
-        // Clear URL
-        window.history.replaceState(
-          {},
-          document.title,
-          window.location.pathname,
-        );
-      } catch (error) {
-        alert("❌ Failed to import encoder: " + error.message);
-      }
+    try {
+      const candidate = CustomEncoderManager.decodeEncoderPayload(encodedData);
+      setImportPreview(candidate);
+      setImportError(null);
+    } catch (error) {
+      setImportPreview(null);
+      setImportError(error.message);
     }
   };
 
-  // Check for import on mount
+  const confirmImport = () => {
+    if (!importPreview) return;
+    try {
+      CustomEncoderManager.saveEncoder(importPreview);
+      setSavedEncoders(CustomEncoderManager.getEncoders());
+      setImportPreview(null);
+      setImportError(null);
+      clearCustomEncoderParam();
+      if (onSave) onSave(importPreview);
+    } catch (error) {
+      setImportError(error.message);
+    }
+  };
+
+  const cancelImport = () => {
+    setImportPreview(null);
+    setImportError(null);
+    clearCustomEncoderParam();
+  };
+
   useEffect(() => {
-    importFromUrl();
+    stageImportFromUrl();
   }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/70 backdrop-blur-md">
+      {(importPreview || importError) && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="import-preview-title"
+        >
+          <div
+            className={`${theme.cardBg} backdrop-blur-lg rounded-2xl p-5 md:p-6 max-w-md w-full border-2 ${theme.cardBorder} shadow-2xl`}
+          >
+            <h3
+              id="import-preview-title"
+              className="mb-3 text-lg font-bold md:text-xl"
+            >
+              {importPreview ? "🔗 Import shared encoder?" : "⚠️ Import failed"}
+            </h3>
+            {importPreview ? (
+              <>
+                <p className="mb-4 text-sm opacity-80">
+                  Someone shared a custom encoder with you via this URL. Review
+                  it before adding to your saved encoders.
+                </p>
+                <div className="p-4 mb-4 space-y-2 rounded-lg bg-black/30">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">
+                      {importPreview.emoji || "🎨"}
+                    </span>
+                    <span className="font-semibold">{importPreview.name}</span>
+                  </div>
+                  {importPreview.description && (
+                    <p className="text-xs opacity-80">
+                      {importPreview.description}
+                    </p>
+                  )}
+                  <div className="text-xs opacity-70">
+                    {Object.keys(importPreview.mapping || {}).length} character
+                    mapping(s) · case-
+                    {importPreview.caseSensitive ? "sensitive" : "insensitive"}
+                  </div>
+                  <div className="font-mono text-xs break-all opacity-70 max-h-24 overflow-y-auto">
+                    {Object.entries(importPreview.mapping || {})
+                      .slice(0, 10)
+                      .map(([k, v]) => `'${k}' → '${v}'`)
+                      .join(", ")}
+                    {Object.keys(importPreview.mapping || {}).length > 10 &&
+                      " …"}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={cancelImport}
+                    className="flex-1 px-4 py-2 font-semibold rounded-lg bg-white/10 hover:bg-white/20"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmImport}
+                    className="flex-1 px-4 py-2 font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500"
+                  >
+                    Import
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="mb-4 text-sm opacity-80">{importError}</p>
+                <button
+                  onClick={cancelImport}
+                  className="w-full px-4 py-2 font-semibold rounded-lg bg-white/10 hover:bg-white/20"
+                >
+                  Dismiss
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
       <div
         className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-4 md:p-6 max-w-4xl w-full border-2 ${theme.cardBorder} shadow-2xl my-4 max-h-[90vh] overflow-y-auto overflow-x-hidden`}
       >
